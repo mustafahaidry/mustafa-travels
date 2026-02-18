@@ -15,6 +15,9 @@
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg">
     
+    <!-- Urdu Nori Nastaleq Font for Ramadan Card -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap">
+    
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
@@ -538,6 +541,310 @@
         .search-btn-luxury:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(26, 35, 126, 0.3);
+        }
+
+        /* ====== RAMADAN GREETING CARD SECTION ====== */
+        .ramadan-greeting-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        .ramadan-card {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: linear-gradient(145deg, #fef9e7 0%, #f5f0dc 100%);
+            border-radius: 50px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 0 0 0 3px #c4a35a inset;
+            overflow: hidden;
+            position: relative;
+            direction: rtl;
+        }
+
+        .ramadan-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle at 30px 30px, #e4d5b6 3px, transparent 3px);
+            background-size: 60px 60px;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .moon-dec {
+            position: absolute;
+            top: 15px;
+            left: 25px;
+            font-size: 60px;
+            color: #f1c40f;
+            text-shadow: 0 0 20px #f39c12;
+            transform: rotate(-10deg);
+            z-index: 5;
+            opacity: 0.8;
+        }
+
+        .lantern-dec {
+            position: absolute;
+            bottom: 15px;
+            right: 25px;
+            font-size: 60px;
+            color: #d4a017;
+            text-shadow: 0 0 20px #e67e22;
+            transform: rotate(10deg);
+            z-index: 5;
+            opacity: 0.8;
+        }
+
+        .ramadan-header {
+            background: linear-gradient(135deg, #1e4a5f 0%, #0f3b4a 100%);
+            color: white;
+            padding: 25px 30px;
+            border-bottom: 5px solid #e4b13b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .title-sec {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .ramadan-title {
+            font-size: 48px;
+            font-weight: 700;
+            text-shadow: 3px 3px 0 #b78a3f;
+            margin-bottom: 5px;
+            font-family: 'Noto Nastaliq Urdu', sans-serif;
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            font-size: 24px;
+            opacity: 0.9;
+            font-family: 'Noto Nastaliq Urdu', sans-serif;
+        }
+
+        .date-sec {
+            background: rgba(255,255,255,0.15);
+            padding: 15px 30px;
+            border-radius: 60px;
+            border: 2px solid #e4b13b;
+            text-align: center;
+            min-width: 200px;
+        }
+
+        .hijri-date {
+            font-size: 28px;
+            font-weight: 600;
+            font-family: 'Noto Nastaliq Urdu', sans-serif;
+        }
+
+        .greg-date {
+            font-size: 18px;
+            opacity: 0.8;
+            font-family: 'Noto Nastaliq Urdu', sans-serif;
+        }
+
+        .ramadan-main {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .quran-col {
+            flex: 1.2;
+            min-width: 300px;
+            background: linear-gradient(145deg, #ffffff 0%, #fff9e6 100%);
+            border-radius: 40px;
+            padding: 25px;
+            border: 3px solid #c4a35a;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .ayat-badge {
+            position: absolute;
+            top: -15px;
+            right: 30px;
+            background: #1e4a5f;
+            color: white;
+            padding: 8px 30px;
+            border-radius: 40px;
+            font-size: 20px;
+            border: 2px solid #e4b13b;
+            font-family: 'Noto Nastaliq Urdu', sans-serif;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .arabic-ayat {
+            font-size: 38px;
+            line-height: 2.2;
+            color: #0a3b4a;
+            text-align: center;
+            margin: 30px 0 20px 0;
+            font-weight: 700;
+            padding: 20px 10px;
+            background: rgba(196, 163, 90, 0.1);
+            border-radius: 80px 20px 80px 20px;
+            font-family: 'Traditional Arabic', 'Noto Nastaliq Urdu', sans-serif;
+        }
+
+        .translation {
+            font-size: 22px;
+            color: #2c3e50;
+            text-align: center;
+            line-height: 2;
+            padding: 15px;
+            border-top: 2px solid #c4a35a;
+            border-bottom: 2px solid #c4a35a;
+            margin: 15px 0;
+            font-family: 'Noto Nastaliq Urdu', sans-serif;
+        }
+
+        .surah-name {
+            font-size: 20px;
+            color: #b78a3f;
+            text-align: center;
+            font-style: italic;
+            font-family: 'Noto Nastaliq Urdu', sans-serif;
+        }
+
+        .message-col {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .greeting-box {
+            background: linear-gradient(145deg, #1e4a5f 0%, #0d3645 100%);
+            border-radius: 40px;
+            padding: 25px;
+            color: white;
+            border: 3px solid #e4b13b;
+            flex: 1;
+        }
+
+        .greeting-title {
+            font-size: 36px;
+            color: #f9e074;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-family: 'Noto Nastaliq Urdu', sans-serif;
+            text-shadow: 2px 2px 0 #0a2f44;
+        }
+
+        .message-text {
+            font-size: 22px;
+            line-height: 2;
+            text-align: center;
+            font-family: 'Noto Nastaliq Urdu', sans-serif;
+        }
+
+        .dua-box {
+            background: linear-gradient(145deg, #c49a3b 0%, #b8860b 100%);
+            border-radius: 40px;
+            padding: 25px;
+            color: #0a2f44;
+            border: 3px solid #ffffff;
+            box-shadow: 0 8px 0 #7a5c1e;
+        }
+
+        .dua-title {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 700;
+            font-family: 'Noto Nastaliq Urdu', sans-serif;
+            color: #0a2f44;
+        }
+
+        .dua-text {
+            font-size: 24px;
+            line-height: 2;
+            text-align: center;
+            font-style: italic;
+            font-family: 'Traditional Arabic', 'Noto Nastaliq Urdu', sans-serif;
+            margin-bottom: 15px;
+        }
+
+        .dua-translation {
+            font-size: 20px;
+            line-height: 1.8;
+            text-align: center;
+            border-top: 2px dashed #0a2f44;
+            padding-top: 15px;
+            font-family: 'Noto Nastaliq Urdu', sans-serif;
+        }
+
+        .ramadan-footer {
+            background: linear-gradient(135deg, #0a2f44 0%, #063140 100%);
+            color: white;
+            padding: 20px 30px;
+            border-top: 4px solid #e4b13b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .ceo-sec {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .ceo-name {
+            font-size: 32px;
+            font-weight: 700;
+            color: #f9e074;
+            margin-bottom: 5px;
+            font-family: 'Noto Nastaliq Urdu', sans-serif;
+        }
+
+        .company-name {
+            font-size: 24px;
+            font-family: 'Noto Nastaliq Urdu', sans-serif;
+        }
+
+        .travel-icon {
+            font-size: 30px;
+            margin-right: 10px;
+        }
+
+        .contact-info {
+            font-size: 18px;
+            opacity: 0.9;
+            font-family: 'Noto Nastaliq Urdu', sans-serif;
+        }
+
+        .quote-sec {
+            text-align: left;
+            direction: ltr;
+            font-size: 16px;
+            color: #e4b13b;
+            border-right: 2px solid #e4b13b;
+            padding-right: 20px;
+        }
+
+        .quote-sec p {
+            direction: rtl;
+            font-family: 'Noto Nastaliq Urdu', sans-serif;
+        }
+
+        .star-line {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            font-size: 24px;
+            color: #f9e074;
+            margin-top: 5px;
         }
 
         /* ====== UMRAN PACKAGES ====== */
@@ -1365,6 +1672,14 @@
             .hajj-steps-container {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            .ramadan-title {
+                font-size: 42px;
+            }
+            
+            .arabic-ayat {
+                font-size: 34px;
+            }
         }
 
         @media (max-width: 992px) {
@@ -1392,6 +1707,16 @@
             
             .flight-airline {
                 margin-bottom: 10px;
+            }
+            
+            .ramadan-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .ramadan-main {
+                flex-direction: column;
             }
         }
 
@@ -1460,6 +1785,26 @@
             .flying-marquee-container {
                 top: 125px;
             }
+            
+            .ramadan-title {
+                font-size: 38px;
+            }
+            
+            .arabic-ayat {
+                font-size: 28px;
+            }
+            
+            .ramadan-footer {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .quote-sec {
+                border-right: none;
+                border-top: 2px solid #e4b13b;
+                padding-right: 0;
+                padding-top: 15px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1486,6 +1831,22 @@
             }
             
             .footer-column-elegant h3 {
+                font-size: 18px;
+            }
+            
+            .ramadan-title {
+                font-size: 32px;
+            }
+            
+            .subtitle {
+                font-size: 20px;
+            }
+            
+            .greeting-title {
+                font-size: 28px;
+            }
+            
+            .message-text {
                 font-size: 18px;
             }
         }
@@ -1631,6 +1992,88 @@
         </div>
     </div>
 
+    <!-- ====== RAMADAN GREETING CARD SECTION ====== -->
+    <section class="ramadan-greeting-section">
+        <div class="container">
+            <div class="ramadan-card">
+                <div class="ramadan-pattern"></div>
+                
+                <!-- Decorative Elements -->
+                <div class="moon-dec">☪️</div>
+                <div class="lantern-dec">🏮</div>
+                
+                <!-- Ramadan Header -->
+                <div class="ramadan-header">
+                    <div class="title-sec">
+                        <div class="ramadan-title">🌙 رمضان مبارک 🌙</div>
+                        <div class="subtitle">اللہ آپ پر رحمتیں نازل فرمائے</div>
+                    </div>
+                    <div class="date-sec">
+                        <div class="hijri-date" id="hijriDate">رمضان 1446 ھ</div>
+                        <div class="greg-date" id="gregDate"></div>
+                    </div>
+                </div>
+                
+                <!-- Ramadan Main Content -->
+                <div class="ramadan-main">
+                    <!-- Quran Column -->
+                    <div class="quran-col">
+                        <div class="ayat-badge">📖 آیت الکریمہ</div>
+                        <div class="arabic-ayat" id="dailyAyat">
+                            يَا أَيُّهَا الَّذِينَ آمَنُوا كُتِبَ عَلَيْكُمُ الصِّيَامُ كَمَا كُتِبَ عَلَى الَّذِينَ مِن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ
+                        </div>
+                        <div class="translation" id="ayatTranslation">
+                            اے ایمان والو! تم پر روزے فرض کیے گئے جس طرح تم سے پہلے لوگوں پر فرض کیے گئے تھے، تاکہ تم پرہیزگار بنو
+                        </div>
+                        <div class="surah-name" id="surahName">📖 سورة البقرة، آیت 183</div>
+                    </div>
+                    
+                    <!-- Message Column -->
+                    <div class="message-col">
+                        <!-- Greeting Box -->
+                        <div class="greeting-box">
+                            <div class="greeting-title">✨ مبارکباد ✨</div>
+                            <div class="message-text">
+                                رمضان المبارک کا مقدس مہینہ آپ کے لیے<br>
+                                رحمت، مغفرت اور جہنم سے نجات کا ذریعہ بنے۔<br>
+                                آپ کی ساری عبادتیں اللہ کی بارگاہ میں قبول ہوں۔
+                            </div>
+                        </div>
+                        
+                        <!-- Dua Box -->
+                        <div class="dua-box">
+                            <div class="dua-title">🤲 دعا</div>
+                            <div class="dua-text" id="duaArabic">
+                                اللَّهُمَّ أَهِلَّهُ عَلَيْنَا بِالْأَمْنِ وَالْإِيمَانِ
+                            </div>
+                            <div class="dua-translation" id="duaTranslation">
+                                اے اللہ! اس مہینے کو ہم پر امن، ایمان اور سلامتی کے ساتھ شروع فرما
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Ramadan Footer -->
+                <div class="ramadan-footer">
+                    <div class="ceo-sec">
+                        <div class="ceo-name">غلام مصطفیٰ حیدری</div>
+                        <div class="company-name">
+                            Mustafa Travels & Tours <span class="travel-icon">✈️</span>
+                        </div>
+                        <div class="contact-info">CEO & Founder</div>
+                    </div>
+                    
+                    <div class="quote-sec">
+                        <p>🌙 "وَمَن تَطَوَّعَ خَيْرًا فَإِنَّ اللَّهَ شَاكِرٌ عَلِيمٌ"</p>
+                        <div class="star-line">
+                            <span>⭐</span> <span>🤲</span> <span>⭐</span> <span>☪️</span> <span>⭐</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- ====== UMRAN PACKAGES ====== -->
     <section class="packages-luxury" id="umrah">
         <div class="container">
@@ -1638,524 +2081,7 @@
                 <h2>Premium Umrah Packages 2026</h2>
                 <p>Experience spiritual devotion with luxury accommodations near the Holy Mosques</p>
             </div>
-<!DOCTYPE html>
-<html lang="ur">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ramadan Mubarak - Mustafa Travels & Tours</title>
-    <!-- Urdu Nori Nastaleq Font -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;500;600;700&display=swap">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Noto Nastaliq Urdu', 'Traditional Arabic', 'Arial', sans-serif;
-            background: linear-gradient(135deg, #0a2f44 0%, #1b4b3d 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-            direction: rtl;
-        }
-        
-        /* Landscape Mode Container */
-        .greeting-card {
-            max-width: 1200px;
-            width: 100%;
-            background: linear-gradient(145deg, #fef9e7 0%, #f5f0dc 100%);
-            border-radius: 50px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 0 3px #c4a35a inset;
-            overflow: hidden;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        /* Islamic Pattern */
-        .islamic-pattern {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: radial-gradient(circle at 30px 30px, #e4d5b6 3px, transparent 3px);
-            background-size: 60px 60px;
-            opacity: 0.1;
-            pointer-events: none;
-        }
-        
-        /* Decorative Elements */
-        .moon-decoration {
-            position: absolute;
-            top: 15px;
-            left: 25px;
-            font-size: 60px;
-            color: #f1c40f;
-            text-shadow: 0 0 20px #f39c12;
-            transform: rotate(-10deg);
-            z-index: 5;
-            opacity: 0.8;
-        }
-        
-        .lantern-decoration {
-            position: absolute;
-            bottom: 15px;
-            right: 25px;
-            font-size: 60px;
-            color: #d4a017;
-            text-shadow: 0 0 20px #e67e22;
-            transform: rotate(10deg);
-            z-index: 5;
-            opacity: 0.8;
-        }
-        
-        /* ========== LANDSCAPE HEADER ========== */
-        .landscape-header {
-            background: linear-gradient(135deg, #1e4a5f 0%, #0f3b4a 100%);
-            color: white;
-            padding: 25px 30px;
-            border-bottom: 5px solid #e4b13b;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .title-section {
-            flex: 1;
-            min-width: 250px;
-        }
-        
-        .ramadan-title {
-            font-size: 48px;
-            font-weight: 700;
-            text-shadow: 3px 3px 0 #b78a3f;
-            margin-bottom: 5px;
-            font-family: 'Noto Nastaliq Urdu', sans-serif;
-            line-height: 1.3;
-        }
-        
-        .subtitle {
-            font-size: 24px;
-            opacity: 0.9;
-            font-family: 'Noto Nastaliq Urdu', sans-serif;
-        }
-        
-        .date-section {
-            background: rgba(255,255,255,0.15);
-            padding: 15px 30px;
-            border-radius: 60px;
-            border: 2px solid #e4b13b;
-            text-align: center;
-            min-width: 200px;
-        }
-        
-        .hijri-date {
-            font-size: 28px;
-            font-weight: 600;
-            font-family: 'Noto Nastaliq Urdu', sans-serif;
-        }
-        
-        .greg-date {
-            font-size: 18px;
-            opacity: 0.8;
-            font-family: 'Noto Nastaliq Urdu', sans-serif;
-        }
-        
-        /* ========== LANDSCAPE MAIN CONTENT ========== */
-        .landscape-main {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 20px;
-            gap: 20px;
-        }
-        
-        /* Right Column - Quran Section */
-        .quran-column {
-            flex: 1.2;
-            min-width: 300px;
-            background: linear-gradient(145deg, #ffffff 0%, #fff9e6 100%);
-            border-radius: 40px;
-            padding: 25px;
-            border: 3px solid #c4a35a;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        
-        .ayat-badge {
-            position: absolute;
-            top: -15px;
-            right: 30px;
-            background: #1e4a5f;
-            color: white;
-            padding: 8px 30px;
-            border-radius: 40px;
-            font-size: 20px;
-            border: 2px solid #e4b13b;
-            font-family: 'Noto Nastaliq Urdu', sans-serif;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-        }
-        
-        .arabic-ayat {
-            font-size: 38px;
-            line-height: 2.2;
-            color: #0a3b4a;
-            text-align: center;
-            margin: 30px 0 20px 0;
-            font-weight: 700;
-            padding: 20px 10px;
-            background: rgba(196, 163, 90, 0.1);
-            border-radius: 80px 20px 80px 20px;
-            font-family: 'Traditional Arabic', 'Noto Nastaliq Urdu', sans-serif;
-        }
-        
-        .translation {
-            font-size: 22px;
-            color: #2c3e50;
-            text-align: center;
-            line-height: 2;
-            padding: 15px;
-            border-top: 2px solid #c4a35a;
-            border-bottom: 2px solid #c4a35a;
-            margin: 15px 0;
-            font-family: 'Noto Nastaliq Urdu', sans-serif;
-        }
-        
-        .surah-name {
-            font-size: 20px;
-            color: #b78a3f;
-            text-align: center;
-            font-style: italic;
-            font-family: 'Noto Nastaliq Urdu', sans-serif;
-        }
-        
-        /* Left Column - Message & Dua */
-        .message-column {
-            flex: 1;
-            min-width: 280px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        
-        /* Greeting Message Box */
-        .greeting-box {
-            background: linear-gradient(145deg, #1e4a5f 0%, #0d3645 100%);
-            border-radius: 40px;
-            padding: 25px;
-            color: white;
-            border: 3px solid #e4b13b;
-            flex: 1;
-        }
-        
-        .greeting-title {
-            font-size: 36px;
-            color: #f9e074;
-            text-align: center;
-            margin-bottom: 20px;
-            font-weight: 700;
-            font-family: 'Noto Nastaliq Urdu', sans-serif;
-            text-shadow: 2px 2px 0 #0a2f44;
-        }
-        
-        .message-text {
-            font-size: 22px;
-            line-height: 2;
-            text-align: center;
-            font-family: 'Noto Nastaliq Urdu', sans-serif;
-        }
-        
-        /* Dua Box */
-        .dua-box {
-            background: linear-gradient(145deg, #c49a3b 0%, #b8860b 100%);
-            border-radius: 40px;
-            padding: 25px;
-            color: #0a2f44;
-            border: 3px solid #ffffff;
-            box-shadow: 0 8px 0 #7a5c1e;
-        }
-        
-        .dua-title {
-            font-size: 32px;
-            text-align: center;
-            margin-bottom: 15px;
-            font-weight: 700;
-            font-family: 'Noto Nastaliq Urdu', sans-serif;
-            color: #0a2f44;
-        }
-        
-        .dua-text {
-            font-size: 24px;
-            line-height: 2;
-            text-align: center;
-            font-style: italic;
-            font-family: 'Traditional Arabic', 'Noto Nastaliq Urdu', sans-serif;
-            margin-bottom: 15px;
-        }
-        
-        .dua-translation {
-            font-size: 20px;
-            line-height: 1.8;
-            text-align: center;
-            border-top: 2px dashed #0a2f44;
-            padding-top: 15px;
-            font-family: 'Noto Nastaliq Urdu', sans-serif;
-        }
-        
-        /* ========== LANDSCAPE FOOTER ========== */
-        .landscape-footer {
-            background: linear-gradient(135deg, #0a2f44 0%, #063140 100%);
-            color: white;
-            padding: 20px 30px;
-            border-top: 4px solid #e4b13b;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .ceo-section {
-            flex: 1;
-            min-width: 250px;
-        }
-        
-        .ceo-name {
-            font-size: 32px;
-            font-weight: 700;
-            color: #f9e074;
-            margin-bottom: 5px;
-            font-family: 'Noto Nastaliq Urdu', sans-serif;
-        }
-        
-        .company-name {
-            font-size: 24px;
-            font-family: 'Noto Nastaliq Urdu', sans-serif;
-        }
-        
-        .travel-icon {
-            font-size: 30px;
-            margin-right: 10px;
-        }
-        
-        .contact-info {
-            font-size: 18px;
-            opacity: 0.9;
-            font-family: 'Noto Nastaliq Urdu', sans-serif;
-        }
-        
-        .quote-section {
-            text-align: left;
-            direction: ltr;
-            font-size: 16px;
-            color: #e4b13b;
-            border-right: 2px solid #e4b13b;
-            padding-right: 20px;
-        }
-        
-        .quote-section p {
-            direction: rtl;
-            font-family: 'Noto Nastaliq Urdu', sans-serif;
-        }
-        
-        .star-line {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            font-size: 24px;
-            color: #f9e074;
-            margin-top: 5px;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .landscape-header {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
-            }
-            
-            .ramadan-title {
-                font-size: 42px;
-            }
-            
-            .landscape-main {
-                flex-direction: column;
-            }
-            
-            .arabic-ayat {
-                font-size: 32px;
-            }
-            
-            .landscape-footer {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .quote-section {
-                border-right: none;
-                border-top: 2px solid #e4b13b;
-                padding-right: 0;
-                padding-top: 15px;
-            }
-        }
-        
-        @media (min-width: 1200px) {
-            .arabic-ayat {
-                font-size: 44px;
-            }
-            
-            .message-text {
-                font-size: 24px;
-            }
-        }
-    </style>
-</head>
-<body>
 
-<div class="greeting-card">
-    <div class="islamic-pattern"></div>
-    
-    <!-- Decorative Elements -->
-    <div class="moon-decoration">☪️</div>
-    <div class="lantern-decoration">🏮</div>
-    
-    <!-- ===== LANDSCAPE HEADER ===== -->
-    <div class="landscape-header">
-        <div class="title-section">
-            <div class="ramadan-title">🌙 رمضان مبارک 🌙</div>
-            <div class="subtitle">اللہ آپ پر رحمتیں نازل فرمائے</div>
-        </div>
-        <div class="date-section">
-            <div class="hijri-date" id="hijriDate">رمضان 1446 ھ</div>
-            <div class="greg-date" id="gregDate"></div>
-        </div>
-    </div>
-    
-    <!-- ===== LANDSCAPE MAIN CONTENT ===== -->
-    <div class="landscape-main">
-        <!-- Right Column - Quran Section -->
-        <div class="quran-column">
-            <div class="ayat-badge">📖 آیت الکریمہ</div>
-            <div class="arabic-ayat" id="dailyAyat">
-                يَا أَيُّهَا الَّذِينَ آمَنُوا كُتِبَ عَلَيْكُمُ الصِّيَامُ كَمَا كُتِبَ عَلَى الَّذِينَ مِن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ
-            </div>
-            <div class="translation" id="ayatTranslation">
-                اے ایمان والو! تم پر روزے فرض کیے گئے جس طرح تم سے پہلے لوگوں پر فرض کیے گئے تھے، تاکہ تم پرہیزگار بنو
-            </div>
-            <div class="surah-name" id="surahName">📖 سورة البقرة، آیت 183</div>
-        </div>
-        
-        <!-- Left Column - Message & Dua -->
-        <div class="message-column">
-            <!-- Greeting Box -->
-            <div class="greeting-box">
-                <div class="greeting-title">✨ مبارکباد ✨</div>
-                <div class="message-text">
-                    رمضان المبارک کا مقدس مہینہ آپ کے لیے<br>
-                    رحمت، مغفرت اور جہنم سے نجات کا ذریعہ بنے۔<br>
-                    آپ کی ساری عبادتیں اللہ کی بارگاہ میں قبول ہوں۔
-                </div>
-            </div>
-            
-            <!-- Dua Box -->
-            <div class="dua-box">
-                <div class="dua-title">🤲 دعا</div>
-                <div class="dua-text" id="duaArabic">
-                    اللَّهُمَّ أَهِلَّهُ عَلَيْنَا بِالْأَمْنِ وَالْإِيمَانِ
-                </div>
-                <div class="dua-translation" id="duaTranslation">
-                    اے اللہ! اس مہینے کو ہم پر امن، ایمان اور سلامتی کے ساتھ شروع فرما
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- ===== LANDSCAPE FOOTER ===== -->
-    <div class="landscape-footer">
-        <div class="ceo-section">
-            <div class="ceo-name">غلام مصطفیٰ حیدری</div>
-            <div class="company-name">
-                Mustafa Travels & Tours <span class="travel-icon">✈️</span>
-            </div>
-            <div class="contact-info">CEO & Founder</div>
-        </div>
-        
-        <div class="quote-section">
-            <p>🌙 "وَمَن تَطَوَّعَ خَيْرًا فَإِنَّ اللَّهَ شَاكِرٌ عَلِيمٌ"</p>
-            <div class="star-line">
-                <span>⭐</span> <span>🤲</span> <span>⭐</span> <span>☪️</span> <span>⭐</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    // ==================== SCRIPT FOR DYNAMIC DATES ====================
-    document.addEventListener('DOMContentLoaded', function() {
-        // Gregorian Date
-        const today = new Date();
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('gregDate').textContent = today.toLocaleDateString('ur-PK', options);
-        
-        // Ayat and Dua Database
-        const ayatDatabase = [
-            {
-                arabic: "يَا أَيُّهَا الَّذِينَ آمَنُوا كُتِبَ عَلَيْكُمُ الصِّيَامُ كَمَا كُتِبَ عَلَى الَّذِينَ مِن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ",
-                translation: "اے ایمان والو! تم پر روزے فرض کیے گئے جس طرح تم سے پہلے لوگوں پر فرض کیے گئے تھے، تاکہ تم پرہیزگار بنو",
-                surah: "سورة البقرة، آیت 183"
-            },
-            {
-                arabic: "شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ هُدًى لِّلنَّاسِ وَبَيِّنَاتٍ مِّنَ الْهُدَىٰ وَالْفُرْقَانِ",
-                translation: "رمضان کا مہینہ وہ ہے جس میں قرآن اتارا گیا جو لوگوں کے لیے ہدایت ہے",
-                surah: "سورة البقرة، آیت 185"
-            },
-            {
-                arabic: "إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ",
-                translation: "بے شک ہم نے اس (قرآن) کو شب قدر میں نازل کیا",
-                surah: "سورة القدر، آیت 1"
-            }
-        ];
-        
-        const duaDatabase = [
-            {
-                arabic: "اللَّهُمَّ أَهِلَّهُ عَلَيْنَا بِالْأَمْنِ وَالْإِيمَانِ وَالسَّلَامَةِ وَالْإِسْلَامِ",
-                translation: "اے اللہ! اس مہینے کو ہم پر امن، ایمان، سلامتی کے ساتھ شروع فرما"
-            },
-            {
-                arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
-                translation: "اے ہمارے رب! ہمیں دنیا میں بھی بھلائی دے اور آخرت میں بھی بھلائی دے"
-            },
-            {
-                arabic: "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي",
-                translation: "اے اللہ! تو معاف کرنے والا ہے، مجھے معاف فرما دے"
-            }
-        ];
-        
-        // Get today's index
-        const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
-        const ayatIndex = dayOfYear % ayatDatabase.length;
-        const duaIndex = dayOfYear % duaDatabase.length;
-        
-        // Update Ayat
-        document.getElementById('dailyAyat').textContent = ayatDatabase[ayatIndex].arabic;
-        document.getElementById('ayatTranslation').textContent = ayatDatabase[ayatIndex].translation;
-        document.getElementById('surahName').textContent = `📖 ${ayatDatabase[ayatIndex].surah}`;
-        
-        // Update Dua
-        document.getElementById('duaArabic').textContent = duaDatabase[duaIndex].arabic;
-        document.getElementById('duaTranslation').textContent = duaDatabase[duaIndex].translation;
-    });
-</script>
-
-</body>
-</html>
             <div class="packages-grid-luxury">
                 <!-- Economy Package -->
                 <div class="package-card-luxury animate-fade-in-up">
@@ -2788,6 +2714,100 @@
             }
         };
 
+        // ====== RAMADAN CARD DYNAMIC DATES ======
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gregorian Date for Ramadan Card
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const gregDateElement = document.getElementById('gregDate');
+            if (gregDateElement) {
+                gregDateElement.textContent = today.toLocaleDateString('ur-PK', options);
+            }
+            
+            // Hijri Date for Ramadan Card
+            const hijriDateElement = document.getElementById('hijriDate');
+            if (hijriDateElement) {
+                hijriDateElement.textContent = 'رمضان 1446 ھ';
+            }
+            
+            // Ayat and Dua Database
+            const ayatDatabase = [
+                {
+                    arabic: "يَا أَيُّهَا الَّذِينَ آمَنُوا كُتِبَ عَلَيْكُمُ الصِّيَامُ كَمَا كُتِبَ عَلَى الَّذِينَ مِن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ",
+                    translation: "اے ایمان والو! تم پر روزے فرض کیے گئے جس طرح تم سے پہلے لوگوں پر فرض کیے گئے تھے، تاکہ تم پرہیزگار بنو",
+                    surah: "سورة البقرة، آیت 183"
+                },
+                {
+                    arabic: "شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ هُدًى لِّلنَّاسِ وَبَيِّنَاتٍ مِّنَ الْهُدَىٰ وَالْفُرْقَانِ",
+                    translation: "رمضان کا مہینہ وہ ہے جس میں قرآن اتارا گیا جو لوگوں کے لیے ہدایت ہے",
+                    surah: "سورة البقرة، آیت 185"
+                },
+                {
+                    arabic: "إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ",
+                    translation: "بے شک ہم نے اس (قرآن) کو شب قدر میں نازل کیا",
+                    surah: "سورة القدر، آیت 1"
+                },
+                {
+                    arabic: "لَيْلَةُ الْقَدْرِ خَيْرٌ مِّنْ أَلْفِ شَهْرٍ",
+                    translation: "شب قدر ہزار مہینوں سے بہتر ہے",
+                    surah: "سورة القدر، آیت 3"
+                },
+                {
+                    arabic: "وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ",
+                    translation: "اور جب میرے بندے مجھ سے پوچھیں تو میں یقیناً قریب ہوں",
+                    surah: "سورة البقرة، آیت 186"
+                }
+            ];
+            
+            const duaDatabase = [
+                {
+                    arabic: "اللَّهُمَّ أَهِلَّهُ عَلَيْنَا بِالْأَمْنِ وَالْإِيمَانِ وَالسَّلَامَةِ وَالْإِسْلَامِ",
+                    translation: "اے اللہ! اس مہینے کو ہم پر امن، ایمان، سلامتی کے ساتھ شروع فرما"
+                },
+                {
+                    arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
+                    translation: "اے ہمارے رب! ہمیں دنیا میں بھی بھلائی دے اور آخرت میں بھی بھلائی دے"
+                },
+                {
+                    arabic: "اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي",
+                    translation: "اے اللہ! تو معاف کرنے والا ہے، مجھے معاف فرما دے"
+                },
+                {
+                    arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ وَمَا قَرَّبَ إِلَيْهَا مِنْ قَوْلٍ أَوْ عَمَلٍ",
+                    translation: "اے اللہ! میں تجھ سے جنت کا سوال کرتا ہوں"
+                }
+            ];
+            
+            // Get today's index
+            const startOfYear = new Date(today.getFullYear(), 0, 0);
+            const diff = today - startOfYear;
+            const oneDay = 1000 * 60 * 60 * 24;
+            const dayOfYear = Math.floor(diff / oneDay);
+            
+            const ayatIndex = dayOfYear % ayatDatabase.length;
+            const duaIndex = dayOfYear % duaDatabase.length;
+            
+            // Update Ayat
+            const ayatElement = document.getElementById('dailyAyat');
+            const ayatTranslationElement = document.getElementById('ayatTranslation');
+            const surahNameElement = document.getElementById('surahName');
+            
+            if (ayatElement && ayatTranslationElement && surahNameElement) {
+                ayatElement.textContent = ayatDatabase[ayatIndex].arabic;
+                ayatTranslationElement.textContent = ayatDatabase[ayatIndex].translation;
+                surahNameElement.textContent = `📖 ${ayatDatabase[ayatIndex].surah}`;
+            }
+            
+            // Update Dua
+            const duaArabicElement = document.getElementById('duaArabic');
+            const duaTranslationElement = document.getElementById('duaTranslation');
+            
+            if (duaArabicElement && duaTranslationElement) {
+                duaArabicElement.textContent = duaDatabase[duaIndex].arabic;
+                duaTranslationElement.textContent = duaDatabase[duaIndex].translation;
+            }
+        });
+
         // ====== SLIDER FUNCTIONALITY ======
         function showSlide(index) {
             slides.forEach(slide => slide.classList.remove('active'));
@@ -2969,12 +2989,17 @@
 
         // ====== DATE INPUTS ======
         const today = new Date().toISOString().split('T')[0];
-        document.getElementById('checkIn').min = today;
-        document.getElementById('checkOut').min = today;
+        const checkIn = document.getElementById('checkIn');
+        const checkOut = document.getElementById('checkOut');
+        
+        if (checkIn) checkIn.min = today;
+        if (checkOut) checkOut.min = today;
 
-        document.getElementById('checkIn').addEventListener('change', function() {
-            document.getElementById('checkOut').min = this.value;
-        });
+        if (checkIn) {
+            checkIn.addEventListener('change', function() {
+                if (checkOut) checkOut.min = this.value;
+            });
+        }
 
         // ====== ANIMATION ON SCROLL ======
         const observerOptions = {
@@ -3017,55 +3042,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Set initial slide
             showSlide(0);
-            
-            // Add print button for Hajj guide
-            const printBtn = document.createElement('button');
-            printBtn.innerHTML = '<i class="fas fa-print"></i> Print Hajj Guide';
-            printBtn.style.position = 'fixed';
-            printBtn.style.bottom = '80px';
-            printBtn.style.right = '20px';
-            printBtn.style.background = 'linear-gradient(135deg, var(--primary-teal), var(--primary-navy))';
-            printBtn.style.color = 'white';
-            printBtn.style.border = 'none';
-            printBtn.style.padding = '12px 20px';
-            printBtn.style.borderRadius = '50px';
-            printBtn.style.cursor = 'pointer';
-            printBtn.style.zIndex = '999';
-            printBtn.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
-            printBtn.style.display = 'flex';
-            printBtn.style.alignItems = 'center';
-            printBtn.style.gap = '8px';
-            printBtn.style.fontFamily = 'inherit';
-            printBtn.style.fontSize = '14px';
-            
-            printBtn.addEventListener('click', function() {
-                const content = document.querySelector('.hajj-guide-section').innerHTML;
-                const printWindow = window.open('', '_blank');
-                printWindow.document.write(`
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <title>Mustafa Travels - Hajj Guide</title>
-                        <style>
-                            body { font-family: Arial, sans-serif; padding: 20px; }
-                            h1, h2, h3 { color: #1a237e; }
-                            .step-item { margin-bottom: 15px; padding: 10px; border-left: 3px solid #d4af37; }
-                            @media print { button { display: none; } }
-                        </style>
-                    </head>
-                    <body>
-                        <h1>Complete Hajj Guide - Mustafa Travels & Tours</h1>
-                        ${content}
-                        <script>
-                            window.onload = function() { window.print(); }
-                        <\/script>
-                    </body>
-                    </html>
-                `);
-                printWindow.document.close();
-            });
-            
-            document.body.appendChild(printBtn);
         });
 
         // ====== KEYBOARD SHORTCUTS ======
@@ -3088,5 +3064,3 @@
     </script>
 </body>
 </html>
-
-
