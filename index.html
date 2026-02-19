@@ -3,7 +3,7 @@
 <head>
     <!-- SEO Meta Tags -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Mustafa Travels & Tours | Premium Umrah, Hajj Packages & Flight Deals from Barcelona</title>
     <meta name="description" content="Premium Umrah packages, Hajj 2026 bookings, flight deals, and worldwide travel services from Barcelona. Complete Hajj guide with step-by-step instructions.">
     <meta name="keywords" content="Umrah packages, Hajj 2026, Barcelona travel agency, Makkah hotels, Madina tours, Hajj guide, flight tickets, Etihad Airways">
@@ -77,6 +77,8 @@
             background-color: var(--light-bg);
             line-height: 1.7;
             overflow-x: hidden;
+            width: 100%;
+            position: relative;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -89,6 +91,7 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            width: 100%;
         }
 
         .section-header {
@@ -123,11 +126,31 @@
             font-size: 18px;
         }
 
+        /* ====== MOBILE MENU TOGGLE ====== */
+        .mobile-menu-toggle {
+            display: none;
+            background: var(--primary-gold);
+            color: var(--primary-navy);
+            padding: 12px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 24px;
+            width: fit-content;
+            margin: 10px auto;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .mobile-menu-toggle:hover {
+            background: var(--light-gold);
+            transform: scale(1.05);
+        }
+
         /* ====== HEADER & NAVIGATION ====== */
         .elegant-header {
             background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-teal) 100%);
             padding: 15px 0;
-            position: fixed;
+            position: sticky;
             top: 0;
             width: 100%;
             z-index: 1000;
@@ -147,6 +170,7 @@
             display: flex;
             gap: 30px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .contact-info-elegant span {
@@ -179,6 +203,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .logo-elegant {
@@ -226,6 +251,7 @@
             display: flex;
             gap: 30px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .nav-elegant a {
@@ -267,12 +293,14 @@
             border-radius: 50px;
             font-weight: 600;
             text-decoration: none;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 10px;
             transition: var(--transition);
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
             font-size: 14px;
+            border: none;
+            cursor: pointer;
         }
 
         .whatsapp-btn-elegant:hover {
@@ -284,10 +312,9 @@
         .flying-marquee-container {
             background: linear-gradient(135deg, var(--primary-navy) 0%, #0d1440 100%);
             padding: 10px 0;
-            position: fixed;
-            top: 140px;
+            position: relative;
             width: 100%;
-            z-index: 999;
+            z-index: 99;
             border-bottom: 2px solid var(--primary-gold);
         }
 
@@ -353,7 +380,8 @@
             overflow: hidden;
             border-radius: 0 0 var(--radius) var(--radius);
             box-shadow: var(--shadow);
-            margin-top: 170px;
+            margin-top: 0;
+            width: 100%;
         }
 
         .luxury-slide {
@@ -547,6 +575,7 @@
         .ramadan-greeting-section {
             padding: 80px 0;
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            width: 100%;
         }
 
         .ramadan-card {
@@ -1088,7 +1117,7 @@
             border-radius: 8px;
             text-decoration: none;
             font-weight: 600;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
             transition: var(--transition);
@@ -1590,6 +1619,8 @@
             position: relative;
             transform: translateY(20px);
             transition: transform 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-overlay.active .modal-content {
@@ -1653,7 +1684,7 @@
             animation: fadeInUp 0.8s ease-out forwards;
         }
 
-        /* ====== RESPONSIVE DESIGN ====== */
+        /* ====== RESPONSIVE DESIGN - IMPROVED ====== */
         @media (max-width: 1200px) {
             .packages-grid-luxury,
             .services-grid-elegant,
@@ -1721,6 +1752,10 @@
         }
 
         @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
             .header-top-bar {
                 flex-direction: column;
                 gap: 12px;
@@ -1739,9 +1774,34 @@
             }
             
             .nav-elegant {
+                display: none;
                 flex-direction: column;
                 gap: 15px;
                 width: 100%;
+                background: rgba(26, 35, 126, 0.95);
+                padding: 20px;
+                border-radius: var(--radius);
+                margin-top: 10px;
+            }
+            
+            .nav-elegant.active {
+                display: flex;
+            }
+            
+            .nav-elegant a {
+                width: 100%;
+                text-align: center;
+                padding: 12px;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+            
+            .nav-elegant a:last-child {
+                border-bottom: none;
+            }
+            
+            .whatsapp-btn-elegant {
+                width: 100%;
+                justify-content: center;
             }
             
             .packages-grid-luxury,
@@ -1778,12 +1838,7 @@
             }
             
             .luxury-slider {
-                height: 550px;
-                margin-top: 150px;
-            }
-            
-            .flying-marquee-container {
-                top: 125px;
+                height: 500px;
             }
             
             .ramadan-title {
@@ -1804,6 +1859,15 @@
                 border-top: 2px solid #e4b13b;
                 padding-right: 0;
                 padding-top: 15px;
+            }
+            
+            .about-image-elegant:after {
+                display: none;
+            }
+            
+            .search-luxury {
+                margin-top: 30px;
+                padding: 25px;
             }
         }
 
@@ -1849,6 +1913,36 @@
             .message-text {
                 font-size: 18px;
             }
+            
+            .logo-elegant {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo-text-elegant {
+                align-items: center;
+            }
+            
+            .modal-content {
+                padding: 25px;
+            }
+        }
+
+        /* ====== UTILITY CLASSES ====== */
+        .text-center {
+            text-align: center;
+        }
+        
+        .w-100 {
+            width: 100%;
+        }
+        
+        .mt-3 {
+            margin-top: 15px;
+        }
+        
+        .mb-3 {
+            margin-bottom: 15px;
         }
     </style>
 </head>
@@ -1879,6 +1973,11 @@
                         <div class="logo-sub-elegant">PREMIUM TRAVEL EXPERIENCES</div>
                     </div>
                 </a>
+
+                <!-- Mobile Menu Toggle Button -->
+                <div class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
 
                 <nav class="nav-elegant">
                     <a href="#home" class="active"><i class="fas fa-home"></i> Home</a>
@@ -2714,6 +2813,20 @@
             }
         };
 
+        // ====== MOBILE MENU TOGGLE ======
+        document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-elegant').classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link (mobile)
+        document.querySelectorAll('.nav-elegant a').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    document.querySelector('.nav-elegant').classList.remove('active');
+                }
+            });
+        });
+
         // ====== RAMADAN CARD DYNAMIC DATES ======
         document.addEventListener('DOMContentLoaded', function() {
             // Gregorian Date for Ramadan Card
@@ -2855,7 +2968,7 @@
                     `).join('')}
                 </ul>
                 
-                <div style="display: flex; gap: 15px; justify-content: center;">
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
                     <a href="https://wa.me/34611473217?text=I'm interested in ${package.title} (${package.price})" 
                        class="whatsapp-btn-elegant" 
                        style="display: inline-flex; text-decoration: none; padding: 15px 30px; font-size: 16px;">
@@ -2903,7 +3016,7 @@
                 if(targetElement) {
                     e.preventDefault();
                     window.scrollTo({
-                        top: targetElement.offsetTop - 150,
+                        top: targetElement.offsetTop - 100,
                         behavior: 'smooth'
                     });
                     
@@ -2941,7 +3054,7 @@
                         ${getHajjStepDetails(stepNumber)}
                     </p>
                     
-                    <div style="display: flex; gap: 15px; justify-content: center; margin-top: 30px;">
+                    <div style="display: flex; gap: 15px; justify-content: center; margin-top: 30px; flex-wrap: wrap;">
                         <button class="close-modal" style="background: var(--primary-teal); color: white; border: none; padding: 12px 25px; border-radius: 50px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
                             Close Details
                         </button>
@@ -3020,7 +3133,7 @@
         // ====== NAVIGATION HIGHLIGHT ON SCROLL ======
         window.addEventListener('scroll', () => {
             const sections = document.querySelectorAll('section[id]');
-            const scrollPos = window.scrollY + 200;
+            const scrollPos = window.scrollY + 150;
             
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
@@ -3059,6 +3172,13 @@
             if (e.key === 'ArrowLeft') {
                 currentSlide = (currentSlide - 1 + slides.length) % slides.length;
                 showSlide(currentSlide);
+            }
+        });
+
+        // ====== WINDOW RESIZE HANDLER ======
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                document.querySelector('.nav-elegant').classList.remove('active');
             }
         });
     </script>
