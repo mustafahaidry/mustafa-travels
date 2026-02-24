@@ -735,6 +735,80 @@
             gap: 8px;
         }
         .hajj-package-luxury { border: 2px solid var(--primary-gold); background: var(--white); }
+        
+        /* Hajj waiting styles */
+        .hajj-waiting-container {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: var(--radius);
+            padding: 60px 40px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 2px dashed var(--primary-gold);
+        }
+        .waiting-icon {
+            font-size: 80px;
+            color: var(--primary-gold);
+            margin-bottom: 25px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .waiting-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--primary-navy);
+            margin-bottom: 20px;
+            font-family: 'Playfair Display', serif;
+        }
+        .waiting-subtitle {
+            font-size: 24px;
+            color: var(--primary-teal);
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+        .waiting-message {
+            font-size: 18px;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+        .waiting-decoration {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .waiting-decoration span {
+            font-size: 40px;
+            color: var(--primary-gold);
+            opacity: 0.6;
+        }
+        .notify-btn {
+            background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-teal) 100%);
+            color: var(--white);
+            padding: 18px 45px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .notify-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(26, 35, 126, 0.3);
+        }
+        
         .flight-deals-section { padding: 80px 0; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); }
         .flight-deals-container { max-width: 900px; margin: 0 auto; }
         .flight-deal-card {
@@ -1227,6 +1301,7 @@
             .hajj-steps-container { grid-template-columns: repeat(2, 1fr); }
             .ramadan-title { font-size: 42px; }
             .arabic-ayat { font-size: 34px; }
+            .hajj-waiting-container { grid-column: span 2; }
         }
         @media (max-width: 992px) {
             .slide-content-luxury { padding-left: 50px; }
@@ -1275,6 +1350,7 @@
             .quote-sec { border-right: none; border-top: 2px solid #e4b13b; padding-right: 0; padding-top: 15px; }
             .about-image-elegant:after { display: none; }
             .search-luxury { margin-top: 30px; padding: 25px; }
+            .hajj-waiting-container { grid-column: span 1; }
         }
         @media (max-width: 480px) {
             .container { padding: 0 15px; }
@@ -1290,6 +1366,8 @@
             .logo-elegant { flex-direction: column; text-align: center; }
             .logo-text-elegant { align-items: center; }
             .modal-content { padding: 25px; }
+            .waiting-title { font-size: 36px; }
+            .waiting-subtitle { font-size: 20px; }
         }
         .text-center { text-align: center; }
         .w-100 { width: 100%; }
@@ -1387,9 +1465,9 @@
         <div class="luxury-slide" style="background-image: url('https://images.pexels.com/photos/29102586/pexels-photo-29102586.jpeg');">
             <div class="slide-overlay">
                 <div class="slide-content-luxury">
-                    <h2>Hajj 2026 - Book Your Spiritual Journey</h2>
-                    <p>Secure your place for Hajj 2026 with our premium packages featuring 5-star accommodations and comprehensive services.</p>
-                    <a href="#hajj" class="luxury-btn">Book Hajj 2026 <i class="fas fa-arrow-right"></i></a>
+                    <h2>Hajj 2026 - Coming Soon</h2>
+                    <p>Hajj 2026 packages will be announced soon. Register your interest to get notified when bookings open.</p>
+                    <a href="#hajj" class="luxury-btn">Learn More <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
@@ -1431,7 +1509,7 @@
                     <select id="packageType">
                         <option value="">Select Package</option>
                         <option value="umrah">Umrah Package</option>
-                        <option value="hajj">Hajj Package 2026</option>
+                        <option value="hajj">Hajj Package 2026 (Coming Soon)</option>
                         <option value="family">Family Vacation</option>
                         <option value="luxury">Luxury Holiday</option>
                         <option value="business">Business Travel</option>
@@ -1522,18 +1600,32 @@
         </div>
     </section>
 
-    <!-- ====== HAJJ PACKAGES ====== -->
+    <!-- ====== HAJJ PACKAGES - WAITING FOR PHASE 2 ====== -->
     <section class="hajj-section-luxury" id="hajj">
         <div class="container">
-            <div class="section-header"><h2>Hajj Packages 2026</h2><p>Secure your spiritual journey with our exclusive Hajj 2026 packages</p></div>
+            <div class="section-header"><h2>Hajj Packages 2026</h2><p>Coming Soon - Register your interest for Hajj 2026</p></div>
             <div class="packages-grid-luxury">
-                <div class="package-card-luxury hajj-package-luxury animate-fade-in-up">
-                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/4346403/pexels-photo-4346403.jpeg');"><div class="hajj-badge-special"><i class="fas fa-kaaba"></i> HAJJ 2026</div><div class="package-badge">€7,890</div></div>
-                    <div class="package-content-luxury"><h3>Essence Hajj Package 2026</h3><p>A complete Hajj journey with essential services and comfortable accommodation for 2026.</p><ul class="package-features-luxury"><li><i class="fas fa-star"></i> Approved Quota</li><li><i class="fas fa-star"></i> Accommodation in Makkah & Madina</li><li><i class="fas fa-star"></i> Economy Flight Tickets</li><li><i class="fas fa-star"></i> Hajj Visa Processing</li><li><i class="fas fa-star"></i> Transportation During Hajj</li></ul><button class="package-btn-luxury view-hajj-btn" data-package="hajj-economy">View Details</button></div>
-                </div>
-                <div class="package-card-luxury hajj-package-luxury animate-fade-in-up">
-                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg');"><div class="hajj-badge-special"><i class="fas fa-kaaba"></i> HAJJ 2026</div><div class="package-badge">€12,900</div></div>
-                    <div class="package-content-luxury"><h3>Elite Hajj Package 2026</h3><p>Premium Hajj experience with luxury accommodations and exclusive VIP services for 2026.</p><ul class="package-features-luxury"><li><i class="fas fa-crown"></i> Guaranteed Quota</li><li><i class="fas fa-crown"></i> 5-Star Hotel near Haram</li><li><i class="fas fa-crown"></i> Business Class Flights</li><li><i class="fas fa-crown"></i> Premium Visa Processing</li><li><i class="fas fa-crown"></i> Personal Hajj Guide</li></ul><button class="package-btn-luxury view-hajj-btn" data-package="hajj-premium">View Details</button></div>
+                <!-- Waiting for Phase 2 Message - Takes full width -->
+                <div class="hajj-waiting-container animate-fade-in-up">
+                    <div class="waiting-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h2 class="waiting-title">CLOSED FOR NOW</h2>
+                    <h3 class="waiting-subtitle">WAITING FOR PHASE 2</h3>
+                    <p class="waiting-message">
+                        Hajj 2026 packages are currently in development. We are working on creating exceptional spiritual journeys with premium accommodations and services. Phase 2 bookings will open soon.
+                    </p>
+                    <div class="waiting-decoration">
+                        <span>🕋</span>
+                        <span>🌙</span>
+                        <span>⭐</span>
+                    </div>
+                    <a href="https://wa.me/34611473217?text=I'm interested in Hajj 2026 packages. Please notify me when Phase 2 bookings open." class="notify-btn" target="_blank" rel="noopener">
+                        <i class="fab fa-whatsapp"></i> Notify Me When Open
+                    </a>
+                    <p style="margin-top: 20px; color: var(--text-light); font-size: 14px;">
+                        *Register now to get priority notifications for Phase 2
+                    </p>
                 </div>
             </div>
         </div>
@@ -1577,7 +1669,7 @@
                         <li style="padding: 12px 0; border-bottom: 1px solid #ddd; display: flex; align-items: flex-start; gap: 10px;"><i class="fas fa-star" style="color: var(--primary-gold); margin-top: 3px;"></i><span>Consult scholars for specific questions</span></li>
                         <li style="padding: 12px 0; display: flex; align-items: flex-start; gap: 10px;"><i class="fas fa-star" style="color: var(--primary-gold); margin-top: 3px;"></i><span>Perform with sincerity and patience</span></li>
                     </ul>
-                    <div style="margin-top: 30px; padding: 20px; background: var(--primary-navy); border-radius: 10px; color: white;"><h4 style="color: white; margin-bottom: 10px;"><i class="fas fa-clock"></i> Hajj 2026 Timeline</h4><p style="font-size: 14px; opacity: 0.9;">Expected dates: 6th - 11th June 2026 (Dhul-Hijjah 8-13)</p><a href="https://wa.me/34611473217?text=I want to book Hajj 2026" class="whatsapp-btn-elegant" style="margin-top: 15px; display: inline-block;" target="_blank"><i class="fas fa-calendar-check"></i> Book Hajj 2026</a></div>
+                    <div style="margin-top: 30px; padding: 20px; background: var(--primary-navy); border-radius: 10px; color: white;"><h4 style="color: white; margin-bottom: 10px;"><i class="fas fa-clock"></i> Hajj 2026 Timeline</h4><p style="font-size: 14px; opacity: 0.9;">Expected dates: 6th - 11th June 2026 (Dhul-Hijjah 8-13)</p><p style="font-size: 14px; margin-top: 10px; background: rgba(255,255,255,0.2); padding: 8px; border-radius: 5px;">⚠️ Bookings Phase 2 opening soon</p></div>
                 </div>
                 <div class="hajj-guide-main">
                     <div class="hajj-guide-card animate-fade-in-up"><h3><i class="fas fa-list-ol"></i> Main Steps of Hajj</h3><div class="hajj-steps-container"><div class="hajj-step-item" data-step="1"><div class="hajj-step-title"><span class="hajj-step-number">1</span> Ihram</div><div class="hajj-step-desc"><span class="hajj-highlight">Intention + Wear Ihram:</span> Enter state of Ihram before Miqat. Men wear two white unstitched cloths.</div></div><div class="hajj-step-item" data-step="2"><div class="hajj-step-title"><span class="hajj-step-number">2</span> Tawaf</div><div class="hajj-step-desc"><span class="hajj-highlight">7x Around Kaaba:</span> Circumambulate Kaaba seven times counter-clockwise starting from Black Stone.</div></div><div class="hajj-step-item active" data-step="3"><div class="hajj-step-title"><span class="hajj-step-number">3</span> Day of Arafat</div><div class="hajj-step-desc"><span class="hajj-highlight">Most Important Day:</span> Stand in prayer at Mount Arafat from noon until sunset on 9th Dhul-Hijjah.</div></div><div class="hajj-step-item" data-step="4"><div class="hajj-step-title"><span class="hajj-step-number">4</span> Muzdalifah</div><div class="hajj-step-desc"><span class="hajj-highlight">Overnight Stay:</span> Spend night in Muzdalifah after sunset. Collect pebbles for stoning ritual.</div></div><div class="hajj-step-item" data-step="5"><div class="hajj-step-title"><span class="hajj-step-number">5</span> Rami (Stoning)</div><div class="hajj-step-desc"><span class="hajj-highlight">Stone Jamarat:</span> Stone the largest Jamrah with 7 pebbles on 10th Dhul-Hijjah.</div></div><div class="hajj-step-item" data-step="6"><div class="hajj-step-title"><span class="hajj-step-number">6</span> Qurbani</div><div class="hajj-step-desc"><span class="hajj-highlight">Animal Sacrifice:</span> Offer sacrifice (sheep, goat, cow or camel) on 10th Dhul-Hijjah.</div></div><div class="hajj-step-item" data-step="7"><div class="hajj-step-title"><span class="hajj-step-number">7</span> Halaq/Taqsir</div><div class="hajj-step-desc"><span class="hajj-highlight">Shave or Trim:</span> Men shave head or trim hair. Women cut fingertip's length of hair.</div></div><div class="hajj-step-item" data-step="8"><div class="hajj-step-title"><span class="hajj-step-number">8</span> Eid Celebrations</div><div class="hajj-step-desc"><span class="hajj-highlight">Eid al-Adha:</span> Perform Eid prayers and celebrate after completing main rituals.</div></div></div></div>
@@ -1596,7 +1688,7 @@
                 <div class="service-card-elegant animate-fade-in-up"><div class="service-icon-elegant"><i class="fas fa-passport"></i></div><h3>Visa Processing</h3><p>Expert visa processing for Umrah, Hajj, and worldwide travel with guaranteed approval</p></div>
                 <div class="service-card-elegant animate-fade-in-up"><div class="service-icon-elegant"><i class="fas fa-kaaba"></i></div><h3>Umrah Packages</h3><p>Complete spiritual journeys with luxury accommodations near Holy Mosques</p></div>
                 <div class="service-card-elegant animate-fade-in-up"><div class="service-icon-elegant"><i class="fas fa-hotel"></i></div><h3>Luxury Hotels</h3><p>5-star hotel reservations worldwide with exclusive amenities and locations</p></div>
-                <div class="service-card-elegant animate-fade-in-up"><div class="service-icon-elegant"><i class="fas fa-mosque"></i></div><h3>Hajj 2026</h3><p>Guaranteed Hajj quotas with premium services for the spiritual journey of a lifetime</p></div>
+                <div class="service-card-elegant animate-fade-in-up"><div class="service-icon-elegant"><i class="fas fa-mosque"></i></div><h3>Hajj 2026</h3><p>Coming soon - Phase 2 bookings opening for Hajj 2026 packages</p></div>
             </div>
         </div>
     </section>
@@ -1616,8 +1708,8 @@
         <div class="container">
             <div class="footer-content-elegant">
                 <div class="footer-column-elegant"><div class="footer-logo-elegant">MUSTAFA TRAVELS & TOURS</div><p>Specialists in premium Umrah, Hajj & Worldwide Travel experiences. Crafting spiritual journeys with elegance since 2024.</p><ul class="contact-list-elegant"><li><i class="fas fa-map-marker-alt"></i> Rambla Badal 141 Local 1 Bajo, Barcelona 08028</li><li><i class="fas fa-phone"></i> +34-632234216</li><li><i class="fab fa-whatsapp"></i> +34-611473217</li><li><i class="fas fa-envelope"></i> mustafatravelstours@gmail.com</li></ul></div>
-                <div class="footer-column-elegant"><h3>Quick Links</h3><ul class="footer-links-elegant"><li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li><li><a href="#umrah"><i class="fas fa-chevron-right"></i> Umrah Packages</a></li><li><a href="#hajj"><i class="fas fa-chevron-right"></i> Hajj 2026</a></li><li><a href="#flights"><i class="fas fa-chevron-right"></i> Flight Deals</a></li><li><a href="#hajj-guide"><i class="fas fa-chevron-right"></i> Hajj Guide</a></li><li><a href="#services"><i class="fas fa-chevron-right"></i> Services</a></li></ul></div>
-                <div class="footer-column-elegant"><h3>Our Services</h3><ul class="footer-links-elegant"><li><a href="#umrah"><i class="fas fa-chevron-right"></i> Umrah Packages</a></li><li><a href="#hajj"><i class="fas fa-chevron-right"></i> Hajj 2026</a></li><li><a href="#flights"><i class="fas fa-chevron-right"></i> Flight Booking</a></li><li><a href="#services"><i class="fas fa-chevron-right"></i> Hotel Reservation</a></li><li><a href="#services"><i class="fas fa-chevron-right"></i> Visa Services</a></li></ul></div>
+                <div class="footer-column-elegant"><h3>Quick Links</h3><ul class="footer-links-elegant"><li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li><li><a href="#umrah"><i class="fas fa-chevron-right"></i> Umrah Packages</a></li><li><a href="#hajj"><i class="fas fa-chevron-right"></i> Hajj 2026 (Phase 2)</a></li><li><a href="#flights"><i class="fas fa-chevron-right"></i> Flight Deals</a></li><li><a href="#hajj-guide"><i class="fas fa-chevron-right"></i> Hajj Guide</a></li><li><a href="#services"><i class="fas fa-chevron-right"></i> Services</a></li></ul></div>
+                <div class="footer-column-elegant"><h3>Our Services</h3><ul class="footer-links-elegant"><li><a href="#umrah"><i class="fas fa-chevron-right"></i> Umrah Packages</a></li><li><a href="#hajj"><i class="fas fa-chevron-right"></i> Hajj 2026 (Phase 2)</a></li><li><a href="#flights"><i class="fas fa-chevron-right"></i> Flight Booking</a></li><li><a href="#services"><i class="fas fa-chevron-right"></i> Hotel Reservation</a></li><li><a href="#services"><i class="fas fa-chevron-right"></i> Visa Services</a></li></ul></div>
                 <div class="footer-column-elegant"><h3>Business Hours</h3><ul class="footer-links-elegant"><li><i class="far fa-clock"></i> Mon-Thu: 10:30 AM - 8:30 PM</li><li><i class="far fa-clock"></i> Friday: 10:30 AM - 1:00 PM & 3:00 PM - 8:30 PM</li><li><i class="far fa-clock"></i> Saturday: 10:30 AM - 7:30 PM</li><li><i class="far fa-clock"></i> Sunday: Closed</li><li><i class="fas fa-phone-alt"></i> 24/7 Emergency Support</li></ul></div>
             </div>
             <div class="footer-bottom-elegant"><p>&copy; 2026 Mustafa Travels & Tours. All rights reserved. | Crafted with <i class="fas fa-heart" style="color: #d4af37;"></i> for spiritual journeys</p></div>
@@ -1641,13 +1733,11 @@
             const modal = document.getElementById('packageModal');
             const modalContent = document.getElementById('modalContent');
 
-            // ====== PACKAGE DATA ======
+            // ====== PACKAGE DATA (only for Umrah now) ======
             const packageData = {
                 economy: { title: "Essence Umrah Package", price: "€895", description: "A beautiful beginning to your spiritual journey with essential comforts and proximity to Haram.", features: ["7 Days Makkah + 3 Days Madina","3-Star Hotel with Shuttle Service","Economy Flight Tickets Included","Umrah Visa Processing","Airport Transfers","Basic Umrah Guidance","Travel Insurance Coverage"] },
                 "economy-plus": { title: "Enhanced Umrah Package", price: "€999", description: "Elevated comfort with premium hotels and additional services for a seamless spiritual experience.", features: ["7 Days Makkah + 3 Days Madina","4-Star Hotel with Shuttle Service","Flight Tickets Included","Fast-Track Visa Processing","Luxury Airport Transfers","Comprehensive Umrah Guidance","24/7 Support Team"] },
-                business: { title: "Elite Umrah Package", price: "€1,299", description: "The ultimate spiritual journey with luxury accommodations and personalized concierge service.", features: ["6 Days Makkah + 4 Days Madina","5-Star Premium Hotel near Haram","Business Class Upgrade Available","Premium Fast-Track Visa","Private Luxury Transfers","Personal Umrah Guide","VIP Concierge Service"] },
-                "hajj-economy": { title: "Essence Hajj Package 2026", price: "€7,890", description: "A complete Hajj journey with essential services and comfortable accommodation for 2026.", features: ["Approved Hajj Quota","Accommodation in Makkah & Madina","Economy Flight Tickets Included","Hajj Visa Processing","Transportation During Hajj Rituals","Experienced Hajj Guide","Medical Assistance Available"] },
-                "hajj-premium": { title: "Elite Hajj Package 2026", price: "€12,900", description: "Premium Hajj experience with luxury accommodations and exclusive VIP services for 2026.", features: ["Guaranteed Hajj Quota","5-Star Hotel within 500m of Haram","Business Class Flight Tickets","Premium Fast-Track Visa Processing","Personal Hajj Guide & Assistant","VIP Transportation Services","Luxury Accommodation in Mina & Arafat"] }
+                business: { title: "Elite Umrah Package", price: "€1,299", description: "The ultimate spiritual journey with luxury accommodations and personalized concierge service.", features: ["6 Days Makkah + 4 Days Madina","5-Star Premium Hotel near Haram","Business Class Upgrade Available","Premium Fast-Track Visa","Private Luxury Transfers","Personal Umrah Guide","VIP Concierge Service"] }
             };
 
             // ====== MOBILE MENU TOGGLE ======
@@ -1713,17 +1803,16 @@
             setInterval(() => { currentSlide = (currentSlide + 1) % slides.length; showSlide(currentSlide); }, 5000);
             dots.forEach((dot, i) => dot.addEventListener('click', () => showSlide(i)));
 
-            // ====== MODAL ======
+            // ====== MODAL (only for Umrah packages) ======
             function openModal(pkg) {
                 const data = packageData[pkg];
                 if (!data) return;
-                const isHajj = pkg.includes('hajj');
-                modalContent.innerHTML = `<h2 style="color: var(--primary-navy); margin-bottom: 10px; display: flex; align-items: center; gap: 15px;">${isHajj ? '<i class="fas fa-kaaba" style="color: var(--primary-gold);"></i>' : ''}${data.title}</h2><div style="color: var(--primary-gold); font-size: 28px; font-weight: bold; margin-bottom: 20px;">${data.price}</div><p style="color: var(--text-light); margin-bottom: 30px; font-size: 16px; line-height: 1.6;">${data.description}</p><h3 style="color: var(--primary-navy); margin-bottom: 15px; font-size: 20px;">Package Includes:</h3><ul style="list-style: none; margin-bottom: 40px;">${data.features.map(f => `<li style="padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 12px;"><i class="fas fa-check" style="color: var(--primary-gold);"></i><span style="color: var(--text-dark);">${f}</span></li>`).join('')}</ul><div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;"><a href="https://wa.me/34611473217?text=I'm interested in ${data.title} (${data.price})" class="whatsapp-btn-elegant" style="display: inline-flex; text-decoration: none; padding: 15px 30px; font-size: 16px;"><i class="fab fa-whatsapp"></i> Book on WhatsApp</a><button class="close-modal" style="background: #f5f5f5; color: #666; border: none; padding: 15px 30px; border-radius: 50px; font-weight: 600; cursor: pointer;">Close</button></div>`;
+                modalContent.innerHTML = `<h2 style="color: var(--primary-navy); margin-bottom: 10px; display: flex; align-items: center; gap: 15px;"><i class="fas fa-kaaba" style="color: var(--primary-gold);"></i>${data.title}</h2><div style="color: var(--primary-gold); font-size: 28px; font-weight: bold; margin-bottom: 20px;">${data.price}</div><p style="color: var(--text-light); margin-bottom: 30px; font-size: 16px; line-height: 1.6;">${data.description}</p><h3 style="color: var(--primary-navy); margin-bottom: 15px; font-size: 20px;">Package Includes:</h3><ul style="list-style: none; margin-bottom: 40px;">${data.features.map(f => `<li style="padding: 12px 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 12px;"><i class="fas fa-check" style="color: var(--primary-gold);"></i><span style="color: var(--text-dark);">${f}</span></li>`).join('')}</ul><div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;"><a href="https://wa.me/34611473217?text=I'm interested in ${data.title} (${data.price})" class="whatsapp-btn-elegant" style="display: inline-flex; text-decoration: none; padding: 15px 30px; font-size: 16px;"><i class="fab fa-whatsapp"></i> Book on WhatsApp</a><button class="close-modal" style="background: #f5f5f5; color: #666; border: none; padding: 15px 30px; border-radius: 50px; font-weight: 600; cursor: pointer;">Close</button></div>`;
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
             }
             function closeModal() { modal.classList.remove('active'); document.body.style.overflow = 'auto'; }
-            document.querySelectorAll('.view-package-btn, .view-hajj-btn').forEach(btn => btn.addEventListener('click', function() { openModal(this.getAttribute('data-package')); }));
+            document.querySelectorAll('.view-package-btn').forEach(btn => btn.addEventListener('click', function() { openModal(this.getAttribute('data-package')); }));
             document.querySelectorAll('.close-modal').forEach(btn => btn.addEventListener('click', closeModal));
             modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
