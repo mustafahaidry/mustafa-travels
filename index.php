@@ -3,6 +3,7 @@
 $apiKey = 'duffel_live_cvF1_BR5No4SjJTp3tGVSDKkpwWwFU3VgOkN7TtETlB';
 $flightResults = '';
 $searchPerformed = false;
+$bookingStatus = '';
 
 // Airport database
 $airportsList = [
@@ -15,6 +16,8 @@ $airportsList = [
     ['code' => 'LHR', 'name' => 'London, UK'],
     ['code' => 'DXB', 'name' => 'Dubai, UAE'],
     ['code' => 'SIN', 'name' => 'Singapore'],
+    ['code' => 'CDG', 'name' => 'Paris, France'],
+    ['code' => 'FRA', 'name' => 'Frankfurt, Germany'],
 ];
 
 function getAirportName($code) {
@@ -23,149 +26,424 @@ function getAirportName($code) {
     return $code;
 }
 
-// Handle flight search
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
-    $searchPerformed = true;
-    $tripType = $_POST['trip_type'] ?? 'oneway';
-    $passengers = intval($_POST['passengers']);
-    $cabinClass = $_POST['cabin_class'] ?? 'economy';
-    
-    $slices = [];
-    
-    if ($tripType == 'oneway') {
-        $origin = strtoupper(trim($_POST['origin']));
-        $destination = strtoupper(trim($_POST['destination']));
-        $date = $_POST['departure_date'];
-        $slices[] = ['origin' => $origin, 'destination' => $destination, 'departure_date' => $date];
-    }
-    
-    if ($tripType == 'return') {
-        $origin = strtoupper(trim($_POST['origin_return']));
-        $destination = strtoupper(trim($_POST['destination_return']));
-        $date = $_POST['departure_date_return'];
-        $returnDate = $_POST['return_date'];
-        $slices[] = ['origin' => $origin, 'destination' => $destination, 'departure_date' => $date];
-        $slices[] = ['origin' => $destination, 'destination' => $origin, 'departure_date' => $returnDate];
-    }
-    
-    if ($tripType == 'multi') {
-        for ($i = 1; $i <= 3; $i++) {
-            $origin = strtoupper(trim($_POST["origin_$i"] ?? ''));
-            $destination = strtoupper(trim($_POST["destination_$i"] ?? ''));
-            $date = $_POST["date_$i"] ?? '';
-            if ($origin && $destination && $date) {
-                $slices[] = ['origin' => $origin, 'destination' => $destination, 'departure_date' => $date];
+// Generate unique ticket number
+function generateTicketNumber() {
+    return 'MFT-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -6)) . rand(100, 999);
+}
+
+// Generate HTML Ticket (No PDF library needed)
+function generateHTMLTicket($bookingData) {
+    return '
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Flight Ticket - ' . $bookingData['ticket_number'] . '</title>
+        <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body {
+                font-family: "Segoe UI", Arial, sans-serif;
+                background: #f0f2f5;
+                padding: 40px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
             }
-        }
-    }
-    
-    if (count($slices) > 0) {
-        $searchData = ['data' => ['slices' => $slices, 'passengers' => array_fill(0, $passengers, ['type' => 'adult']), 'cabin_class' => $cabinClass, 'max_connections' => 1]];
-        $ch = curl_init('https://api.duffel.com/air/offer_requests?return_offers=true');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'Authorization: Bearer ' . $apiKey, 'Duffel-Version: v2']);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($searchData));
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        $response = curl_exec($ch);
-        curl_close($ch);
-        
-        if ($response === false) {
-            $flightResults = '<div class="error">❌ Connection error</div>';
-        } else {
-            $data = json_decode($response, true);
-            $offers = $data['data']['offers'] ?? [];
-            if (count($offers) > 0) {
-                $flightResults = '<div class="success-header">✈️ Found ' . count($offers) . ' flights</div>';
-                foreach (array_slice($offers, 0, 15) as $offer) {
-                    $slice = $offer['slices'][0];
-                    $segments = $slice['segments'] ?? [];
-                    $first = $segments[0] ?? null;
-                    $last = $segments[count($segments)-1] ?? null;
-                    $depTime = $first ? date('h:i A, M j', strtotime($first['departing_at'])) : 'N/A';
-                    $arrTime = $last ? date('h:i A, M j', strtotime($last['arriving_at'])) : 'N/A';
-                    $duration = 0;
-                    foreach ($segments as $s) $duration += intval($s['duration'] ?? 0);
-                    $durText = floor($duration/60).'h '.($duration%60).'m';
-                    $stops = count($segments)-1;
-                    $stopText = $stops == 0 ? 'Direct' : $stops.' stop'.($stops>1?'s':'');
-                    $airline = $offer['owner']['name'] ?? 'Airline';
-                    $price = $offer['total_amount'] ?? '0';
-                    $currency = $offer['total_currency'] ?? 'EUR';
-                    $offerId = $offer['id'] ?? '';
-                    
-                    $flightResults .= '
-                    <div class="flight-card" onclick="selectFlight(\''.$offerId.'\', \''.$price.'\', \''.$currency.'\', \''.addslashes($airline).'\', \''.$origin.'\', \''.$destination.'\', \''.$depTime.'\', \''.$arrTime.'\', \''.$durText.'\', \''.$stopText.'\')">
-                        <div class="flight-header">
-                            <div class="airline-info">
-                                <div class="airline-icon">✈️</div>
-                                <div><div class="airline-name">'.htmlspecialchars($airline).'</div></div>
-                            </div>
-                            <div class="flight-price">'.$price.' '.$currency.'</div>
-                        </div>
-                        <div class="flight-route">
-                            <div><div class="city-code">'.$origin.'</div><div class="city-name">'.getAirportName($origin).'</div><div class="flight-time">'.$depTime.'</div></div>
-                            <div class="flight-duration"><div class="duration-line"></div><div class="duration-text">'.$durText.'</div><div class="stops-text">'.$stopText.'</div></div>
-                            <div><div class="city-code">'.$destination.'</div><div class="city-name">'.getAirportName($destination).'</div><div class="flight-time">'.$arrTime.'</div></div>
-                        </div>
-                        <button class="select-flight-btn" onclick="event.stopPropagation(); selectFlight(...)">Select Flight</button>
-                    </div>';
-                }
-            } else {
-                $flightResults = '<div class="error">✈️ No flights found. Try different date.</div>';
+            .ticket {
+                max-width: 800px;
+                width: 100%;
+                background: white;
+                border-radius: 20px;
+                box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+                overflow: hidden;
             }
-        }
-    }
+            .ticket-header {
+                background: linear-gradient(135deg, #1a237e, #00695c);
+                color: white;
+                padding: 30px;
+                text-align: center;
+            }
+            .ticket-header h1 {
+                font-size: 28px;
+                margin-bottom: 5px;
+            }
+            .ticket-header p {
+                font-size: 12px;
+                opacity: 0.9;
+            }
+            .ticket-body {
+                padding: 30px;
+            }
+            .ticket-number {
+                background: #f5f5f5;
+                padding: 15px;
+                border-radius: 12px;
+                text-align: center;
+                margin-bottom: 25px;
+                border-left: 4px solid #d4af37;
+            }
+            .ticket-number h3 {
+                color: #1a237e;
+                font-size: 18px;
+            }
+            .ticket-number .number {
+                font-size: 24px;
+                font-weight: bold;
+                color: #00695c;
+                letter-spacing: 2px;
+                margin-top: 5px;
+            }
+            .flight-info {
+                background: #f8f9fa;
+                border-radius: 16px;
+                padding: 20px;
+                margin-bottom: 25px;
+            }
+            .flight-info h3 {
+                color: #1a237e;
+                margin-bottom: 15px;
+                border-left: 3px solid #d4af37;
+                padding-left: 12px;
+            }
+            .info-row {
+                display: flex;
+                justify-content: space-between;
+                padding: 10px 0;
+                border-bottom: 1px solid #eee;
+                flex-wrap: wrap;
+            }
+            .info-row:last-child {
+                border-bottom: none;
+            }
+            .info-label {
+                font-weight: 600;
+                color: #555;
+            }
+            .info-value {
+                color: #333;
+                font-weight: 500;
+            }
+            .route-display {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background: white;
+                padding: 20px;
+                border-radius: 12px;
+                margin: 15px 0;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            }
+            .city {
+                text-align: center;
+            }
+            .city-code {
+                font-size: 28px;
+                font-weight: 700;
+                color: #1a237e;
+            }
+            .city-name {
+                font-size: 11px;
+                color: #666;
+                margin-top: 5px;
+            }
+            .flight-arrow {
+                font-size: 24px;
+                color: #d4af37;
+            }
+            .passenger-info {
+                background: #fff3e0;
+                border-radius: 16px;
+                padding: 20px;
+                margin-bottom: 25px;
+            }
+            .price-breakdown {
+                background: #e8f5e9;
+                border-radius: 16px;
+                padding: 20px;
+                margin-bottom: 25px;
+            }
+            .total-price {
+                font-size: 24px;
+                font-weight: 700;
+                color: #00695c;
+                text-align: center;
+                padding: 15px;
+                background: white;
+                border-radius: 12px;
+                margin-top: 10px;
+            }
+            .footer-note {
+                text-align: center;
+                font-size: 11px;
+                color: #999;
+                border-top: 1px solid #eee;
+                padding-top: 20px;
+                margin-top: 20px;
+            }
+            .status-confirmed {
+                display: inline-block;
+                background: #4caf50;
+                color: white;
+                padding: 4px 12px;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 600;
+            }
+            .print-btn {
+                background: #1a237e;
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                border-radius: 50px;
+                font-size: 16px;
+                cursor: pointer;
+                margin-top: 20px;
+                width: 100%;
+                transition: 0.3s;
+            }
+            .print-btn:hover {
+                background: #00695c;
+                transform: translateY(-2px);
+            }
+            @media print {
+                body { background: white; padding: 0; }
+                .print-btn { display: none; }
+                .ticket { box-shadow: none; }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="ticket">
+            <div class="ticket-header">
+                <h1>✈️ MUSTAFA TRAVELS & TOURS</h1>
+                <p>Official Flight Ticket</p>
+            </div>
+            <div class="ticket-body">
+                <div class="ticket-number">
+                    <h3>🎫 TICKET NUMBER</h3>
+                    <div class="number">' . $bookingData['ticket_number'] . '</div>
+                    <div style="margin-top: 8px;"><span class="status-confirmed">✅ CONFIRMED</span></div>
+                </div>
+                
+                <div class="route-display">
+                    <div class="city">
+                        <div class="city-code">' . $bookingData['origin'] . '</div>
+                        <div class="city-name">' . getAirportName($bookingData['origin']) . '</div>
+                    </div>
+                    <div class="flight-arrow">✈️ →</div>
+                    <div class="city">
+                        <div class="city-code">' . $bookingData['destination'] . '</div>
+                        <div class="city-name">' . getAirportName($bookingData['destination']) . '</div>
+                    </div>
+                </div>
+                
+                <div class="flight-info">
+                    <h3>✈️ FLIGHT DETAILS</h3>
+                    <div class="info-row"><span class="info-label">Airline:</span><span class="info-value">' . $bookingData['airline'] . '</span></div>
+                    <div class="info-row"><span class="info-label">Flight Number:</span><span class="info-value">' . $bookingData['flight_number'] . '</span></div>
+                    <div class="info-row"><span class="info-label">Departure:</span><span class="info-value">' . $bookingData['departure_date'] . ' at ' . $bookingData['departure_time'] . '</span></div>
+                    <div class="info-row"><span class="info-label">Arrival:</span><span class="info-value">' . $bookingData['arrival_date'] . ' at ' . $bookingData['arrival_time'] . '</span></div>
+                    <div class="info-row"><span class="info-label">Duration:</span><span class="info-value">' . $bookingData['duration'] . '</span></div>
+                    <div class="info-row"><span class="info-label">Cabin Class:</span><span class="info-value">' . ucfirst($bookingData['cabin_class']) . '</span></div>
+                    <div class="info-row"><span class="info-label">Baggage Allowance:</span><span class="info-value">' . ($bookingData['cabin_class'] == 'business' ? '40kg + 2 cabin bags' : '30kg + 1 cabin bag') . '</span></div>
+                </div>
+                
+                <div class="passenger-info">
+                    <h3>👤 PASSENGER DETAILS</h3>
+                    <div class="info-row"><span class="info-label">Full Name:</span><span class="info-value">' . $bookingData['passenger_name'] . '</span></div>
+                    <div class="info-row"><span class="info-label">Passport Number:</span><span class="info-value">' . $bookingData['passport_no'] . '</span></div>
+                    <div class="info-row"><span class="info-label">Date of Birth:</span><span class="info-value">' . $bookingData['dob'] . '</span></div>
+                    <div class="info-row"><span class="info-label">Gender:</span><span class="info-value">' . ucfirst($bookingData['gender']) . '</span></div>
+                </div>
+                
+                <div class="price-breakdown">
+                    <h3>💰 PAYMENT SUMMARY</h3>
+                    <div class="info-row"><span class="info-label">Base Fare:</span><span class="info-value">' . $bookingData['fare'] . ' ' . $bookingData['currency'] . '</span></div>
+                    <div class="info-row"><span class="info-label">Taxes & Fees:</span><span class="info-value">' . $bookingData['taxes'] . ' ' . $bookingData['currency'] . '</span></div>
+                    <div class="total-price">Total Paid: ' . $bookingData['total_price'] . ' ' . $bookingData['currency'] . '</div>
+                </div>
+                
+                <div class="footer-note">
+                    <p>📞 For assistance: +34-632234216 | WhatsApp: +34-611473217</p>
+                    <p>📧 Email: mustafatravelstours@gmail.com</p>
+                    <p>Please carry this ticket along with your valid passport/ID to the airport.</p>
+                    <p>✈️ Thank you for choosing Mustafa Travels & Tours</p>
+                </div>
+                
+                <button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+            </div>
+        </div>
+    </body>
+    </html>';
+}
+
+// Send email with HTML ticket
+function sendTicketEmail($to, $subject, $htmlContent, $ticketNumber) {
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $headers .= "From: Mustafa Travels <bookings@mustafatravels.org>" . "\r\n";
+    $headers .= "Reply-To: mustafatravelstours@gmail.com" . "\r\n";
+    
+    // Add BCC to admin
+    $headers .= "Bcc: mustafatravelstours@gmail.com" . "\r\n";
+    
+    return mail($to, $subject, $htmlContent, $headers);
 }
 
 // Handle booking confirmation
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
-    $offerId = $_POST['offer_id'];
-    $price = $_POST['price'];
-    $currency = $_POST['currency'];
-    $airline = $_POST['airline'];
-    $origin = $_POST['origin'];
-    $destination = $_POST['destination'];
-    $depTime = $_POST['dep_time'];
-    $arrTime = $_POST['arr_time'];
-    $duration = $_POST['duration'];
-    $stops = $_POST['stops'];
+    $ticketNumber = generateTicketNumber();
+    $flightNumber = 'MT' . rand(100, 999) . rand(10, 99);
     
-    $passengerTitle = $_POST['passenger_title'];
-    $passengerGivenName = $_POST['passenger_given_name'];
-    $passengerFamilyName = $_POST['passenger_family_name'];
-    $passengerDob = $_POST['passenger_dob'];
-    $passengerGender = $_POST['passenger_gender'];
-    $passengerPassport = $_POST['passenger_passport'];
-    $passengerPassportExpiry = $_POST['passenger_passport_expiry'];
-    $contactEmail = $_POST['contact_email'];
-    $contactPhone = $_POST['contact_phone'];
+    $fare = round(floatval($_POST['price']) * 0.59, 2);
+    $taxes = round(floatval($_POST['price']) - $fare, 2);
     
-    $whatsappMsg = "🛫 *NEW FLIGHT BOOKING REQUEST* 🛫\n\n";
-    $whatsappMsg .= "✈️ *FLIGHT DETAILS*\n";
-    $whatsappMsg .= "Airline: $airline\n";
-    $whatsappMsg .= "Route: $origin → $destination\n";
-    $whatsappMsg .= "Departure: $depTime\n";
-    $whatsappMsg .= "Arrival: $arrTime\n";
-    $whatsappMsg .= "Duration: $duration | $stops\n";
-    $whatsappMsg .= "Total Price: $price $currency\n\n";
+    $bookingData = [
+        'ticket_number' => $ticketNumber,
+        'flight_number' => $flightNumber,
+        'airline' => $_POST['airline'],
+        'origin' => $_POST['origin'],
+        'destination' => $_POST['destination'],
+        'departure_date' => $_POST['departure_date'],
+        'departure_time' => $_POST['departure_time'],
+        'arrival_date' => $_POST['arrival_date'],
+        'arrival_time' => $_POST['arrival_time'],
+        'duration' => $_POST['duration'],
+        'cabin_class' => $_POST['cabin_class'],
+        'passenger_name' => $_POST['passenger_title'] . ' ' . $_POST['passenger_given_name'] . ' ' . $_POST['passenger_family_name'],
+        'passport_no' => $_POST['passenger_passport'],
+        'dob' => $_POST['passenger_dob'],
+        'gender' => $_POST['passenger_gender'],
+        'email' => $_POST['contact_email'],
+        'phone' => $_POST['contact_phone'],
+        'total_price' => $_POST['price'],
+        'currency' => $_POST['currency'],
+        'fare' => $fare,
+        'taxes' => $taxes
+    ];
     
-    $whatsappMsg .= "👤 *PASSENGER DETAILS*\n";
-    $whatsappMsg .= "Title: $passengerTitle\n";
-    $whatsappMsg .= "Full Name: $passengerGivenName $passengerFamilyName\n";
-    $whatsappMsg .= "Date of Birth: $passengerDob\n";
-    $whatsappMsg .= "Gender: $passengerGender\n";
-    $whatsappMsg .= "Passport No: $passengerPassport\n";
-    $whatsappMsg .= "Passport Expiry: $passengerPassportExpiry\n\n";
+    // Generate HTML Ticket
+    $htmlTicket = generateHTMLTicket($bookingData);
     
-    $whatsappMsg .= "📞 *CONTACT DETAILS*\n";
-    $whatsappMsg .= "Email: $contactEmail\n";
-    $whatsappMsg .= "Phone: $contactPhone\n\n";
-    $whatsappMsg .= "⏳ Please confirm availability and send payment link.";
+    // Send email to customer
+    $emailSubject = "Your Flight Ticket - $ticketNumber - Mustafa Travels";
+    $emailMessage = "
+    <html>
+    <head><title>Flight Ticket Confirmation</title></head>
+    <body>
+        <h2>✈️ Thank you for booking with Mustafa Travels!</h2>
+        <p>Your flight ticket is attached below. You can print it or save as PDF.</p>
+        <br>
+        <p><strong>Ticket Number:</strong> $ticketNumber</p>
+        <p><strong>Flight:</strong> {$bookingData['airline']}</p>
+        <p><strong>Route:</strong> {$bookingData['origin']} → {$bookingData['destination']}</p>
+        <p><strong>Date:</strong> {$bookingData['departure_date']}</p>
+        <br>
+        <p>Please find your complete ticket below.</p>
+        <hr>
+        " . $htmlTicket . "
+    </body>
+    </html>";
     
+    $sent = sendTicketEmail($bookingData['email'], $emailSubject, $emailMessage, $ticketNumber);
+    
+    // Prepare WhatsApp message
+    $whatsappMsg = "🎫 *NEW FLIGHT BOOKING CONFIRMED* 🎫\n\n";
+    $whatsappMsg .= "Ticket No: $ticketNumber\n";
+    $whatsappMsg .= "Passenger: {$bookingData['passenger_name']}\n";
+    $whatsappMsg .= "Flight: {$bookingData['airline']}\n";
+    $whatsappMsg .= "Route: {$bookingData['origin']} → {$bookingData['destination']}\n";
+    $whatsappMsg .= "Date: {$bookingData['departure_date']} at {$bookingData['departure_time']}\n";
+    $whatsappMsg .= "Total Paid: {$bookingData['total_price']} {$bookingData['currency']}\n\n";
+    $whatsappMsg .= "📧 Ticket sent to: {$bookingData['email']}\n";
+    $whatsappMsg .= "📞 Customer: {$bookingData['phone']}\n\n";
+    $whatsappMsg .= "✅ Booking confirmed! Email with ticket sent to customer.";
+    
+    // Redirect to WhatsApp with confirmation
     header("Location: https://wa.me/34611473217?text=" . urlencode($whatsappMsg));
     exit();
+}
+
+// Handle flight search (same as before)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
+    $searchPerformed = true;
+    $origin = strtoupper(trim($_POST['origin']));
+    $destination = strtoupper(trim($_POST['destination']));
+    $date = $_POST['departure_date'];
+    $passengers = intval($_POST['passengers']);
+    $cabinClass = $_POST['cabin_class'] ?? 'economy';
+    
+    $searchData = [
+        'data' => [
+            'slices' => [[
+                'origin' => $origin,
+                'destination' => $destination,
+                'departure_date' => $date
+            ]],
+            'passengers' => array_fill(0, $passengers, ['type' => 'adult']),
+            'cabin_class' => $cabinClass,
+            'max_connections' => 1
+        ]
+    ];
+    
+    $ch = curl_init('https://api.duffel.com/air/offer_requests?return_offers=true');
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'Authorization: Bearer ' . $apiKey, 'Duffel-Version: v2']);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($searchData));
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    
+    if ($response === false) {
+        $flightResults = '<div class="error">❌ Connection error</div>';
+    } else {
+        $data = json_decode($response, true);
+        $offers = $data['data']['offers'] ?? [];
+        if (count($offers) > 0) {
+            $flightResults = '<div class="success-header">✈️ Found ' . count($offers) . ' flights</div>';
+            foreach (array_slice($offers, 0, 15) as $offer) {
+                $slice = $offer['slices'][0];
+                $segments = $slice['segments'] ?? [];
+                $first = $segments[0] ?? null;
+                $last = $segments[count($segments)-1] ?? null;
+                $depTime = $first ? date('h:i A', strtotime($first['departing_at'])) : 'N/A';
+                $depDate = $first ? date('d M Y', strtotime($first['departing_at'])) : 'N/A';
+                $arrTime = $last ? date('h:i A', strtotime($last['arriving_at'])) : 'N/A';
+                $arrDate = $last ? date('d M Y', strtotime($last['arriving_at'])) : 'N/A';
+                $duration = 0;
+                foreach ($segments as $s) $duration += intval($s['duration'] ?? 0);
+                $durText = floor($duration/60).'h '.($duration%60).'m';
+                $stops = count($segments)-1;
+                $stopText = $stops == 0 ? 'Direct' : $stops.' stop'.($stops>1?'s':'');
+                $airline = $offer['owner']['name'] ?? 'Airline';
+                $price = $offer['total_amount'] ?? '0';
+                $currency = $offer['total_currency'] ?? 'EUR';
+                $offerId = $offer['id'] ?? '';
+                
+                $flightResults .= '
+                <div class="flight-card" onclick="selectFlight(\''.$offerId.'\', \''.$price.'\', \''.$currency.'\', \''.addslashes($airline).'\', \''.$origin.'\', \''.$destination.'\', \''.$depDate.'\', \''.$depTime.'\', \''.$arrDate.'\', \''.$arrTime.'\', \''.$durText.'\', \''.$stopText.'\', \''.addslashes($cabinClass).'\')">
+                    <div class="flight-header">
+                        <div class="airline-info">
+                            <div class="airline-icon">✈️</div>
+                            <div><div class="airline-name">'.htmlspecialchars($airline).'</div></div>
+                        </div>
+                        <div class="flight-price">'.$price.' '.$currency.'</div>
+                    </div>
+                    <div class="flight-route">
+                        <div><div class="city-code">'.$origin.'</div><div class="city-name">'.getAirportName($origin).'</div><div class="flight-time">'.$depTime.'</div></div>
+                        <div class="flight-duration"><div class="duration-line"></div><div class="duration-text">'.$durText.'</div><div class="stops-text">'.$stopText.'</div></div>
+                        <div><div class="city-code">'.$destination.'</div><div class="city-name">'.getAirportName($destination).'</div><div class="flight-time">'.$arrTime.'</div></div>
+                    </div>
+                    <button class="select-flight-btn">Select Flight</button>
+                </div>';
+            }
+        } else {
+            $flightResults = '<div class="error">✈️ No flights found. Try different date.</div>';
+        }
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -298,18 +576,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
         .section-header h2 { font-size: 36px; color: var(--primary-navy); position: relative; display: inline-block; }
         .section-header h2:after { content: ''; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: var(--primary-gold); }
         
-        /* Trip Type Toggle */
-        .trip-toggle { display: flex; gap: 20px; margin-bottom: 25px; justify-content: center; flex-wrap: wrap; }
-        .trip-option { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 10px 20px; border-radius: 50px; transition: var(--transition); }
-        .trip-option:hover { background: var(--light-gold); }
-        .trip-option input { width: 18px; height: 18px; cursor: pointer; }
-        .trip-option label { cursor: pointer; font-weight: 500; }
-        
         .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 20px; }
         .form-group label { display: block; font-weight: 600; color: var(--primary-navy); margin-bottom: 8px; font-size: 14px; }
         .form-group select, .form-group input { width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 16px; transition: var(--transition); }
         .form-group select:focus, .form-group input:focus { border-color: var(--primary-gold); outline: none; }
-        .multi-city-row { background: #f8f9fa; padding: 20px; border-radius: 16px; margin-bottom: 20px; }
         .search-btn { background: linear-gradient(135deg, var(--primary-teal), var(--primary-navy)); color: white; padding: 16px; border: none; border-radius: 50px; font-size: 18px; font-weight: 600; cursor: pointer; width: 100%; transition: var(--transition); }
         .search-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
         
@@ -560,41 +830,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
     <div class="search-luxury">
         <h3 style="text-align:center; margin-bottom:20px; font-size:24px; color:var(--primary-navy);">✈️ Search Flights</h3>
         <form method="POST" action="" id="searchForm">
-            <div class="trip-toggle">
-                <label class="trip-option"><input type="radio" name="trip_type" value="oneway" checked onchange="toggleTripType()"> <label>✈️ One Way</label></label>
-                <label class="trip-option"><input type="radio" name="trip_type" value="return" onchange="toggleTripType()"> <label>🔄 Return</label></label>
-                <label class="trip-option"><input type="radio" name="trip_type" value="multi" onchange="toggleTripType()"> <label>🌍 Multi-City</label></label>
-            </div>
-            
-            <div id="onewayFields">
-                <div class="form-row">
-                    <div class="form-group"><label>✈️ From</label><select name="origin" class="airport-select"><?php foreach($airportsList as $a) echo '<option value="'.$a['code'].'">'.$a['code'].' - '.$a['name'].'</option>'; ?></select></div>
-                    <div class="form-group"><label>📍 To</label><select name="destination" class="airport-select"><?php foreach($airportsList as $a) echo '<option value="'.$a['code'].'">'.$a['code'].' - '.$a['name'].'</option>'; ?></select></div>
-                    <div class="form-group"><label>📅 Departure</label><input type="date" name="departure_date" value="<?php echo date('Y-m-d', strtotime('+30 days')); ?>"></div>
-                </div>
-            </div>
-            
-            <div id="returnFields" style="display:none">
-                <div class="form-row">
-                    <div class="form-group"><label>✈️ From</label><select name="origin_return" class="airport-select"><?php foreach($airportsList as $a) echo '<option value="'.$a['code'].'">'.$a['code'].' - '.$a['name'].'</option>'; ?></select></div>
-                    <div class="form-group"><label>📍 To</label><select name="destination_return" class="airport-select"><?php foreach($airportsList as $a) echo '<option value="'.$a['code'].'">'.$a['code'].' - '.$a['name'].'</option>'; ?></select></div>
-                    <div class="form-group"><label>📅 Departure</label><input type="date" name="departure_date_return" value="<?php echo date('Y-m-d', strtotime('+30 days')); ?>"></div>
-                    <div class="form-group"><label>🔄 Return</label><input type="date" name="return_date" value="<?php echo date('Y-m-d', strtotime('+37 days')); ?>"></div>
-                </div>
-            </div>
-            
-            <div id="multiFields" style="display:none">
-                <?php for($i=1;$i<=3;$i++){ ?>
-                <div class="multi-city-row"><h4 style="margin-bottom:15px">Segment <?php echo $i; ?></h4>
-                <div class="form-row">
-                    <div class="form-group"><label>From</label><select name="origin_<?php echo $i; ?>" class="airport-select"><?php foreach($airportsList as $a) echo '<option value="'.$a['code'].'">'.$a['code'].' - '.$a['name'].'</option>'; ?></select></div>
-                    <div class="form-group"><label>To</label><select name="destination_<?php echo $i; ?>" class="airport-select"><?php foreach($airportsList as $a) echo '<option value="'.$a['code'].'">'.$a['code'].' - '.$a['name'].'</option>'; ?></select></div>
-                    <div class="form-group"><label>Date</label><input type="date" name="date_<?php echo $i; ?>" value="<?php echo date('Y-m-d', strtotime('+'.(30+$i*5).' days')); ?>"></div>
-                </div></div>
-                <?php } ?>
-            </div>
-            
             <div class="form-row">
+                <div class="form-group"><label>✈️ From</label><select name="origin" class="airport-select"><?php foreach($airportsList as $a) echo '<option value="'.$a['code'].'">'.$a['code'].' - '.$a['name'].'</option>'; ?></select></div>
+                <div class="form-group"><label>📍 To</label><select name="destination" class="airport-select"><?php foreach($airportsList as $a) echo '<option value="'.$a['code'].'">'.$a['code'].' - '.$a['name'].'</option>'; ?></select></div>
+                <div class="form-group"><label>📅 Departure</label><input type="date" name="departure_date" value="<?php echo date('Y-m-d', strtotime('+30 days')); ?>"></div>
                 <div class="form-group"><label>👥 Passengers</label><select name="passengers"><option value="1">1 Adult</option><option value="2">2 Adults</option><option value="3">3 Adults</option><option value="4">4 Adults</option></select></div>
                 <div class="form-group"><label>🛋️ Cabin</label><select name="cabin_class"><option value="economy">Economy</option><option value="business">Business</option><option value="first">First</option></select></div>
             </div>
@@ -726,10 +965,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
             <input type="hidden" name="airline" id="airline">
             <input type="hidden" name="origin" id="origin">
             <input type="hidden" name="destination" id="destination">
-            <input type="hidden" name="dep_time" id="dep_time">
-            <input type="hidden" name="arr_time" id="arr_time">
+            <input type="hidden" name="departure_date" id="departure_date">
+            <input type="hidden" name="departure_time" id="departure_time">
+            <input type="hidden" name="arrival_date" id="arrival_date">
+            <input type="hidden" name="arrival_time" id="arrival_time">
             <input type="hidden" name="duration" id="duration">
-            <input type="hidden" name="stops" id="stops">
+            <input type="hidden" name="cabin_class" id="cabin_class">
             
             <div class="booking-summary" id="flightSummary"></div>
             
@@ -760,8 +1001,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
             
             <div class="price-breakdown" id="priceBreakdown"></div>
             
-            <button type="submit" name="confirm_booking" class="confirm-btn">✅ Confirm & Send to WhatsApp</button>
-            <p style="font-size:12px; color:#666; margin-top:15px; text-align:center">Payment will be confirmed via WhatsApp. Our team will contact you shortly.</p>
+            <button type="submit" name="confirm_booking" class="confirm-btn">✅ Confirm Booking & Get Ticket</button>
+            <p style="font-size:12px; color:#666; margin-top:15px; text-align:center">After confirmation, ticket will be sent to your email and WhatsApp.</p>
         </form>
     </div>
 </div>
@@ -812,24 +1053,19 @@ function bookPackage(name, price) {
     window.open(`https://wa.me/34611473217?text=I'm interested in ${name} (${price})`, '_blank'); 
 }
 
-function toggleTripType() {
-    const type = document.querySelector('input[name="trip_type"]:checked').value;
-    document.getElementById('onewayFields').style.display = type == 'oneway' ? 'block' : 'none';
-    document.getElementById('returnFields').style.display = type == 'return' ? 'block' : 'none';
-    document.getElementById('multiFields').style.display = type == 'multi' ? 'block' : 'none';
-}
-
-function selectFlight(offerId, price, currency, airline, origin, destination, depTime, arrTime, duration, stops) {
+function selectFlight(offerId, price, currency, airline, origin, destination, depDate, depTime, arrDate, arrTime, duration, stops, cabinClass) {
     document.getElementById('offer_id').value = offerId;
     document.getElementById('price').value = price;
     document.getElementById('currency').value = currency;
     document.getElementById('airline').value = airline;
     document.getElementById('origin').value = origin;
     document.getElementById('destination').value = destination;
-    document.getElementById('dep_time').value = depTime;
-    document.getElementById('arr_time').value = arrTime;
+    document.getElementById('departure_date').value = depDate;
+    document.getElementById('departure_time').value = depTime;
+    document.getElementById('arrival_date').value = arrDate;
+    document.getElementById('arrival_time').value = arrTime;
     document.getElementById('duration').value = duration;
-    document.getElementById('stops').value = stops;
+    document.getElementById('cabin_class').value = cabinClass;
     
     let fare = Math.round(parseFloat(price) * 0.59);
     let taxes = parseFloat(price) - fare;
@@ -838,9 +1074,10 @@ function selectFlight(offerId, price, currency, airline, origin, destination, de
         <strong>✈️ Flight Details</strong><br>
         ${airline}<br>
         ${origin} → ${destination}<br>
-        Departure: ${depTime}<br>
-        Arrival: ${arrTime}<br>
-        Duration: ${duration} | ${stops}
+        Departure: ${depDate} at ${depTime}<br>
+        Arrival: ${arrDate} at ${arrTime}<br>
+        Duration: ${duration}<br>
+        Class: ${cabinClass}
     `;
     
     document.getElementById('priceBreakdown').innerHTML = `
@@ -865,7 +1102,6 @@ document.querySelectorAll('.close-modal, .modal-overlay').forEach(el => {
     });
 });
 
-toggleTripType();
 if(slides.length) showSlide(0);
 </script>
 </body>
