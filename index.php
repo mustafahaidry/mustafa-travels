@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
                 <div class="flight-card">
                     <div class="airline">✈️ ' . htmlspecialchars($offer['owner']['name'] ?? 'Airline') . '</div>
                     <div class="route"><span class="city">' . $origin . '</span> <span class="arrow">→</span> <span class="city">' . $destination . '</span></div>
-                    <div>Depart: ' . $depTime . ' | Arrive: ' . $arrTime . '</div>
+                    <div>🕐 Depart: ' . $depTime . ' | 🕒 Arrive: ' . $arrTime . '</div>
                     <div class="price">💰 ' . $offer['total_amount'] . ' ' . $offer['total_currency'] . '</div>
                     <a href="https://wa.me/34611473217?text=I want to book ' . $origin . ' to ' . $destination . ' for ' . $offer['total_amount'] . ' ' . $offer['total_currency'] . '" class="book-btn">📱 Book on WhatsApp</a>
                 </div>';
