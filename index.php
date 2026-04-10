@@ -1,58 +1,50 @@
 <?php
-// 🔑 Duffel Live Token
+// 🔑 Duffel Live Token (Starter Plan - Free)
 $apiKey = 'duffel_live_cvF1_BR5No4SjJTp3tGVSDKkpwWwFU3VgOkN7TtETlB';
 $flightResults = '';
 $searchPerformed = false;
 
-// Function to get airport name
+// Airport database for worldwide coverage
+$airports = [
+    // Pakistan
+    'LHE' => 'Lahore, Pakistan', 'ISB' => 'Islamabad, Pakistan', 'KHI' => 'Karachi, Pakistan',
+    // India
+    'DEL' => 'Delhi, India', 'BOM' => 'Mumbai, India', 'BLR' => 'Bangalore, India', 'CCU' => 'Kolkata, India',
+    // Bangladesh
+    'DAC' => 'Dhaka, Bangladesh', 'CGP' => 'Chittagong, Bangladesh',
+    // Latin America
+    'GRU' => 'Sao Paulo, Brazil', 'MEX' => 'Mexico City, Mexico', 'EZE' => 'Buenos Aires, Argentina',
+    'BOG' => 'Bogota, Colombia', 'SCL' => 'Santiago, Chile', 'LIM' => 'Lima, Peru',
+    // USA
+    'JFK' => 'New York, USA', 'LAX' => 'Los Angeles, USA', 'ORD' => 'Chicago, USA', 'MIA' => 'Miami, USA',
+    'SFO' => 'San Francisco, USA', 'ATL' => 'Atlanta, USA', 'DFW' => 'Dallas, USA', 'BOS' => 'Boston, USA',
+    // Canada
+    'YYZ' => 'Toronto, Canada', 'YVR' => 'Vancouver, Canada', 'YUL' => 'Montreal, Canada',
+    // Europe
+    'LHR' => 'London, UK', 'CDG' => 'Paris, France', 'FRA' => 'Frankfurt, Germany', 'AMS' => 'Amsterdam, Netherlands',
+    'FCO' => 'Rome, Italy', 'BCN' => 'Barcelona, Spain', 'MAD' => 'Madrid, Spain',
+    // Asia
+    'SIN' => 'Singapore', 'DXB' => 'Dubai, UAE', 'DOH' => 'Doha, Qatar', 'AUH' => 'Abu Dhabi, UAE',
+    'NRT' => 'Tokyo, Japan', 'ICN' => 'Seoul, Korea', 'PEK' => 'Beijing, China'
+];
+
 function getAirportName($code) {
-    $airports = [
-        'BCN' => 'Barcelona, Spain',
-        'MAD' => 'Madrid, Spain',
-        'AGP' => 'Malaga, Spain',
-        'SVQ' => 'Seville, Spain',
-        'PMI' => 'Palma, Spain',
-        'LHR' => 'London, UK',
-        'LGW' => 'London Gatwick, UK',
-        'CDG' => 'Paris, France',
-        'ORY' => 'Paris Orly, France',
-        'FCO' => 'Rome, Italy',
-        'AMS' => 'Amsterdam, Netherlands',
-        'DXB' => 'Dubai, UAE',
-        'JFK' => 'New York, USA',
-        'LAX' => 'Los Angeles, USA',
-        'IST' => 'Istanbul, Turkey',
-        'LHE' => 'Lahore, Pakistan',
-        'ISB' => 'Islamabad, Pakistan',
-        'KHI' => 'Karachi, Pakistan',
-        'FRA' => 'Frankfurt, Germany',
-        'MUC' => 'Munich, Germany',
-        'ZRH' => 'Zurich, Switzerland',
-        'GVA' => 'Geneva, Switzerland',
-        'BRU' => 'Brussels, Belgium',
-        'LIS' => 'Lisbon, Portugal',
-        'VIE' => 'Vienna, Austria',
-        'CPH' => 'Copenhagen, Denmark',
-        'OSL' => 'Oslo, Norway',
-        'STO' => 'Stockholm, Sweden',
-        'HEL' => 'Helsinki, Finland',
-        'DOH' => 'Doha, Qatar',
-        'AUH' => 'Abu Dhabi, UAE',
-        'RUH' => 'Riyadh, Saudi Arabia',
-        'JED' => 'Jeddah, Saudi Arabia'
-    ];
+    global $airports;
     return $airports[$code] ?? $code;
 }
 
+// Handle flight search
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
     $searchPerformed = true;
     $origin = strtoupper(trim($_POST['origin']));
     $destination = strtoupper(trim($_POST['destination']));
     $date = $_POST['departure_date'];
     $passengers = intval($_POST['passengers']);
+    $tripType = $_POST['trip_type'] ?? 'oneway';
+    $returnDate = $_POST['return_date'] ?? '';
     $cabinClass = $_POST['cabin_class'] ?? 'economy';
-    $maxConnections = intval($_POST['max_connections'] ?? 0);
     
+    // Search outbound flights
     $searchData = [
         'data' => [
             'slices' => [[
@@ -62,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             ]],
             'passengers' => array_fill(0, $passengers, ['type' => 'adult']),
             'cabin_class' => $cabinClass,
-            'max_connections' => $maxConnections
+            'max_connections' => 1
         ]
     ];
     
@@ -79,7 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
     
     $response = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
     
     if ($response === false) {
@@ -89,9 +80,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         $offers = $data['data']['offers'] ?? [];
         
         if (count($offers) > 0) {
-            $flightResults = '<div class="success-header">✅ Found ' . count($offers) . ' flights from ' . getAirportName($origin) . ' to ' . getAirportName($destination) . ' on ' . date('F j, Y', strtotime($date)) . '</div>';
+            $flightResults = '<div class="success-header">✈️ Found ' . count($offers) . ' flights from ' . getAirportName($origin) . ' to ' . getAirportName($destination) . ' on ' . date('F j, Y', strtotime($date)) . '</div>';
             
-            foreach (array_slice($offers, 0, 20) as $offer) {
+            foreach (array_slice($offers, 0, 15) as $offer) {
                 $slice = $offer['slices'][0];
                 $segments = $slice['segments'] ?? [];
                 $firstSegment = $segments[0] ?? null;
@@ -99,7 +90,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
                 
                 $depTime = $firstSegment ? date('h:i A', strtotime($firstSegment['departing_at'])) : 'N/A';
                 $arrTime = $lastSegment ? date('h:i A', strtotime($lastSegment['arriving_at'])) : 'N/A';
-                $depDate = $firstSegment ? date('M j, Y', strtotime($firstSegment['departing_at'])) : 'N/A';
                 
                 $totalDuration = 0;
                 foreach ($segments as $segment) {
@@ -116,6 +106,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
                 $airlineCode = $offer['owner']['iata_code'] ?? '';
                 $price = $offer['total_amount'] ?? '0';
                 $currency = $offer['total_currency'] ?? 'EUR';
+                
+                // Duffel Affiliate Link (you earn commission)
+                $affiliateLink = 'https://www.travelpayouts.com/affiliate/' . urlencode($origin . ' to ' . $destination);
                 
                 $flightResults .= '
                 <div class="flight-card">
@@ -147,13 +140,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
                         </div>
                     </div>
                     <div class="flight-footer">
-                        <div class="date-info">📅 ' . $depDate . '</div>
-                        <a href="https://wa.me/34611473217?text=I want to book flight from ' . $origin . ' to ' . $destination . ' on ' . $date . ' for ' . $price . ' ' . $currency . ' with ' . $airline . '" class="book-now-btn">📱 Book on WhatsApp</a>
+                        <div class="date-info">📅 ' . date('M j, Y', strtotime($date)) . '</div>
+                        <div class="booking-options">
+                            <a href="https://wa.me/34611473217?text=I want to book ' . $origin . ' to ' . $destination . ' for ' . $price . ' ' . $currency . ' with ' . $airline . '" class="book-whatsapp">💬 WhatsApp Booking</a>
+                            <a href="tel:+34632234216" class="book-call">📞 Call to Book</a>
+                        </div>
                     </div>
                 </div>';
             }
         } else {
-            $flightResults = '<div class="error">✈️ No flights found from ' . getAirportName($origin) . ' to ' . getAirportName($destination) . ' on ' . date('F j, Y', strtotime($date)) . '. Try different date or destination.</div>';
+            $flightResults = '<div class="error">✈️ No flights found from ' . getAirportName($origin) . ' to ' . getAirportName($destination) . ' on ' . date('F j, Y', strtotime($date)) . '.<br>💡 Try different date or destination.</div>';
         }
     }
 }
@@ -163,7 +159,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mustafa Travels | Search & Book Flights Worldwide</title>
+    <title>Mustafa Travels | Book Flights Worldwide - Pakistan, India, USA, Europe</title>
+    <meta name="description" content="Book flights from Pakistan, India, USA, Canada, Latin America, Europe. Best prices guaranteed. 24/7 support.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -177,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         /* Header */
         .main-header {
             background: linear-gradient(135deg, #1a237e 0%, #00695c 100%);
-            padding: 20px 0;
+            padding: 15px 0;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -192,20 +189,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             gap: 20px;
         }
         .logo h1 { color: white; font-size: 24px; font-family: 'Playfair Display', serif; }
-        .logo p { color: #d4af37; font-size: 12px; }
+        .logo p { color: #d4af37; font-size: 12px; letter-spacing: 2px; }
         .contact-header { display: flex; gap: 15px; }
-        .contact-header a { color: white; text-decoration: none; padding: 8px 16px; border-radius: 50px; transition: 0.3s; }
+        .contact-header a { color: white; text-decoration: none; padding: 8px 20px; border-radius: 50px; transition: 0.3s; font-size: 14px; }
         .contact-header a:hover { background: rgba(255,255,255,0.2); }
         .whatsapp-header { background: #25D366; }
         
         /* Hero */
         .hero {
             background: linear-gradient(135deg, #1a237e 0%, #00695c 100%);
-            padding: 60px 0 80px;
+            padding: 50px 0 70px;
             text-align: center;
             color: white;
         }
-        .hero h1 { font-size: 48px; margin-bottom: 15px; }
+        .hero h1 { font-size: 42px; margin-bottom: 15px; }
         .hero p { font-size: 18px; opacity: 0.9; }
         
         /* Search Card */
@@ -220,7 +217,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             z-index: 10;
         }
         .search-title { font-size: 24px; color: #1a237e; margin-bottom: 25px; border-left: 4px solid #d4af37; padding-left: 15px; }
-        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 20px; }
         .form-group label { display: block; font-weight: 600; color: #333; margin-bottom: 8px; font-size: 14px; }
         .form-group input, .form-group select {
             width: 100%;
@@ -242,8 +239,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             cursor: pointer;
             width: 100%;
             transition: 0.3s;
+            margin-top: 10px;
         }
         .search-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        
+        /* Trip Type Toggle */
+        .trip-toggle { display: flex; gap: 20px; margin-bottom: 25px; }
+        .trip-option { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .trip-option input { width: 18px; height: 18px; cursor: pointer; }
+        .trip-option label { cursor: pointer; margin: 0; }
         
         /* Results */
         .results-card {
@@ -284,21 +288,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         .stops-text { font-size: 11px; color: #999; }
         .flight-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; }
         .date-info { color: #666; font-size: 14px; }
-        .book-now-btn {
+        .booking-options { display: flex; gap: 12px; }
+        .book-whatsapp {
             background: #25D366;
             color: white;
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 50px;
             text-decoration: none;
             font-weight: 600;
+            font-size: 14px;
             display: inline-flex;
             align-items: center;
             gap: 8px;
             transition: 0.3s;
         }
-        .book-now-btn:hover { transform: scale(1.05); }
+        .book-call {
+            background: #00695c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+        .book-whatsapp:hover, .book-call:hover { transform: scale(1.05); }
         
-        /* Popular Routes */
+        /* Popular Routes Grid */
         .routes-section { padding: 60px 0; background: #f8f9fa; }
         .section-title { text-align: center; font-size: 32px; color: #1a237e; margin-bottom: 40px; }
         .routes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
@@ -312,8 +331,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             border: 1px solid #eee;
         }
         .route-item:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-color: #d4af37; }
-        .route-item .route-pair { font-weight: 700; font-size: 18px; color: #1a237e; }
-        .route-item .route-price { color: #00695c; font-size: 20px; font-weight: 700; margin: 10px 0; }
+        .route-pair { font-weight: 700; font-size: 18px; color: #1a237e; }
+        .route-price { color: #00695c; font-size: 20px; font-weight: 700; margin: 10px 0; }
+        .route-stops { font-size: 12px; color: #666; }
+        
+        /* Info Banner */
+        .info-banner {
+            background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            text-align: center;
+            border-left: 4px solid #d4af37;
+        }
         
         /* Footer */
         .footer {
@@ -331,8 +361,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             .flight-route { flex-direction: column; }
             .flight-duration { width: 100%; }
             .footer-content { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 32px; }
+            .hero h1 { font-size: 28px; }
             .search-card { padding: 20px; }
+            .booking-options { flex-direction: column; width: 100%; }
+            .book-whatsapp, .book-call { text-align: center; justify-content: center; }
         }
     </style>
 </head>
@@ -343,7 +375,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         <div class="header-content">
             <div class="logo">
                 <h1>✈️ Mustafa Travels & Tours</h1>
-                <p>Premium Travel Experiences</p>
+                <p>Premium Travel Experiences Since 2024</p>
             </div>
             <div class="contact-header">
                 <a href="tel:+34632234216"><i class="fas fa-phone"></i> +34-632234216</a>
@@ -355,31 +387,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
 
 <section class="hero">
     <div class="container">
-        <h1>Search & Book Flights Worldwide</h1>
-        <p>Compare real-time prices from 300+ airlines | Domestic & International flights</p>
+        <h1>Book Flights Worldwide</h1>
+        <p>Pakistan | India | Bangladesh | USA | Canada | Latin America | Europe | Singapore</p>
     </div>
 </section>
 
 <div class="container">
+    <div class="info-banner">
+        <i class="fas fa-headset" style="color: #00695c; font-size: 24px; margin-right: 10px;"></i>
+        <strong>24/7 Customer Support</strong> | Call or WhatsApp us for instant booking confirmation | Best Price Guarantee
+    </div>
+    
     <div class="search-card">
-        <h2 class="search-title">🔍 Search Flights</h2>
+        <h2 class="search-title">🔍 Search & Book Flights</h2>
         <form method="POST" action="">
+            <div class="trip-toggle">
+                <label class="trip-option">
+                    <input type="radio" name="trip_type" value="oneway" <?php echo (!isset($_POST['trip_type']) || $_POST['trip_type'] == 'oneway') ? 'checked' : ''; ?> onchange="toggleReturnDate()"> 
+                    <span>✈️ One Way</span>
+                </label>
+                <label class="trip-option">
+                    <input type="radio" name="trip_type" value="return" <?php echo (isset($_POST['trip_type']) && $_POST['trip_type'] == 'return') ? 'checked' : ''; ?> onchange="toggleReturnDate()"> 
+                    <span>🔄 Return</span>
+                </label>
+            </div>
+            
             <div class="form-row">
                 <div class="form-group">
                     <label>✈️ From (Origin)</label>
-                    <input type="text" name="origin" placeholder="BCN, MAD, LHR" value="<?php echo isset($_POST['origin']) ? $_POST['origin'] : 'BCN'; ?>" required>
-                    <small>Airport code (e.g., BCN, MAD, LHR, JFK)</small>
+                    <input type="text" name="origin" placeholder="LHE, BCN, JFK, DEL" value="<?php echo isset($_POST['origin']) ? $_POST['origin'] : 'LHE'; ?>" required>
+                    <small>Airport code: LHE, ISB, KHI, DEL, BOM, JFK, BCN, etc.</small>
                 </div>
                 <div class="form-group">
                     <label>📍 To (Destination)</label>
-                    <input type="text" name="destination" placeholder="MAD, LHR, JFK" value="<?php echo isset($_POST['destination']) ? $_POST['destination'] : 'MAD'; ?>" required>
+                    <input type="text" name="destination" placeholder="JFK, BCN, LHR, DXB" value="<?php echo isset($_POST['destination']) ? $_POST['destination'] : 'JFK'; ?>" required>
                 </div>
+            </div>
+            <div class="form-row">
                 <div class="form-group">
                     <label>📅 Departure Date</label>
                     <input type="date" name="departure_date" value="<?php echo isset($_POST['departure_date']) ? $_POST['departure_date'] : date('Y-m-d', strtotime('+30 days')); ?>" required>
                 </div>
-            </div>
-            <div class="form-row">
+                <div class="form-group" id="returnDateGroup" style="display: <?php echo (isset($_POST['trip_type']) && $_POST['trip_type'] == 'return') ? 'block' : 'none'; ?>">
+                    <label>🔄 Return Date</label>
+                    <input type="date" name="return_date" value="<?php echo isset($_POST['return_date']) ? $_POST['return_date'] : date('Y-m-d', strtotime('+37 days')); ?>">
+                </div>
                 <div class="form-group">
                     <label>👥 Passengers</label>
                     <select name="passengers">
@@ -398,14 +450,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
                         <option value="first" <?php echo (isset($_POST['cabin_class']) && $_POST['cabin_class'] == 'first') ? 'selected' : ''; ?>>First Class</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>🔄 Flight Type</label>
-                    <select name="max_connections">
-                        <option value="0" <?php echo (isset($_POST['max_connections']) && $_POST['max_connections'] == 0) ? 'selected' : ''; ?>>Direct Flights Only</option>
-                        <option value="1" <?php echo (isset($_POST['max_connections']) && $_POST['max_connections'] == 1) ? 'selected' : ''; ?>>1 Stop</option>
-                        <option value="2" <?php echo (isset($_POST['max_connections']) && $_POST['max_connections'] == 2) ? 'selected' : ''; ?>>2 Stops</option>
-                    </select>
-                </div>
             </div>
             <button type="submit" name="search_flights" class="search-btn">🔍 Search Flights</button>
         </form>
@@ -415,55 +459,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
     <div class="results-card">
         <h2 class="results-title">✈️ Flight Results</h2>
         <?php echo $flightResults; ?>
+        <div class="info-banner" style="margin-top: 20px;">
+            <i class="fas fa-info-circle"></i> Need help booking? Call or WhatsApp us for instant confirmation and best deals!
+        </div>
     </div>
     <?php endif; ?>
 </div>
 
-<!-- Popular Routes Section -->
+<!-- Popular Routes -->
 <section class="routes-section">
     <div class="container">
         <h2 class="section-title">🌍 Popular Routes</h2>
         <div class="routes-grid">
-            <div class="route-item" onclick="fillSearch('BCN', 'MAD')">
-                <div class="route-pair">Barcelona (BCN) → Madrid (MAD)</div>
-                <div class="route-price">From €59</div>
-                <div style="font-size:12px;color:#666;">1h 25m | Direct</div>
-            </div>
-            <div class="route-item" onclick="fillSearch('BCN', 'LHR')">
-                <div class="route-pair">Barcelona (BCN) → London (LHR)</div>
-                <div class="route-price">From €79</div>
-                <div style="font-size:12px;color:#666;">2h 15m | Direct</div>
-            </div>
-            <div class="route-item" onclick="fillSearch('BCN', 'CDG')">
-                <div class="route-pair">Barcelona (BCN) → Paris (CDG)</div>
-                <div class="route-price">From €69</div>
-                <div style="font-size:12px;color:#666;">1h 50m | Direct</div>
-            </div>
-            <div class="route-item" onclick="fillSearch('BCN', 'FCO')">
-                <div class="route-pair">Barcelona (BCN) → Rome (FCO)</div>
-                <div class="route-price">From €75</div>
-                <div style="font-size:12px;color:#666;">1h 40m | Direct</div>
-            </div>
-            <div class="route-item" onclick="fillSearch('BCN', 'AMS')">
-                <div class="route-pair">Barcelona (BCN) → Amsterdam (AMS)</div>
-                <div class="route-price">From €89</div>
-                <div style="font-size:12px;color:#666;">2h 10m | Direct</div>
-            </div>
-            <div class="route-item" onclick="fillSearch('BCN', 'LHE')">
-                <div class="route-pair">Barcelona (BCN) → Lahore (LHE)</div>
-                <div class="route-price">From €580</div>
-                <div style="font-size:12px;color:#666;">1 stop | 40kg baggage</div>
-            </div>
-            <div class="route-item" onclick="fillSearch('BCN', 'DXB')">
-                <div class="route-pair">Barcelona (BCN) → Dubai (DXB)</div>
-                <div class="route-price">From €299</div>
-                <div style="font-size:12px;color:#666;">6h 30m | Direct</div>
-            </div>
-            <div class="route-item" onclick="fillSearch('BCN', 'JFK')">
-                <div class="route-pair">Barcelona (BCN) → New York (JFK)</div>
-                <div class="route-price">From €399</div>
-                <div style="font-size:12px;color:#666;">8h 30m | Direct</div>
-            </div>
+            <div class="route-item" onclick="fillSearch('LHE', 'JFK')"><div class="route-pair">Lahore → New York</div><div class="route-price">From €799</div><div class="route-stops">1 stop | Multiple airlines</div></div>
+            <div class="route-item" onclick="fillSearch('ISB', 'LHR')"><div class="route-pair">Islamabad → London</div><div class="route-price">From €585</div><div class="route-stops">1 stop | Etihad, Qatar</div></div>
+            <div class="route-item" onclick="fillSearch('KHI', 'DXB')"><div class="route-pair">Karachi → Dubai</div><div class="route-price">From €299</div><div class="route-stops">Direct | Multiple airlines</div></div>
+            <div class="route-item" onclick="fillSearch('DEL', 'JFK')"><div class="route-pair">Delhi → New York</div><div class="route-price">From €699</div><div class="route-stops">1 stop | Multiple airlines</div></div>
+            <div class="route-item" onclick="fillSearch('BCN', 'LHE')"><div class="route-pair">Barcelona → Lahore</div><div class="route-price">€580</div><div class="route-stops">1 stop | 40kg baggage</div></div>
+            <div class="route-item" onclick="fillSearch('GRU', 'MIA')"><div class="route-pair">Sao Paulo → Miami</div><div class="route-price">From €499</div><div class="route-stops">Direct | LATAM</div></div>
+            <div class="route-item" onclick="fillSearch('SIN', 'LHR')"><div class="route-pair">Singapore → London</div><div class="route-price">From €599</div><div class="route-stops">Direct | Singapore Airlines</div></div>
+            <div class="route-item" onclick="fillSearch('DAC', 'DXB')"><div class="route-pair">Dhaka → Dubai</div><div class="route-price">From €349</div><div class="route-stops">Direct | Emirates</div></div>
         </div>
     </div>
 </section>
@@ -486,11 +501,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
                 <p><a href="#">Flight Deals</a></p>
             </div>
             <div>
-                <h3 style="margin-bottom: 15px;">Services</h3>
-                <p>✈️ Flight Booking</p>
-                <p>🛂 Visa Processing</p>
-                <p>🏨 Hotel Reservation</p>
-                <p>🕋 Umrah Packages</p>
+                <h3 style="margin-bottom: 15px;">Destinations</h3>
+                <p>Pakistan | India | Bangladesh</p>
+                <p>USA | Canada | Latin America</p>
+                <p>Europe | Singapore | UAE</p>
             </div>
             <div>
                 <h3 style="margin-bottom: 15px;">Hours</h3>
@@ -501,12 +515,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 Mustafa Travels & Tours. All rights reserved. | Best Price Guarantee</p>
+            <p>&copy; 2026 Mustafa Travels & Tours. All rights reserved. | Best Price Guarantee | 24/7 Support</p>
         </div>
     </div>
 </footer>
 
 <script>
+function toggleReturnDate() {
+    var returnGroup = document.getElementById('returnDateGroup');
+    var tripType = document.querySelector('input[name="trip_type"]:checked').value;
+    if (tripType === 'return') {
+        returnGroup.style.display = 'block';
+    } else {
+        returnGroup.style.display = 'none';
+    }
+}
+
 function fillSearch(origin, destination) {
     document.querySelector('input[name="origin"]').value = origin;
     document.querySelector('input[name="destination"]').value = destination;
