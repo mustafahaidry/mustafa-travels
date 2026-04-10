@@ -6,25 +6,48 @@ $searchPerformed = false;
 
 // SEO Meta
 $pageTitle = "Mustafa Travels & Tours | Best Umrah, Hajj & Flight Deals from Barcelona";
-$pageDescription = "Premium Umrah packages 2026, Hajj bookings, cheap flights from Barcelona to Pakistan, London, Dubai, USA. One way, Return & Multi-city flights available.";
+$pageDescription = "Premium Umrah packages 2026, Hajj bookings, cheap flights from Barcelona to Pakistan, London, Dubai, USA.";
 $pageKeywords = "Umrah packages, Hajj 2026, Barcelona travel agency, cheap flights, return flights, multi-city flights";
 
-// Airport database
-$airports = [
-    'LHE' => 'Lahore, Pakistan', 'ISB' => 'Islamabad, Pakistan', 'KHI' => 'Karachi, Pakistan',
-    'DEL' => 'Delhi, India', 'BOM' => 'Mumbai, India', 'DAC' => 'Dhaka, Bangladesh',
-    'JFK' => 'New York, USA', 'LAX' => 'Los Angeles, USA', 'YYZ' => 'Toronto, Canada',
-    'LHR' => 'London, UK', 'CDG' => 'Paris, France', 'FRA' => 'Frankfurt, Germany',
-    'DXB' => 'Dubai, UAE', 'SIN' => 'Singapore', 'BCN' => 'Barcelona, Spain', 'MAD' => 'Madrid, Spain',
-    'AGP' => 'Malaga, Spain', 'PMI' => 'Palma, Spain', 'SVQ' => 'Seville, Spain'
+// Airport database with codes and names
+$airportsList = [
+    ['code' => 'BCN', 'name' => 'Barcelona-El Prat, Spain', 'country' => 'Spain'],
+    ['code' => 'MAD', 'name' => 'Madrid-Barajas, Spain', 'country' => 'Spain'],
+    ['code' => 'AGP', 'name' => 'Malaga-Costa del Sol, Spain', 'country' => 'Spain'],
+    ['code' => 'SVQ', 'name' => 'Seville-San Pablo, Spain', 'country' => 'Spain'],
+    ['code' => 'PMI', 'name' => 'Palma de Mallorca, Spain', 'country' => 'Spain'],
+    ['code' => 'LHE', 'name' => 'Allama Iqbal International, Lahore', 'country' => 'Pakistan'],
+    ['code' => 'ISB', 'name' => 'Islamabad International, Pakistan', 'country' => 'Pakistan'],
+    ['code' => 'KHI', 'name' => 'Jinnah International, Karachi', 'country' => 'Pakistan'],
+    ['code' => 'DEL', 'name' => 'Indira Gandhi International, Delhi', 'country' => 'India'],
+    ['code' => 'BOM', 'name' => 'Chhatrapati Shivaji, Mumbai', 'country' => 'India'],
+    ['code' => 'DAC', 'name' => 'Hazrat Shahjalal, Dhaka', 'country' => 'Bangladesh'],
+    ['code' => 'JFK', 'name' => 'John F Kennedy, New York', 'country' => 'USA'],
+    ['code' => 'LAX', 'name' => 'Los Angeles International, USA', 'country' => 'USA'],
+    ['code' => 'YYZ', 'name' => 'Toronto Pearson, Canada', 'country' => 'Canada'],
+    ['code' => 'LHR', 'name' => 'London Heathrow, UK', 'country' => 'United Kingdom'],
+    ['code' => 'CDG', 'name' => 'Charles de Gaulle, Paris', 'country' => 'France'],
+    ['code' => 'FRA', 'name' => 'Frankfurt am Main, Germany', 'country' => 'Germany'],
+    ['code' => 'DXB', 'name' => 'Dubai International, UAE', 'country' => 'UAE'],
+    ['code' => 'SIN', 'name' => 'Changi International, Singapore', 'country' => 'Singapore'],
+    ['code' => 'IST', 'name' => 'Istanbul Airport, Turkey', 'country' => 'Turkey'],
+    ['code' => 'DOH', 'name' => 'Hamad International, Doha', 'country' => 'Qatar'],
+    ['code' => 'AUH', 'name' => 'Abu Dhabi International, UAE', 'country' => 'UAE'],
+    ['code' => 'FCO', 'name' => 'Leonardo da Vinci, Rome', 'country' => 'Italy'],
+    ['code' => 'AMS', 'name' => 'Amsterdam Schiphol, Netherlands', 'country' => 'Netherlands'],
 ];
 
 function getAirportName($code) {
-    global $airports;
-    return $airports[$code] ?? $code;
+    global $airportsList;
+    foreach ($airportsList as $airport) {
+        if ($airport['code'] == $code) {
+            return $airport['name'];
+        }
+    }
+    return $code;
 }
 
-// Handle flight search
+// Handle flight search (same as before)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
     $searchPerformed = true;
     $tripType = $_POST['trip_type'] ?? 'oneway';
@@ -33,7 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
     
     $slices = [];
     
-    // One Way
     if ($tripType == 'oneway') {
         $origin = strtoupper(trim($_POST['origin']));
         $destination = strtoupper(trim($_POST['destination']));
@@ -41,17 +63,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         $slices[] = ['origin' => $origin, 'destination' => $destination, 'departure_date' => $date];
     }
     
-    // Return
     if ($tripType == 'return') {
-        $origin = strtoupper(trim($_POST['origin']));
-        $destination = strtoupper(trim($_POST['destination']));
-        $date = $_POST['departure_date'];
+        $origin = strtoupper(trim($_POST['origin_return']));
+        $destination = strtoupper(trim($_POST['destination_return']));
+        $date = $_POST['departure_date_return'];
         $returnDate = $_POST['return_date'];
         $slices[] = ['origin' => $origin, 'destination' => $destination, 'departure_date' => $date];
         $slices[] = ['origin' => $destination, 'destination' => $origin, 'departure_date' => $returnDate];
     }
     
-    // Multi-City (Up to 3 segments)
     if ($tripType == 'multi') {
         for ($i = 1; $i <= 3; $i++) {
             $origin = strtoupper(trim($_POST["origin_$i"] ?? ''));
@@ -164,16 +184,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
     <title><?php echo $pageTitle; ?></title>
     <meta name="description" content="<?php echo $pageDescription; ?>">
     <meta name="keywords" content="<?php echo $pageKeywords; ?>">
-    <meta name="author" content="Mustafa Travels & Tours">
-    <meta name="robots" content="index, follow">
-    <meta property="og:title" content="Mustafa Travels & Tours">
-    <meta property="og:description" content="One way, Return & Multi-city flights. Best Umrah, Hajj packages from Barcelona.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.mustafatravels.org">
-    <link rel="canonical" href="https://www.mustafatravels.org">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Select2 for searchable dropdown -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     
     <style>
         :root {
@@ -205,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
-        /* Header */
+        /* Header Styles (same as before) */
         .elegant-header {
             background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-teal) 100%);
             padding: 15px 0;
@@ -274,14 +290,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         .flying-plane i { color: var(--primary-navy); font-size: 20px; transform: rotate(45deg); }
         
         /* Hero Slider */
-        .luxury-slider { height: 550px; position: relative; overflow: hidden; border-radius: 0 0 var(--radius) var(--radius); }
+        .luxury-slider { height: 500px; position: relative; overflow: hidden; border-radius: 0 0 var(--radius) var(--radius); }
         .luxury-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.2s ease-in-out; }
         .luxury-slide.active { opacity: 1; }
         .slide-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(26,35,126,0.85), rgba(0,105,92,0.85)); display: flex; align-items: center; }
         .slide-content-luxury { max-width: 800px; padding-left: 80px; color: var(--white); }
-        .slide-content-luxury h2 { font-size: 48px; color: var(--white); margin-bottom: 20px; }
+        .slide-content-luxury h2 { font-size: 42px; color: var(--white); margin-bottom: 20px; }
         .slide-content-luxury p { font-size: 18px; margin-bottom: 35px; }
-        .luxury-btn { display: inline-flex; align-items: center; gap: 12px; background: var(--primary-gold); color: var(--primary-navy); padding: 16px 32px; border-radius: 50px; font-weight: 600; text-decoration: none; transition: var(--transition); }
+        .luxury-btn { display: inline-flex; align-items: center; gap: 12px; background: var(--primary-gold); color: var(--primary-navy); padding: 14px 28px; border-radius: 50px; font-weight: 600; text-decoration: none; transition: var(--transition); }
         .luxury-btn:hover { transform: translateY(-3px); background: var(--light-gold); }
         .slider-controls { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; }
         .slider-dot-luxury { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: var(--transition); }
@@ -313,8 +329,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         
         .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 20px; }
         .form-group label { display: block; font-weight: 600; color: var(--primary-navy); margin-bottom: 8px; font-size: 14px; }
-        .form-group input, .form-group select { width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 16px; transition: var(--transition); }
-        .form-group input:focus, .form-group select:focus { border-color: var(--primary-gold); outline: none; }
+        .form-group select { width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 16px; transition: var(--transition); }
+        .form-group select:focus { border-color: var(--primary-gold); outline: none; }
+        
+        /* Select2 Custom Styling */
+        .select2-container .select2-selection--single {
+            height: 54px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 8px 12px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 34px;
+            font-size: 16px;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 50px;
+        }
+        .select2-dropdown {
+            border-radius: 12px;
+            border-color: #e0e0e0;
+        }
+        .select2-search__field {
+            border-radius: 8px !important;
+            padding: 8px !important;
+        }
         
         .multi-city-row { background: #f8f9fa; padding: 20px; border-radius: 16px; margin-bottom: 20px; }
         .search-btn { background: linear-gradient(135deg, var(--primary-teal), var(--primary-navy)); color: white; padding: 16px 30px; border: none; border-radius: 50px; font-size: 18px; font-weight: 600; cursor: pointer; width: 100%; transition: var(--transition); }
@@ -341,12 +380,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         .error { background: #ffebee; padding: 15px; border-radius: 12px; color: #c62828; }
         .success-header { background: #e8f5e9; padding: 12px; border-radius: 12px; margin-bottom: 20px; color: #2e7d32; }
         
-        /* Packages Grid */
+        /* Other sections */
         .packages-luxury { padding: 80px 0; background: var(--white); }
         .packages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
         .package-card { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); }
         .package-card:hover { transform: translateY(-10px); }
-        .package-image { height: 220px; background-size: cover; background-position: center; position: relative; }
+        .package-image { height: 200px; background-size: cover; background-position: center; position: relative; }
         .package-badge { position: absolute; top: 15px; right: 15px; background: var(--primary-gold); color: var(--primary-navy); padding: 6px 18px; border-radius: 50px; font-weight: 700; }
         .package-content { padding: 25px; }
         .package-content h3 { font-size: 22px; margin-bottom: 12px; }
@@ -356,30 +395,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         .package-btn { background: linear-gradient(135deg, var(--primary-teal), var(--primary-navy)); color: white; padding: 14px; border-radius: 8px; border: none; cursor: pointer; width: 100%; font-weight: 600; transition: var(--transition); }
         .package-btn:hover { transform: translateY(-2px); }
         
-        /* Hajj Section */
         .hajj-section { padding: 80px 0; background: linear-gradient(135deg, var(--light-bg) 0%, #e8f4f3 100%); }
         .hajj-waiting { text-align: center; padding: 60px; background: #f8f9fa; border-radius: var(--radius); border: 2px dashed var(--primary-gold); }
         
-        /* Deals Grid */
         .deals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 30px; }
         .deal-card { background: var(--white); border-radius: var(--radius); padding: 20px; border-left: 4px solid var(--primary-gold); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; box-shadow: var(--shadow); transition: var(--transition); }
         .deal-card:hover { transform: translateY(-5px); }
         .deal-price { font-size: 24px; font-weight: 700; color: var(--primary-teal); }
         
-        /* Services */
         .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; margin-top: 30px; }
         .service-card { background: var(--white); padding: 30px; border-radius: var(--radius); text-align: center; transition: var(--transition); box-shadow: var(--shadow); }
         .service-card:hover { transform: translateY(-8px); }
         .service-icon { width: 70px; height: 70px; background: var(--light-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 28px; color: var(--primary-teal); }
         
-        /* About */
         .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
-        .about-image { height: 400px; background-size: cover; background-position: center; border-radius: var(--radius); position: relative; }
-        .about-image:after { content: ''; position: absolute; top: 15px; left: 15px; right: -15px; bottom: -15px; border: 2px solid var(--primary-gold); border-radius: var(--radius); z-index: -1; }
+        .about-image { height: 350px; background-size: cover; background-position: center; border-radius: var(--radius); }
         
-        /* Footer */
-        .footer-elegant { background: linear-gradient(135deg, var(--primary-navy) 0%, #0d1440 100%); color: var(--white); padding: 70px 0 35px; margin-top: 40px; }
-        .footer-content { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 50px; }
+        .footer-elegant { background: linear-gradient(135deg, var(--primary-navy) 0%, #0d1440 100%); color: var(--white); padding: 60px 0 30px; margin-top: 40px; }
+        .footer-content { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 40px; }
         .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); }
         
         @keyframes marqueeScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
@@ -449,37 +482,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
 
 <section class="luxury-slider" id="home">
     <div class="luxury-slide active" style="background-image: url('https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg');">
-        <div class="slide-overlay">
-            <div class="slide-content-luxury">
-                <h2>Premium Umrah Experiences 2026</h2>
-                <p>Journey with elegance and devotion. Luxury accommodations near Haram with personalized guidance.</p>
-                <a href="#umrah" class="luxury-btn">Explore Packages <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </div>
+        <div class="slide-overlay"><div class="slide-content-luxury"><h2>Premium Umrah Experiences 2026</h2><p>Luxury accommodations near Haram with personalized guidance.</p><a href="#umrah" class="luxury-btn">Explore Packages <i class="fas fa-arrow-right"></i></a></div></div>
     </div>
     <div class="luxury-slide" style="background-image: url('https://images.pexels.com/photos/29102586/pexels-photo-29102586.jpeg');">
-        <div class="slide-overlay">
-            <div class="slide-content-luxury">
-                <h2>Hajj 2026 - Coming Soon</h2>
-                <p>Register your interest for Hajj 2026 packages. Phase 2 bookings opening soon.</p>
-                <a href="#hajj" class="luxury-btn">Learn More <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </div>
+        <div class="slide-overlay"><div class="slide-content-luxury"><h2>Hajj 2026 - Coming Soon</h2><p>Register your interest for Hajj 2026 packages.</p><a href="#hajj" class="luxury-btn">Learn More <i class="fas fa-arrow-right"></i></a></div></div>
     </div>
     <div class="luxury-slide" style="background-image: url('https://images.unsplash.com/photo-1591824438703-50d4c4e5d45a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');">
-        <div class="slide-overlay">
-            <div class="slide-content-luxury">
-                <h2>One Way, Return & Multi-City</h2>
-                <p>Book flights your way. Flexible options for all your travel needs.</p>
-                <a href="#search" class="luxury-btn">Search Flights <i class="fas fa-arrow-right"></i></a>
-            </div>
-        </div>
+        <div class="slide-overlay"><div class="slide-content-luxury"><h2>One Way, Return & Multi-City</h2><p>Book flights your way. Flexible options for all your travel needs.</p><a href="#search" class="luxury-btn">Search Flights <i class="fas fa-arrow-right"></i></a></div></div>
     </div>
-    <div class="slider-controls">
-        <div class="slider-dot-luxury active"></div>
-        <div class="slider-dot-luxury"></div>
-        <div class="slider-dot-luxury"></div>
-    </div>
+    <div class="slider-controls"><div class="slider-dot-luxury active"></div><div class="slider-dot-luxury"></div><div class="slider-dot-luxury"></div></div>
 </section>
 
 <div class="container" id="search">
@@ -488,67 +499,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         
         <form method="POST" action="" id="flightSearchForm">
             <div class="trip-toggle">
-                <label class="trip-option">
-                    <input type="radio" name="trip_type" value="oneway" <?php echo (!isset($_POST['trip_type']) || $_POST['trip_type'] == 'oneway') ? 'checked' : ''; ?> onchange="toggleTripType()"> 
-                    <label>✈️ One Way</label>
-                </label>
-                <label class="trip-option">
-                    <input type="radio" name="trip_type" value="return" <?php echo (isset($_POST['trip_type']) && $_POST['trip_type'] == 'return') ? 'checked' : ''; ?> onchange="toggleTripType()"> 
-                    <label>🔄 Return</label>
-                </label>
-                <label class="trip-option">
-                    <input type="radio" name="trip_type" value="multi" <?php echo (isset($_POST['trip_type']) && $_POST['trip_type'] == 'multi') ? 'checked' : ''; ?> onchange="toggleTripType()"> 
-                    <label>🌍 Multi-City</label>
-                </label>
+                <label class="trip-option"><input type="radio" name="trip_type" value="oneway" checked onchange="toggleTripType()"> <label>✈️ One Way</label></label>
+                <label class="trip-option"><input type="radio" name="trip_type" value="return" onchange="toggleTripType()"> <label>🔄 Return</label></label>
+                <label class="trip-option"><input type="radio" name="trip_type" value="multi" onchange="toggleTripType()"> <label>🌍 Multi-City</label></label>
             </div>
             
-            <!-- One Way Fields -->
+            <!-- One Way Fields with Searchable Dropdown -->
             <div id="onewayFields">
                 <div class="form-row">
-                    <div class="form-group"><label>✈️ From</label><input type="text" name="origin" placeholder="BCN, LHR, JFK" value="<?php echo isset($_POST['origin']) ? $_POST['origin'] : 'BCN'; ?>"></div>
-                    <div class="form-group"><label>📍 To</label><input type="text" name="destination" placeholder="LHE, MAD, DXB" value="<?php echo isset($_POST['destination']) ? $_POST['destination'] : 'LHE'; ?>"></div>
-                    <div class="form-group"><label>📅 Departure Date</label><input type="date" name="departure_date" value="<?php echo isset($_POST['departure_date']) ? $_POST['departure_date'] : date('Y-m-d', strtotime('+30 days')); ?>"></div>
+                    <div class="form-group"><label>✈️ From</label><select name="origin" id="origin_oneway" class="airport-select" style="width:100%"><?php foreach($airportsList as $airport){ echo '<option value="'.$airport['code'].'">'.$airport['code'].' - '.$airport['name'].'</option>'; } ?></select></div>
+                    <div class="form-group"><label>📍 To</label><select name="destination" id="destination_oneway" class="airport-select" style="width:100%"><?php foreach($airportsList as $airport){ echo '<option value="'.$airport['code'].'">'.$airport['code'].' - '.$airport['name'].'</option>'; } ?></select></div>
+                    <div class="form-group"><label>📅 Departure Date</label><input type="date" name="departure_date" value="<?php echo date('Y-m-d', strtotime('+30 days')); ?>"></div>
                 </div>
             </div>
             
             <!-- Return Fields -->
             <div id="returnFields" style="display: none;">
                 <div class="form-row">
-                    <div class="form-group"><label>✈️ From</label><input type="text" name="origin_return" placeholder="BCN, LHR, JFK" value="<?php echo isset($_POST['origin_return']) ? $_POST['origin_return'] : 'BCN'; ?>"></div>
-                    <div class="form-group"><label>📍 To</label><input type="text" name="destination_return" placeholder="LHE, MAD, DXB" value="<?php echo isset($_POST['destination_return']) ? $_POST['destination_return'] : 'LHE'; ?>"></div>
-                    <div class="form-group"><label>📅 Departure Date</label><input type="date" name="departure_date_return" value="<?php echo isset($_POST['departure_date_return']) ? $_POST['departure_date_return'] : date('Y-m-d', strtotime('+30 days')); ?>"></div>
-                    <div class="form-group"><label>🔄 Return Date</label><input type="date" name="return_date" value="<?php echo isset($_POST['return_date']) ? $_POST['return_date'] : date('Y-m-d', strtotime('+37 days')); ?>"></div>
+                    <div class="form-group"><label>✈️ From</label><select name="origin_return" id="origin_return" class="airport-select" style="width:100%"><?php foreach($airportsList as $airport){ echo '<option value="'.$airport['code'].'">'.$airport['code'].' - '.$airport['name'].'</option>'; } ?></select></div>
+                    <div class="form-group"><label>📍 To</label><select name="destination_return" id="destination_return" class="airport-select" style="width:100%"><?php foreach($airportsList as $airport){ echo '<option value="'.$airport['code'].'">'.$airport['code'].' - '.$airport['name'].'</option>'; } ?></select></div>
+                    <div class="form-group"><label>📅 Departure Date</label><input type="date" name="departure_date_return" value="<?php echo date('Y-m-d', strtotime('+30 days')); ?>"></div>
+                    <div class="form-group"><label>🔄 Return Date</label><input type="date" name="return_date" value="<?php echo date('Y-m-d', strtotime('+37 days')); ?>"></div>
                 </div>
             </div>
             
             <!-- Multi-City Fields -->
             <div id="multiFields" style="display: none;">
-                <div id="multiCityContainer">
-                    <div class="multi-city-row" id="segment1">
-                        <h4 style="margin-bottom: 15px; color: var(--primary-navy);">Segment 1</h4>
-                        <div class="form-row">
-                            <div class="form-group"><label>From</label><input type="text" name="origin_1" placeholder="BCN" value="<?php echo isset($_POST['origin_1']) ? $_POST['origin_1'] : 'BCN'; ?>"></div>
-                            <div class="form-group"><label>To</label><input type="text" name="destination_1" placeholder="LHR" value="<?php echo isset($_POST['destination_1']) ? $_POST['destination_1'] : 'LHR'; ?>"></div>
-                            <div class="form-group"><label>Date</label><input type="date" name="date_1" value="<?php echo isset($_POST['date_1']) ? $_POST['date_1'] : date('Y-m-d', strtotime('+30 days')); ?>"></div>
-                        </div>
-                    </div>
-                    <div class="multi-city-row" id="segment2">
-                        <h4 style="margin-bottom: 15px; color: var(--primary-navy);">Segment 2</h4>
-                        <div class="form-row">
-                            <div class="form-group"><label>From</label><input type="text" name="origin_2" placeholder="LHR" value="<?php echo isset($_POST['origin_2']) ? $_POST['origin_2'] : 'LHR'; ?>"></div>
-                            <div class="form-group"><label>To</label><input type="text" name="destination_2" placeholder="JFK" value="<?php echo isset($_POST['destination_2']) ? $_POST['destination_2'] : 'JFK'; ?>"></div>
-                            <div class="form-group"><label>Date</label><input type="date" name="date_2" value="<?php echo isset($_POST['date_2']) ? $_POST['date_2'] : date('Y-m-d', strtotime('+35 days')); ?>"></div>
-                        </div>
-                    </div>
-                    <div class="multi-city-row" id="segment3">
-                        <h4 style="margin-bottom: 15px; color: var(--primary-navy);">Segment 3 (Optional)</h4>
-                        <div class="form-row">
-                            <div class="form-group"><label>From</label><input type="text" name="origin_3" placeholder="JFK" value="<?php echo isset($_POST['origin_3']) ? $_POST['origin_3'] : ''; ?>"></div>
-                            <div class="form-group"><label>To</label><input type="text" name="destination_3" placeholder="BCN" value="<?php echo isset($_POST['destination_3']) ? $_POST['destination_3'] : ''; ?>"></div>
-                            <div class="form-group"><label>Date</label><input type="date" name="date_3" value="<?php echo isset($_POST['date_3']) ? $_POST['date_3'] : ''; ?>"></div>
-                        </div>
+                <?php for($i=1; $i<=3; $i++){ ?>
+                <div class="multi-city-row" id="segment<?php echo $i; ?>">
+                    <h4 style="margin-bottom: 15px; color: var(--primary-navy);">Segment <?php echo $i; ?></h4>
+                    <div class="form-row">
+                        <div class="form-group"><label>From</label><select name="origin_<?php echo $i; ?>" id="origin_<?php echo $i; ?>" class="airport-select" style="width:100%"><?php foreach($airportsList as $airport){ echo '<option value="'.$airport['code'].'">'.$airport['code'].' - '.$airport['name'].'</option>'; } ?></select></div>
+                        <div class="form-group"><label>To</label><select name="destination_<?php echo $i; ?>" id="destination_<?php echo $i; ?>" class="airport-select" style="width:100%"><?php foreach($airportsList as $airport){ echo '<option value="'.$airport['code'].'">'.$airport['code'].' - '.$airport['name'].'</option>'; } ?></select></div>
+                        <div class="form-group"><label>Date</label><input type="date" name="date_<?php echo $i; ?>" value="<?php echo date('Y-m-d', strtotime('+'.(30+$i*5).' days')); ?>"></div>
                     </div>
                 </div>
+                <?php } ?>
             </div>
             
             <div class="form-row">
@@ -567,10 +553,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
 <!-- Umrah Packages Section -->
 <section class="packages-luxury" id="umrah">
     <div class="container">
-        <div class="section-header">
-            <h2>Premium Umrah Packages 2026</h2>
-            <p>Experience spiritual devotion with luxury accommodations near the Holy Mosques</p>
-        </div>
+        <div class="section-header"><h2>Premium Umrah Packages 2026</h2><p>Experience spiritual devotion with luxury accommodations near the Holy Mosques</p></div>
         <div class="packages-grid">
             <div class="package-card"><div class="package-image" style="background-image:url('https://images.pexels.com/photos/4346403/pexels-photo-4346403.jpeg')"><div class="package-badge">€895</div></div><div class="package-content"><h3>Essence Umrah Package</h3><ul class="package-features"><li><i class="fas fa-check-circle"></i> 7 Days Makkah + 3 Days Madina</li><li><i class="fas fa-check-circle"></i> 3-Star Hotel with Shuttle</li><li><i class="fas fa-check-circle"></i> Economy Flight Tickets</li><li><i class="fas fa-check-circle"></i> Umrah Visa Processing</li></ul><button class="package-btn" onclick="bookPackage('Essence Umrah Package', '€895')">View Details</button></div></div>
             <div class="package-card"><div class="package-image" style="background-image:url('https://images.pexels.com/photos/2895295/pexels-photo-2895295.jpeg')"><div class="package-badge">€999</div></div><div class="package-content"><h3>Enhanced Umrah Package</h3><ul class="package-features"><li><i class="fas fa-check-circle"></i> 7 Days Makkah + 3 Days Madina</li><li><i class="fas fa-check-circle"></i> 4-Star Hotel with Shuttle</li><li><i class="fas fa-check-circle"></i> Flight Tickets Included</li><li><i class="fas fa-check-circle"></i> Fast-Track Visa</li></ul><button class="package-btn" onclick="bookPackage('Enhanced Umrah Package', '€999')">View Details</button></div></div>
@@ -582,26 +565,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
 <!-- Hajj Section -->
 <section class="hajj-section" id="hajj">
     <div class="container">
-        <div class="section-header">
-            <h2>Hajj Packages 2026</h2>
-            <p>Coming Soon - Register your interest for Hajj 2026</p>
-        </div>
-        <div class="hajj-waiting">
-            <i class="fas fa-clock" style="font-size: 64px; color: var(--primary-gold); margin-bottom: 20px;"></i>
-            <h3 style="color: var(--primary-navy); margin-bottom: 15px;">CLOSED FOR NOW</h3>
-            <p style="margin-bottom: 25px;">Hajj 2026 packages are currently in development. Phase 2 bookings will open soon.</p>
-            <a href="https://wa.me/34611473217?text=I'm interested in Hajj 2026 packages" class="whatsapp-btn-elegant" target="_blank"><i class="fab fa-whatsapp"></i> Notify Me When Open</a>
-        </div>
+        <div class="section-header"><h2>Hajj Packages 2026</h2><p>Coming Soon - Register your interest for Hajj 2026</p></div>
+        <div class="hajj-waiting"><i class="fas fa-clock" style="font-size: 64px; color: var(--primary-gold); margin-bottom: 20px;"></i><h3 style="color: var(--primary-navy); margin-bottom: 15px;">CLOSED FOR NOW</h3><p style="margin-bottom: 25px;">Hajj 2026 packages are currently in development. Phase 2 bookings will open soon.</p><a href="https://wa.me/34611473217?text=I'm interested in Hajj 2026 packages" class="whatsapp-btn-elegant" target="_blank"><i class="fab fa-whatsapp"></i> Notify Me When Open</a></div>
     </div>
 </section>
 
 <!-- Flight Deals Section -->
 <section class="packages-luxury" id="flights" style="background: var(--light-bg);">
     <div class="container">
-        <div class="section-header">
-            <h2>Exclusive Flight Deals</h2>
-            <p>Special offers from Barcelona to worldwide destinations</p>
-        </div>
+        <div class="section-header"><h2>Exclusive Flight Deals</h2><p>Special offers from Barcelona to worldwide destinations</p></div>
         <div class="deals-grid">
             <div class="deal-card"><div><strong>✈️ ETIHAD AIRWAYS</strong><br>Barcelona (BCN) → Lahore (LHE)</div><div class="deal-price">€580</div><a href="https://wa.me/34611473217?text=Interested in BCN to Lahore €580" class="book-btn">Book Now</a></div>
             <div class="deal-card"><div><strong>✈️ ETIHAD AIRWAYS</strong><br>Barcelona (BCN) → Islamabad (ISB)</div><div class="deal-price">€585</div><a href="https://wa.me/34611473217?text=Interested in BCN to Islamabad €585" class="book-btn">Book Now</a></div>
@@ -616,10 +588,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
 <!-- Services Section -->
 <section class="packages-luxury" id="services">
     <div class="container">
-        <div class="section-header">
-            <h2>Our Premium Services</h2>
-            <p>Comprehensive travel solutions tailored to your needs</p>
-        </div>
+        <div class="section-header"><h2>Our Premium Services</h2><p>Comprehensive travel solutions tailored to your needs</p></div>
         <div class="services-grid">
             <div class="service-card"><div class="service-icon"><i class="fas fa-passport"></i></div><h3>Visa Processing</h3><p>Expert visa processing for Umrah, Hajj & worldwide travel</p></div>
             <div class="service-card"><div class="service-icon"><i class="fas fa-hotel"></i></div><h3>Luxury Hotels</h3><p>5-star hotel reservations worldwide with best rates</p></div>
@@ -632,12 +601,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
 <!-- About Section -->
 <section class="packages-luxury" id="about" style="background: var(--light-bg);">
     <div class="container">
-        <div class="section-header">
-            <h2>About Mustafa Travels</h2>
-            <p>Your trusted partner for spiritual and leisure travel since 2024</p>
-        </div>
+        <div class="section-header"><h2>About Mustafa Travels</h2><p>Your trusted partner for spiritual and leisure travel since 2024</p></div>
         <div class="about-content">
-            <div><p>Mustafa Travels & Tours has been crafting exceptional travel experiences since 2024. We specialize in premium Umrah and Hajj journeys, offering unparalleled service and attention to detail.</p><p style="margin-top: 20px;">Our commitment to excellence ensures every spiritual journey is memorable, comfortable, and deeply meaningful. We blend traditional values with modern luxury to create unforgettable experiences.</p><p style="margin-top: 20px;"><strong>✈️ 500+ Happy Travelers | 🌍 50+ Destinations | ⭐ 4.9/5 Rating</strong></p><div style="margin-top: 25px;"><a href="https://wa.me/34611473217" class="whatsapp-btn-elegant" target="_blank"><i class="fab fa-whatsapp"></i> Chat with us on WhatsApp</a></div></div>
+            <div><p>Mustafa Travels & Tours has been crafting exceptional travel experiences since 2024. We specialize in premium Umrah and Hajj journeys, offering unparalleled service and attention to detail.</p><p style="margin-top: 20px;">Our commitment to excellence ensures every spiritual journey is memorable, comfortable, and deeply meaningful.</p><p style="margin-top: 20px;"><strong>✈️ 500+ Happy Travelers | 🌍 50+ Destinations | ⭐ 4.9/5 Rating</strong></p><div style="margin-top: 25px;"><a href="https://wa.me/34611473217" class="whatsapp-btn-elegant" target="_blank"><i class="fab fa-whatsapp"></i> Chat with us on WhatsApp</a></div></div>
             <div class="about-image" style="background-image:url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80')"></div>
         </div>
     </div>
@@ -657,6 +623,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
 </footer>
 
 <script>
+// Initialize Select2 for all airport selects
+$(document).ready(function() {
+    $('.airport-select').select2({
+        placeholder: 'Search airport...',
+        allowClear: true,
+        width: '100%'
+    });
+});
+
 // Slider
 let currentSlide = 0;
 const slides = document.querySelectorAll('.luxury-slide');
@@ -692,24 +667,14 @@ function toggleTripType() {
         onewayDiv.style.display = 'block';
         returnDiv.style.display = 'none';
         multiDiv.style.display = 'none';
-        // Enable oneway inputs
-        document.querySelectorAll('#onewayFields input').forEach(input => input.disabled = false);
-        document.querySelectorAll('#returnFields input').forEach(input => input.disabled = true);
-        document.querySelectorAll('#multiFields input').forEach(input => input.disabled = true);
     } else if (tripType === 'return') {
         onewayDiv.style.display = 'none';
         returnDiv.style.display = 'block';
         multiDiv.style.display = 'none';
-        document.querySelectorAll('#onewayFields input').forEach(input => input.disabled = true);
-        document.querySelectorAll('#returnFields input').forEach(input => input.disabled = false);
-        document.querySelectorAll('#multiFields input').forEach(input => input.disabled = true);
     } else {
         onewayDiv.style.display = 'none';
         returnDiv.style.display = 'none';
         multiDiv.style.display = 'block';
-        document.querySelectorAll('#onewayFields input').forEach(input => input.disabled = true);
-        document.querySelectorAll('#returnFields input').forEach(input => input.disabled = true);
-        document.querySelectorAll('#multiFields input').forEach(input => input.disabled = false);
     }
 }
 
@@ -718,24 +683,17 @@ document.getElementById('flightSearchForm')?.addEventListener('submit', function
     const tripType = document.querySelector('input[name="trip_type"]:checked').value;
     
     if (tripType === 'oneway') {
-        // Copy oneway values to main fields
-        document.querySelector('input[name="origin"]').value = document.querySelector('#onewayFields input[name="origin"]').value;
-        document.querySelector('input[name="destination"]').value = document.querySelector('#onewayFields input[name="destination"]').value;
-        document.querySelector('input[name="departure_date"]').value = document.querySelector('#onewayFields input[name="departure_date"]').value;
+        document.querySelector('input[name="origin"]').value = document.querySelector('#origin_oneway').value;
+        document.querySelector('input[name="destination"]').value = document.querySelector('#destination_oneway').value;
     } else if (tripType === 'return') {
-        document.querySelector('input[name="origin"]').value = document.querySelector('#returnFields input[name="origin_return"]').value;
-        document.querySelector('input[name="destination"]').value = document.querySelector('#returnFields input[name="destination_return"]').value;
-        document.querySelector('input[name="departure_date"]').value = document.querySelector('#returnFields input[name="departure_date_return"]').value;
-        document.querySelector('input[name="return_date"]').value = document.querySelector('#returnFields input[name="return_date"]').value;
-    } else {
-        // Multi-city - keep as is
+        document.querySelector('input[name="origin_return"]').value = document.querySelector('#origin_return').value;
+        document.querySelector('input[name="destination_return"]').value = document.querySelector('#destination_return').value;
     }
 });
 
 // Initialize
 toggleTripType();
 
-// Close mobile menu on link click
 document.querySelectorAll('.nav-elegant a').forEach(link => {
     link.addEventListener('click', () => {
         if (window.innerWidth <= 768) {
