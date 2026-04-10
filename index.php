@@ -3,7 +3,6 @@
 $apiKey = 'duffel_live_cvF1_BR5No4SjJTp3tGVSDKkpwWwFU3VgOkN7TtETlB';
 $flightResults = '';
 $searchPerformed = false;
-$selectedOffer = null;
 
 // Airport database
 $airportsList = [
@@ -27,93 +26,100 @@ function getAirportName($code) {
 // Handle flight search
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
     $searchPerformed = true;
-    $origin = strtoupper(trim($_POST['origin']));
-    $destination = strtoupper(trim($_POST['destination']));
-    $date = $_POST['departure_date'];
+    $tripType = $_POST['trip_type'] ?? 'oneway';
     $passengers = intval($_POST['passengers']);
     $cabinClass = $_POST['cabin_class'] ?? 'economy';
     
-    $searchData = [
-        'data' => [
-            'slices' => [[
-                'origin' => $origin,
-                'destination' => $destination,
-                'departure_date' => $date
-            ]],
-            'passengers' => array_fill(0, $passengers, ['type' => 'adult']),
-            'cabin_class' => $cabinClass,
-            'max_connections' => 1
-        ]
-    ];
+    $slices = [];
     
-    $ch = curl_init('https://api.duffel.com/air/offer_requests?return_offers=true');
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json',
-        'Authorization: Bearer ' . $apiKey,
-        'Duffel-Version: v2'
-    ]);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($searchData));
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+    if ($tripType == 'oneway') {
+        $origin = strtoupper(trim($_POST['origin']));
+        $destination = strtoupper(trim($_POST['destination']));
+        $date = $_POST['departure_date'];
+        $slices[] = ['origin' => $origin, 'destination' => $destination, 'departure_date' => $date];
+    }
     
-    $response = curl_exec($ch);
-    curl_close($ch);
+    if ($tripType == 'return') {
+        $origin = strtoupper(trim($_POST['origin_return']));
+        $destination = strtoupper(trim($_POST['destination_return']));
+        $date = $_POST['departure_date_return'];
+        $returnDate = $_POST['return_date'];
+        $slices[] = ['origin' => $origin, 'destination' => $destination, 'departure_date' => $date];
+        $slices[] = ['origin' => $destination, 'destination' => $origin, 'departure_date' => $returnDate];
+    }
     
-    if ($response === false) {
-        $flightResults = '<div class="error">❌ Connection error. Please try again.</div>';
-    } else {
-        $data = json_decode($response, true);
-        $offers = $data['data']['offers'] ?? [];
-        
-        if (count($offers) > 0) {
-            $flightResults = '<div class="success-header">✈️ Found ' . count($offers) . ' flights</div>';
-            
-            foreach (array_slice($offers, 0, 15) as $offer) {
-                $slice = $offer['slices'][0];
-                $segments = $slice['segments'] ?? [];
-                $first = $segments[0] ?? null;
-                $last = $segments[count($segments)-1] ?? null;
-                
-                $depTime = $first ? date('h:i A, M j', strtotime($first['departing_at'])) : 'N/A';
-                $arrTime = $last ? date('h:i A, M j', strtotime($last['arriving_at'])) : 'N/A';
-                
-                $duration = 0;
-                foreach ($segments as $s) $duration += intval($s['duration'] ?? 0);
-                $durText = floor($duration/60).'h '.($duration%60).'m';
-                $stops = count($segments)-1;
-                $stopText = $stops == 0 ? 'Direct' : $stops.' stop'.($stops>1?'s':'');
-                $airline = $offer['owner']['name'] ?? 'Airline';
-                $price = $offer['total_amount'] ?? '0';
-                $currency = $offer['total_currency'] ?? 'EUR';
-                $offerId = $offer['id'] ?? '';
-                
-                $flightResults .= '
-                <div class="flight-card" onclick="selectFlight(\''.$offerId.'\', \''.$price.'\', \''.$currency.'\', \''.addslashes($airline).'\', \''.$origin.'\', \''.$destination.'\', \''.$depTime.'\', \''.$arrTime.'\', \''.$durText.'\', \''.$stopText.'\')">
-                    <div class="flight-header">
-                        <div class="airline-info">
-                            <div class="airline-icon">✈️</div>
-                            <div><div class="airline-name">'.htmlspecialchars($airline).'</div></div>
-                        </div>
-                        <div class="flight-price">'.$price.' '.$currency.'</div>
-                    </div>
-                    <div class="flight-route">
-                        <div><div class="city-code">'.$origin.'</div><div class="city-name">'.getAirportName($origin).'</div><div class="flight-time">'.$depTime.'</div></div>
-                        <div class="flight-duration"><div class="duration-line"></div><div class="duration-text">'.$durText.'</div><div class="stops-text">'.$stopText.'</div></div>
-                        <div><div class="city-code">'.$destination.'</div><div class="city-name">'.getAirportName($destination).'</div><div class="flight-time">'.$arrTime.'</div></div>
-                    </div>
-                    <button class="select-flight-btn">Select Flight</button>
-                </div>';
+    if ($tripType == 'multi') {
+        for ($i = 1; $i <= 3; $i++) {
+            $origin = strtoupper(trim($_POST["origin_$i"] ?? ''));
+            $destination = strtoupper(trim($_POST["destination_$i"] ?? ''));
+            $date = $_POST["date_$i"] ?? '';
+            if ($origin && $destination && $date) {
+                $slices[] = ['origin' => $origin, 'destination' => $destination, 'departure_date' => $date];
             }
+        }
+    }
+    
+    if (count($slices) > 0) {
+        $searchData = ['data' => ['slices' => $slices, 'passengers' => array_fill(0, $passengers, ['type' => 'adult']), 'cabin_class' => $cabinClass, 'max_connections' => 1]];
+        $ch = curl_init('https://api.duffel.com/air/offer_requests?return_offers=true');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'Authorization: Bearer ' . $apiKey, 'Duffel-Version: v2']);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($searchData));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        
+        if ($response === false) {
+            $flightResults = '<div class="error">❌ Connection error</div>';
         } else {
-            $flightResults = '<div class="error">✈️ No flights found. Try different date.</div>';
+            $data = json_decode($response, true);
+            $offers = $data['data']['offers'] ?? [];
+            if (count($offers) > 0) {
+                $flightResults = '<div class="success-header">✈️ Found ' . count($offers) . ' flights</div>';
+                foreach (array_slice($offers, 0, 15) as $offer) {
+                    $slice = $offer['slices'][0];
+                    $segments = $slice['segments'] ?? [];
+                    $first = $segments[0] ?? null;
+                    $last = $segments[count($segments)-1] ?? null;
+                    $depTime = $first ? date('h:i A, M j', strtotime($first['departing_at'])) : 'N/A';
+                    $arrTime = $last ? date('h:i A, M j', strtotime($last['arriving_at'])) : 'N/A';
+                    $duration = 0;
+                    foreach ($segments as $s) $duration += intval($s['duration'] ?? 0);
+                    $durText = floor($duration/60).'h '.($duration%60).'m';
+                    $stops = count($segments)-1;
+                    $stopText = $stops == 0 ? 'Direct' : $stops.' stop'.($stops>1?'s':'');
+                    $airline = $offer['owner']['name'] ?? 'Airline';
+                    $price = $offer['total_amount'] ?? '0';
+                    $currency = $offer['total_currency'] ?? 'EUR';
+                    $offerId = $offer['id'] ?? '';
+                    
+                    $flightResults .= '
+                    <div class="flight-card" onclick="selectFlight(\''.$offerId.'\', \''.$price.'\', \''.$currency.'\', \''.addslashes($airline).'\', \''.$origin.'\', \''.$destination.'\', \''.$depTime.'\', \''.$arrTime.'\', \''.$durText.'\', \''.$stopText.'\')">
+                        <div class="flight-header">
+                            <div class="airline-info">
+                                <div class="airline-icon">✈️</div>
+                                <div><div class="airline-name">'.htmlspecialchars($airline).'</div></div>
+                            </div>
+                            <div class="flight-price">'.$price.' '.$currency.'</div>
+                        </div>
+                        <div class="flight-route">
+                            <div><div class="city-code">'.$origin.'</div><div class="city-name">'.getAirportName($origin).'</div><div class="flight-time">'.$depTime.'</div></div>
+                            <div class="flight-duration"><div class="duration-line"></div><div class="duration-text">'.$durText.'</div><div class="stops-text">'.$stopText.'</div></div>
+                            <div><div class="city-code">'.$destination.'</div><div class="city-name">'.getAirportName($destination).'</div><div class="flight-time">'.$arrTime.'</div></div>
+                        </div>
+                        <button class="select-flight-btn" onclick="event.stopPropagation(); selectFlight(...)">Select Flight</button>
+                    </div>';
+                }
+            } else {
+                $flightResults = '<div class="error">✈️ No flights found. Try different date.</div>';
+            }
         }
     }
 }
 
 // Handle booking confirmation
-$bookingConfirmation = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
     $offerId = $_POST['offer_id'];
     $price = $_POST['price'];
@@ -136,7 +142,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
     $contactEmail = $_POST['contact_email'];
     $contactPhone = $_POST['contact_phone'];
     
-    // Build WhatsApp message
     $whatsappMsg = "🛫 *NEW FLIGHT BOOKING REQUEST* 🛫\n\n";
     $whatsappMsg .= "✈️ *FLIGHT DETAILS*\n";
     $whatsappMsg .= "Airline: $airline\n";
@@ -157,10 +162,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
     $whatsappMsg .= "📞 *CONTACT DETAILS*\n";
     $whatsappMsg .= "Email: $contactEmail\n";
     $whatsappMsg .= "Phone: $contactPhone\n\n";
-    
     $whatsappMsg .= "⏳ Please confirm availability and send payment link.";
     
-    // Redirect to WhatsApp
     header("Location: https://wa.me/34611473217?text=" . urlencode($whatsappMsg));
     exit();
 }
@@ -170,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mustafa Travels | Book Flights Worldwide</title>
+    <title>Mustafa Travels | Book Flights - Umrah - Hajj</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -189,6 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
             --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Montserrat', sans-serif;
             background: var(--light-bg);
@@ -231,7 +235,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
         .logo-main-elegant { font-family: 'Crimson Text', serif; font-size: 28px; font-weight: 700; color: white; }
         .logo-sub-elegant { font-size: 12px; color: var(--light-gold); letter-spacing: 2px; }
         .nav-elegant { display: flex; gap: 30px; flex-wrap: wrap; }
-        .nav-elegant a { color: white; text-decoration: none; font-weight: 500; font-size: 15px; transition: var(--transition); }
+        .nav-elegant a { color: white; text-decoration: none; font-weight: 500; font-size: 15px; transition: var(--transition); cursor: pointer; }
         .nav-elegant a:hover { color: var(--primary-gold); }
         .whatsapp-btn-elegant {
             background: #25D366;
@@ -550,7 +554,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
         <div class="slide-overlay"><div class="slide-content-luxury"><h2>Hajj 2026</h2><p>Coming Soon</p><a href="#hajj" class="luxury-btn">Register</a></div></div>
     </div>
     <div class="slider-controls"><div class="slider-dot-luxury active"></div><div class="slider-dot-luxury"></div></div>
-</div>
+</section>
 
 <div class="container">
     <div class="search-luxury">
@@ -675,7 +679,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
 </div>
 
 <!-- Services Section -->
-<section style="background:var(--light-bg); padding:60px 0">
+<section id="services" style="background:var(--light-bg); padding:60px 0">
     <div class="container">
         <div class="section-header"><h2>⭐ Our Services</h2></div>
         <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:25px">
@@ -688,7 +692,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
 </section>
 
 <!-- About Section -->
-<section style="padding:60px 0">
+<section id="about" style="padding:60px 0">
     <div class="container">
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:50px; align-items:center">
             <div><h2 style="font-size:36px; color:var(--primary-navy); margin-bottom:20px">About Mustafa Travels</h2><p>Since 2024, we've been crafting exceptional travel experiences. Specializing in Umrah, Hajj & worldwide flights.</p><p style="margin-top:15px"><strong>500+ Happy Travelers | 50+ Destinations | ⭐ 4.9/5 Rating</strong></p></div>
@@ -697,7 +701,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
     </div>
 </section>
 
-<footer class="footer-elegant">
+<footer class="footer-elegant" id="contact">
     <div class="container">
         <div class="footer-content">
             <div><h3>Mustafa Travels</h3><p>Rambla Badal 141, Barcelona<br>📞 +34-632234216<br>💬 +34-611473217<br>✉️ mustafatravelstours@gmail.com</p></div>
@@ -763,20 +767,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
 </div>
 
 <script>
-$(document).ready(function() { $('.airport-select').select2({ width: '100%' }); });
+$(document).ready(function() { 
+    $('.airport-select').select2({ width: '100%' }); 
+});
 
 // Slider
 let currentSlide = 0;
 const slides = document.querySelectorAll('.luxury-slide');
 const dots = document.querySelectorAll('.slider-dot-luxury');
-function showSlide(i) { slides.forEach(s=>s.classList.remove('active')); dots.forEach(d=>d.classList.remove('active')); slides[i].classList.add('active'); dots[i].classList.add('active'); currentSlide=i; }
-setInterval(()=>{ currentSlide = (currentSlide+1)%slides.length; showSlide(currentSlide); }, 5000);
-dots.forEach((d,i)=>d.addEventListener('click',()=>showSlide(i)));
+function showSlide(i) { 
+    if(!slides.length) return;
+    slides.forEach(s=>s.classList.remove('active')); 
+    dots.forEach(d=>d.classList.remove('active')); 
+    slides[i].classList.add('active'); 
+    dots[i].classList.add('active'); 
+    currentSlide=i; 
+}
+if(slides.length) {
+    setInterval(()=>{ currentSlide = (currentSlide+1)%slides.length; showSlide(currentSlide); }, 5000);
+    dots.forEach((d,i)=>d.addEventListener('click',()=>showSlide(i)));
+}
 
 // Mobile menu
-document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() { document.querySelector('.nav-elegant')?.classList.toggle('active'); });
+document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() { 
+    document.querySelector('.nav-elegant')?.classList.toggle('active'); 
+});
 
-function bookPackage(name, price) { window.open(`https://wa.me/34611473217?text=I'm interested in ${name} (${price})`, '_blank'); }
+// Smooth scroll for navigation
+document.querySelectorAll('.nav-elegant a, .logo-elegant, .luxury-btn').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if(href && href.startsWith('#')) {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if(target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                document.querySelector('.nav-elegant')?.classList.remove('active');
+            }
+        }
+    });
+});
+
+function bookPackage(name, price) { 
+    window.open(`https://wa.me/34611473217?text=I'm interested in ${name} (${price})`, '_blank'); 
+}
 
 function toggleTripType() {
     const type = document.querySelector('input[name="trip_type"]:checked').value;
@@ -797,9 +831,8 @@ function selectFlight(offerId, price, currency, airline, origin, destination, de
     document.getElementById('duration').value = duration;
     document.getElementById('stops').value = stops;
     
-    // Calculate fare breakdown
-    let fare = Math.round(price * 0.59);
-    let taxes = price - fare;
+    let fare = Math.round(parseFloat(price) * 0.59);
+    let taxes = parseFloat(price) - fare;
     
     document.getElementById('flightSummary').innerHTML = `
         <strong>✈️ Flight Details</strong><br>
@@ -826,11 +859,14 @@ function closeBookingModal() {
 }
 
 document.querySelectorAll('.close-modal, .modal-overlay').forEach(el => {
-    el.addEventListener('click', (e) => { if(e.target === document.getElementById('bookingModal') || e.target.classList.contains('close-modal')) closeBookingModal(); });
+    el.addEventListener('click', (e) => { 
+        if(e.target === document.getElementById('bookingModal') || e.target.classList.contains('close-modal')) 
+            closeBookingModal(); 
+    });
 });
 
 toggleTripType();
-showSlide(0);
+if(slides.length) showSlide(0);
 </script>
 </body>
 </html>
