@@ -23,17 +23,339 @@ require_once __DIR__ . '/PHPMailer/Exception.php';
 // ========== SERVICE CHARGES ==========
 define('SERVICE_CHARGE', 15); // €15 service charge
 
-// Airport database (abbreviated for space - use your full list)
+// Complete Airport Database - Europe, Latin America, Asia, USA, Canada, Middle East
 $airportsList = [
+    // ========== SPAIN (Complete) ==========
     ['code' => 'BCN', 'name' => 'Barcelona-El Prat, Spain'],
     ['code' => 'MAD', 'name' => 'Madrid-Barajas, Spain'],
-    ['code' => 'LHE', 'name' => 'Lahore, Pakistan'],
-    ['code' => 'ISB', 'name' => 'Islamabad, Pakistan'],
-    ['code' => 'KHI', 'name' => 'Karachi, Pakistan'],
-    ['code' => 'JFK', 'name' => 'New York, USA'],
-    ['code' => 'LHR', 'name' => 'London, UK'],
-    ['code' => 'DXB', 'name' => 'Dubai, UAE'],
-    // Add more airports from your full list here
+    ['code' => 'AGP', 'name' => 'Malaga-Costa del Sol, Spain'],
+    ['code' => 'SVQ', 'name' => 'Seville-San Pablo, Spain'],
+    ['code' => 'ALC', 'name' => 'Alicante-Elche, Spain'],
+    ['code' => 'PMI', 'name' => 'Palma de Mallorca, Spain'],
+    ['code' => 'BIO', 'name' => 'Bilbao, Spain'],
+    ['code' => 'VLC', 'name' => 'Valencia, Spain'],
+    ['code' => 'GRX', 'name' => 'Granada, Spain'],
+    ['code' => 'LPA', 'name' => 'Gran Canaria, Spain'],
+    ['code' => 'TFN', 'name' => 'Tenerife North, Spain'],
+    ['code' => 'TFS', 'name' => 'Tenerife South, Spain'],
+    ['code' => 'IBZ', 'name' => 'Ibiza, Spain'],
+    ['code' => 'MAH', 'name' => 'Menorca, Spain'],
+    ['code' => 'GRO', 'name' => 'Girona-Costa Brava, Spain'],
+    ['code' => 'REU', 'name' => 'Reus, Spain'],
+    ['code' => 'SDR', 'name' => 'Santander, Spain'],
+    ['code' => 'VGO', 'name' => 'Vigo, Spain'],
+    ['code' => 'LCG', 'name' => 'A Coruña, Spain'],
+    ['code' => 'OVD', 'name' => 'Asturias, Spain'],
+    ['code' => 'XRY', 'name' => 'Jerez, Spain'],
+    ['code' => 'FUE', 'name' => 'Fuerteventura, Spain'],
+    ['code' => 'ACE', 'name' => 'Lanzarote, Spain'],
+    ['code' => 'SPC', 'name' => 'La Palma, Spain'],
+    ['code' => 'GMZ', 'name' => 'La Gomera, Spain'],
+    ['code' => 'VDE', 'name' => 'El Hierro, Spain'],
+    ['code' => 'MJV', 'name' => 'Murcia, Spain'],
+    ['code' => 'LEU', 'name' => 'Lleida-Alguaire, Spain'],
+    
+    // ========== EUROPE (All Countries) ==========
+    // United Kingdom
+    ['code' => 'LHR', 'name' => 'London Heathrow, UK'],
+    ['code' => 'LGW', 'name' => 'London Gatwick, UK'],
+    ['code' => 'STN', 'name' => 'London Stansted, UK'],
+    ['code' => 'LTN', 'name' => 'London Luton, UK'],
+    ['code' => 'LCY', 'name' => 'London City, UK'],
+    ['code' => 'MAN', 'name' => 'Manchester, UK'],
+    ['code' => 'BHX', 'name' => 'Birmingham, UK'],
+    ['code' => 'GLA', 'name' => 'Glasgow, UK'],
+    ['code' => 'EDI', 'name' => 'Edinburgh, UK'],
+    ['code' => 'BRS', 'name' => 'Bristol, UK'],
+    ['code' => 'LPL', 'name' => 'Liverpool, UK'],
+    ['code' => 'NCL', 'name' => 'Newcastle, UK'],
+    ['code' => 'BFS', 'name' => 'Belfast, UK'],
+    
+    // France
+    ['code' => 'CDG', 'name' => 'Paris Charles de Gaulle, France'],
+    ['code' => 'ORY', 'name' => 'Paris Orly, France'],
+    ['code' => 'NCE', 'name' => 'Nice Côte d\'Azur, France'],
+    ['code' => 'MRS', 'name' => 'Marseille Provence, France'],
+    ['code' => 'LYS', 'name' => 'Lyon-Saint Exupéry, France'],
+    ['code' => 'TLS', 'name' => 'Toulouse-Blagnac, France'],
+    ['code' => 'BOD', 'name' => 'Bordeaux-Mérignac, France'],
+    ['code' => 'NTE', 'name' => 'Nantes Atlantique, France'],
+    
+    // Germany
+    ['code' => 'FRA', 'name' => 'Frankfurt am Main, Germany'],
+    ['code' => 'MUC', 'name' => 'Munich, Germany'],
+    ['code' => 'BER', 'name' => 'Berlin Brandenburg, Germany'],
+    ['code' => 'HAM', 'name' => 'Hamburg, Germany'],
+    ['code' => 'DUS', 'name' => 'Düsseldorf, Germany'],
+    ['code' => 'CGN', 'name' => 'Cologne Bonn, Germany'],
+    ['code' => 'STR', 'name' => 'Stuttgart, Germany'],
+    ['code' => 'TXL', 'name' => 'Berlin Tegel, Germany'],
+    
+    // Italy
+    ['code' => 'FCO', 'name' => 'Rome Fiumicino, Italy'],
+    ['code' => 'CIA', 'name' => 'Rome Ciampino, Italy'],
+    ['code' => 'MXP', 'name' => 'Milan Malpensa, Italy'],
+    ['code' => 'LIN', 'name' => 'Milan Linate, Italy'],
+    ['code' => 'BGY', 'name' => 'Milan Bergamo, Italy'],
+    ['code' => 'VCE', 'name' => 'Venice Marco Polo, Italy'],
+    ['code' => 'NAP', 'name' => 'Naples, Italy'],
+    ['code' => 'BLQ', 'name' => 'Bologna, Italy'],
+    ['code' => 'PSA', 'name' => 'Pisa, Italy'],
+    ['code' => 'TRN', 'name' => 'Turin, Italy'],
+    
+    // Netherlands
+    ['code' => 'AMS', 'name' => 'Amsterdam Schiphol, Netherlands'],
+    ['code' => 'EIN', 'name' => 'Eindhoven, Netherlands'],
+    ['code' => 'RTM', 'name' => 'Rotterdam The Hague, Netherlands'],
+    
+    // Belgium
+    ['code' => 'BRU', 'name' => 'Brussels, Belgium'],
+    ['code' => 'CRL', 'name' => 'Brussels South Charleroi, Belgium'],
+    ['code' => 'ANR', 'name' => 'Antwerp, Belgium'],
+    
+    // Switzerland
+    ['code' => 'ZRH', 'name' => 'Zurich, Switzerland'],
+    ['code' => 'GVA', 'name' => 'Geneva, Switzerland'],
+    ['code' => 'BSL', 'name' => 'Basel Mulhouse, Switzerland'],
+    
+    // Austria
+    ['code' => 'VIE', 'name' => 'Vienna, Austria'],
+    ['code' => 'SZG', 'name' => 'Salzburg, Austria'],
+    ['code' => 'INN', 'name' => 'Innsbruck, Austria'],
+    
+    // Portugal
+    ['code' => 'LIS', 'name' => 'Lisbon Humberto Delgado, Portugal'],
+    ['code' => 'OPO', 'name' => 'Porto, Portugal'],
+    ['code' => 'FAO', 'name' => 'Faro, Portugal'],
+    ['code' => 'FNC', 'name' => 'Funchal Madeira, Portugal'],
+    ['code' => 'PDL', 'name' => 'Ponta Delgada Azores, Portugal'],
+    
+    // Scandinavia
+    ['code' => 'CPH', 'name' => 'Copenhagen, Denmark'],
+    ['code' => 'OSL', 'name' => 'Oslo Gardermoen, Norway'],
+    ['code' => 'BGO', 'name' => 'Bergen, Norway'],
+    ['code' => 'SVG', 'name' => 'Stavanger, Norway'],
+    ['code' => 'TRD', 'name' => 'Trondheim, Norway'],
+    ['code' => 'ARN', 'name' => 'Stockholm Arlanda, Sweden'],
+    ['code' => 'GOT', 'name' => 'Gothenburg Landvetter, Sweden'],
+    ['code' => 'HEL', 'name' => 'Helsinki Vantaa, Finland'],
+    ['code' => 'KEF', 'name' => 'Reykjavik Keflavik, Iceland'],
+    
+    // Eastern Europe
+    ['code' => 'WAW', 'name' => 'Warsaw Chopin, Poland'],
+    ['code' => 'KRK', 'name' => 'Krakow John Paul II, Poland'],
+    ['code' => 'PRG', 'name' => 'Prague Václav Havel, Czech Republic'],
+    ['code' => 'BUD', 'name' => 'Budapest Ferenc Liszt, Hungary'],
+    ['code' => 'ATH', 'name' => 'Athens Eleftherios Venizelos, Greece'],
+    ['code' => 'SKG', 'name' => 'Thessaloniki, Greece'],
+    ['code' => 'IST', 'name' => 'Istanbul Airport, Turkey'],
+    ['code' => 'SAW', 'name' => 'Istanbul Sabiha Gökçen, Turkey'],
+    ['code' => 'AYT', 'name' => 'Antalya, Turkey'],
+    
+    // Ireland
+    ['code' => 'DUB', 'name' => 'Dublin, Ireland'],
+    ['code' => 'SNN', 'name' => 'Shannon, Ireland'],
+    ['code' => 'ORK', 'name' => 'Cork, Ireland'],
+    
+    // ========== LATIN AMERICA ==========
+    // Brazil
+    ['code' => 'GRU', 'name' => 'São Paulo Guarulhos, Brazil'],
+    ['code' => 'CGH', 'name' => 'São Paulo Congonhas, Brazil'],
+    ['code' => 'VCP', 'name' => 'Campinas Viracopos, Brazil'],
+    ['code' => 'GIG', 'name' => 'Rio de Janeiro Galeão, Brazil'],
+    ['code' => 'SDU', 'name' => 'Rio de Janeiro Santos Dumont, Brazil'],
+    ['code' => 'BSB', 'name' => 'Brasília, Brazil'],
+    ['code' => 'CNF', 'name' => 'Belo Horizonte Confins, Brazil'],
+    ['code' => 'POA', 'name' => 'Porto Alegre, Brazil'],
+    ['code' => 'REC', 'name' => 'Recife, Brazil'],
+    ['code' => 'SSA', 'name' => 'Salvador, Brazil'],
+    ['code' => 'FOR', 'name' => 'Fortaleza, Brazil'],
+    
+    // Mexico
+    ['code' => 'MEX', 'name' => 'Mexico City Benito Juárez, Mexico'],
+    ['code' => 'CUN', 'name' => 'Cancún, Mexico'],
+    ['code' => 'GDL', 'name' => 'Guadalajara, Mexico'],
+    ['code' => 'MTY', 'name' => 'Monterrey, Mexico'],
+    ['code' => 'TIJ', 'name' => 'Tijuana, Mexico'],
+    ['code' => 'PVR', 'name' => 'Puerto Vallarta, Mexico'],
+    ['code' => 'SJD', 'name' => 'San José del Cabo, Mexico'],
+    
+    // Argentina
+    ['code' => 'EZE', 'name' => 'Buenos Aires Ezeiza, Argentina'],
+    ['code' => 'AEP', 'name' => 'Buenos Aires Aeroparque, Argentina'],
+    ['code' => 'COR', 'name' => 'Cordoba, Argentina'],
+    ['code' => 'MDZ', 'name' => 'Mendoza, Argentina'],
+    
+    // Colombia
+    ['code' => 'BOG', 'name' => 'Bogotá El Dorado, Colombia'],
+    ['code' => 'MDE', 'name' => 'Medellín José María Córdova, Colombia'],
+    ['code' => 'CLO', 'name' => 'Cali, Colombia'],
+    ['code' => 'CTG', 'name' => 'Cartagena, Colombia'],
+    ['code' => 'BAQ', 'name' => 'Barranquilla, Colombia'],
+    
+    // Peru
+    ['code' => 'LIM', 'name' => 'Lima Jorge Chávez, Peru'],
+    ['code' => 'CUZ', 'name' => 'Cusco, Peru'],
+    
+    // Chile
+    ['code' => 'SCL', 'name' => 'Santiago Arturo Merino Benítez, Chile'],
+    
+    // Other Latin America
+    ['code' => 'UIO', 'name' => 'Quito Mariscal Sucre, Ecuador'],
+    ['code' => 'GYE', 'name' => 'Guayaquil José Joaquín de Olmedo, Ecuador'],
+    ['code' => 'PTY', 'name' => 'Panama City Tocumen, Panama'],
+    ['code' => 'SJO', 'name' => 'San José Juan Santamaría, Costa Rica'],
+    ['code' => 'SAL', 'name' => 'San Salvador, El Salvador'],
+    ['code' => 'GUA', 'name' => 'Guatemala City La Aurora, Guatemala'],
+    ['code' => 'SDQ', 'name' => 'Santo Domingo Las Américas, Dominican Republic'],
+    ['code' => 'PUJ', 'name' => 'Punta Cana, Dominican Republic'],
+    ['code' => 'Hav', 'name' => 'Havana José Martí, Cuba'],
+    ['code' => 'VRA', 'name' => 'Varadero Juan Gualberto Gómez, Cuba'],
+    ['code' => 'NAS', 'name' => 'Nassau Lynden Pindling, Bahamas'],
+    
+    // ========== USA & CANADA ==========
+    // USA
+    ['code' => 'JFK', 'name' => 'New York JFK, USA'],
+    ['code' => 'EWR', 'name' => 'Newark Liberty, USA'],
+    ['code' => 'LGA', 'name' => 'New York LaGuardia, USA'],
+    ['code' => 'LAX', 'name' => 'Los Angeles, USA'],
+    ['code' => 'SFO', 'name' => 'San Francisco, USA'],
+    ['code' => 'ORD', 'name' => 'Chicago O\'Hare, USA'],
+    ['code' => 'MDW', 'name' => 'Chicago Midway, USA'],
+    ['code' => 'DFW', 'name' => 'Dallas/Fort Worth, USA'],
+    ['code' => 'ATL', 'name' => 'Atlanta Hartsfield-Jackson, USA'],
+    ['code' => 'MIA', 'name' => 'Miami, USA'],
+    ['code' => 'FLL', 'name' => 'Fort Lauderdale, USA'],
+    ['code' => 'BOS', 'name' => 'Boston Logan, USA'],
+    ['code' => 'SEA', 'name' => 'Seattle-Tacoma, USA'],
+    ['code' => 'DEN', 'name' => 'Denver, USA'],
+    ['code' => 'PHX', 'name' => 'Phoenix Sky Harbor, USA'],
+    ['code' => 'LAS', 'name' => 'Las Vegas McCarran, USA'],
+    ['code' => 'IAH', 'name' => 'Houston George Bush, USA'],
+    ['code' => 'MCO', 'name' => 'Orlando, USA'],
+    ['code' => 'TPA', 'name' => 'Tampa, USA'],
+    ['code' => 'SAN', 'name' => 'San Diego, USA'],
+    ['code' => 'PDX', 'name' => 'Portland, USA'],
+    ['code' => 'SLC', 'name' => 'Salt Lake City, USA'],
+    ['code' => 'BWI', 'name' => 'Baltimore/Washington, USA'],
+    ['code' => 'DCA', 'name' => 'Washington Reagan, USA'],
+    ['code' => 'IAD', 'name' => 'Washington Dulles, USA'],
+    ['code' => 'CLT', 'name' => 'Charlotte Douglas, USA'],
+    ['code' => 'NASH', 'name' => 'Nashville, USA'],
+    ['code' => 'STL', 'name' => 'St Louis Lambert, USA'],
+    
+    // Canada
+    ['code' => 'YYZ', 'name' => 'Toronto Pearson, Canada'],
+    ['code' => 'YVR', 'name' => 'Vancouver, Canada'],
+    ['code' => 'YUL', 'name' => 'Montreal Trudeau, Canada'],
+    ['code' => 'YYC', 'name' => 'Calgary, Canada'],
+    ['code' => 'YEG', 'name' => 'Edmonton, Canada'],
+    ['code' => 'YOW', 'name' => 'Ottawa Macdonald-Cartier, Canada'],
+    ['code' => 'YHZ', 'name' => 'Halifax Stanfield, Canada'],
+    ['code' => 'YWG', 'name' => 'Winnipeg, Canada'],
+    
+    // ========== ASIA (Pakistan, India, Bangladesh, UAE, etc.) ==========
+    // Pakistan
+    ['code' => 'LHE', 'name' => 'Lahore Allama Iqbal, Pakistan'],
+    ['code' => 'ISB', 'name' => 'Islamabad International, Pakistan'],
+    ['code' => 'KHI', 'name' => 'Karachi Jinnah, Pakistan'],
+    ['code' => 'MUX', 'name' => 'Multan, Pakistan'],
+    ['code' => 'LYP', 'name' => 'Faisalabad, Pakistan'],
+    ['code' => 'UET', 'name' => 'Quetta, Pakistan'],
+    ['code' => 'PEW', 'name' => 'Peshawar, Pakistan'],
+    ['code' => 'SKT', 'name' => 'Sialkot, Pakistan'],
+    ['code' => 'RYK', 'name' => 'Rahim Yar Khan, Pakistan'],
+    ['code' => 'GWD', 'name' => 'Gwadar, Pakistan'],
+    ['code' => 'TUK', 'name' => 'Turbat, Pakistan'],
+    ['code' => 'Suk', 'name' => 'Sukkur, Pakistan'],
+    
+    // India
+    ['code' => 'DEL', 'name' => 'Delhi Indira Gandhi, India'],
+    ['code' => 'BOM', 'name' => 'Mumbai Chhatrapati Shivaji, India'],
+    ['code' => 'BLR', 'name' => 'Bangalore Kempegowda, India'],
+    ['code' => 'MAA', 'name' => 'Chennai, India'],
+    ['code' => 'CCU', 'name' => 'Kolkata Netaji Subhash, India'],
+    ['code' => 'HYD', 'name' => 'Hyderabad Rajiv Gandhi, India'],
+    ['code' => 'AMD', 'name' => 'Ahmedabad, India'],
+    ['code' => 'ATQ', 'name' => 'Amritsar Sri Guru Ram Dass Jee, India'],
+    ['code' => 'GOI', 'name' => 'Goa Dabolim, India'],
+    ['code' => 'JAI', 'name' => 'Jaipur, India'],
+    ['code' => 'LKO', 'name' => 'Lucknow, India'],
+    ['code' => 'COK', 'name' => 'Kochi, India'],
+    ['code' => 'TRV', 'name' => 'Trivandrum, India'],
+    
+    // Bangladesh
+    ['code' => 'DAC', 'name' => 'Dhaka Hazrat Shahjalal, Bangladesh'],
+    ['code' => 'CGP', 'name' => 'Chittagong Shah Amanat, Bangladesh'],
+    
+    // UAE & Middle East
+    ['code' => 'DXB', 'name' => 'Dubai International, UAE'],
+    ['code' => 'AUH', 'name' => 'Abu Dhabi, UAE'],
+    ['code' => 'SHJ', 'name' => 'Sharjah, UAE'],
+    ['code' => 'DOH', 'name' => 'Doha Hamad, Qatar'],
+    ['code' => 'BAH', 'name' => 'Bahrain, Bahrain'],
+    ['code' => 'RUH', 'name' => 'Riyadh King Khalid, Saudi Arabia'],
+    ['code' => 'JED', 'name' => 'Jeddah King Abdulaziz, Saudi Arabia'],
+    ['code' => 'MED', 'name' => 'Medina Prince Mohammad, Saudi Arabia'],
+    ['code' => 'DMM', 'name' => 'Dammam King Fahd, Saudi Arabia'],
+    ['code' => 'KWI', 'name' => 'Kuwait, Kuwait'],
+    ['code' => 'MCT', 'name' => 'Muscat, Oman'],
+    
+    // Southeast Asia
+    ['code' => 'SIN', 'name' => 'Singapore Changi, Singapore'],
+    ['code' => 'KUL', 'name' => 'Kuala Lumpur, Malaysia'],
+    ['code' => 'BKK', 'name' => 'Bangkok Suvarnabhumi, Thailand'],
+    ['code' => 'DMK', 'name' => 'Bangkok Don Mueang, Thailand'],
+    ['code' => 'CGK', 'name' => 'Jakarta Soekarno-Hatta, Indonesia'],
+    ['code' => 'MNL', 'name' => 'Manila Ninoy Aquino, Philippines'],
+    ['code' => 'HAN', 'name' => 'Hanoi Noi Bai, Vietnam'],
+    ['code' => 'SGN', 'name' => 'Ho Chi Minh City Tan Son Nhat, Vietnam'],
+    
+    // China & East Asia
+    ['code' => 'PEK', 'name' => 'Beijing Capital, China'],
+    ['code' => 'PKX', 'name' => 'Beijing Daxing, China'],
+    ['code' => 'PVG', 'name' => 'Shanghai Pudong, China'],
+    ['code' => 'CAN', 'name' => 'Guangzhou Baiyun, China'],
+    ['code' => 'HKG', 'name' => 'Hong Kong, China'],
+    ['code' => 'NRT', 'name' => 'Tokyo Narita, Japan'],
+    ['code' => 'HND', 'name' => 'Tokyo Haneda, Japan'],
+    ['code' => 'KIX', 'name' => 'Osaka Kansai, Japan'],
+    ['code' => 'ICN', 'name' => 'Seoul Incheon, South Korea'],
+    ['code' => 'GMP', 'name' => 'Seoul Gimpo, South Korea'],
+    ['code' => 'TPE', 'name' => 'Taipei Taoyuan, Taiwan'],
+        // East Africa
+    ['code' => 'NBO', 'name' => 'Nairobi Jomo Kenyatta, Kenya'],
+    ['code' => 'MBA', 'name' => 'Mombasa Moi, Kenya'],
+    ['code' => 'ADD', 'name' => 'Addis Ababa Bole, Ethiopia'],
+    ['code' => 'DIR', 'name' => 'Dire Dawa, Ethiopia'],
+    ['code' => 'JUB', 'name' => 'Juba, South Sudan'],
+    ['code' => 'KRT', 'name' => 'Khartoum, Sudan'],
+    ['code' => 'EBB', 'name' => 'Entebbe, Uganda'],
+    ['code' => 'KGL', 'name' => 'Kigali, Rwanda'],
+    ['code' => 'BJM', 'name' => 'Bujumbura, Burundi'],
+    ['code' => 'DAR', 'name' => 'Dar es Salaam Julius Nyerere, Tanzania'],
+    ['code' => 'ZNZ', 'name' => 'Zanzibar Abeid Amani Karume, Tanzania'],
+    ['code' => 'JRO', 'name' => 'Kilimanjaro, Tanzania'],
+    ['code' => 'HRE', 'name' => 'Harare Robert Mugabe, Zimbabwe'],
+    ['code' => 'BUQ', 'name' => 'Bulawayo Joshua Mqabuko, Zimbabwe'],
+    ['code' => 'LUN', 'name' => 'Lusaka Kenneth Kaunda, Zambia'],
+    ['code' => 'LLW', 'name' => 'Lilongwe, Malawi'],
+    ['code' => 'BLZ', 'name' => 'Blantyre Chileka, Malawi'],
+    ['code' => 'GBE', 'name' => 'Gaborone Sir Seretse Khama, Botswana'],
+    ['code' => 'MPM', 'name' => 'Maputo, Mozambique'],
+    
+    // Southern Africa
+    ['code' => 'JNB', 'name' => 'Johannesburg OR Tambo, South Africa'],
+    ['code' => 'CPT', 'name' => 'Cape Town, South Africa'],
+    ['code' => 'DUR', 'name' => 'Durban King Shaka, South Africa'],
+    ['code' => 'PLZ', 'name' => 'Port Elizabeth, South Africa'],
+    ['code' => 'GRJ', 'name' => 'George, South Africa'],
+    ['code' => 'WDH', 'name' => 'Windhoek Hosea Kutako, Namibia'],
+    ['code' => 'VFA', 'name' => 'Victoria Falls, Zimbabwe'],
+    ['code' => 'MRU', 'name' => 'Mauritius Sir Seewoosagur Ramgoolam, Mauritius'],
+    ['code' => 'SEZ', 'name' => 'Mahé Seychelles, Seychelles'],
+    ['code' => 'RUN', 'name' => 'Réunion Roland Garros, Réunion'],
+    ['code' => 'TNR', 'name' => 'Antananarivo Ivato, Madagascar'],
 ];
 
 function getAirportName($code) {
