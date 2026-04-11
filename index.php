@@ -355,7 +355,6 @@ $airportsList = [
     ['code' => 'RUN', 'name' => 'Réunion Roland Garros, Réunion'],
     ['code' => 'TNR', 'name' => 'Antananarivo Ivato, Madagascar'],
 ];
-];
 
 function getAirportName($code) {
     global $airportsList;
