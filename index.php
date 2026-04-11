@@ -89,7 +89,6 @@ $airportsList = [
     ['code' => 'DUS', 'name' => 'Düsseldorf, Germany'],
     ['code' => 'CGN', 'name' => 'Cologne Bonn, Germany'],
     ['code' => 'STR', 'name' => 'Stuttgart, Germany'],
-    ['code' => 'TXL', 'name' => 'Berlin Tegel, Germany'],
     
     // Italy
     ['code' => 'FCO', 'name' => 'Rome Fiumicino, Italy'],
@@ -158,7 +157,6 @@ $airportsList = [
     ['code' => 'ORK', 'name' => 'Cork, Ireland'],
     
     // ========== LATIN AMERICA ==========
-    // Brazil
     ['code' => 'GRU', 'name' => 'São Paulo Guarulhos, Brazil'],
     ['code' => 'CGH', 'name' => 'São Paulo Congonhas, Brazil'],
     ['code' => 'VCP', 'name' => 'Campinas Viracopos, Brazil'],
@@ -170,8 +168,6 @@ $airportsList = [
     ['code' => 'REC', 'name' => 'Recife, Brazil'],
     ['code' => 'SSA', 'name' => 'Salvador, Brazil'],
     ['code' => 'FOR', 'name' => 'Fortaleza, Brazil'],
-    
-    // Mexico
     ['code' => 'MEX', 'name' => 'Mexico City Benito Juárez, Mexico'],
     ['code' => 'CUN', 'name' => 'Cancún, Mexico'],
     ['code' => 'GDL', 'name' => 'Guadalajara, Mexico'],
@@ -179,28 +175,18 @@ $airportsList = [
     ['code' => 'TIJ', 'name' => 'Tijuana, Mexico'],
     ['code' => 'PVR', 'name' => 'Puerto Vallarta, Mexico'],
     ['code' => 'SJD', 'name' => 'San José del Cabo, Mexico'],
-    
-    // Argentina
     ['code' => 'EZE', 'name' => 'Buenos Aires Ezeiza, Argentina'],
     ['code' => 'AEP', 'name' => 'Buenos Aires Aeroparque, Argentina'],
     ['code' => 'COR', 'name' => 'Cordoba, Argentina'],
     ['code' => 'MDZ', 'name' => 'Mendoza, Argentina'],
-    
-    // Colombia
     ['code' => 'BOG', 'name' => 'Bogotá El Dorado, Colombia'],
     ['code' => 'MDE', 'name' => 'Medellín José María Córdova, Colombia'],
     ['code' => 'CLO', 'name' => 'Cali, Colombia'],
     ['code' => 'CTG', 'name' => 'Cartagena, Colombia'],
     ['code' => 'BAQ', 'name' => 'Barranquilla, Colombia'],
-    
-    // Peru
     ['code' => 'LIM', 'name' => 'Lima Jorge Chávez, Peru'],
     ['code' => 'CUZ', 'name' => 'Cusco, Peru'],
-    
-    // Chile
     ['code' => 'SCL', 'name' => 'Santiago Arturo Merino Benítez, Chile'],
-    
-    // Other Latin America
     ['code' => 'UIO', 'name' => 'Quito Mariscal Sucre, Ecuador'],
     ['code' => 'GYE', 'name' => 'Guayaquil José Joaquín de Olmedo, Ecuador'],
     ['code' => 'PTY', 'name' => 'Panama City Tocumen, Panama'],
@@ -209,12 +195,8 @@ $airportsList = [
     ['code' => 'GUA', 'name' => 'Guatemala City La Aurora, Guatemala'],
     ['code' => 'SDQ', 'name' => 'Santo Domingo Las Américas, Dominican Republic'],
     ['code' => 'PUJ', 'name' => 'Punta Cana, Dominican Republic'],
-    ['code' => 'Hav', 'name' => 'Havana José Martí, Cuba'],
-    ['code' => 'VRA', 'name' => 'Varadero Juan Gualberto Gómez, Cuba'],
-    ['code' => 'NAS', 'name' => 'Nassau Lynden Pindling, Bahamas'],
     
     // ========== USA & CANADA ==========
-    // USA
     ['code' => 'JFK', 'name' => 'New York JFK, USA'],
     ['code' => 'EWR', 'name' => 'Newark Liberty, USA'],
     ['code' => 'LGA', 'name' => 'New York LaGuardia, USA'],
@@ -241,10 +223,6 @@ $airportsList = [
     ['code' => 'DCA', 'name' => 'Washington Reagan, USA'],
     ['code' => 'IAD', 'name' => 'Washington Dulles, USA'],
     ['code' => 'CLT', 'name' => 'Charlotte Douglas, USA'],
-    ['code' => 'NASH', 'name' => 'Nashville, USA'],
-    ['code' => 'STL', 'name' => 'St Louis Lambert, USA'],
-    
-    // Canada
     ['code' => 'YYZ', 'name' => 'Toronto Pearson, Canada'],
     ['code' => 'YVR', 'name' => 'Vancouver, Canada'],
     ['code' => 'YUL', 'name' => 'Montreal Trudeau, Canada'],
@@ -255,7 +233,6 @@ $airportsList = [
     ['code' => 'YWG', 'name' => 'Winnipeg, Canada'],
     
     // ========== ASIA (Pakistan, India, Bangladesh, UAE, etc.) ==========
-    // Pakistan
     ['code' => 'LHE', 'name' => 'Lahore Allama Iqbal, Pakistan'],
     ['code' => 'ISB', 'name' => 'Islamabad International, Pakistan'],
     ['code' => 'KHI', 'name' => 'Karachi Jinnah, Pakistan'],
@@ -267,9 +244,6 @@ $airportsList = [
     ['code' => 'RYK', 'name' => 'Rahim Yar Khan, Pakistan'],
     ['code' => 'GWD', 'name' => 'Gwadar, Pakistan'],
     ['code' => 'TUK', 'name' => 'Turbat, Pakistan'],
-    ['code' => 'Suk', 'name' => 'Sukkur, Pakistan'],
-    
-    // India
     ['code' => 'DEL', 'name' => 'Delhi Indira Gandhi, India'],
     ['code' => 'BOM', 'name' => 'Mumbai Chhatrapati Shivaji, India'],
     ['code' => 'BLR', 'name' => 'Bangalore Kempegowda, India'],
@@ -283,12 +257,8 @@ $airportsList = [
     ['code' => 'LKO', 'name' => 'Lucknow, India'],
     ['code' => 'COK', 'name' => 'Kochi, India'],
     ['code' => 'TRV', 'name' => 'Trivandrum, India'],
-    
-    // Bangladesh
     ['code' => 'DAC', 'name' => 'Dhaka Hazrat Shahjalal, Bangladesh'],
     ['code' => 'CGP', 'name' => 'Chittagong Shah Amanat, Bangladesh'],
-    
-    // UAE & Middle East
     ['code' => 'DXB', 'name' => 'Dubai International, UAE'],
     ['code' => 'AUH', 'name' => 'Abu Dhabi, UAE'],
     ['code' => 'SHJ', 'name' => 'Sharjah, UAE'],
@@ -300,8 +270,6 @@ $airportsList = [
     ['code' => 'DMM', 'name' => 'Dammam King Fahd, Saudi Arabia'],
     ['code' => 'KWI', 'name' => 'Kuwait, Kuwait'],
     ['code' => 'MCT', 'name' => 'Muscat, Oman'],
-    
-    // Southeast Asia
     ['code' => 'SIN', 'name' => 'Singapore Changi, Singapore'],
     ['code' => 'KUL', 'name' => 'Kuala Lumpur, Malaysia'],
     ['code' => 'BKK', 'name' => 'Bangkok Suvarnabhumi, Thailand'],
@@ -310,8 +278,6 @@ $airportsList = [
     ['code' => 'MNL', 'name' => 'Manila Ninoy Aquino, Philippines'],
     ['code' => 'HAN', 'name' => 'Hanoi Noi Bai, Vietnam'],
     ['code' => 'SGN', 'name' => 'Ho Chi Minh City Tan Son Nhat, Vietnam'],
-    
-    // China & East Asia
     ['code' => 'PEK', 'name' => 'Beijing Capital, China'],
     ['code' => 'PKX', 'name' => 'Beijing Daxing, China'],
     ['code' => 'PVG', 'name' => 'Shanghai Pudong, China'],
@@ -323,39 +289,13 @@ $airportsList = [
     ['code' => 'ICN', 'name' => 'Seoul Incheon, South Korea'],
     ['code' => 'GMP', 'name' => 'Seoul Gimpo, South Korea'],
     ['code' => 'TPE', 'name' => 'Taipei Taoyuan, Taiwan'],
-        // East Africa
     ['code' => 'NBO', 'name' => 'Nairobi Jomo Kenyatta, Kenya'],
     ['code' => 'MBA', 'name' => 'Mombasa Moi, Kenya'],
     ['code' => 'ADD', 'name' => 'Addis Ababa Bole, Ethiopia'],
-    ['code' => 'DIR', 'name' => 'Dire Dawa, Ethiopia'],
-    ['code' => 'JUB', 'name' => 'Juba, South Sudan'],
-    ['code' => 'KRT', 'name' => 'Khartoum, Sudan'],
-    ['code' => 'EBB', 'name' => 'Entebbe, Uganda'],
-    ['code' => 'KGL', 'name' => 'Kigali, Rwanda'],
-    ['code' => 'BJM', 'name' => 'Bujumbura, Burundi'],
-    ['code' => 'DAR', 'name' => 'Dar es Salaam Julius Nyerere, Tanzania'],
-    ['code' => 'ZNZ', 'name' => 'Zanzibar Abeid Amani Karume, Tanzania'],
-    ['code' => 'JRO', 'name' => 'Kilimanjaro, Tanzania'],
-    ['code' => 'HRE', 'name' => 'Harare Robert Mugabe, Zimbabwe'],
-    ['code' => 'BUQ', 'name' => 'Bulawayo Joshua Mqabuko, Zimbabwe'],
-    ['code' => 'LUN', 'name' => 'Lusaka Kenneth Kaunda, Zambia'],
-    ['code' => 'LLW', 'name' => 'Lilongwe, Malawi'],
-    ['code' => 'BLZ', 'name' => 'Blantyre Chileka, Malawi'],
-    ['code' => 'GBE', 'name' => 'Gaborone Sir Seretse Khama, Botswana'],
-    ['code' => 'MPM', 'name' => 'Maputo, Mozambique'],
-    
-    // Southern Africa
     ['code' => 'JNB', 'name' => 'Johannesburg OR Tambo, South Africa'],
     ['code' => 'CPT', 'name' => 'Cape Town, South Africa'],
     ['code' => 'DUR', 'name' => 'Durban King Shaka, South Africa'],
-    ['code' => 'PLZ', 'name' => 'Port Elizabeth, South Africa'],
-    ['code' => 'GRJ', 'name' => 'George, South Africa'],
-    ['code' => 'WDH', 'name' => 'Windhoek Hosea Kutako, Namibia'],
-    ['code' => 'VFA', 'name' => 'Victoria Falls, Zimbabwe'],
     ['code' => 'MRU', 'name' => 'Mauritius Sir Seewoosagur Ramgoolam, Mauritius'],
-    ['code' => 'SEZ', 'name' => 'Mahé Seychelles, Seychelles'],
-    ['code' => 'RUN', 'name' => 'Réunion Roland Garros, Réunion'],
-    ['code' => 'TNR', 'name' => 'Antananarivo Ivato, Madagascar'],
 ];
 
 function getAirportName($code) {
@@ -368,11 +308,11 @@ function generateTicketNumber() {
     return 'MFT-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -6)) . rand(100, 999);
 }
 
-// Send email using SMTP with debugging
+// Send email using SMTP
 function sendTicketEmailSMTP($to, $subject, $htmlContent) {
     $mail = new PHPMailer(true);
     try {
-        $mail->SMTPDebug = 0; // Set to 2 for debugging
+        $mail->SMTPDebug = 0;
         $mail->isSMTP();
         $mail->Host = SMTP_HOST;
         $mail->SMTPAuth = true;
@@ -499,12 +439,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
     exit();
 }
 
-// Handle flight search with One Way/Return/Multi-City
+// Handle flight search with One Way/Return/Multi-City and Airline Filter
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
     $searchPerformed = true;
     $tripType = $_POST['trip_type'] ?? 'oneway';
     $passengers = intval($_POST['passengers']);
     $cabinClass = $_POST['cabin_class'] ?? 'economy';
+    $preferredAirline = $_POST['preferred_airline'] ?? '';
     
     $slices = [];
     
@@ -551,9 +492,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         } else {
             $data = json_decode($response, true);
             $offers = $data['data']['offers'] ?? [];
+            
+            // Filter by preferred airline if selected
+            if (!empty($preferredAirline) && $preferredAirline != 'any') {
+                $filteredOffers = [];
+                foreach ($offers as $offer) {
+                    $airlineName = strtolower($offer['owner']['name'] ?? '');
+                    if (strpos($airlineName, strtolower($preferredAirline)) !== false) {
+                        $filteredOffers[] = $offer;
+                    }
+                }
+                $offers = $filteredOffers;
+            }
+            
             if (count($offers) > 0) {
                 $tripText = $tripType == 'oneway' ? 'One Way' : ($tripType == 'return' ? 'Return' : 'Multi-City');
-                $flightResults = '<div class="success-header">✈️ Found ' . count($offers) . ' ' . $tripText . ' flights</div>';
+                $airlineFilterText = !empty($preferredAirline) && $preferredAirline != 'any' ? " for $preferredAirline" : "";
+                $flightResults = '<div class="success-header">✈️ Found ' . count($offers) . ' ' . $tripText . ' flights' . $airlineFilterText . '</div>';
                 foreach (array_slice($offers, 0, 15) as $offer) {
                     $seg = $offer['slices'][0]['segments'] ?? [];
                     $first = $seg[0] ?? null;
@@ -568,16 +523,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
                     
                     $displayOrigin = $slices[0]['origin'];
                     $displayDest = $slices[0]['destination'];
+                    $airlineName = addslashes($offer['owner']['name'] ?? 'Airline');
                     
-                    $flightResults .= '<div class="flight-card" onclick="selectFlight(\''.$offer['id'].'\', \''.$offer['total_amount'].'\', \''.$offer['total_currency'].'\', \''.addslashes($offer['owner']['name'] ?? 'Airline').'\', \''.$displayOrigin.'\', \''.$displayDest.'\', \''.$depDate.'\', \''.$depTime.'\', \''.$arrDate.'\', \''.$arrTime.'\', \''.$durText.'\', \''.$stopText.'\', \''.addslashes($cabinClass).'\')">
-                        <div class="flight-header"><div class="airline-info"><div class="airline-icon">✈️</div><div><div class="airline-name">'.htmlspecialchars($offer['owner']['name'] ?? 'Airline').'</div></div></div><div class="flight-price">€'.($offer['total_amount'] + 15).' '.$offer['total_currency'].' <small style="font-size:12px; color:#666;">(incl. €15 service fee)</small></div></div>
+                    $flightResults .= '<div class="flight-card" onclick="selectFlight(\''.$offer['id'].'\', \''.$offer['total_amount'].'\', \''.$offer['total_currency'].'\', \''.$airlineName.'\', \''.$displayOrigin.'\', \''.$displayDest.'\', \''.$depDate.'\', \''.$depTime.'\', \''.$arrDate.'\', \''.$arrTime.'\', \''.$durText.'\', \''.$stopText.'\', \''.addslashes($cabinClass).'\')">
+                        <div class="flight-header"><div class="airline-info"><div class="airline-icon">✈️</div><div><div class="airline-name">'.htmlspecialchars($offer['owner']['name'] ?? 'Airline').'</div></div></div><div class="flight-price">'.($offer['total_amount']).' '.$offer['total_currency'].' <small style="font-size:12px; color:#666;">(+ €15 service fee)</small></div></div>
                         <div class="flight-route"><div><div class="city-code">'.$displayOrigin.'</div><div class="city-name">'.getAirportName($displayOrigin).'</div><div class="flight-time">'.$depTime.'</div></div>
                         <div class="flight-duration"><div class="duration-line"></div><div class="duration-text">'.$durText.'</div><div class="stops-text">'.$stopText.'</div></div>
                         <div><div class="city-code">'.$displayDest.'</div><div class="city-name">'.getAirportName($displayDest).'</div><div class="flight-time">'.$arrTime.'</div></div></div>
                         <button class="select-flight-btn">Select Flight</button></div>';
                 }
             } else {
-                $flightResults = '<div class="error">✈️ No flights found. Try different date.</div>';
+                $filterMsg = !empty($preferredAirline) && $preferredAirline != 'any' ? " for $preferredAirline" : "";
+                $flightResults = '<div class="error">✈️ No flights found' . $filterMsg . '. Try different date or airline.</div>';
             }
         }
     }
@@ -880,9 +837,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         <h3 style="text-align:center; margin-bottom:20px; font-size:24px; color:var(--primary-navy);">✈️ Search Flights</h3>
         <form method="POST" action="" id="searchForm">
             <div class="trip-toggle">
-                <label class="trip-option"><input type="radio" name="trip_type" value="oneway" checked onchange="toggleTripType()"> <label>✈️ One Way</label></label>
-                <label class="trip-option"><input type="radio" name="trip_type" value="return" onchange="toggleTripType()"> <label>🔄 Return</label></label>
-                <label class="trip-option"><input type="radio" name="trip_type" value="multi" onchange="toggleTripType()"> <label>🌍 Multi-City</label></label>
+                <label class="trip-option"><input type="radio" name="trip_type" value="oneway" checked onchange="toggleTripType()"> ✈️ One Way</label>
+                <label class="trip-option"><input type="radio" name="trip_type" value="return" onchange="toggleTripType()"> 🔄 Return</label>
+                <label class="trip-option"><input type="radio" name="trip_type" value="multi" onchange="toggleTripType()"> 🌍 Multi-City</label>
             </div>
             
             <div id="onewayFields">
@@ -916,6 +873,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             <div class="form-row">
                 <div class="form-group"><label>👥 Passengers</label><select name="passengers"><option value="1">1 Adult</option><option value="2">2 Adults</option><option value="3">3 Adults</option><option value="4">4 Adults</option></select></div>
                 <div class="form-group"><label>🛋️ Cabin</label><select name="cabin_class"><option value="economy">Economy</option><option value="business">Business</option><option value="first">First</option></select></div>
+                <div class="form-group"><label>✈️ Preferred Airline</label>
+                    <select name="preferred_airline">
+                        <option value="any">Any Airline</option>
+                        <option value="Qatar Airways">🇶🇦 Qatar Airways</option>
+                        <option value="Emirates">🇦🇪 Emirates</option>
+                        <option value="Etihad">🇦🇪 Etihad Airways</option>
+                        <option value="Turkish Airlines">🇹🇷 Turkish Airlines</option>
+                        <option value="British Airways">🇬🇧 British Airways</option>
+                        <option value="Air France">🇫🇷 Air France</option>
+                        <option value="Lufthansa">🇩🇪 Lufthansa</option>
+                        <option value="KLM">🇳🇱 KLM</option>
+                        <option value="Iberia">🇪🇸 Iberia</option>
+                        <option value="Vueling">🇪🇸 Vueling</option>
+                    </select>
+                </div>
             </div>
             <button type="submit" name="search_flights" class="search-btn">🔍 Search Flights</button>
         </form>
@@ -1056,6 +1028,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         <button class="close-modal" onclick="closeBookingModal()">&times;</button>
         <h2 style="color: var(--primary-navy); margin-bottom: 20px;">✈️ Complete Your Booking</h2>
         <form method="POST" action="" id="bookingForm">
+            <input type="hidden" name="confirm_booking" value="1">
             <input type="hidden" name="offer_id" id="offer_id">
             <input type="hidden" name="price" id="price">
             <input type="hidden" name="currency" id="currency">
@@ -1098,7 +1071,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             
             <div class="price-breakdown" id="priceBreakdown"></div>
             <p style="font-size:12px; color:#e65100; margin:10px 0; text-align:center;">💰 Service Charge: €15 included in total</p>
-            <button type="submit" name="confirm_booking" class="confirm-btn">✅ Confirm Booking</button>
+            <button type="submit" class="confirm-btn">✅ Confirm Booking</button>
         </form>
     </div>
 </div>
@@ -1157,8 +1130,6 @@ function selectFlight(offerId, price, currency, airline, origin, destination, de
     document.getElementById('duration').value = duration;
     document.getElementById('cabin_class').value = cabinClass;
     
-    let fare = Math.round(parseFloat(price) * 0.59);
-    let taxes = parseFloat(price) - fare;
     let totalWithService = parseFloat(price) + 15;
     
     document.getElementById('flightSummary').innerHTML = `<strong>✈️ Flight Details</strong><br>${airline}<br>${origin} → ${destination}<br>Departure: ${depDate} at ${depTime}<br>Arrival: ${arrDate} at ${arrTime}<br>Duration: ${duration}<br>Class: ${cabinClass}`;
@@ -1186,12 +1157,10 @@ function sendChatMessage() {
     
     const messagesDiv = document.getElementById('chatMessages');
     
-    // Add user message
     messagesDiv.innerHTML += `<div class="message user"><div class="msg-bubble">${escapeHtml(message)}</div></div>`;
     input.value = '';
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
     
-    // Bot response
     setTimeout(() => {
         let response = getBotResponse(message.toLowerCase());
         messagesDiv.innerHTML += `<div class="message bot"><div class="msg-bubble">${response}</div></div>`;
@@ -1204,7 +1173,16 @@ function getBotResponse(msg) {
         return '👋 Assalamu Alaikum! Welcome to Mustafa Travels! How can I help you today?';
     }
     if(msg.includes('flight') || msg.includes('ticket')) {
-        return '✈️ You can search flights using the form above! Just enter your origin, destination, and date. We offer One Way, Return, and Multi-City options. Our service charge is €15 per ticket.';
+        return '✈️ You can search flights using the form above! Just enter your origin, destination, and date. You can also filter by your favorite airline like Qatar Airways, Emirates, or Etihad. Our service charge is €15 per ticket.';
+    }
+    if(msg.includes('qatar')) {
+        return '🇶🇦 Yes! You can search for Qatar Airways flights by selecting "Qatar Airways" from the "Preferred Airline" dropdown in the search form above.';
+    }
+    if(msg.includes('emirates')) {
+        return '🇦🇪 Yes! You can search for Emirates flights by selecting "Emirates" from the "Preferred Airline" dropdown in the search form above.';
+    }
+    if(msg.includes('etihad')) {
+        return '🇦🇪 Yes! You can search for Etihad Airways flights by selecting "Etihad" from the "Preferred Airline" dropdown in the search form above.';
     }
     if(msg.includes('umrah')) {
         return '🕋 We have 3 Umrah packages starting from €895. Includes flights, hotel near Haram, and visa processing. Would you like me to share the details?';
@@ -1212,31 +1190,25 @@ function getBotResponse(msg) {
     if(msg.includes('hajj')) {
         return '🕋 Hajj 2026 packages are currently in development. Phase 2 bookings will open soon. Click "Notify Me" on our website to get updates!';
     }
-    if(msg.includes('price') || msg.includes('cost')) {
-        return '💰 Our flight prices are real-time from Duffel API. Plus a €15 service charge per ticket. For Umrah packages, prices start from €895.';
-    }
     if(msg.includes('contact') || msg.includes('phone') || msg.includes('whatsapp')) {
         return '📞 You can reach us at:<br>📱 WhatsApp: +34-611473217<br>📞 Call: +34-632234216<br>✉️ Email: mustafatravelstours@gmail.com';
     }
-    if(msg.includes('service charge') || msg.includes('commission') || msg.includes('fee')) {
+    if(msg.includes('service charge') || msg.includes('fee')) {
         return '💰 We charge a €15 service fee per ticket for booking assistance, ticket delivery, and 24/7 customer support.';
     }
     if(msg.includes('help')) {
-        return '🤖 I can help you with:<br>• Flight search and booking<br>• Umrah package details<br>• Hajj 2026 information<br>• Contact information<br>• Service charges<br><br>Just type what you need!';
+        return '🤖 I can help you with:<br>• Flight search (with airline filter!)<br>• Umrah package details<br>• Hajj 2026 information<br>• Contact information<br>• Service charges<br><br>Just type what you need!';
     }
     if(msg.includes('lhr') || msg.includes('london')) {
-        return '✈️ Flights from Barcelona to London start from €79 + €15 service charge = €94. Would you like me to help you search?';
+        return '✈️ Flights from Barcelona to London start from €79 + €15 service charge = €94. Try searching with British Airways or Vueling!';
     }
     if(msg.includes('lhe') || msg.includes('lahore')) {
-        return '✈️ Flights from Barcelona to Lahore start from €580 + €15 service charge = €595 with Etihad Airways. 40kg baggage included!';
+        return '✈️ Flights from Barcelona to Lahore start from €580 + €15 service charge = €595. Try selecting "Etihad" from the airline filter!';
     }
     if(msg.includes('isb') || msg.includes('islamabad')) {
-        return '✈️ Flights from Barcelona to Islamabad start from €585 + €15 service charge = €600 with Etihad Airways. 40kg baggage included!';
+        return '✈️ Flights from Barcelona to Islamabad start from €585 + €15 service charge = €600. Try selecting "Etihad" from the airline filter!';
     }
-    if(msg.includes('dubai') || msg.includes('dxb')) {
-        return '✈️ Flights from Barcelona to Dubai start from €299 + €15 service charge = €314 with Emirates.';
-    }
-    return 'Thank you for your message! Our team will respond shortly. For urgent inquiries, please contact us on WhatsApp: +34-611473217';
+    return 'Thank you for your message! For specific flight requests, please use the search form above and select your preferred airline. For urgent inquiries, contact us on WhatsApp: +34-611473217';
 }
 
 function escapeHtml(text) {
