@@ -3,6 +3,20 @@
 $apiKey = 'duffel_live_cvF1_BR5No4SjJTp3tGVSDKkpwWwFU3VgOkN7TtETlB';
 $flightResults = '';
 $searchPerformed = false;
+// ========== SMTP CONFIGURATION (YAHAN ADD KIA HAI) ==========
+define('SMTP_HOST', 'smtp.gmail.com');
+define('SMTP_USER', 'mustafatravelstours@gmail.com');
+define('SMTP_PASS', 'xgjx bnvz yrsf cmtm');
+define('SMTP_FROM', 'mustafatravelstours@gmail.com');
+define('SMTP_FROM_NAME', 'Mustafa Travels & Tours');
+
+// Load PHPMailer
+use PHPMailer\PHPMailer\PHPMailer;use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require_once __DIR__ . '/PHPMailer/PHPMailer.php';
+require_once __DIR__ . '/PHPMailer/SMTP.php';
+require_once __DIR__ . '/PHPMailer/Exception.php';
 
 // Airport database
 $airportsList = [
@@ -84,7 +98,7 @@ function generateHTMLTicket($bookingData) {
 function sendTicketEmail($to, $subject, $htmlContent) {
     $headers = "MIME-Version: 1.0\r\n";
     $headers .= "Content-type:text/html;charset=UTF-8\r\n";
-    $headers .= "From: Mustafa Travels <bookings@mustafatravels.org>\r\n";
+    $headers .= "From: Mustafa Travels <mustafatravelstours@gmail.com>\r\n";
     $headers .= "Bcc: mustafatravelstours@gmail.com\r\n";
     return mail($to, $subject, $htmlContent, $headers);
 }
@@ -443,8 +457,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             <div id="flights" style="margin-bottom:30px">
                 <div class="section-header"><h2>⭐ Exclusive Flight Deals</h2></div>
                 <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px">
-                    <div style="background:white; border-radius:16px; padding:20px; border-left:4px solid var(--primary-gold)"><div><strong>✈️ Etihad Airways</strong><br>Barcelona → Lahore</div><div style="font-size:24px; font-weight:700; color:var(--primary-teal); margin:10px 0">€580</div><a href="https://wa.me/34611473217?text=BCN to LHE €580" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book</a></div>
-                    <div style="background:white; border-radius:16px; padding:20px; border-left:4px solid var(--primary-gold)"><div><strong>✈️ Etihad Airways</strong><br>Barcelona → Islamabad</div><div style="font-size:24px; font-weight:700; color:var(--primary-teal); margin:10px 0">€585</div><a href="https://wa.me/34611473217?text=BCN to ISB €585" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book</a></div>
+                    <div style="background:white; border-radius:16px; padding:20px; border-left:4px solid var(--primary-gold)"><div><strong>✈️ Etihad Airways</strong><br>Barcelona → Lahore</div><div style="font-size:24px; font-weight:700; color:var(--primary-teal); margin:10px 0">€595</div><a href="https://wa.me/34611473217?text=BCN to LHE €600" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book</a></div>
+                    <div style="background:white; border-radius:16px; padding:20px; border-left:4px solid var(--primary-gold)"><div><strong>✈️ Etihad Airways</strong><br>Barcelona → Islamabad</div><div style="font-size:24px; font-weight:700; color:var(--primary-teal); margin:10px 0">€595</div><a href="https://wa.me/34611473217?text=BCN to ISB €600" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book</a></div>
                     <div style="background:white; border-radius:16px; padding:20px; border-left:4px solid var(--primary-gold)"><div><strong>✈️ Emirates</strong><br>Barcelona → Dubai</div><div style="font-size:24px; font-weight:700; color:var(--primary-teal); margin:10px 0">€299</div><a href="https://wa.me/34611473217?text=BCN to DXB €299" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book</a></div>
                 </div>
             </div>
