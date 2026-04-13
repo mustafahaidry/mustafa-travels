@@ -1,6 +1,6 @@
 <?php
-// index.php - Mustafa Travels & Tours Professional Website
-// Clean design with Umrah form on Umrah page only
+// index.php - Mustafa Travels & Tours Complete Website
+// Includes: Home, Umrah, Super Offers, Services, About, Contact
 
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 ?>
@@ -262,6 +262,21 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
         }
         .package-btn:hover { background: var(--primary-dark); }
         
+        .offers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .offer-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .offer-card:hover { transform: translateY(-5px); }
+        
         .contact-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -425,7 +440,9 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
         .stat-number { font-size: 32px; font-weight: 800; color: var(--primary); }
         
         @media (max-width: 992px) {
-            .packages-grid, .contact-grid, .footer-grid, .form-grid { grid-template-columns: repeat(2, 1fr); }
+            .packages-grid, .contact-grid, .footer-grid, .form-grid, .offers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
         @media (max-width: 768px) {
             .main-header { flex-direction: column; text-align: center; padding: 20px; }
@@ -434,7 +451,9 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
             .hero { padding: 60px 20px; }
             .hero h1 { font-size: 32px; }
             .container { padding: 50px 20px; }
-            .packages-grid, .contact-grid, .footer-grid, .form-grid { grid-template-columns: 1fr; }
+            .packages-grid, .contact-grid, .footer-grid, .form-grid, .offers-grid {
+                grid-template-columns: 1fr;
+            }
             .section-title { font-size: 28px; }
         }
     </style>
@@ -461,6 +480,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
     <div class="nav">
         <a href="?page=home" class="<?php echo $page == 'home' ? 'active' : ''; ?>">Home</a>
         <a href="?page=umrah" class="<?php echo $page == 'umrah' ? 'active' : ''; ?>">Umrah</a>
+        <a href="?page=offers" class="<?php echo $page == 'offers' ? 'active' : ''; ?>">Super Offers</a>
         <a href="?page=services" class="<?php echo $page == 'services' ? 'active' : ''; ?>">Services</a>
         <a href="?page=about" class="<?php echo $page == 'about' ? 'active' : ''; ?>">About</a>
         <a href="?page=contact" class="<?php echo $page == 'contact' ? 'active' : ''; ?>">Contact</a>
@@ -563,11 +583,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
     
     <div class="packages-grid">
         <div class="package-card">
-            <div class="package-header">
-                <div class="package-name">ECONOMY</div>
-                <div class="package-price">€999</div>
-                <small>per person</small>
-            </div>
+            <div class="package-header"><div class="package-name">ECONOMY</div><div class="package-price">€999</div><small>per person</small></div>
             <div class="package-content">
                 <ul class="feature-list">
                     <li><i class="fas fa-star check"></i> ⭐ 3* Hotel with Shuttle</li>
@@ -583,14 +599,10 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
         </div>
         
         <div class="package-card">
-            <div class="package-header">
-                <div class="package-name">ECONOMY PLUS</div>
-                <div class="package-price">€1,299</div>
-                <small>per person</small>
-            </div>
+            <div class="package-header"><div class="package-name">ECONOMY PLUS</div><div class="package-price">€1,299</div><small>per person</small></div>
             <div class="package-content">
                 <ul class="feature-list">
-                    <li><i class="fas fa-star check"></i> <i class="fas fa-star check"></i> ⭐⭐ 4* Hotel</li>
+                    <li><i class="fas fa-star check"></i><i class="fas fa-star check"></i> ⭐⭐ 4* Hotel</li>
                     <li><i class="fas fa-kaaba check"></i> 🕋 5 Days Makkah</li>
                     <li><i class="fas fa-mosque check"></i> 🕌 3 Days Madina</li>
                     <li><i class="fas fa-plane check"></i> ✈️ Air Ticket + Visa</li>
@@ -603,11 +615,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
         </div>
         
         <div class="package-card luxury">
-            <div class="package-header luxury-header">
-                <div class="package-name">LUXURY</div>
-                <div class="package-price">Contact for Price</div>
-                <small>Premium Experience</small>
-            </div>
+            <div class="package-header luxury-header"><div class="package-name">LUXURY</div><div class="package-price">Contact for Price</div><small>Premium Experience</small></div>
             <div class="package-content">
                 <ul class="feature-list">
                     <li><i class="fas fa-star check"></i><i class="fas fa-star check"></i><i class="fas fa-star check"></i><i class="fas fa-star check"></i> ⭐⭐⭐⭐ 4* & 5* Hotels</li>
@@ -629,30 +637,10 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
     <p class="section-subtitle">We're here 24/7 to assist you</p>
     
     <div class="contact-grid">
-        <div class="contact-card">
-            <i class="fas fa-phone-alt"></i>
-            <h3>Emergency</h3>
-            <div class="number">+34-632234216</div>
-            <span style="background: #dc2626; color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px;">24/7 Available</span>
-        </div>
-        <div class="contact-card">
-            <i class="fab fa-whatsapp"></i>
-            <h3>WhatsApp</h3>
-            <div class="number">+34-611473217</div>
-            <p>Quick responses</p>
-        </div>
-        <div class="contact-card">
-            <i class="fas fa-phone"></i>
-            <h3>Landline</h3>
-            <div class="number">937578907</div>
-            <p>Mon-Sat: 10:30-20:30</p>
-        </div>
-        <div class="contact-card">
-            <i class="fab fa-linkedin"></i>
-            <h3>LinkedIn</h3>
-            <div class="number" style="font-size: 16px;">Mustafa Travels</div>
-            <a href="https://www.linkedin.com/company/mustafa-travels-tours" target="_blank" style="color: var(--primary);">Follow →</a>
-        </div>
+        <div class="contact-card"><i class="fas fa-phone-alt"></i><h3>Emergency</h3><div class="number">+34-632234216</div><span style="background: #dc2626; color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px;">24/7 Available</span></div>
+        <div class="contact-card"><i class="fab fa-whatsapp"></i><h3>WhatsApp</h3><div class="number">+34-611473217</div><p>Quick responses</p></div>
+        <div class="contact-card"><i class="fas fa-phone"></i><h3>Landline</h3><div class="number">937578907</div><p>Mon-Sat: 10:30-20:30</p></div>
+        <div class="contact-card"><i class="fab fa-linkedin"></i><h3>LinkedIn</h3><div class="number" style="font-size: 16px;">Mustafa Travels</div><a href="https://www.linkedin.com/company/mustafa-travels-tours" target="_blank" style="color: var(--primary);">Follow →</a></div>
     </div>
 </div>
 
@@ -660,9 +648,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
     <div class="cta-section">
         <h2>Need Help Planning Your Trip?</h2>
         <p>Contact our travel experts for personalized assistance</p>
-        <a href="https://wa.me/34611473217" class="whatsapp-btn" target="_blank">
-            <i class="fab fa-whatsapp" style="font-size: 24px;"></i> Chat on WhatsApp
-        </a>
+        <a href="https://wa.me/34611473217" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp" style="font-size: 24px;"></i> Chat on WhatsApp</a>
     </div>
 </div>
 
@@ -674,68 +660,30 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
     
     <div class="packages-grid">
         <div class="package-card">
-            <div class="package-header">
-                <div class="package-name">ECONOMY</div>
-                <div class="package-price">€999</div>
-                <small>per person</small>
-            </div>
+            <div class="package-header"><div class="package-name">ECONOMY</div><div class="package-price">€999</div><small>per person</small></div>
             <div class="package-content">
-                <ul class="feature-list">
-                    <li><i class="fas fa-star check"></i> ⭐ 3* Hotel with Shuttle</li>
-                    <li><i class="fas fa-kaaba check"></i> 🕋 5 Days Makkah</li>
-                    <li><i class="fas fa-mosque check"></i> 🕌 3 Days Madina</li>
-                    <li><i class="fas fa-plane check"></i> ✈️ Air Ticket + Visa</li>
-                    <li><i class="fas fa-times cross"></i> ❌ Food Not Included</li>
-                    <li><i class="fas fa-times cross"></i> ❌ Personal Expenses</li>
-                    <li><i class="fas fa-times cross"></i> ❌ Local Transport</li>
-                </ul>
+                <ul class="feature-list"><li><i class="fas fa-star check"></i> ⭐ 3* Hotel with Shuttle</li><li><i class="fas fa-kaaba check"></i> 🕋 5 Days Makkah</li><li><i class="fas fa-mosque check"></i> 🕌 3 Days Madina</li><li><i class="fas fa-plane check"></i> ✈️ Air Ticket + Visa</li><li><i class="fas fa-times cross"></i> ❌ Food Not Included</li><li><i class="fas fa-times cross"></i> ❌ Personal Expenses</li><li><i class="fas fa-times cross"></i> ❌ Local Transport</li></ul>
                 <a href="https://wa.me/34611473217?text=I'm%20interested%20in%20ECONOMY%20Umrah%20Package%20(€999)" class="package-btn">Book Now →</a>
             </div>
         </div>
-        
         <div class="package-card">
-            <div class="package-header">
-                <div class="package-name">ECONOMY PLUS</div>
-                <div class="package-price">€1,299</div>
-                <small>per person</small>
-            </div>
+            <div class="package-header"><div class="package-name">ECONOMY PLUS</div><div class="package-price">€1,299</div><small>per person</small></div>
             <div class="package-content">
-                <ul class="feature-list">
-                    <li><i class="fas fa-star check"></i> <i class="fas fa-star check"></i> ⭐⭐ 4* Hotel</li>
-                    <li><i class="fas fa-kaaba check"></i> 🕋 5 Days Makkah</li>
-                    <li><i class="fas fa-mosque check"></i> 🕌 3 Days Madina</li>
-                    <li><i class="fas fa-plane check"></i> ✈️ Air Ticket + Visa</li>
-                    <li><i class="fas fa-taxi check"></i> 🚖 Airport Pickup Included</li>
-                    <li><i class="fas fa-times cross"></i> ❌ Food Not Included</li>
-                    <li><i class="fas fa-times cross"></i> ❌ Personal Expenses</li>
-                </ul>
+                <ul class="feature-list"><li><i class="fas fa-star check"></i><i class="fas fa-star check"></i> ⭐⭐ 4* Hotel</li><li><i class="fas fa-kaaba check"></i> 🕋 5 Days Makkah</li><li><i class="fas fa-mosque check"></i> 🕌 3 Days Madina</li><li><i class="fas fa-plane check"></i> ✈️ Air Ticket + Visa</li><li><i class="fas fa-taxi check"></i> 🚖 Airport Pickup Included</li><li><i class="fas fa-times cross"></i> ❌ Food Not Included</li><li><i class="fas fa-times cross"></i> ❌ Personal Expenses</li></ul>
                 <a href="https://wa.me/34611473217?text=I'm%20interested%20in%20ECONOMY%20PLUS%20Umrah%20Package%20(€1299)" class="package-btn">Book Now →</a>
             </div>
         </div>
-        
         <div class="package-card luxury">
-            <div class="package-header luxury-header">
-                <div class="package-name">LUXURY</div>
-                <div class="package-price">Contact for Price</div>
-                <small>Premium Experience</small>
-            </div>
+            <div class="package-header luxury-header"><div class="package-name">LUXURY</div><div class="package-price">Contact for Price</div><small>Premium Experience</small></div>
             <div class="package-content">
-                <ul class="feature-list">
-                    <li><i class="fas fa-star check"></i><i class="fas fa-star check"></i><i class="fas fa-star check"></i><i class="fas fa-star check"></i> ⭐⭐⭐⭐ 4* & 5* Hotels</li>
-                    <li><i class="fas fa-kaaba check"></i> 🕋 5 Days Makkah</li>
-                    <li><i class="fas fa-mosque check"></i> 🕌 3 Days Madina</li>
-                    <li><i class="fas fa-plane check"></i> ✈️ Air Ticket + Visa</li>
-                    <li><i class="fas fa-utensils check"></i> 🍳 Breakfast Included</li>
-                    <li><i class="fas fa-car check"></i> 🚖 Airport + City Transport</li>
-                    <li><i class="fas fa-concierge-bell check"></i> 🛎️ Personal Concierge</li>
-                </ul>
+                <ul class="feature-list"><li><i class="fas fa-star check"></i><i class="fas fa-star check"></i><i class="fas fa-star check"></i><i class="fas fa-star check"></i> ⭐⭐⭐⭐ 4* & 5* Hotels</li><li><i class="fas fa-kaaba check"></i> 🕋 5 Days Makkah</li><li><i class="fas fa-mosque check"></i> 🕌 3 Days Madina</li><li><i class="fas fa-plane check"></i> ✈️ Air Ticket + Visa</li><li><i class="fas fa-utensils check"></i> 🍳 Breakfast Included</li><li><i class="fas fa-car check"></i> 🚖 Airport + City Transport</li><li><i class="fas fa-concierge-bell check"></i> 🛎️ Personal Concierge</li></ul>
                 <a href="https://wa.me/34611473217?text=I'm%20interested%20in%20LUXURY%20Umrah%20Package" class="package-btn">Contact for Price →</a>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Custom Umrah Request Form - Only on Umrah Page -->
+<!-- Custom Umrah Request Form -->
 <div class="container">
     <div class="form-section">
         <h3><i class="fas fa-kaaba"></i> Custom Umrah Package Request</h3>
@@ -743,85 +691,117 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
         
         <form id="umrahRequestForm">
             <div class="form-grid">
-                <div class="form-group">
-                    <label>Full Name *</label>
-                    <input type="text" id="umrah_name" required placeholder="Enter your full name">
-                </div>
-                <div class="form-group">
-                    <label>WhatsApp Number *</label>
-                    <input type="tel" id="umrah_phone" required placeholder="+34 123456789">
-                </div>
-                <div class="form-group">
-                    <label>Nationality *</label>
-                    <select id="umrah_nationality" required>
-                        <option value="">Select Nationality</option>
-                        <option value="Pakistan">🇵🇰 Pakistan</option>
-                        <option value="India">🇮🇳 India</option>
-                        <option value="Bangladesh">🇧🇩 Bangladesh</option>
-                        <option value="Spain">🇪🇸 Spain</option>
-                        <option value="United Kingdom">🇬🇧 United Kingdom</option>
-                        <option value="France">🇫🇷 France</option>
-                        <option value="Germany">🇩🇪 Germany</option>
-                        <option value="Italy">🇮🇹 Italy</option>
-                        <option value="USA">🇺🇸 USA</option>
-                        <option value="Canada">🇨🇦 Canada</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Number of People *</label>
-                    <select id="umrah_people" required>
-                        <option value="1">1 Person</option>
-                        <option value="2">2 Persons</option>
-                        <option value="3">3 Persons</option>
-                        <option value="4">4 Persons</option>
-                        <option value="5">5 Persons</option>
-                        <option value="6+">6+ Persons</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Days in Makkah *</label>
-                    <select id="umrah_makkah_days" required>
-                        <option value="3">3 Days</option>
-                        <option value="5">5 Days</option>
-                        <option value="7">7 Days</option>
-                        <option value="10">10 Days</option>
-                        <option value="14">14 Days</option>
-                        <option value="21">21 Days</option>
-                        <option value="30">30 Days</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Days in Madina *</label>
-                    <select id="umrah_madina_days" required>
-                        <option value="3">3 Days</option>
-                        <option value="5">5 Days</option>
-                        <option value="7">7 Days</option>
-                        <option value="10">10 Days</option>
-                        <option value="14">14 Days</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Preferred Package *</label>
-                    <select id="umrah_package" required>
-                        <option value="Economy (€999)">Economy - €999 (3* Hotel)</option>
-                        <option value="Economy Plus (€1299)">Economy Plus - €1299 (4* Hotel)</option>
-                        <option value="Luxury">Luxury - Contact for Price (5* Hotel)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Preferred Departure Date</label>
-                    <input type="date" id="umrah_date">
-                </div>
+                <div class="form-group"><label>Full Name *</label><input type="text" id="umrah_name" required placeholder="Enter your full name"></div>
+                <div class="form-group"><label>WhatsApp Number *</label><input type="tel" id="umrah_phone" required placeholder="+34 123456789"></div>
+                <div class="form-group"><label>Nationality *</label><select id="umrah_nationality" required><option value="">Select Nationality</option><option value="Pakistan">🇵🇰 Pakistan</option><option value="India">🇮🇳 India</option><option value="Bangladesh">🇧🇩 Bangladesh</option><option value="Spain">🇪🇸 Spain</option><option value="United Kingdom">🇬🇧 United Kingdom</option><option value="France">🇫🇷 France</option><option value="Germany">🇩🇪 Germany</option><option value="Italy">🇮🇹 Italy</option><option value="USA">🇺🇸 USA</option><option value="Canada">🇨🇦 Canada</option><option value="Other">Other</option></select></div>
+                <div class="form-group"><label>Number of People *</label><select id="umrah_people" required><option value="1">1 Person</option><option value="2">2 Persons</option><option value="3">3 Persons</option><option value="4">4 Persons</option><option value="5">5 Persons</option><option value="6+">6+ Persons</option></select></div>
+                <div class="form-group"><label>Days in Makkah *</label><select id="umrah_makkah_days" required><option value="3">3 Days</option><option value="5">5 Days</option><option value="7">7 Days</option><option value="10">10 Days</option><option value="14">14 Days</option><option value="21">21 Days</option><option value="30">30 Days</option></select></div>
+                <div class="form-group"><label>Days in Madina *</label><select id="umrah_madina_days" required><option value="3">3 Days</option><option value="5">5 Days</option><option value="7">7 Days</option><option value="10">10 Days</option><option value="14">14 Days</option></select></div>
+                <div class="form-group"><label>Preferred Package *</label><select id="umrah_package" required><option value="Economy (€999)">Economy - €999 (3* Hotel)</option><option value="Economy Plus (€1299)">Economy Plus - €1299 (4* Hotel)</option><option value="Luxury">Luxury - Contact for Price (5* Hotel)</option></select></div>
+                <div class="form-group"><label>Preferred Departure Date</label><input type="date" id="umrah_date"></div>
             </div>
-            <div class="form-group">
-                <label>Additional Requests / Special Requirements</label>
-                <textarea id="umrah_message" rows="3" placeholder="Any special requirements or questions..."></textarea>
-            </div>
-            <button type="button" class="submit-btn" onclick="sendUmrahRequest()">
-                <i class="fab fa-whatsapp"></i> Send Request on WhatsApp
-            </button>
+            <div class="form-group"><label>Additional Requests</label><textarea id="umrah_message" rows="3" placeholder="Any special requirements..."></textarea></div>
+            <button type="button" class="submit-btn" onclick="sendUmrahRequest()"><i class="fab fa-whatsapp"></i> Send Request on WhatsApp</button>
         </form>
+    </div>
+</div>
+
+<?php elseif ($page == 'offers'): ?>
+
+<div class="container">
+    <h2 class="section-title">🔥 Super Offers & Special Deals</h2>
+    <p class="section-subtitle">Limited time offers - Book now to avail these exclusive deals</p>
+    
+    <!-- Main Offer Banner -->
+    <div style="background: linear-gradient(135deg, #0a4b6e, #1e7e6c); border-radius: 24px; padding: 40px; margin-bottom: 40px; color: white; text-align: center;">
+        <i class="fas fa-tag" style="font-size: 48px; color: var(--gold); margin-bottom: 20px; display: inline-block;"></i>
+        <h2 style="font-size: 36px; margin-bottom: 15px;">SPECIAL OFFER! TRAVEL DEALS!</h2>
+        <div style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 25px; margin: 20px 0;">
+            <h3 style="font-size: 28px;">✈️ BARCELONA → LAHORE → 590 €</h3>
+            <h3 style="font-size: 28px; margin-top: 10px;">✈️ BARCELONA → ISLAMABAD → 590 €</h3>
+            <p style="margin-top: 15px;">Yeh price makhsoos tareekho main hai</p>
+        </div>
+        <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 20px;">
+            <div><i class="fas fa-phone"></i> +34-632234216</div>
+            <div><i class="fab fa-whatsapp"></i> +34-611473217</div>
+            <div><i class="fas fa-globe"></i> www.mustafatravels.org</div>
+        </div>
+        <p style="margin-top: 15px;">📍 Barcelona 08028</p>
+    </div>
+    
+    <!-- Posters Grid - Yahan aap apne posters add karte rahenge -->
+    <div class="offers-grid">
+        
+        <!-- Poster 1 - Summer Flash Sale -->
+        <div class="offer-card">
+            <div style="background: linear-gradient(135deg, #0a4b6e, #1e7e6c); padding: 40px; text-align: center; color: white;">
+                <i class="fas fa-plane" style="font-size: 50px; margin-bottom: 15px;"></i>
+                <h3 style="font-size: 24px;">Summer Flash Sale!</h3>
+                <div style="font-size: 36px; font-weight: 800; margin: 15px 0;">€499</div>
+                <p>One Way to Dubai</p>
+                <small>*Limited seats</small>
+            </div>
+            <div class="offer-content" style="padding: 20px; text-align: center;">
+                <p>Book by 30 June 2026</p>
+                <a href="https://wa.me/34611473217?text=I'm%20interested%20in%20Dubai%20offer%20€499" class="offer-btn" style="display: inline-block; background: #25D366; color: white; padding: 10px 25px; border-radius: 50px; text-decoration: none; margin-top: 10px;">Book Now →</a>
+            </div>
+        </div>
+        
+        <!-- Poster 2 - Early Bird Umrah -->
+        <div class="offer-card">
+            <div style="background: linear-gradient(135deg, #1a4a7a, #0a2540); padding: 40px; text-align: center; color: white;">
+                <i class="fas fa-kaaba" style="font-size: 50px; margin-bottom: 15px;"></i>
+                <h3 style="font-size: 24px;">Early Bird Umrah</h3>
+                <div style="font-size: 36px; font-weight: 800; margin: 15px 0;">€899</div>
+                <p>Economy Package</p>
+                <small>*First 50 bookings</small>
+            </div>
+            <div class="offer-content" style="padding: 20px; text-align: center;">
+                <p>Valid for Dec 2026 - Jan 2027</p>
+                <a href="https://wa.me/34611473217?text=I'm%20interested%20in%20Early%20Bird%20Umrah%20€899" class="offer-btn" style="display: inline-block; background: #25D366; color: white; padding: 10px 25px; border-radius: 50px; text-decoration: none; margin-top: 10px;">Book Now →</a>
+            </div>
+        </div>
+        
+        <!-- Poster 3 - Family Package -->
+        <div class="offer-card">
+            <div style="background: linear-gradient(135deg, #b8860b, #d4af37); padding: 40px; text-align: center; color: #1a1a2e;">
+                <i class="fas fa-users" style="font-size: 50px; margin-bottom: 15px;"></i>
+                <h3 style="font-size: 24px;">Family Package</h3>
+                <div style="font-size: 36px; font-weight: 800; margin: 15px 0;">€1499</div>
+                <p>4 Persons | Barcelona → Istanbul</p>
+                <small>*Return tickets included</small>
+            </div>
+            <div class="offer-content" style="padding: 20px; text-align: center;">
+                <p>Valid for whole family (2+2)</p>
+                <a href="https://wa.me/34611473217?text=I'm%20interested%20in%20Family%20Package%20€1499" class="offer-btn" style="display: inline-block; background: #25D366; color: white; padding: 10px 25px; border-radius: 50px; text-decoration: none; margin-top: 10px;">Book Now →</a>
+            </div>
+        </div>
+        
+    </div>
+    
+    <!-- Poster Template - Copy for new posters -->
+    <!-- 
+    <div class="offer-card">
+        <img src="YOUR_IMAGE_DIRECT_LINK_HERE" alt="Offer Title" style="width: 100%; height: auto;">
+        <div class="offer-content" style="padding: 20px; text-align: center;">
+            <h3>Your Offer Title</h3>
+            <p>Offer description here</p>
+            <a href="https://wa.me/34611473217?text=I'm%20interested%20in%20this%20offer" class="offer-btn" style="display: inline-block; background: #25D366; color: white; padding: 10px 25px; border-radius: 50px; text-decoration: none;">Book Now →</a>
+        </div>
+    </div>
+    -->
+    
+    <!-- Instructions -->
+    <div style="background: var(--light); border-radius: 20px; padding: 30px; margin-top: 50px; text-align: center;">
+        <i class="fas fa-info-circle" style="font-size: 40px; color: var(--primary); margin-bottom: 15px;"></i>
+        <h3>How to Add New Offers / Posters?</h3>
+        <p style="margin-top: 10px; color: var(--gray);">1. Apna poster image https://postimg.cc par upload karein<br>
+        2. "Direct Link" copy karein<br>
+        3. Upar diye gaye template mein paste karein<br>
+        4. Offer title, price aur details update karein</p>
+        <hr style="margin: 20px 0;">
+        <p><strong>Current Offers Last Updated:</strong> <?php echo date('d M Y'); ?></p>
+        <a href="https://postimg.cc" target="_blank" style="color: var(--primary);">Upload New Poster →</a>
     </div>
 </div>
 
@@ -842,9 +822,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 <?php elseif ($page == 'about'): ?>
 <div class="container">
     <div class="about-content">
-        <div class="profile-img">
-            <img src="https://i.postimg.cc/sxd9YgRx/mustafa.jpg" alt="Ghulam Mustafa Haidry">
-        </div>
+        <div class="profile-img"><img src="https://i.postimg.cc/sxd9YgRx/mustafa.jpg" alt="Ghulam Mustafa Haidry"></div>
         <h1 style="text-align: center; margin-bottom: 20px;">About Mustafa Travels & Tours</h1>
         <p style="text-align: center; font-size: 18px; margin-bottom: 30px;">Premium travel agency based in Barcelona since 2024</p>
         
@@ -908,7 +886,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
 <footer class="footer">
     <div class="footer-grid">
         <div class="footer-col"><h4>Mustafa Travels</h4><p>Premium travel agency in Barcelona since 2024. Umrah, flights, visas & worldwide travel.</p><div class="social-icons"><a href="https://www.facebook.com/mustafatravelstours"><i class="fab fa-facebook-f"></i></a><a href="https://www.tiktok.com/mustafatravelstarragona"><i class="fab fa-tiktok"></i></a><a href="https://www.instagram.com/mustafatravelstours"><i class="fab fa-instagram"></i></a><a href="https://www.linkedin.com/company/mustafa-travels-tours"><i class="fab fa-linkedin-in"></i></a></div></div>
-        <div class="footer-col"><h4>Quick Links</h4><a href="?page=home">Home</a><a href="?page=umrah">Umrah Packages</a><a href="?page=services">Services</a><a href="?page=about">About</a><a href="?page=contact">Contact</a></div>
+        <div class="footer-col"><h4>Quick Links</h4><a href="?page=home">Home</a><a href="?page=umrah">Umrah Packages</a><a href="?page=offers">Super Offers</a><a href="?page=services">Services</a><a href="?page=about">About</a><a href="?page=contact">Contact</a></div>
         <div class="footer-col"><h4>Contact</h4><p>📞 Emergency: +34-632234216</p><p>📞 Office: 937578907</p><p>💬 WhatsApp: +34-611473217</p><p>✉️ mustafatravelstours@gmail.com</p></div>
         <div class="footer-col"><h4>Hours</h4><p>Mon-Sat: 10:30 - 20:30</p><p>Sun: Closed</p><p style="color: var(--gold);">Emergency: 24/7</p></div>
     </div>
