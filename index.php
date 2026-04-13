@@ -737,7 +737,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
             <div style="background: linear-gradient(135deg, #0a4b6e, #1e7e6c); padding: 40px; text-align: center; color: white;">
                 <i class="fas fa-plane" style="font-size: 50px; margin-bottom: 15px;"></i>
                 <h3 style="font-size: 24px;">Summer Flash Sale!</h3>
-                <div style="font-size: 36px; font-weight: 800; margin: 15px 0;">€499(valid for selected dates)</div>
+                <div style="font-size: 36px; font-weight: 800; margin: 15px 0;">€499</div>
                 <p>One Way to Dubai</p>
                 <small>*Limited seats</small>
             </div>
