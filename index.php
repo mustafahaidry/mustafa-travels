@@ -737,7 +737,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
             <div style="background: linear-gradient(135deg, #0a4b6e, #1e7e6c); padding: 40px; text-align: center; color: white;">
                 <i class="fas fa-plane" style="font-size: 50px; margin-bottom: 15px;"></i>
                 <h3 style="font-size: 24px;">Summer Flash Sale!</h3>
-                <div style="font-size: 36px; font-weight: 800; margin: 15px 0;">€499</div>
+                <div style="font-size: 36px; font-weight: 800; margin: 15px 0;">€499(valid for selected dates)</div>
                 <p>One Way to Dubai</p>
                 <small>*Limited seats</small>
             </div>
@@ -752,7 +752,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
             <div style="background: linear-gradient(135deg, #1a4a7a, #0a2540); padding: 40px; text-align: center; color: white;">
                 <i class="fas fa-kaaba" style="font-size: 50px; margin-bottom: 15px;"></i>
                 <h3 style="font-size: 24px;">Early Bird Umrah</h3>
-                <div style="font-size: 36px; font-weight: 800; margin: 15px 0;">€899</div>
+                <div style="font-size: 36px; font-weight: 800; margin: 15px 0;">€999</div>
                 <p>Economy Package</p>
                 <small>*First 50 bookings</small>
             </div>
@@ -767,7 +767,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
             <div style="background: linear-gradient(135deg, #b8860b, #d4af37); padding: 40px; text-align: center; color: #1a1a2e;">
                 <i class="fas fa-users" style="font-size: 50px; margin-bottom: 15px;"></i>
                 <h3 style="font-size: 24px;">Family Package</h3>
-                <div style="font-size: 36px; font-weight: 800; margin: 15px 0;">€1499</div>
+                <div style="font-size: 36px; font-weight: 800; margin: 15px 0;">€950/person</div>
                 <p>4 Persons | Barcelona → Istanbul</p>
                 <small>*Return tickets included</small>
             </div>
@@ -790,22 +790,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
         </div>
     </div>
     -->
-    
-    <!-- Instructions -->
-    <div style="background: var(--light); border-radius: 20px; padding: 30px; margin-top: 50px; text-align: center;">
-        <i class="fas fa-info-circle" style="font-size: 40px; color: var(--primary); margin-bottom: 15px;"></i>
-        <h3>How to Add New Offers / Posters?</h3>
-        <p style="margin-top: 10px; color: var(--gray);">1. Apna poster image https://postimg.cc par upload karein<br>
-        2. "Direct Link" copy karein<br>
-        3. Upar diye gaye template mein paste karein<br>
-        4. Offer title, price aur details update karein</p>
-        <hr style="margin: 20px 0;">
-        <p><strong>Current Offers Last Updated:</strong> <?php echo date('d M Y'); ?></p>
-        <a href="https://postimg.cc" target="_blank" style="color: var(--primary);">Upload New Poster →</a>
-    </div>
-</div>
-
-<?php elseif ($page == 'services'): ?>
+        <?php elseif ($page == 'services'): ?>
 <div class="container">
     <h2 class="section-title">Our Travel Services</h2>
     <p class="section-subtitle">Complete travel solutions under one roof</p>
