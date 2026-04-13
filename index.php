@@ -1,39 +1,8 @@
 <?php
 // index.php - Mustafa Travels & Tours Professional Website
-// Complete with Working Contact Form (No Google Form needed)
+// With Umrah Request Form & Flight Search Form (WhatsApp Integration)
 
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
-
-// Contact Form Submission Handling
-$contact_success = '';
-$contact_error = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
-    $name = trim($_POST['name'] ?? '');
-    $email = trim($_POST['email'] ?? '');
-    $phone = trim($_POST['phone'] ?? '');
-    $message = trim($_POST['message'] ?? '');
-    
-    if (empty($name) || empty($email) || empty($message)) {
-        $contact_error = 'Please fill in all required fields.';
-    } else {
-        // Send email (using mail() function - works on most servers)
-        $to = 'mustafatravelstours@gmail.com';
-        $subject = "New Contact Message from $name";
-        $body = "Name: $name\n";
-        $body .= "Email: $email\n";
-        $body .= "Phone: $phone\n";
-        $body .= "Message:\n$message\n";
-        $headers = "From: $email\r\n";
-        $headers .= "Reply-To: $email\r\n";
-        
-        if (mail($to, $subject, $body, $headers)) {
-            $contact_success = 'Thank you! We will get back to you soon.';
-        } else {
-            $contact_error = 'Unable to send message. Please call us directly.';
-        }
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -162,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
         .hero {
             background: linear-gradient(135deg, #0a4b6e 0%, #1e7e6c 100%);
             color: white;
-            padding: 100px 60px;
+            padding: 80px 60px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -181,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
         }
         
         .hero h1 {
-            font-size: 52px;
+            font-size: 48px;
             font-weight: 800;
             margin-bottom: 20px;
             position: relative;
@@ -198,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
         /* Search Widget */
         .search-container {
             max-width: 1100px;
-            margin: -60px auto 0;
+            margin: -50px auto 0;
             position: relative;
             z-index: 10;
             padding: 0 20px;
@@ -289,6 +258,79 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
             font-size: 13px;
             font-weight: 500;
             color: var(--dark);
+        }
+        
+        /* Forms */
+        .form-section {
+            background: var(--light);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 50px;
+        }
+        
+        .form-section h3 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: var(--primary);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .submit-btn {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .submit-btn:hover {
+            background: #1da851;
+            transform: scale(1.02);
         }
         
         /* Services Grid */
@@ -479,87 +521,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
             border: 0;
         }
         
-        /* Working Contact Form */
-        .contact-form-section {
-            background: var(--light);
-            padding: 40px;
-            border-radius: 24px;
-            margin: 30px 0;
-        }
-        
-        .contact-form {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--dark);
-        }
-        
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 14px 18px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 15px;
-            font-family: inherit;
-            transition: border-color 0.3s;
-        }
-        
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-        
-        .submit-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 14px 35px;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-            width: 100%;
-        }
-        
-        .submit-btn:hover {
-            background: var(--primary-dark);
-        }
-        
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        
         /* CTA */
         .cta-section {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -705,7 +666,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
         }
         
         @media (max-width: 992px) {
-            .packages-grid, .contact-grid, .footer-grid {
+            .packages-grid, .contact-grid, .footer-grid, .form-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
@@ -724,7 +685,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
                 text-align: center;
             }
             .hero {
-                padding: 80px 20px;
+                padding: 60px 20px;
             }
             .hero h1 {
                 font-size: 32px;
@@ -732,13 +693,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
             .container {
                 padding: 50px 20px;
             }
-            .packages-grid, .contact-grid, .footer-grid {
+            .packages-grid, .contact-grid, .footer-grid, .form-grid {
                 grid-template-columns: 1fr;
             }
             .section-title {
                 font-size: 28px;
             }
-            .contact-form-section {
+            .form-section {
                 padding: 25px;
             }
         }
@@ -782,10 +743,166 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
     <p>Premium Umrah Packages 2026 | Economy from €999 | Luxury Packages Available | 24/7 Support</p>
 </section>
 
-<!-- Search Widget -->
+<!-- Flight Search Widget -->
 <div class="search-container">
     <div class="search-widget">
         <script async src="https://tp.media/content?currency=eur&trs=610290&shmarker=610290&locale=en&powered_by=true&border_radius=12&plain=true&color_button=%230a4b6e&color_icons=%230a4b6e&color_background=%23ffffff&color_text=%23000000&promo_id=7873"></script>
+    </div>
+</div>
+
+<!-- Umrah Custom Request Form -->
+<div class="container">
+    <div class="form-section">
+        <h3><i class="fas fa-kaaba"></i> Custom Umrah Package Request</h3>
+        <p style="text-align: center; margin-bottom: 30px; color: var(--gray);">Tell us your preferred duration and we'll create a custom package for you</p>
+        
+        <form id="umrahRequestForm" class="contact-form">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="umrah_name" required placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label>WhatsApp Number *</label>
+                    <input type="tel" id="umrah_phone" required placeholder="+34 123456789">
+                </div>
+                <div class="form-group">
+                    <label>Nationality *</label>
+                    <select id="umrah_nationality" required>
+                        <option value="">Select Nationality</option>
+                        <option value="Pakistan">🇵🇰 Pakistan</option>
+                        <option value="India">🇮🇳 India</option>
+                        <option value="Bangladesh">🇧🇩 Bangladesh</option>
+                        <option value="Spain">🇪🇸 Spain</option>
+                        <option value="United Kingdom">🇬🇧 United Kingdom</option>
+                        <option value="France">🇫🇷 France</option>
+                        <option value="Germany">🇩🇪 Germany</option>
+                        <option value="Italy">🇮🇹 Italy</option>
+                        <option value="Netherlands">🇳🇱 Netherlands</option>
+                        <option value="Belgium">🇧🇪 Belgium</option>
+                        <option value="USA">🇺🇸 USA</option>
+                        <option value="Canada">🇨🇦 Canada</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Number of People *</label>
+                    <select id="umrah_people" required>
+                        <option value="1">1 Person</option>
+                        <option value="2">2 Persons</option>
+                        <option value="3">3 Persons</option>
+                        <option value="4">4 Persons</option>
+                        <option value="5">5 Persons</option>
+                        <option value="6+">6+ Persons</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Days in Makkah *</label>
+                    <select id="umrah_makkah_days" required>
+                        <option value="3">3 Days</option>
+                        <option value="5">5 Days</option>
+                        <option value="7">7 Days</option>
+                        <option value="10">10 Days</option>
+                        <option value="14">14 Days</option>
+                        <option value="21">21 Days</option>
+                        <option value="30">30 Days</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Days in Madina *</label>
+                    <select id="umrah_madina_days" required>
+                        <option value="3">3 Days</option>
+                        <option value="5">5 Days</option>
+                        <option value="7">7 Days</option>
+                        <option value="10">10 Days</option>
+                        <option value="14">14 Days</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Preferred Package *</label>
+                    <select id="umrah_package" required>
+                        <option value="Economy (€999)">Economy - €999 (3* Hotel)</option>
+                        <option value="Economy Plus (€1299)">Economy Plus - €1299 (4* Hotel)</option>
+                        <option value="Luxury">Luxury - Contact for Price (5* Hotel)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Preferred Departure Date</label>
+                    <input type="date" id="umrah_date">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Additional Requests / Special Requirements</label>
+                <textarea id="umrah_message" rows="3" placeholder="Any special requirements or questions..."></textarea>
+            </div>
+            <button type="button" class="submit-btn" onclick="sendUmrahRequest()">
+                <i class="fab fa-whatsapp"></i> Send Request on WhatsApp
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Flight Search Form -->
+<div class="container">
+    <div class="form-section">
+        <h3><i class="fas fa-plane"></i> Flight Search Request</h3>
+        <p style="text-align: center; margin-bottom: 30px; color: var(--gray);">Get best flight deals customized for you</p>
+        
+        <form id="flightRequestForm" class="contact-form">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="flight_name" required placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label>WhatsApp Number *</label>
+                    <input type="tel" id="flight_phone" required placeholder="+34 123456789">
+                </div>
+                <div class="form-group">
+                    <label>From (Origin) *</label>
+                    <input type="text" id="flight_from" required placeholder="e.g., Barcelona (BCN)">
+                </div>
+                <div class="form-group">
+                    <label>To (Destination) *</label>
+                    <input type="text" id="flight_to" required placeholder="e.g., Lahore (LHE)">
+                </div>
+                <div class="form-group">
+                    <label>Departure Date *</label>
+                    <input type="date" id="flight_departure" required>
+                </div>
+                <div class="form-group">
+                    <label>Return Date (Optional)</label>
+                    <input type="date" id="flight_return">
+                </div>
+                <div class="form-group">
+                    <label>Passengers *</label>
+                    <select id="flight_passengers" required>
+                        <option value="1">1 Adult</option>
+                        <option value="2">2 Adults</option>
+                        <option value="3">3 Adults</option>
+                        <option value="4">4 Adults</option>
+                        <option value="5">5 Adults</option>
+                        <option value="6+">6+ Adults</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Cabin Class *</label>
+                    <select id="flight_class" required>
+                        <option value="Economy">Economy</option>
+                        <option value="Premium Economy">Premium Economy</option>
+                        <option value="Business">Business</option>
+                        <option value="First">First Class</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Preferred Airlines (Optional)</label>
+                <input type="text" id="flight_airlines" placeholder="e.g., Emirates, Qatar, Etihad">
+            </div>
+            <button type="button" class="submit-btn" onclick="sendFlightRequest()">
+                <i class="fab fa-whatsapp"></i> Send Flight Request on WhatsApp
+            </button>
+        </form>
     </div>
 </div>
 
@@ -873,7 +990,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
     </div>
 </div>
 
-<!-- Umrah Packages -->
+<!-- Umrah Packages Preview -->
 <div class="container">
     <h2 class="section-title">🕋 Premium Umrah Packages 2026</h2>
     <p class="section-subtitle">Experience spirituality with comfort near Haram</p>
@@ -1077,38 +1194,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2992.456789012345!2d2.123456789012345!3d41.37812345678901!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a2e0e0e0e0e0%3A0x1234567890abcdef!2sRambla%20Badal%20141%2C%20Barcelona!5e0!3m2!1sen!2ses!4v1234567890123!5m2!1sen!2ses" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
     
-    <!-- Working Contact Form (Alternative to Google Form) -->
-    <div class="contact-form-section">
-        <h3 style="text-align: center; margin-bottom: 30px; color: var(--dark);">Send us a Message</h3>
-        
-        <?php if ($contact_success): ?>
-            <div class="alert-success"><?php echo htmlspecialchars($contact_success); ?></div>
-        <?php endif; ?>
-        
-        <?php if ($contact_error): ?>
-            <div class="alert-error"><?php echo htmlspecialchars($contact_error); ?></div>
-        <?php endif; ?>
-        
-        <form method="POST" action="" class="contact-form">
-            <div class="form-group">
-                <label>Full Name *</label>
-                <input type="text" name="name" required placeholder="Enter your full name">
+    <!-- Quick Contact Form -->
+    <div class="form-section">
+        <h3><i class="fas fa-envelope"></i> Quick Message</h3>
+        <form id="quickContactForm">
+            <div class="form-grid">
+                <div class="form-group"><label>Name *</label><input type="text" id="quick_name" required></div>
+                <div class="form-group"><label>WhatsApp *</label><input type="tel" id="quick_phone" required></div>
+                <div class="form-group"><label>Subject</label><input type="text" id="quick_subject"></div>
+                <div class="form-group"><label>Message *</label><textarea id="quick_message" rows="3" required></textarea></div>
             </div>
-            <div class="form-group">
-                <label>Email Address *</label>
-                <input type="email" name="email" required placeholder="Enter your email address">
-            </div>
-            <div class="form-group">
-                <label>Phone Number</label>
-                <input type="tel" name="phone" placeholder="Enter your phone number">
-            </div>
-            <div class="form-group">
-                <label>Message *</label>
-                <textarea name="message" required placeholder="Tell us about your travel plans..."></textarea>
-            </div>
-            <button type="submit" name="contact_submit" class="submit-btn">Send Message →</button>
+            <button type="button" class="submit-btn" onclick="sendQuickMessage()"><i class="fab fa-whatsapp"></i> Send via WhatsApp</button>
         </form>
-        <p style="text-align: center; margin-top: 20px; font-size: 13px; color: var(--gray);">Or call us directly: +34-632234216 (24/7 Emergency)</p>
     </div>
 </div>
 <?php endif; ?>
@@ -1125,6 +1222,95 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
 </footer>
 
 <script>
+    // WhatsApp Numbers
+    const WHATSAPP_NUMBER = "34611473217";
+    
+    // Umrah Request Function
+    function sendUmrahRequest() {
+        const name = document.getElementById('umrah_name').value;
+        const phone = document.getElementById('umrah_phone').value;
+        const nationality = document.getElementById('umrah_nationality').value;
+        const people = document.getElementById('umrah_people').value;
+        const makkahDays = document.getElementById('umrah_makkah_days').value;
+        const madinaDays = document.getElementById('umrah_madina_days').value;
+        const packageType = document.getElementById('umrah_package').value;
+        const date = document.getElementById('umrah_date').value;
+        const message = document.getElementById('umrah_message').value;
+        
+        if (!name || !phone || !nationality) {
+            alert('Please fill all required fields (*)');
+            return;
+        }
+        
+        let whatsappMsg = "🕋 *NEW UMRAH REQUEST* 🕋%0A";
+        whatsappMsg += `%0A👤 *Name:* ${name}`;
+        whatsappMsg += `%0A📱 *WhatsApp:* ${phone}`;
+        whatsappMsg += `%0A🌍 *Nationality:* ${nationality}`;
+        whatsappMsg += `%0A👥 *People:* ${people}`;
+        whatsappMsg += `%0A🕋 *Makkah Days:* ${makkahDays}`;
+        whatsappMsg += `%0A🕌 *Madina Days:* ${madinaDays}`;
+        whatsappMsg += `%0A📦 *Package:* ${packageType}`;
+        if (date) whatsappMsg += `%0A📅 *Preferred Date:* ${date}`;
+        if (message) whatsappMsg += `%0A💬 *Message:* ${message}`;
+        whatsappMsg += `%0A%0A_Please send me best price and details._`;
+        
+        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMsg}`, '_blank');
+    }
+    
+    // Flight Request Function
+    function sendFlightRequest() {
+        const name = document.getElementById('flight_name').value;
+        const phone = document.getElementById('flight_phone').value;
+        const from = document.getElementById('flight_from').value;
+        const to = document.getElementById('flight_to').value;
+        const departure = document.getElementById('flight_departure').value;
+        const returnDate = document.getElementById('flight_return').value;
+        const passengers = document.getElementById('flight_passengers').value;
+        const flightClass = document.getElementById('flight_class').value;
+        const airlines = document.getElementById('flight_airlines').value;
+        
+        if (!name || !phone || !from || !to || !departure) {
+            alert('Please fill all required fields (*)');
+            return;
+        }
+        
+        let whatsappMsg = "✈️ *NEW FLIGHT REQUEST* ✈️%0A";
+        whatsappMsg += `%0A👤 *Name:* ${name}`;
+        whatsappMsg += `%0A📱 *WhatsApp:* ${phone}`;
+        whatsappMsg += `%0A📍 *From:* ${from}`;
+        whatsappMsg += `%0A📍 *To:* ${to}`;
+        whatsappMsg += `%0A📅 *Departure:* ${departure}`;
+        if (returnDate) whatsappMsg += `%0A📅 *Return:* ${returnDate}`;
+        whatsappMsg += `%0A👥 *Passengers:* ${passengers}`;
+        whatsappMsg += `%0A💺 *Class:* ${flightClass}`;
+        if (airlines) whatsappMsg += `%0A✈️ *Preferred Airlines:* ${airlines}`;
+        whatsappMsg += `%0A%0A_Please send me best flight deals._`;
+        
+        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMsg}`, '_blank');
+    }
+    
+    // Quick Message Function
+    function sendQuickMessage() {
+        const name = document.getElementById('quick_name').value;
+        const phone = document.getElementById('quick_phone').value;
+        const subject = document.getElementById('quick_subject').value;
+        const message = document.getElementById('quick_message').value;
+        
+        if (!name || !phone || !message) {
+            alert('Please fill all required fields (*)');
+            return;
+        }
+        
+        let whatsappMsg = `📧 *NEW MESSAGE* 📧%0A`;
+        whatsappMsg += `%0A👤 *Name:* ${name}`;
+        whatsappMsg += `%0A📱 *WhatsApp:* ${phone}`;
+        if (subject) whatsappMsg += `%0A📌 *Subject:* ${subject}`;
+        whatsappMsg += `%0A💬 *Message:* ${message}`;
+        
+        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMsg}`, '_blank');
+    }
+    
+    // Track affiliate clicks
     document.querySelectorAll('a[href*=".tpo.mx"], a[href*="aviasales"], a[href*="agoda"]').forEach(link => {
         link.addEventListener('click', function() {
             if(typeof gtag !== 'undefined') gtag('event', 'click', { 'event_category': 'affiliate' });
