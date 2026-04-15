@@ -132,7 +132,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
         }
         
         .section-subtitle {
-            text-align: center;
+            text-align: centen
             color: var(--gray);
             margin-bottom: 50px;
             font-size: 18px;
@@ -482,6 +482,7 @@ $page = isset($_GET['page']) ? $_GET['page'] : 'home';
         <a href="?page=umrah" class="<?php echo $page == 'umrah' ? 'active' : ''; ?>">Umrah</a>
         <a href="?page=offers" class="<?php echo $page == 'offers' ? 'active' : ''; ?>">Super Offers</a>
         <a href="?page=services" class="<?php echo $page == 'services' ? 'active' : ''; ?>">Services</a>
+        <a href="visa-services.php">Visa Services</a>
         <a href="?page=about" class="<?php echo $page == 'about' ? 'active' : ''; ?>">About</a>
         <a href="?page=contact" class="<?php echo $page == 'contact' ? 'active' : ''; ?>">Contact</a>
     </div>
