@@ -653,8 +653,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
                     <div class="logo-sub-elegant">PREMIUM TRAVEL EXPERIENCES</div>
                 </div>
             </a>
-            <div class="mobile-menu-toggle"><i class="fas fa-bars"></i></div>
-            <nav class="nav-elegant">
+             <nav class="nav-elegant">
                 <a href="#home">Home</a>
                 <a href="#umrah">Umrah</a>
                 <a href="#hajj">Hajj 2026</a>
@@ -920,9 +919,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             <div><h3>Quick Links</h3><p><a href="#home" style="color:rgba(255,255,255,0.7);">Home</a></p><p><a href="#umrah" style="color:rgba(255,255,255,0.7);">Umrah Packages</a></p><p><a href="#hajj" style="color:rgba(255,255,255,0.7);">Hajj 2026</a></p><p><a href="visa-services.php" style="color:var(--light-gold);">Visa Services</a></p><p><a href="#flights" style="color:rgba(255,255,255,0.7);">Flight Deals</a></p><p><a href="#services" style="color:rgba(255,255,255,0.7);">Services</a></p></div>
             <div><h3>Popular Destinations</h3><p>Pakistan | India | Bangladesh</p><p>USA | Canada | UK</p><p>UAE | Saudi Arabia | Turkey</p><p>Spain | France | Germany</p><p>Singapore | Malaysia | Indonesia</p></div>
             <div><h3>Business Hours</h3><p>Monday - Thursday: 10:30 - 20:30</p><p>Friday: 10:30 - 13:00 & 15:00 - 20:30</p><p>Saturday: 10:30 - 19:30</p><p>Sunday: Closed</p><p style="margin-top:10px;"><i class="fas fa-phone-alt"></i> 24/7 Emergency Support</p></div>
-        </div>
-        <div class="footer-bottom"><p>&copy; 2026 Mustafa Travels & Tours. All rights reserved. | Crafted with <i class="fas fa-heart" style="color:var(--primary-gold);"></i> for spiritual journeys | Service Charge: €15 per ticket</p></div>
-    </div>
+        <div class="footer-bottom">
+    <p>&copy; 2026 Mustafa Travels & Tours. All rights reserved. | 
+       <a href="privacy-policy.php" style="color: var(--light-gold);">Privacy Policy</a> | 
+       <a href="terms.php" style="color: var(--light-gold);">Terms & Conditions</a> | 
+       <a href="blog.php" style="color: var(--light-gold);">Blog</a>
+    </p>
+</div>
 </footer>
 
 <!-- Chatbot -->
