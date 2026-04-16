@@ -675,8 +675,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
 <div class="flying-marquee-container">
     <div class="marquee-track">
         <div class="marquee-content">
-            <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €580 ✈️ BCN TO ISB: €595 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
-            <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €580 ✈️ BCN TO ISB: €595 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
+            <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €595 ✈️ BCN TO ISB: €595 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
+            <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €595 ✈️ BCN TO ISB: €595 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
         </div>
         <div class="flying-plane"><i class="fas fa-plane"></i></div>
     </div>
@@ -814,7 +814,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             <div id="flights" style="margin-bottom:30px">
                 <div class="section-header"><h2>⭐ Exclusive Flight Deals</h2><p>Special offers from Barcelona to worldwide destinations</p></div>
                 <div class="deals-grid">
-                    <div class="deal-card"><div><strong>✈️ Etihad Airways</strong><br>Barcelona (BCN) → Lahore (LHE)</div><div class="deal-price">€580</div><a href="https://wa.me/34611473217?text=Interested in BCN to Lahore €580 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
+                    <div class="deal-card"><div><strong>✈️ Etihad Airways</strong><br>Barcelona (BCN) → Lahore (LHE)</div><div class="deal-price">€595</div><a href="https://wa.me/34611473217?text=Interested in BCN to Lahore €595 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
                     <div class="deal-card"><div><strong>✈️ Etihad Airways</strong><br>Barcelona (BCN) → Islamabad (ISB)</div><div class="deal-price">€595</div><a href="https://wa.me/34611473217?text=Interested in BCN to Islamabad €595 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
                     <div class="deal-card"><div><strong>✈️ Emirates</strong><br>Barcelona (BCN) → Dubai (DXB)</div><div class="deal-price">€299</div><a href="https://wa.me/34611473217?text=Interested in BCN to Dubai €299 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
                     <div class="deal-card"><div><strong>✈️ British Airways</strong><br>Barcelona (BCN) → London (LHR)</div><div class="deal-price">€79</div><a href="https://wa.me/34611473217?text=Interested in BCN to London €79 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
