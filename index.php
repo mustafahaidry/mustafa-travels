@@ -915,17 +915,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
 <footer class="footer-elegant" id="contact">
     <div class="container">
         <div class="footer-content">
-            <div><h3>Mustafa Travels & Tours</h3><p>Rambla Badal 141 Local 1 Bajo<br>Barcelona 08028, Spain</p><p>📞 <a href="tel:+34632234216" style="color:var(--light-gold);">+34-632234216</a><br>💬 <a href="https://wa.me/34611473217" style="color:var(--light-gold);">+34-611473217</a><br>✉️ <a href="mailto:mustafatravelstours@gmail.com" style="color:var(--light-gold);">mustafatravelstours@gmail.com</a></p></div>
-            <div><h3>Quick Links</h3><p><a href="#home" style="color:rgba(255,255,255,0.7);">Home</a></p><p><a href="#umrah" style="color:rgba(255,255,255,0.7);">Umrah Packages</a></p><p><a href="#hajj" style="color:rgba(255,255,255,0.7);">Hajj 2026</a></p><p><a href="visa-services.php" style="color:var(--light-gold);">Visa Services</a></p><p><a href="#flights" style="color:rgba(255,255,255,0.7);">Flight Deals</a></p><p><a href="#services" style="color:rgba(255,255,255,0.7);">Services</a></p></div>
-            <div><h3>Popular Destinations</h3><p>Pakistan | India | Bangladesh</p><p>USA | Canada | UK</p><p>UAE | Saudi Arabia | Turkey</p><p>Spain | France | Germany</p><p>Singapore | Malaysia | Indonesia</p></div>
-            <div><h3>Business Hours</h3><p>Monday - Thursday: 10:30 - 20:30</p><p>Friday: 10:30 - 13:00 & 15:00 - 20:30</p><p>Saturday: 10:30 - 19:30</p><p>Sunday: Closed</p><p style="margin-top:10px;"><i class="fas fa-phone-alt"></i> 24/7 Emergency Support</p></div>
+            <div>
+                <h3>Mustafa Travels & Tours</h3>
+                <p>Rambla Badal 141 Local 1 Bajo<br>Barcelona 08028, Spain</p>
+                <p>📞 <a href="tel:+34632234216" style="color:#1a237e;">+34-632234216</a><br>💬 <a href="https://wa.me/34611473217" style="color:#1a237e;">+34-611473217</a><br>✉️ <a href="mailto:mustafatravelstours@gmail.com" style="color:#1a237e;">mustafatravelstours@gmail.com</a></p>
+            </div>
+            <div>
+                <h3>Quick Links</h3>
+                <p><a href="#home" style="color:#555;">Home</a></p>
+                <p><a href="#umrah" style="color:#555;">Umrah Packages</a></p>
+                <p><a href="#hajj" style="color:#555;">Hajj 2026</a></p>
+                <p><a href="visa-services.php" style="color:#555;">Visa Services</a></p>
+                <p><a href="blog.php" style="color:#555;">Blog</a></p>
+                <p><a href="#flights" style="color:#555;">Flight Deals</a></p>
+                <p><a href="#services" style="color:#555;">Services</a></p>
+                <p><a href="privacy-policy.php" style="color:#555;">Privacy Policy</a></p>
+                <p><a href="terms.php" style="color:#555;">Terms & Conditions</a></p>
+            </div>
+            <div>
+                <h3>Popular Destinations</h3>
+                <p>Pakistan | India | Bangladesh</p>
+                <p>USA | Canada | UK</p>
+                <p>UAE | Saudi Arabia | Turkey</p>
+                <p>Spain | France | Germany</p>
+                <p>Singapore | Malaysia | Indonesia</p>
+            </div>
+            <div>
+                <h3>Business Hours</h3>
+                <p>Monday - Thursday: 10:30 - 20:30</p>
+                <p>Friday: 10:30 - 13:00 & 15:00 - 20:30</p>
+                <p>Saturday: 10:30 - 19:30</p>
+                <p>Sunday: Closed</p>
+                <p style="margin-top:10px;"><i class="fas fa-phone-alt"></i> 24/7 Emergency Support</p>
+            </div>
+        </div>
         <div class="footer-bottom">
-    <p>&copy; 2026 Mustafa Travels & Tours. All rights reserved. | 
-       <a href="privacy-policy.php" style="color: var(--light-gold);">Privacy Policy</a> | 
-       <a href="terms.php" style="color: var(--light-gold);">Terms & Conditions</a> | 
-       <a href="blog.php" style="color: var(--light-gold);">Blog</a>
-    </p>
-</div>
+            <p>&copy; 2026 Mustafa Travels & Tours. All rights reserved. | Service Charge: €15 per ticket</p>
+        </div>
+    </div>
 </footer>
 
 <!-- Chatbot -->
