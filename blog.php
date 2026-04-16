@@ -47,7 +47,7 @@
                 <h2 class="blog-title">Complete Umrah Guide from Spain 2026</h2>
                 <div class="blog-date"><i class="far fa-calendar-alt"></i> April 16, 2026 | <i class="far fa-clock"></i> 8 min read</div>
                 <p class="blog-excerpt">Planning for Umrah from Spain? Everything you need to know about packages, visa, flights, accommodations, and step-by-step guide...</p>
-                <a href="#" class="read-more">Read Full Guide →</a>
+               <a href="blog/umrah-guide-spain.php" class="read-more">Read Full Guide →</a>
             </div>
         </div>
         
@@ -59,7 +59,7 @@
                 <h2 class="blog-title">Cheap Flights from Barcelona to Jeddah</h2>
                 <div class="blog-date"><i class="far fa-calendar-alt"></i> April 15, 2026 | <i class="far fa-clock"></i> 5 min read</div>
                 <p class="blog-excerpt">Compare cheapest flights from Barcelona (BCN) to Jeddah (JED). Saudia, Etihad, Qatar, Turkish Airlines deals starting from €359...</p>
-                <a href="#" class="read-more">Read Full Guide →</a>
+                <a href="blog/cheap-flights-bcn-jed.php" class="read-more">Read Full Guide →</a>
             </div>
         </div>
         
@@ -71,7 +71,7 @@
                 <h2 class="blog-title">Umrah Visa Process for Spanish Residents 2026</h2>
                 <div class="blog-date"><i class="far fa-calendar-alt"></i> April 14, 2026 | <i class="far fa-clock"></i> 6 min read</div>
                 <p class="blog-excerpt">Complete step-by-step guide for Umrah visa application from Spain. Requirements, fees, processing time, and document checklist...</p>
-                <a href="#" class="read-more">Read Full Guide →</a>
+                <a href="blog/umrah-visa-process.php" class="read-more">Read Full Guide →</a>
             </div>
         </div>
         
@@ -83,7 +83,7 @@
                 <h2 class="blog-title">Best Time for Umrah - Seasonal Guide 2026</h2>
                 <div class="blog-date"><i class="far fa-calendar-alt"></i> April 13, 2026 | <i class="far fa-clock"></i> 7 min read</div>
                 <p class="blog-excerpt">When is the best time to perform Umrah? Complete guide to seasons, weather, prices, crowd levels, and peak/off-peak months...</p>
-                <a href="#" class="read-more">Read Full Guide →</a>
+               <a href="blog/best-time-umrah.php" class="read-more">Read Full Guide →</a>
             </div>
         </div>
         
@@ -95,7 +95,7 @@
                 <h2 class="blog-title">Makkah vs Madinah Hotels - Best Areas to Stay</h2>
                 <div class="blog-date"><i class="far fa-calendar-alt"></i> April 12, 2026 | <i class="far fa-clock"></i> 6 min read</div>
                 <p class="blog-excerpt">Complete guide to hotels in Makkah and Madinah. Best areas for different budgets, luxury vs budget options, and proximity to Haram...</p>
-                <a href="#" class="read-more">Read Full Guide →</a>
+                <a href="blog/makkah-madinah-hotels.php" class="read-more">Read Full Guide →</a>
             </div>
         </div>
         
