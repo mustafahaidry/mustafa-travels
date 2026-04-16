@@ -258,66 +258,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     
-    <!-- SEO: Title (Shortened - Under 60 characters) -->
     <title>Mustafa Travels | Umrah, Hajj & Flight Deals from Barcelona</title>
-    
-    <!-- SEO: Meta Description -->
     <meta name="description" content="Best travel agency in Barcelona for Umrah packages 2026, Hajj bookings, cheap flights to Pakistan, London, Dubai, USA. 24/7 support. Best price guarantee.">
-    <meta name="keywords" content="Umrah packages, Hajj 2026, Barcelona travel agency, cheap flights, Etihad Airways, visa services, flight deals, Umrah visa">
+    <meta name="keywords" content="Umrah packages, Hajj 2026, Barcelona travel agency, cheap flights, Etihad Airways, visa services">
     <meta name="author" content="Mustafa Travels & Tours">
     <meta name="robots" content="index, follow">
     
-    <!-- Geo Tags for Barcelona -->
+    <!-- Geo Tags -->
     <meta name="geo.region" content="ES-B">
     <meta name="geo.placename" content="Barcelona">
     <meta name="geo.position" content="41.385064;2.173403">
     <meta name="ICBM" content="41.385064, 2.173403">
     
-    <!-- Open Graph / Social Media -->
+    <!-- Open Graph -->
     <meta property="og:title" content="Mustafa Travels | Umrah, Hajj & Flights from Barcelona">
-    <meta property="og:description" content="Premium Umrah packages, Hajj 2026, cheap flights from Barcelona to worldwide destinations. Best travel agency in Spain.">
+    <meta property="og:description" content="Premium Umrah packages, Hajj 2026, cheap flights from Barcelona to worldwide destinations.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://mustafatravels.org">
     <meta property="og:image" content="https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg">
-    <meta property="og:site_name" content="Mustafa Travels & Tours">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Mustafa Travels">
+    meta name="twitter:title" content="Mustafa Travels">
     <meta name="twitter:description" content="Best Umrah, Hajj and flight deals from Barcelona">
-    <meta name="twitter:image" content="https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg">
     
     <!-- Canonical URL & Sitemap -->
     <link rel="canonical" href="https://mustafatravels.org">
     <link rel="sitemap" type="application/xml" title="Sitemap" href="https://mustafatravels.org/sitemap.xml">
-    
-    <!-- Schema.org Structured Data for Travel Agency -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "TravelAgency",
-        "name": "Mustafa Travels & Tours",
-        "url": "https://mustafatravels.org",
-        "logo": "https://mustafatravels.org/logo.png",
-        "image": "https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg",
-        "description": "Best travel agency in Barcelona for Umrah, Hajj and flight bookings. Premium Umrah packages, Hajj 2026, cheap flights to Pakistan, London, Dubai, USA.",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Rambla Badal 141 Local 1 Bajo",
-            "addressLocality": "Barcelona",
-            "postalCode": "08028",
-            "addressCountry": "ES"
-        },
-        "telephone": "+34-632234216",
-        "email": "mustafatravelstours@gmail.com",
-        "openingHours": "Mo-Th 10:30-20:30, Fr 10:30-13:00 15:00-20:30, Sa 10:30-19:30",
-        "priceRange": "€€",
-        "sameAs": [
-            "https://www.facebook.com/mustafatravelstours",
-            "https://www.instagram.com/mustafatraveltours"
-        ]
-    }
-    </script>
     
     <!-- Fonts & Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -529,10 +496,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         .about-image { height: 400px; background-size: cover; background-position: center; border-radius: var(--radius); position: relative; }
         .about-image:after { content: ''; position: absolute; top: 15px; left: 15px; right: -15px; bottom: -15px; border: 2px solid var(--primary-gold); border-radius: var(--radius); z-index: -1; }
         
-        /* Footer */
-        .footer-elegant { background: linear-gradient(135deg, var(--primary-navy) 0%, #0d1440 100%); color: var(--white); padding: 70px 0 35px; margin-top: 40px; }
-        .footer-content { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 50px; }
-        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); }
+        /* Footer - White Background */
+        .footer-elegant {
+            background: white;
+            color: #333;
+            padding: 60px 0 30px;
+            margin-top: 40px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+        }
+        .footer-elegant h3 {
+            color: #1a237e;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        .footer-elegant p {
+            color: #555;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+        .footer-elegant a {
+            color: #555;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .footer-elegant a:hover {
+            color: #d4af37;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            color: #777;
+            font-size: 13px;
+        }
         
         /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: 0.3s; }
@@ -625,6 +627,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             .nav-elegant { display: none; flex-direction: column; background: rgba(26,35,126,0.95); padding: 20px; border-radius: var(--radius); }
             .nav-elegant.active { display: flex; }
             .mobile-menu-toggle { display: block; background: var(--primary-gold); padding: 12px; border-radius: 50px; text-align: center; width: fit-content; margin: 10px auto; cursor: pointer; color: var(--primary-navy); }
+            .footer-content { text-align: center; }
         }
         .mobile-menu-toggle { display: none; }
     </style>
@@ -653,13 +656,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
                     <div class="logo-sub-elegant">PREMIUM TRAVEL EXPERIENCES</div>
                 </div>
             </a>
-             <nav class="nav-elegant">
+            <div class="mobile-menu-toggle"><i class="fas fa-bars"></i></div>
+            <nav class="nav-elegant">
                 <a href="#home">Home</a>
                 <a href="#umrah">Umrah</a>
                 <a href="#hajj">Hajj 2026</a>
                 <a href="visa-services.php">Visa Services</a>
+                <a href="blog.php">Blog</a>
                 <a href="#flights">Flight Deals</a>
                 <a href="#services">Services</a>
+                <a href="privacy-policy.php">Privacy</a>
                 <a href="https://wa.me/34611473217" class="whatsapp-btn-elegant"><i class="fab fa-whatsapp"></i> Book Now</a>
             </nav>
         </div>
@@ -669,8 +675,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
 <div class="flying-marquee-container">
     <div class="marquee-track">
         <div class="marquee-content">
-            <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €595 ✈️ BCN TO ISB: €595 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
-            <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €595 ✈️ BCN TO ISB: €595 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
+            <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €580 ✈️ BCN TO ISB: €585 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
+            <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €580 ✈️ BCN TO ISB: €585 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
         </div>
         <div class="flying-plane"><i class="fas fa-plane"></i></div>
     </div>
@@ -741,7 +747,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         <?php if ($searchPerformed): ?><div style="margin-top:30px"><?php echo $flightResults; ?></div><?php endif; ?>
     </div>
     
-    <!-- Travelpayouts Widget - Affiliate Earnings -->
+    <!-- Travelpayouts Widget -->
     <div class="search-luxury" style="margin-top: 20px;">
         <h3 style="text-align:center; margin-bottom:20px; font-size:24px; color:var(--primary-navy);">✈️ Compare & Book Flights (Best Prices)</h3>
         <div id="tpl-search"></div>
@@ -750,7 +756,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
     
     <div class="two-columns">
         <div class="main-content">
-            <!-- Umrah Packages Section -->
+            <!-- Umrah Packages -->
             <div id="umrah" style="padding:20px 0">
                 <div class="section-header"><h2>🕋 Premium Umrah Packages 2026</h2><p>Experience spiritual devotion with luxury accommodations near the Holy Mosques</p></div>
                 <div class="packages-grid">
@@ -804,18 +810,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
                 <a href="https://wa.me/34611473217?text=I'm interested in Hajj 2026 packages" class="whatsapp-btn-elegant" style="margin-top:15px; display:inline-block">Notify Me When Open</a>
             </div>
             
-            <!-- Flight Deals Section -->
+            <!-- Flight Deals -->
             <div id="flights" style="margin-bottom:30px">
                 <div class="section-header"><h2>⭐ Exclusive Flight Deals</h2><p>Special offers from Barcelona to worldwide destinations</p></div>
                 <div class="deals-grid">
-                    <div class="deal-card"><div><strong>✈️ Etihad Airways</strong><br>Barcelona (BCN) → Lahore (LHE)</div><div class="deal-price">€595</div><a href="https://wa.me/34611473217?text=Interested in BCN to Lahore €595 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
-                    <div class="deal-card"><div><strong>✈️ Etihad Airways</strong><br>Barcelona (BCN) → Islamabad (ISB)</div><div class="deal-price">€595</div><a href="https://wa.me/34611473217?text=Interested in BCN to Islamabad €595 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
+                    <div class="deal-card"><div><strong>✈️ Etihad Airways</strong><br>Barcelona (BCN) → Lahore (LHE)</div><div class="deal-price">€580</div><a href="https://wa.me/34611473217?text=Interested in BCN to Lahore €580 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
+                    <div class="deal-card"><div><strong>✈️ Etihad Airways</strong><br>Barcelona (BCN) → Islamabad (ISB)</div><div class="deal-price">€585</div><a href="https://wa.me/34611473217?text=Interested in BCN to Islamabad €585 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
                     <div class="deal-card"><div><strong>✈️ Emirates</strong><br>Barcelona (BCN) → Dubai (DXB)</div><div class="deal-price">€299</div><a href="https://wa.me/34611473217?text=Interested in BCN to Dubai €299 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
                     <div class="deal-card"><div><strong>✈️ British Airways</strong><br>Barcelona (BCN) → London (LHR)</div><div class="deal-price">€79</div><a href="https://wa.me/34611473217?text=Interested in BCN to London €79 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
                 </div>
             </div>
             
-            <!-- Services Section -->
+            <!-- Services -->
             <div id="services" style="margin-bottom:30px">
                 <div class="section-header"><h2>⭐ Our Premium Services</h2><p>Comprehensive travel solutions tailored to your needs</p></div>
                 <div class="services-grid">
@@ -828,7 +834,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         </div>
         
         <div class="sidebar">
-            <!-- BCN Departures Widget -->
+            <!-- BCN Departures -->
             <div class="sidebar-widget">
                 <h3><i class="fas fa-plane-departure"></i> BCN Departures</h3>
                 <div class="flight-info"><div class="flight-time">08:30</div><div class="flight-route">BCN → LHR (British Airways)</div><span class="flight-status status-on-time">On Time</span></div>
@@ -838,17 +844,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
                 <div class="flight-info"><div class="flight-time">12:45</div><div class="flight-route">BCN → JFK (Delta)</div><span class="flight-status status-on-time">On Time</span></div>
             </div>
             
-            <!-- BCN Arrivals Widget -->
+            <!-- BCN Arrivals -->
             <div class="sidebar-widget">
                 <h3><i class="fas fa-plane-arrival"></i> BCN Arrivals</h3>
                 <div class="flight-info"><div class="flight-time">09:45</div><div class="flight-route">LHR → BCN (British Airways)</div><span class="flight-status status-on-time">On Time</span></div>
                 <div class="flight-info"><div class="flight-time">10:30</div><div class="flight-route">CDG → BCN (Air France)</div><span class="flight-status status-on-time">On Time</span></div>
                 <div class="flight-info"><div class="flight-time">11:15</div><div class="flight-route">DXB → BCN (Emirates)</div><span class="flight-status status-on-time">On Time</span></div>
                 <div class="flight-info"><div class="flight-time">13:00</div><div class="flight-route">LHE → BCN (Etihad)</div><span class="flight-status status-on-time">On Time</span></div>
-                <div class="flight-info"><div class="flight-time">14:30</div><div class="flight-route">JFK → BCN (Delta)</div><span class="flight-status status-on-time">On Time</span></div>
             </div>
             
-            <!-- Partner Airlines Widget -->
+            <!-- Partner Airlines -->
             <div class="sidebar-widget">
                 <h3><i class="fas fa-building"></i> Partner Airlines</h3>
                 <div>
@@ -864,12 +869,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
                     <span class="airline-tag">KLM</span>
                     <span class="airline-tag">Iberia</span>
                     <span class="airline-tag">Vueling</span>
-                    <span class="airline-tag">Ryanair</span>
-                    <span class="airline-tag">EasyJet</span>
                 </div>
             </div>
             
-            <!-- Contact/Office Details Widget -->
+            <!-- Office Details -->
             <div class="sidebar-widget">
                 <h3><i class="fas fa-map-marker-alt"></i> Office Details</h3>
                 <div style="text-align:center">
@@ -888,7 +891,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
                 </div>
             </div>
             
-            <!-- 24/7 Support Widget -->
+            <!-- 24/7 Support -->
             <div class="sidebar-widget">
                 <h3><i class="fas fa-headset"></i> 24/7 Support</h3>
                 <div style="text-align:center">
@@ -918,19 +921,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             <div>
                 <h3>Mustafa Travels & Tours</h3>
                 <p>Rambla Badal 141 Local 1 Bajo<br>Barcelona 08028, Spain</p>
-                <p>📞 <a href="tel:+34632234216" style="color:#1a237e;">+34-632234216</a><br>💬 <a href="https://wa.me/34611473217" style="color:#1a237e;">+34-611473217</a><br>✉️ <a href="mailto:mustafatravelstours@gmail.com" style="color:#1a237e;">mustafatravelstours@gmail.com</a></p>
+                <p>📞 <a href="tel:+34632234216">+34-632234216</a><br>💬 <a href="https://wa.me/34611473217">+34-611473217</a><br>✉️ <a href="mailto:mustafatravelstours@gmail.com">mustafatravelstours@gmail.com</a></p>
             </div>
             <div>
                 <h3>Quick Links</h3>
-                <p><a href="#home" style="color:#555;">Home</a></p>
-                <p><a href="#umrah" style="color:#555;">Umrah Packages</a></p>
-                <p><a href="#hajj" style="color:#555;">Hajj 2026</a></p>
-                <p><a href="visa-services.php" style="color:#555;">Visa Services</a></p>
-                <p><a href="blog.php" style="color:#555;">Blog</a></p>
-                <p><a href="#flights" style="color:#555;">Flight Deals</a></p>
-                <p><a href="#services" style="color:#555;">Services</a></p>
-                <p><a href="privacy-policy.php" style="color:#555;">Privacy Policy</a></p>
-                <p><a href="terms.php" style="color:#555;">Terms & Conditions</a></p>
+                <p><a href="#home">Home</a></p>
+                <p><a href="#umrah">Umrah Packages</a></p>
+                <p><a href="#hajj">Hajj 2026</a></p>
+                <p><a href="visa-services.php">Visa Services</a></p>
+                <p><a href="blog.php">Blog</a></p>
+                <p><a href="#flights">Flight Deals</a></p>
+                <p><a href="#services">Services</a></p>
+                <p><a href="privacy-policy.php">Privacy Policy</a></p>
+                <p><a href="terms.php">Terms & Conditions</a></p>
             </div>
             <div>
                 <h3>Popular Destinations</h3>
@@ -1083,8 +1086,6 @@ function selectFlight(offerId, price, currency, airline, origin, destination, de
     document.getElementById('duration').value = duration;
     document.getElementById('cabin_class').value = cabinClass;
     
-    let fare = Math.round(parseFloat(price) * 0.59);
-    let taxes = parseFloat(price) - fare;
     let totalWithService = parseFloat(price) + 15;
     
     document.getElementById('flightSummary').innerHTML = `<strong>✈️ Flight Details</strong><br>${airline}<br>${origin} → ${destination}<br>Departure: ${depDate} at ${depTime}<br>Arrival: ${arrDate} at ${arrTime}<br>Duration: ${duration}<br>Class: ${cabinClass}`;
@@ -1124,18 +1125,14 @@ function sendChatMessage() {
 
 function getBotResponse(msg) {
     if(msg.includes('hello') || msg.includes('hi') || msg.includes('salam')) return '👋 Assalamu Alaikum! Welcome to Mustafa Travels! How can I help you today?';
-    if(msg.includes('flight') || msg.includes('ticket')) return '✈️ You can search flights using the form above! Just enter your origin, destination, and date. We offer One Way, Return, and Multi-City options. Our service charge is €15 per ticket.';
-    if(msg.includes('umrah')) return '🕋 We have 3 Umrah packages starting from €895. Includes flights, hotel near Haram, and visa processing. Would you like me to share the details?';
-    if(msg.includes('hajj')) return '🕋 Hajj 2026 packages are currently in development. Phase 2 bookings will open soon. Click "Notify Me" on our website to get updates!';
-    if(msg.includes('price') || msg.includes('cost')) return '💰 Our flight prices are real-time from Duffel API. Plus a €15 service charge per ticket. For Umrah packages, prices start from €895.';
+    if(msg.includes('flight') || msg.includes('ticket')) return '✈️ You can search flights using the form above! We offer One Way, Return, and Multi-City options. Service charge: €15 per ticket.';
+    if(msg.includes('umrah')) return '🕋 We have 3 Umrah packages starting from €895. Includes flights, hotel near Haram, and visa processing.';
+    if(msg.includes('hajj')) return '🕋 Hajj 2026 packages are currently in development. Phase 2 bookings will open soon.';
+    if(msg.includes('price') || msg.includes('cost')) return '💰 Our flight prices are real-time from Duffel API. Plus €15 service charge per ticket. Umrah packages start from €895.';
     if(msg.includes('contact') || msg.includes('phone') || msg.includes('whatsapp')) return '📞 You can reach us at:<br>📱 WhatsApp: +34-611473217<br>📞 Call: +34-632234216<br>✉️ Email: mustafatravelstours@gmail.com';
-    if(msg.includes('service charge') || msg.includes('commission') || msg.includes('fee')) return '💰 We charge a €15 service fee per ticket for booking assistance, ticket delivery, and 24/7 customer support.';
-    if(msg.includes('help')) return '🤖 I can help you with:<br>• Flight search and booking<br>• Umrah package details<br>• Hajj 2026 information<br>• Contact information<br>• Service charges<br><br>Just type what you need!';
-    if(msg.includes('lhr') || msg.includes('london')) return '✈️ Flights from Barcelona to London start from €79 + €15 service charge = €94. Would you like me to help you search?';
-    if(msg.includes('lhe') || msg.includes('lahore')) return '✈️ Flights from Barcelona to Lahore start from €595 + €15 service charge = €595 with Etihad Airways. 40kg baggage included!';
-    if(msg.includes('isb') || msg.includes('islamabad')) return '✈️ Flights from Barcelona to Islamabad start from €595 + €15 service charge = €600 with Etihad Airways. 40kg baggage included!';
-    if(msg.includes('dubai') || msg.includes('dxb')) return '✈️ Flights from Barcelona to Dubai start from €299 + €15 service charge = €314 with Emirates.';
-    return 'Thank you for your message! Our team will respond shortly. For urgent inquiries, please contact us on WhatsApp: +34-611473217';
+    if(msg.includes('service charge') || msg.includes('commission')) return '💰 We charge €15 service fee per ticket for booking assistance, ticket delivery, and 24/7 customer support.';
+    if(msg.includes('help')) return '🤖 I can help with:<br>• Flight search and booking<br>• Umrah packages<br>• Hajj 2026 info<br>• Contact details<br>• Service charges<br><br>Just type what you need!';
+    return 'Thank you for your message! For urgent inquiries, please contact us on WhatsApp: +34-611473217';
 }
 
 function escapeHtml(text) {
