@@ -1,936 +1,1121 @@
 <?php
-// index.php - Mustafa Travels & Tours Complete Website
-// Includes: Home, Umrah, Super Offers, Services, About, Contact
+// 🔑 Duffel Live Token
+$apiKey = 'duffel_live_cvF1_BR5No4SjJTp3tGVSDKkpwWwFU3VgOkN7TtETlB';
+$flightResults = '';
+$searchPerformed = false;
 
-$page = isset($_GET['page']) ? $_GET['page'] : 'home';
+// ========== SMTP CONFIGURATION ==========
+define('SMTP_HOST', 'smtp.gmail.com');
+define('SMTP_USER', 'mustafatravelstours@gmail.com');
+define('SMTP_PASS', 'xgjx bnvz yrsf cmtm');
+define('SMTP_FROM', 'mustafatravelstours@gmail.com');
+define('SMTP_FROM_NAME', 'Mustafa Travels & Tours');
+
+// Load PHPMailer
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require_once __DIR__ . '/PHPMailer/PHPMailer.php';
+require_once __DIR__ . '/PHPMailer/SMTP.php';
+require_once __DIR__ . '/PHPMailer/Exception.php';
+
+// ========== SERVICE CHARGES ==========
+define('SERVICE_CHARGE', 15);
+
+// Airport database
+$airportsList = [
+    ['code' => 'BCN', 'name' => 'Barcelona-El Prat, Spain'],
+    ['code' => 'MAD', 'name' => 'Madrid-Barajas, Spain'],
+    ['code' => 'LHE', 'name' => 'Lahore, Pakistan'],
+    ['code' => 'ISB', 'name' => 'Islamabad, Pakistan'],
+    ['code' => 'KHI', 'name' => 'Karachi, Pakistan'],
+    ['code' => 'JFK', 'name' => 'New York, USA'],
+    ['code' => 'LHR', 'name' => 'London, UK'],
+    ['code' => 'DXB', 'name' => 'Dubai, UAE'],
+    ['code' => 'SIN', 'name' => 'Singapore'],
+    ['code' => 'CDG', 'name' => 'Paris, France'],
+    ['code' => 'FRA', 'name' => 'Frankfurt, Germany'],
+];
+
+function getAirportName($code) {
+    global $airportsList;
+    foreach ($airportsList as $a) if ($a['code'] == $code) return $a['name'];
+    return $code;
+}
+
+function generateTicketNumber() {
+    return 'MFT-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -6)) . rand(100, 999);
+}
+
+// Send email using SMTP
+function sendTicketEmailSMTP($to, $subject, $htmlContent) {
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = SMTP_HOST;
+        $mail->SMTPAuth = true;
+        $mail->Username = SMTP_USER;
+        $mail->Password = SMTP_PASS;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+        
+        $mail->setFrom(SMTP_FROM, SMTP_FROM_NAME);
+        $mail->addAddress($to);
+        $mail->addBCC(SMTP_FROM);
+        
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body = $htmlContent;
+        $mail->AltBody = strip_tags($htmlContent);
+        
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        error_log("Email Error: " . $mail->ErrorInfo);
+        return false;
+    }
+}
+
+// Generate HTML Ticket
+function generateHTMLTicket($bookingData) {
+    $totalWithService = $bookingData['total_price'] + SERVICE_CHARGE;
+    
+    return '<!DOCTYPE html>
+    <html>
+    <head><meta charset="UTF-8"><title>Flight Ticket - ' . $bookingData['ticket_number'] . '</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f0f2f5; padding: 40px; }
+        .ticket { max-width: 800px; margin: 0 auto; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        .ticket-header { background: linear-gradient(135deg, #1a237e, #00695c); color: white; padding: 30px; text-align: center; }
+        .ticket-header h1 { font-size: 28px; }
+        .ticket-body { padding: 30px; }
+        .ticket-number { background: #f8f9fa; padding: 15px; border-radius: 12px; text-align: center; margin-bottom: 25px; border-left: 4px solid #d4af37; }
+        .ticket-number .number { font-size: 24px; font-weight: bold; color: #00695c; }
+        .status-confirmed { background: #4caf50; color: white; padding: 4px 12px; border-radius: 20px; display: inline-block; font-size: 12px; }
+        .flight-info, .passenger-info, .price-breakdown { background: #f8f9fa; border-radius: 16px; padding: 20px; margin-bottom: 25px; }
+        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .info-label { font-weight: 600; color: #1a237e; }
+        .total-price { font-size: 24px; font-weight: 700; color: #00695c; text-align: center; padding: 15px; background: white; border-radius: 12px; margin-top: 10px; }
+        .footer-note { text-align: center; font-size: 11px; color: #999; border-top: 1px solid #eee; padding-top: 20px; margin-top: 20px; }
+        .print-btn { background: #1a237e; color: white; border: none; padding: 12px; border-radius: 50px; cursor: pointer; width: 100%; margin-top: 20px; }
+        @media print { .print-btn { display: none; } body { background: white; padding: 0; } }
+    </style>
+    </head>
+    <body>
+        <div class="ticket">
+            <div class="ticket-header"><h1>✈️ MUSTAFA TRAVELS & TOURS</h1><p>Official Flight Ticket</p></div>
+            <div class="ticket-body">
+                <div class="ticket-number"><h3>🎫 TICKET NUMBER</h3><div class="number">' . $bookingData['ticket_number'] . '</div><div><span class="status-confirmed">✅ CONFIRMED</span></div></div>
+                <div class="flight-info"><h3>✈️ FLIGHT DETAILS</h3>
+                    <div class="info-row"><span class="info-label">Airline:</span><span>' . htmlspecialchars($bookingData['airline']) . '</span></div>
+                    <div class="info-row"><span class="info-label">Route:</span><span>' . $bookingData['origin'] . ' → ' . $bookingData['destination'] . '</span></div>
+                    <div class="info-row"><span class="info-label">Departure:</span><span>' . $bookingData['departure_date'] . ' at ' . $bookingData['departure_time'] . '</span></div>
+                    <div class="info-row"><span class="info-label">Arrival:</span><span>' . $bookingData['arrival_date'] . ' at ' . $bookingData['arrival_time'] . '</span></div>
+                    <div class="info-row"><span class="info-label">Duration:</span><span>' . $bookingData['duration'] . '</span></div>
+                    <div class="info-row"><span class="info-label">Cabin:</span><span>' . ucfirst($bookingData['cabin_class']) . '</span></div>
+                </div>
+                <div class="passenger-info"><h3>👤 PASSENGER DETAILS</h3>
+                    <div class="info-row"><span class="info-label">Name:</span><span>' . htmlspecialchars($bookingData['passenger_name']) . '</span></div>
+                    <div class="info-row"><span class="info-label">Passport:</span><span>' . htmlspecialchars($bookingData['passport_no']) . '</span></div>
+                    <div class="info-row"><span class="info-label">DOB:</span><span>' . $bookingData['dob'] . '</span></div>
+                    <div class="info-row"><span class="info-label">Email:</span><span>' . $bookingData['email'] . '</span></div>
+                    <div class="info-row"><span class="info-label">Phone:</span><span>' . $bookingData['phone'] . '</span></div>
+                </div>
+                <div class="price-breakdown"><h3>💰 PAYMENT SUMMARY</h3>
+                    <div class="info-row"><span class="info-label">Flight Fare:</span><span>' . $bookingData['total_price'] . ' ' . $bookingData['currency'] . '</span></div>
+                    <div class="info-row"><span class="info-label">Service Charge (€15):</span><span>+ €15 EUR</span></div>
+                    <div class="total-price">Total Paid: ' . $totalWithService . ' ' . $bookingData['currency'] . '</div>
+                </div>
+                <div class="footer-note"><p>📞 +34-632234216 | 💬 +34-611473217</p><p>Thank you for choosing Mustafa Travels!</p></div>
+                <button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+            </div>
+        </div>
+    </body>
+    </html>';
+}
+
+// Handle booking confirmation
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
+    $ticketNumber = generateTicketNumber();
+    $bookingData = [
+        'ticket_number' => $ticketNumber,
+        'airline' => $_POST['airline'],
+        'origin' => $_POST['origin'],
+        'destination' => $_POST['destination'],
+        'departure_date' => $_POST['departure_date'],
+        'departure_time' => $_POST['departure_time'],
+        'arrival_date' => $_POST['arrival_date'],
+        'arrival_time' => $_POST['arrival_time'],
+        'duration' => $_POST['duration'],
+        'cabin_class' => $_POST['cabin_class'],
+        'passenger_name' => $_POST['passenger_title'] . ' ' . $_POST['passenger_given_name'] . ' ' . $_POST['passenger_family_name'],
+        'passport_no' => $_POST['passenger_passport'],
+        'dob' => $_POST['passenger_dob'],
+        'email' => $_POST['contact_email'],
+        'phone' => $_POST['contact_phone'],
+        'total_price' => $_POST['price'],
+        'currency' => $_POST['currency'],
+    ];
+    
+    $htmlTicket = generateHTMLTicket($bookingData);
+    $emailSent = sendTicketEmailSMTP($bookingData['email'], "Your Flight Ticket - $ticketNumber", $htmlTicket);
+    
+    $totalWithService = $bookingData['total_price'] + SERVICE_CHARGE;
+    $whatsappMsg = "🎫 NEW BOOKING\nTicket: $ticketNumber\nPassenger: {$bookingData['passenger_name']}\nRoute: {$bookingData['origin']} → {$bookingData['destination']}\nFlight Fare: {$bookingData['total_price']} {$bookingData['currency']}\nService Charge: €15\nTotal: $totalWithService {$bookingData['currency']}\nEmail sent: " . ($emailSent ? 'YES' : 'NO');
+    
+    header("Location: https://wa.me/34611473217?text=" . urlencode($whatsappMsg));
+    exit();
+}
+
+// Handle flight search
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
+    $searchPerformed = true;
+    $tripType = $_POST['trip_type'] ?? 'oneway';
+    $passengers = intval($_POST['passengers']);
+    $cabinClass = $_POST['cabin_class'] ?? 'economy';
+    
+    $slices = [];
+    
+    if ($tripType == 'oneway') {
+        $origin = strtoupper(trim($_POST['origin']));
+        $destination = strtoupper(trim($_POST['destination']));
+        $date = $_POST['departure_date'];
+        $slices[] = ['origin' => $origin, 'destination' => $destination, 'departure_date' => $date];
+    }
+    
+    if ($tripType == 'return') {
+        $origin = strtoupper(trim($_POST['origin_return']));
+        $destination = strtoupper(trim($_POST['destination_return']));
+        $date = $_POST['departure_date_return'];
+        $returnDate = $_POST['return_date'];
+        $slices[] = ['origin' => $origin, 'destination' => $destination, 'departure_date' => $date];
+        $slices[] = ['origin' => $destination, 'destination' => $origin, 'departure_date' => $returnDate];
+    }
+    
+    if ($tripType == 'multi') {
+        for ($i = 1; $i <= 3; $i++) {
+            $origin = strtoupper(trim($_POST["origin_$i"] ?? ''));
+            $destination = strtoupper(trim($_POST["destination_$i"] ?? ''));
+            $date = $_POST["date_$i"] ?? '';
+            if ($origin && $destination && $date) {
+                $slices[] = ['origin' => $origin, 'destination' => $destination, 'departure_date' => $date];
+            }
+        }
+    }
+    
+    if (count($slices) > 0) {
+        $searchData = ['data' => ['slices' => $slices, 'passengers' => array_fill(0, $passengers, ['type' => 'adult']), 'cabin_class' => $cabinClass, 'max_connections' => 1]];
+        $ch = curl_init('https://api.duffel.com/air/offer_requests?return_offers=true');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'Authorization: Bearer ' . $apiKey, 'Duffel-Version: v2']);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($searchData));
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        
+        if ($response === false) {
+            $flightResults = '<div class="error">❌ Connection error</div>';
+        } else {
+            $data = json_decode($response, true);
+            $offers = $data['data']['offers'] ?? [];
+            if (count($offers) > 0) {
+                $tripText = $tripType == 'oneway' ? 'One Way' : ($tripType == 'return' ? 'Return' : 'Multi-City');
+                $flightResults = '<div class="success-header">✈️ Found ' . count($offers) . ' ' . $tripText . ' flights</div>';
+                foreach (array_slice($offers, 0, 15) as $offer) {
+                    $seg = $offer['slices'][0]['segments'] ?? [];
+                    $first = $seg[0] ?? null;
+                    $last = $seg[count($seg)-1] ?? null;
+                    $depTime = $first ? date('h:i A', strtotime($first['departing_at'])) : 'N/A';
+                    $depDate = $first ? date('d M Y', strtotime($first['departing_at'])) : 'N/A';
+                    $arrTime = $last ? date('h:i A', strtotime($last['arriving_at'])) : 'N/A';
+                    $arrDate = $last ? date('d M Y', strtotime($last['arriving_at'])) : 'N/A';
+                    $dur = 0; foreach ($seg as $s) $dur += intval($s['duration'] ?? 0);
+                    $durText = floor($dur/60).'h '.($dur%60).'m';
+                    $stops = count($seg)-1; $stopText = $stops == 0 ? 'Direct' : $stops.' stop'.($stops>1?'s':'');
+                    
+                    $displayOrigin = $slices[0]['origin'];
+                    $displayDest = $slices[0]['destination'];
+                    
+                    $flightResults .= '<div class="flight-card" onclick="selectFlight(\''.$offer['id'].'\', \''.$offer['total_amount'].'\', \''.$offer['total_currency'].'\', \''.addslashes($offer['owner']['name'] ?? 'Airline').'\', \''.$displayOrigin.'\', \''.$displayDest.'\', \''.$depDate.'\', \''.$depTime.'\', \''.$arrDate.'\', \''.$arrTime.'\', \''.$durText.'\', \''.$stopText.'\', \''.addslashes($cabinClass).'\')">
+                        <div class="flight-header"><div class="airline-info"><div class="airline-icon">✈️</div><div><div class="airline-name">'.htmlspecialchars($offer['owner']['name'] ?? 'Airline').'</div></div></div><div class="flight-price">€'.($offer['total_amount'] + SERVICE_CHARGE).' '.$offer['total_currency'].' <small style="font-size:12px; color:#666;">(incl. €15 service fee)</small></div></div>
+                        <div class="flight-route"><div><div class="city-code">'.$displayOrigin.'</div><div class="city-name">'.getAirportName($displayOrigin).'</div><div class="flight-time">'.$depTime.'</div></div>
+                        <div class="flight-duration"><div class="duration-line"></div><div class="duration-text">'.$durText.'</div><div class="stops-text">'.$stopText.'</div></div>
+                        <div><div class="city-code">'.$displayDest.'</div><div class="city-name">'.getAirportName($displayDest).'</div><div class="flight-time">'.$arrTime.'</div></div></div>
+                        <button class="select-flight-btn">Select Flight</button></div>';
+                }
+            } else {
+                $flightResults = '<div class="error">✈️ No flights found. Try different date.</div>';
+            }
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Mustafa Travels & Tours | Premium Umrah, Flights & Travel Services Barcelona</title>
     
-    <meta name="description" content="Mustafa Travels & Tours - Premium travel agency in Barcelona since 2024. Umrah packages from €999, flight tickets, visa assistance, and worldwide travel services.">
-    <meta name="keywords" content="Umrah packages, flight tickets Barcelona, travel agency, Umrah 2026, visa assistance, eSIM, travel insurance">
-    <meta name="author" content="Ghulam Mustafa Haidry">
+    <!-- SEO: Title (Shortened - Under 60 characters) -->
+    <title>Mustafa Travels | Umrah, Hajj & Flight Deals from Barcelona</title>
+    
+    <!-- SEO: Meta Description -->
+    <meta name="description" content="Best travel agency in Barcelona for Umrah packages 2026, Hajj bookings, cheap flights to Pakistan, London, Dubai, USA. 24/7 support. Best price guarantee.">
+    <meta name="keywords" content="Umrah packages, Hajj 2026, Barcelona travel agency, cheap flights, Etihad Airways, visa services, flight deals, Umrah visa">
+    <meta name="author" content="Mustafa Travels & Tours">
     <meta name="robots" content="index, follow">
     
-    <meta property="og:title" content="Mustafa Travels & Tours - Premium Travel Services Barcelona">
-    <meta property="og:description" content="Umrah packages from €999 | Flight tickets | Visa assistance | 24/7 support">
-    <meta property="og:type" content="website">
+    <!-- Geo Tags for Barcelona -->
+    <meta name="geo.region" content="ES-B">
+    <meta name="geo.placename" content="Barcelona">
+    <meta name="geo.position" content="41.385064;2.173403">
+    <meta name="ICBM" content="41.385064, 2.173403">
     
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H7TQLKHP25"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-H7TQLKHP25');
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Mustafa Travels | Umrah, Hajj & Flights from Barcelona">
+    <meta property="og:description" content="Premium Umrah packages, Hajj 2026, cheap flights from Barcelona to worldwide destinations. Best travel agency in Spain.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mustafatravels.org">
+    <meta property="og:image" content="https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg">
+    <meta property="og:site_name" content="Mustafa Travels & Tours">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mustafa Travels">
+    <meta name="twitter:description" content="Best Umrah, Hajj and flight deals from Barcelona">
+    <meta name="twitter:image" content="https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg">
+    
+    <!-- Canonical URL & Sitemap -->
+    <link rel="canonical" href="https://mustafatravels.org">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://mustafatravels.org/sitemap.xml">
+    
+    <!-- Schema.org Structured Data for Travel Agency -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TravelAgency",
+        "name": "Mustafa Travels & Tours",
+        "url": "https://mustafatravels.org",
+        "logo": "https://mustafatravels.org/logo.png",
+        "image": "https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg",
+        "description": "Best travel agency in Barcelona for Umrah, Hajj and flight bookings. Premium Umrah packages, Hajj 2026, cheap flights to Pakistan, London, Dubai, USA.",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Rambla Badal 141 Local 1 Bajo",
+            "addressLocality": "Barcelona",
+            "postalCode": "08028",
+            "addressCountry": "ES"
+        },
+        "telephone": "+34-632234216",
+        "email": "mustafatravelstours@gmail.com",
+        "openingHours": "Mo-Th 10:30-20:30, Fr 10:30-13:00 15:00-20:30, Sa 10:30-19:30",
+        "priceRange": "€€",
+        "sameAs": [
+            "https://www.facebook.com/mustafatravelstours",
+            "https://www.instagram.com/mustafatraveltours"
+        ]
+    }
     </script>
     
+    <!-- Fonts & Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Travelpayouts Widget Script -->
+    <script>
+        (function() {
+            var script = document.createElement('script');
+            script.src = 'https://www.travelpayouts.com/widgets/6adc981ba7dae60d22466a0572afce1a.js?v=2153';
+            script.async = true;
+            document.head.appendChild(script);
+        })();
+    </script>
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            line-height: 1.5;
-            color: #1a1a2e;
-            background: #ffffff;
-        }
-        
         :root {
-            --primary: #0a4b6e;
-            --primary-dark: #063552;
-            --secondary: #1e7e6c;
-            --gold: #d4af37;
-            --dark: #1a1a2e;
-            --light: #f8f9fa;
-            --gray: #6c757d;
-            --red: #dc2626;
-            --green: #10b981;
+            --primary-gold: #d4af37;
+            --primary-navy: #1a237e;
+            --primary-teal: #00695c;
+            --light-gold: #f5e8c8;
+            --light-bg: #f9f7f2;
+            --shadow: 0 10px 30px rgba(0,0,0,0.08);
+            --radius: 12px;
+            --transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.1);
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Montserrat', sans-serif; background: var(--light-bg); line-height: 1.7; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        .two-columns { display: flex; gap: 30px; margin: 40px 0; }
+        .main-content { flex: 3; }
+        .sidebar { flex: 1; }
         
-        .top-bar {
-            background: var(--dark);
-            color: white;
-            padding: 10px 60px;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            font-size: 13px;
-        }
-        
-        .top-bar a { color: white; text-decoration: none; margin-left: 20px; transition: color 0.3s; }
-        .top-bar a:hover { color: var(--gold); }
-        .emergency-badge { background: #dc2626; padding: 2px 8px; border-radius: 20px; font-size: 10px; margin-left: 8px; }
-        
-        .main-header {
-            background: white;
-            padding: 20px 60px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        /* Header */
+        .elegant-header {
+            background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-teal) 100%);
+            padding: 15px 0;
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
-        
-        .logo h1 { font-size: 26px; font-weight: 700; color: var(--primary); }
-        .logo p { font-size: 11px; color: var(--gray); letter-spacing: 2px; }
-        
-        .nav a {
-            text-decoration: none;
-            color: var(--dark);
-            margin-left: 35px;
-            font-weight: 500;
-            transition: color 0.3s;
-            font-size: 15px;
-        }
-        
-        .nav a:hover, .nav a.active { color: var(--primary); }
-        
-        .hero {
-            background: linear-gradient(135deg, #0a4b6e 0%, #1e7e6c 100%);
+        .header-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             color: white;
-            padding: 80px 60px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .contact-info-elegant { display: flex; gap: 30px; flex-wrap: wrap; }
+        .contact-info-elegant span { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        .contact-info-elegant i { color: var(--primary-gold); }
+        .social-elegant a { color: white; margin-left: 15px; font-size: 16px; transition: var(--transition); }
+        .social-elegant a:hover { color: var(--primary-gold); }
+        .main-header-elegant { padding: 20px 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .logo-elegant { display: flex; align-items: center; gap: 20px; text-decoration: none; }
+        .logo-icon-elegant { background: var(--primary-gold); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--primary-navy); box-shadow: var(--shadow); }
+        .logo-main-elegant { font-family: 'Crimson Text', serif; font-size: 28px; font-weight: 700; color: white; }
+        .logo-sub-elegant { font-size: 12px; color: var(--light-gold); letter-spacing: 2px; }
+        .nav-elegant { display: flex; gap: 30px; flex-wrap: wrap; }
+        .nav-elegant a { color: white; text-decoration: none; font-weight: 500; font-size: 15px; transition: var(--transition); cursor: pointer; }
+        .nav-elegant a:hover { color: var(--primary-gold); }
+        .whatsapp-btn-elegant {
+            background: #25D366;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
         }
         
-        .hero h1 { font-size: 48px; font-weight: 800; margin-bottom: 20px; position: relative; }
-        .hero p { font-size: 18px; max-width: 700px; margin: 0 auto; opacity: 0.9; position: relative; }
+        /* Flying Marquee */
+        .flying-marquee-container {
+            background: linear-gradient(135deg, var(--primary-navy) 0%, #0d1440 100%);
+            padding: 10px 0;
+            border-bottom: 2px solid var(--primary-gold);
+        }
+        .marquee-track { height: 35px; display: flex; align-items: center; overflow: hidden; position: relative; }
+        .marquee-content { display: flex; animation: marqueeScroll 30s linear infinite; white-space: nowrap; }
+        .marquee-text { color: white; font-size: 15px; padding: 0 25px; display: flex; align-items: center; }
+        .marquee-text:before { content: '•'; color: var(--primary-gold); margin-right: 15px; }
+        .flying-plane {
+            position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+            background: var(--primary-gold); width: 50px; height: 50px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            animation: planeFloat 3s ease-in-out infinite;
+        }
+        .flying-plane i { color: var(--primary-navy); font-size: 20px; transform: rotate(45deg); }
         
-        .search-container {
-            max-width: 1100px;
-            margin: -50px auto 0;
+        /* Hero Slider */
+        .luxury-slider { height: 450px; position: relative; overflow: hidden; border-radius: 0 0 var(--radius) var(--radius); }
+        .luxury-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.2s; }
+        .luxury-slide.active { opacity: 1; }
+        .slide-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(26,35,126,0.85), rgba(0,105,92,0.85)); display: flex; align-items: center; }
+        .slide-content-luxury { max-width: 600px; padding-left: 60px; color: white; }
+        .slide-content-luxury h2 { font-size: 42px; color: white; margin-bottom: 20px; font-family: 'Playfair Display', serif; }
+        .slide-content-luxury p { font-size: 18px; margin-bottom: 35px; }
+        .luxury-btn { display: inline-flex; align-items: center; gap: 12px; background: var(--primary-gold); color: var(--primary-navy); padding: 14px 28px; border-radius: 50px; font-weight: 600; text-decoration: none; transition: var(--transition); }
+        .luxury-btn:hover { transform: translateY(-3px); background: var(--light-gold); }
+        .slider-controls { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; }
+        .slider-dot-luxury { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; }
+        .slider-dot-luxury.active { background: var(--primary-gold); transform: scale(1.2); }
+        
+        /* Search Card */
+        .search-luxury {
+            background: white;
+            padding: 35px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-top: -50px;
             position: relative;
             z-index: 10;
-            padding: 0 20px;
+            margin-bottom: 30px;
+            border-top: 4px solid var(--primary-gold);
         }
+        .section-header { text-align: center; margin-bottom: 40px; }
+        .section-header h2 { font-size: 36px; color: var(--primary-navy); position: relative; display: inline-block; }
+        .section-header h2:after { content: ''; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: var(--primary-gold); }
         
-        .search-widget {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
+        /* Trip Type Toggle */
+        .trip-toggle { display: flex; gap: 20px; margin-bottom: 25px; justify-content: center; flex-wrap: wrap; }
+        .trip-option { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 10px 20px; border-radius: 50px; transition: var(--transition); }
+        .trip-option:hover { background: var(--light-gold); }
+        .trip-option input { width: 18px; height: 18px; cursor: pointer; }
         
-        .container { max-width: 1300px; margin: 0 auto; padding: 80px 60px; }
+        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; color: var(--primary-navy); margin-bottom: 8px; font-size: 14px; }
+        .form-group select, .form-group input { width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 12px; font-size: 16px; }
+        .form-group select:focus, .form-group input:focus { border-color: var(--primary-gold); outline: none; }
+        .multi-city-row { background: #f8f9fa; padding: 20px; border-radius: 16px; margin-bottom: 20px; }
+        .search-btn { background: linear-gradient(135deg, var(--primary-teal), var(--primary-navy)); color: white; padding: 16px; border: none; border-radius: 50px; font-size: 18px; font-weight: 600; cursor: pointer; width: 100%; transition: var(--transition); }
+        .search-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
         
-        .section-title {
-            text-align: center;
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 15px;
-        }
+        /* Flight Results */
+        .flight-card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow); transition: var(--transition); cursor: pointer; border: 1px solid #eee; }
+        .flight-card:hover { transform: translateY(-5px); border-left: 4px solid var(--primary-gold); }
+        .flight-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 15px; }
+        .airline-info { display: flex; align-items: center; gap: 15px; }
+        .airline-icon { width: 45px; height: 45px; background: var(--primary-navy); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; }
+        .airline-name { font-weight: 700; font-size: 16px; color: var(--primary-navy); }
+        .flight-price { font-size: 24px; font-weight: 800; color: var(--primary-teal); }
+        .flight-route { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin: 15px 0; flex-wrap: wrap; }
+        .city-code { font-weight: 800; font-size: 20px; color: var(--primary-navy); }
+        .city-name { font-size: 11px; color: #666; }
+        .flight-time { font-weight: 600; font-size: 14px; margin-top: 5px; }
+        .flight-duration { text-align: center; flex: 1; min-width: 100px; }
+        .duration-line { height: 2px; background: var(--primary-gold); width: 100%; }
+        .select-flight-btn { background: linear-gradient(135deg, var(--primary-teal), var(--primary-navy)); color: white; padding: 12px 20px; border: none; border-radius: 50px; font-weight: 600; cursor: pointer; width: 100%; transition: var(--transition); margin-top: 10px; }
+        .select-flight-btn:hover { transform: translateY(-2px); }
+        .error { background: #ffebee; padding: 15px; border-radius: 12px; color: #c62828; }
+        .success-header { background: #e8f5e9; padding: 12px; border-radius: 12px; margin-bottom: 20px; color: #2e7d32; }
         
-        .section-subtitle {
-            text-align: centen
-            color: var(--gray);
-            margin-bottom: 50px;
-            font-size: 18px;
-        }
-        
-        .section-title:after {
-            content: '';
-            display: block;
-            width: 70px;
-            height: 3px;
-            background: var(--gold);
-            margin: 20px auto 0;
-            border-radius: 2px;
-        }
-        
-        .airline-slider {
-            background: var(--light);
-            padding: 50px 0;
-            overflow: hidden;
-        }
-        
-        .slider-container { overflow: hidden; width: 100%; }
-        .slider-track {
-            display: flex;
-            animation: scroll 25s linear infinite;
-            width: fit-content;
-        }
-        .slider-track:hover { animation-play-state: paused; }
-        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        
-        .airline-item {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0 30px;
-            min-width: 100px;
-        }
-        .airline-item i { font-size: 45px; margin-bottom: 10px; }
-        .airline-item span { font-size: 13px; font-weight: 500; color: var(--dark); }
-        
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-        
-        .service-card {
+        /* Sidebar Widgets */
+        .sidebar-widget {
             background: white;
             border-radius: 20px;
-            padding: 35px 25px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            transition: all 0.3s;
-            border: 1px solid #eef2f6;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-        .service-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-        .service-icon { font-size: 48px; margin-bottom: 20px; }
-        .service-card h3 { margin-bottom: 10px; font-size: 20px; }
-        .service-card p { color: var(--gray); font-size: 14px; margin-bottom: 15px; }
-        .service-btn {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 10px 25px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 500;
-        }
-        
-        .packages-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-        }
-        
-        .package-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            border: 1px solid #eef2f6;
-        }
-        .package-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px rgba(0,0,0,0.12); }
-        .package-card.luxury { border-top: 4px solid var(--gold); }
-        
-        .package-header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-        .package-header.luxury-header { background: linear-gradient(135deg, #b8860b, var(--gold)); }
-        .package-name { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
-        .package-price { font-size: 32px; font-weight: 800; }
-        .package-price small { font-size: 14px; font-weight: 400; }
-        
-        .package-content { padding: 25px; }
-        
-        .feature-list { list-style: none; margin-bottom: 25px; }
-        .feature-list li {
-            padding: 10px 0;
-            border-bottom: 1px solid #eef2f6;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 14px;
-        }
-        .feature-list li i { width: 24px; }
-        .feature-list .check { color: var(--green); }
-        .feature-list .cross { color: var(--red); }
-        
-        .package-btn {
-            display: block;
-            width: 100%;
-            background: var(--primary);
-            color: white;
-            text-align: center;
-            padding: 14px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        .package-btn:hover { background: var(--primary-dark); }
-        
-        .offers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-        }
-        
-        .offer-card {
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-        .offer-card:hover { transform: translateY(-5px); }
-        
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
-            margin: 40px 0;
-        }
-        
-        .contact-card {
-            background: white;
-            border-radius: 16px;
             padding: 25px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 1px solid #eef2f6;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            border-top: 4px solid var(--primary-gold);
         }
-        .contact-card i { font-size: 40px; color: var(--primary); margin-bottom: 15px; }
-        .contact-card .number { font-size: 20px; font-weight: 700; margin: 10px 0; }
+        .sidebar-widget h3 { font-size: 20px; color: var(--primary-navy); margin-bottom: 20px; border-left: 3px solid var(--primary-gold); padding-left: 12px; }
+        .flight-info { background: #f8f9fa; border-radius: 12px; padding: 12px; margin-bottom: 12px; transition: var(--transition); }
+        .flight-time { font-weight: 700; color: var(--primary-navy); font-size: 16px; }
+        .flight-status { font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 20px; display: inline-block; }
+        .status-on-time { background: #e8f5e9; color: #2e7d32; }
+        .airline-tag { display: inline-block; background: linear-gradient(135deg, var(--primary-navy), var(--primary-teal)); color: white; padding: 5px 12px; border-radius: 50px; font-size: 12px; margin: 5px; transition: var(--transition); }
         
-        .google-map {
-            border-radius: 20px;
-            overflow: hidden;
-            margin: 30px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        .google-map iframe { width: 100%; height: 350px; border: 0; }
+        /* Umrah Packages */
+        .packages-luxury { padding: 80px 0; background: var(--white); }
+        .packages-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 30px; }
+        .package-card { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); }
+        .package-card:hover { transform: translateY(-10px); }
+        .package-image { height: 220px; background-size: cover; background-position: center; position: relative; }
+        .package-badge { position: absolute; top: 15px; right: 15px; background: var(--primary-gold); color: var(--primary-navy); padding: 6px 18px; border-radius: 50px; font-weight: 700; }
+        .package-content { padding: 25px; }
+        .package-content h3 { font-size: 22px; margin-bottom: 12px; font-family: 'Playfair Display', serif; }
+        .package-features { list-style: none; margin-bottom: 25px; }
+        .package-features li { padding: 10px 0; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 10px; font-size: 14px; }
+        .package-features i { color: var(--primary-gold); }
+        .package-btn { background: linear-gradient(135deg, var(--primary-teal), var(--primary-navy)); color: var(--white); padding: 14px; border-radius: 8px; border: none; cursor: pointer; width: 100%; font-weight: 600; transition: var(--transition); }
+        .package-btn:hover { transform: translateY(-2px); }
         
-        .form-section {
-            background: var(--light);
-            border-radius: 24px;
-            padding: 40px;
-            margin-top: 30px;
-        }
-        .form-section h3 { text-align: center; font-size: 24px; margin-bottom: 30px; color: var(--primary); }
-        .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--dark); }
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 14px 18px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 15px;
-            font-family: inherit;
-            transition: border-color 0.3s;
-        }
-        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        .submit-btn {
+        /* Hajj Section */
+        .hajj-section { padding: 80px 0; background: linear-gradient(135deg, var(--light-bg) 0%, #e8f4f3 100%); }
+        .hajj-waiting { text-align: center; padding: 60px; background: #f8f9fa; border-radius: var(--radius); border: 2px dashed var(--primary-gold); }
+        
+        /* Flight Deals */
+        .deals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
+        .deal-card { background: var(--white); border-radius: var(--radius); padding: 20px; border-left: 4px solid var(--primary-gold); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; box-shadow: var(--shadow); transition: var(--transition); }
+        .deal-card:hover { transform: translateY(-5px); }
+        .deal-price { font-size: 24px; font-weight: 700; color: var(--primary-teal); }
+        
+        /* Services */
+        .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; margin-top: 30px; }
+        .service-card { background: var(--white); padding: 30px; border-radius: var(--radius); text-align: center; transition: var(--transition); box-shadow: var(--shadow); }
+        .service-card:hover { transform: translateY(-8px); }
+        .service-icon { width: 70px; height: 70px; background: var(--light-gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 28px; color: var(--primary-teal); }
+        
+        /* About */
+        .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .about-image { height: 400px; background-size: cover; background-position: center; border-radius: var(--radius); position: relative; }
+        .about-image:after { content: ''; position: absolute; top: 15px; left: 15px; right: -15px; bottom: -15px; border: 2px solid var(--primary-gold); border-radius: var(--radius); z-index: -1; }
+        
+        /* Footer */
+        .footer-elegant { background: linear-gradient(135deg, var(--primary-navy) 0%, #0d1440 100%); color: var(--white); padding: 70px 0 35px; margin-top: 40px; }
+        .footer-content { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; margin-bottom: 50px; }
+        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); }
+        
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 10000; opacity: 0; visibility: hidden; transition: 0.3s; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content { background: white; padding: 35px; border-radius: 24px; max-width: 700px; width: 90%; position: relative; max-height: 90vh; overflow-y: auto; }
+        .close-modal { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 24px; cursor: pointer; }
+        .booking-section { margin-bottom: 25px; }
+        .booking-section h3 { color: var(--primary-navy); margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--primary-gold); display: inline-block; }
+        .booking-summary { background: #f8f9fa; padding: 20px; border-radius: 16px; margin-bottom: 25px; border-left: 4px solid var(--primary-gold); }
+        .price-breakdown { background: #f8f9fa; padding: 15px; border-radius: 12px; margin-top: 15px; }
+        .price-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
+        .price-row.total { font-weight: 700; color: var(--primary-teal); font-size: 18px; margin-top: 10px; padding-top: 10px; border-top: 2px solid var(--primary-gold); }
+        .booking-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .booking-form-group { margin-bottom: 15px; }
+        .booking-form-group label { display: block; font-weight: 600; color: var(--primary-navy); margin-bottom: 5px; font-size: 13px; }
+        .booking-form-group input, .booking-form-group select { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 14px; }
+        .confirm-btn { background: #25D366; color: white; padding: 16px; border: none; border-radius: 50px; font-size: 18px; font-weight: 600; cursor: pointer; width: 100%; transition: var(--transition); }
+        .confirm-btn:hover { transform: translateY(-3px); }
+        
+        /* Chatbot */
+        .chatbot-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
             background: #25D366;
-            color: white;
-            border: none;
-            padding: 14px 35px;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: 600;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: 0.3s;
+            z-index: 999;
         }
-        .submit-btn:hover { background: #1da851; transform: scale(1.02); }
-        
-        .cta-section {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            text-align: center;
-            padding: 60px;
-            border-radius: 24px;
-            margin: 40px 0;
-            color: white;
-        }
-        .whatsapp-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: #25D366;
-            color: white;
-            padding: 14px 40px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            margin-top: 20px;
-            transition: transform 0.3s;
-        }
-        .whatsapp-btn:hover { transform: scale(1.05); }
-        
-        .footer {
-            background: var(--dark);
-            color: white;
-            padding: 60px 60px 30px;
-            margin-top: 60px;
-        }
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        .footer-col h4 {
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        .footer-col h4:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background: var(--gold);
-        }
-        .footer-col a, .footer-col p { color: #aaa; text-decoration: none; display: block; margin-bottom: 10px; font-size: 14px; }
-        .footer-col a:hover { color: var(--gold); }
-        .social-icons { display: flex; gap: 15px; margin-top: 20px; }
-        .social-icons a {
-            background: rgba(255,255,255,0.1);
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-        .social-icons a:hover { background: var(--gold); color: var(--dark); }
-        .footer-bottom { text-align: center; padding-top: 30px; border-top: 1px solid #2a2a4a; font-size: 13px; color: #777; }
-        
-        .about-content {
+        .chatbot-btn:hover { transform: scale(1.1); }
+        .chatbot-btn i { color: white; font-size: 30px; }
+        .chatbot-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            height: 500px;
             background: white;
-            border-radius: 24px;
-            padding: 50px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1000;
         }
-        .profile-img { text-align: center; margin-bottom: 30px; }
-        .profile-img img {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid var(--gold);
-        }
-        .stats-row {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-            margin: 30px 0;
-        }
-        .stat-box {
+        .chatbot-window.active { display: flex; }
+        .chatbot-header {
+            background: linear-gradient(135deg, #1a237e, #00695c);
+            color: white;
+            padding: 15px;
             text-align: center;
-            padding: 20px;
-            background: var(--light);
-            border-radius: 16px;
-            min-width: 150px;
         }
-        .stat-number { font-size: 32px; font-weight: 800; color: var(--primary); }
+        .chatbot-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+        }
+        .message { margin-bottom: 15px; display: flex; }
+        .message.bot .msg-bubble { background: #f0f2f5; color: #333; border-radius: 18px 18px 18px 4px; }
+        .message.user { justify-content: flex-end; }
+        .message.user .msg-bubble { background: #1a237e; color: white; border-radius: 18px 18px 4px 18px; }
+        .msg-bubble { max-width: 80%; padding: 10px 15px; font-size: 14px; }
+        .chatbot-input { display: flex; padding: 10px; border-top: 1px solid #eee; }
+        .chatbot-input input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 25px; outline: none; }
+        .chatbot-input button { background: #25D366; border: none; color: white; width: 40px; height: 40px; border-radius: 50%; margin-left: 10px; cursor: pointer; }
+        
+        /* Travelpayouts Widget Styling */
+        #tpl-search, #tpl-tickets { margin: 20px 0; }
+        .tp-flight-card, .tp-result-card { transition: var(--transition) !important; border-radius: var(--radius) !important; }
+        .tp-flight-card:hover, .tp-result-card:hover { transform: translateY(-5px) !important; border-left: 4px solid var(--primary-gold) !important; }
+        .tp-button, .tp-search-btn { background: linear-gradient(135deg, var(--primary-teal), var(--primary-navy)) !important; border-radius: 50px !important; }
+        .tp-price { color: var(--primary-gold) !important; font-weight: 700 !important; }
+        .tp-search-form { border-top: 4px solid var(--primary-gold) !important; border-radius: var(--radius) !important; }
+        
+        @keyframes marqueeScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes planeFloat { 0%,100% { transform: translate(-50%, -50%) translateY(0); } 50% { transform: translate(-50%, -50%) translateY(-8px); } }
         
         @media (max-width: 992px) {
-            .packages-grid, .contact-grid, .footer-grid, .form-grid, .offers-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .two-columns { flex-direction: column; }
+            .packages-grid, .services-grid, .footer-content { grid-template-columns: 1fr; }
+            .booking-form-row, .form-row { grid-template-columns: 1fr; }
+            .slide-content-luxury { padding: 0 25px; text-align: center; }
+            .nav-elegant { display: none; flex-direction: column; background: rgba(26,35,126,0.95); padding: 20px; border-radius: var(--radius); }
+            .nav-elegant.active { display: flex; }
+            .mobile-menu-toggle { display: block; background: var(--primary-gold); padding: 12px; border-radius: 50px; text-align: center; width: fit-content; margin: 10px auto; cursor: pointer; color: var(--primary-navy); }
         }
-        @media (max-width: 768px) {
-            .main-header { flex-direction: column; text-align: center; padding: 20px; }
-            .nav a { margin: 0 15px; }
-            .top-bar { padding: 10px 20px; text-align: center; }
-            .hero { padding: 60px 20px; }
-            .hero h1 { font-size: 32px; }
-            .container { padding: 50px 20px; }
-            .packages-grid, .contact-grid, .footer-grid, .form-grid, .offers-grid {
-                grid-template-columns: 1fr;
-            }
-            .section-title { font-size: 28px; }
-        }
+        .mobile-menu-toggle { display: none; }
     </style>
 </head>
 <body>
 
-<div class="top-bar">
-    <div>
-        <i class="fas fa-phone"></i> +34-632234216 <span class="emergency-badge">Emergency</span>
-        <i class="fab fa-whatsapp" style="margin-left: 15px;"></i> +34-611473217
-        <i class="fas fa-phone" style="margin-left: 15px;"></i> 937578907
+<header class="elegant-header">
+    <div class="container">
+        <div class="header-top-bar">
+            <div class="contact-info-elegant">
+                <span><i class="fas fa-phone"></i> +34-632234216</span>
+                <span><i class="fab fa-whatsapp"></i> +34-611473217</span>
+                <span><i class="fas fa-map-marker-alt"></i> Rambla Badal 141, Barcelona</span>
+            </div>
+            <div class="social-elegant">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/34611473217"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+        <div class="main-header-elegant">
+            <a href="#" class="logo-elegant">
+                <div class="logo-icon-elegant"><i class="fas fa-kaaba"></i></div>
+                <div class="logo-text-elegant">
+                    <div class="logo-main-elegant">MUSTAFA TRAVELS & TOURS</div>
+                    <div class="logo-sub-elegant">PREMIUM TRAVEL EXPERIENCES</div>
+                </div>
+            </a>
+            <div class="mobile-menu-toggle"><i class="fas fa-bars"></i></div>
+            <nav class="nav-elegant">
+                <a href="#home">Home</a>
+                <a href="#umrah">Umrah</a>
+                <a href="#hajj">Hajj 2026</a>
+                <a href="visa-services.php">Visa Services</a>
+                <a href="#flights">Flight Deals</a>
+                <a href="#services">Services</a>
+                <a href="https://wa.me/34611473217" class="whatsapp-btn-elegant"><i class="fab fa-whatsapp"></i> Book Now</a>
+            </nav>
+        </div>
     </div>
-    <div>
-        <i class="fas fa-map-marker-alt"></i> Rambla Badal 141, Barcelona, Spain
-        <i class="fas fa-envelope" style="margin-left: 15px;"></i> mustafatravelstours@gmail.com
+</header>
+
+<div class="flying-marquee-container">
+    <div class="marquee-track">
+        <div class="marquee-content">
+            <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €580 ✈️ BCN TO ISB: €585 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
+            <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €580 ✈️ BCN TO ISB: €585 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
+        </div>
+        <div class="flying-plane"><i class="fas fa-plane"></i></div>
     </div>
 </div>
 
-<div class="main-header">
-    <div class="logo">
-        <h1>MUSTAFA TRAVELS</h1>
-        <p>PREMIUM TRAVEL EXPERIENCES</p>
+<section class="luxury-slider" id="home">
+    <div class="luxury-slide active" style="background-image: url('https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg');">
+        <div class="slide-overlay"><div class="slide-content-luxury"><h2>Premium Umrah Experiences 2026</h2><p>Journey with elegance and devotion. Luxury accommodations near Haram.</p><a href="#umrah" class="luxury-btn">Explore Packages <i class="fas fa-arrow-right"></i></a></div></div>
     </div>
-    <div class="nav">
-        <a href="?page=home" class="<?php echo $page == 'home' ? 'active' : ''; ?>">Home</a>
-        <a href="?page=umrah" class="<?php echo $page == 'umrah' ? 'active' : ''; ?>">Umrah</a>
-        <a href="?page=offers" class="<?php echo $page == 'offers' ? 'active' : ''; ?>">Super Offers</a>
-        <a href="?page=services" class="<?php echo $page == 'services' ? 'active' : ''; ?>">Services</a>
-        <a href="visa-services.php">Visa Services</a>
-        <a href="?page=about" class="<?php echo $page == 'about' ? 'active' : ''; ?>">About</a>
-        <a href="?page=contact" class="<?php echo $page == 'contact' ? 'active' : ''; ?>">Contact</a>
+    <div class="luxury-slide" style="background-image: url('https://images.pexels.com/photos/29102586/pexels-photo-29102586.jpeg');">
+        <div class="slide-overlay"><div class="slide-content-luxury"><h2>Hajj 2026 - Coming Soon</h2><p>Register your interest for Hajj 2026 packages.</p><a href="#hajj" class="luxury-btn">Learn More <i class="fas fa-arrow-right"></i></a></div></div>
     </div>
-</div>
-
-<?php if ($page == 'home'): ?>
-
-<section class="hero">
-    <h1>Your Spiritual Journey Begins Here</h1>
-    <p>Premium Umrah Packages 2026 | Economy from €999 | Luxury Packages Available | 24/7 Support</p>
+    <div class="luxury-slide" style="background-image: url('https://images.unsplash.com/photo-1591824438703-50d4c4e5d45a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');">
+        <div class="slide-overlay"><div class="slide-content-luxury"><h2>Worldwide Flight Deals</h2><p>Best prices from Barcelona to Pakistan, London, Dubai, USA & more.</p><a href="#flights" class="luxury-btn">View Deals <i class="fas fa-arrow-right"></i></a></div></div>
+    </div>
+    <div class="slider-controls">
+        <div class="slider-dot-luxury active"></div>
+        <div class="slider-dot-luxury"></div>
+        <div class="slider-dot-luxury"></div>
+    </div>
 </section>
 
-<div class="search-container">
-    <div class="search-widget">
-        <script async src="https://tp.media/content?currency=eur&trs=610290&shmarker=610290&locale=en&powered_by=true&border_radius=12&plain=true&color_button=%230a4b6e&color_icons=%230a4b6e&color_background=%23ffffff&color_text=%23000000&promo_id=7873"></script>
-    </div>
-</div>
-
-<div class="airline-slider">
-    <div class="slider-container">
-        <div class="slider-track">
-            <div class="airline-item"><i class="fas fa-plane" style="color: #0a4b6e;"></i><span>Emirates</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #1e7e6c;"></i><span>Etihad Airways</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #8B0000;"></i><span>Qatar Airways</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #006633;"></i><span>Saudi Airlines</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #FF6600;"></i><span>Flydubai</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #003399;"></i><span>Air Arabia</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #FF0000;"></i><span>Singapore Airlines</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #990033;"></i><span>Cathay Pacific</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #800000;"></i><span>Thai Airways</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #003399;"></i><span>Malaysia Airlines</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #FF9933;"></i><span>Air India</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #006600;"></i><span>PIA</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #0066CC;"></i><span>Ethiopian Airlines</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #009900;"></i><span>Kenya Airways</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #CC0000;"></i><span>EgyptAir</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #006633;"></i><span>Royal Air Maroc</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #003399;"></i><span>LATAM</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #FF6600;"></i><span>Avianca</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #CC0000;"></i><span>Aeromexico</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #003399;"></i><span>Copa Airlines</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #0a4b6e;"></i><span>Emirates</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #1e7e6c;"></i><span>Etihad Airways</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #8B0000;"></i><span>Qatar Airways</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #006633;"></i><span>Saudi Airlines</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #FF0000;"></i><span>Singapore Airlines</span></div>
-            <div class="airline-item"><i class="fas fa-plane" style="color: #003399;"></i><span>LATAM</span></div>
-        </div>
-    </div>
-</div>
-
 <div class="container">
-    <h2 class="section-title">Our Travel Services</h2>
-    <p class="section-subtitle">Book with our trusted partners - Best prices guaranteed</p>
-    
-    <div class="services-grid">
-        <a href="https://aviasales.tpo.mx/HEyfp6zU" target="_blank" class="service-card">
-            <div class="service-icon"><i class="fas fa-plane" style="color: var(--primary);"></i></div>
-            <h3>✈️ Flight Tickets</h3>
-            <p>Compare 100+ airlines. Best prices worldwide</p>
-            <span class="service-btn">Search Flights →</span>
-        </a>
-        <a href="https://www.agoda.com/?cid=YOUR_AGODA_ID" target="_blank" class="service-card">
-            <div class="service-icon"><i class="fas fa-hotel" style="color: var(--primary);"></i></div>
-            <h3>🏨 Hotel Booking</h3>
-            <p>2.5M+ hotels worldwide. Best price guarantee</p>
-            <span class="service-btn">Find Hotels →</span>
-        </a>
-        <a href="https://ektatraveling.tpo.mx/jyKgc1bx" target="_blank" class="service-card">
-            <div class="service-icon"><i class="fas fa-shield-alt" style="color: var(--primary);"></i></div>
-            <h3>🛡️ Travel Insurance</h3>
-            <p>Medical coverage, COVID-19, lost baggage</p>
-            <span class="service-btn">Get Insurance →</span>
-        </a>
-        <a href="https://yesim.tpo.mx/t36uN2cA" target="_blank" class="service-card">
-            <div class="service-icon"><i class="fas fa-sim-card" style="color: var(--primary);"></i></div>
-            <h3>📱 eSIM Internet</h3>
-            <p>Stay connected worldwide. 200+ countries</p>
-            <span class="service-btn">Buy eSIM →</span>
-        </a>
-        <a href="https://tiqets.tpo.mx/pqSwPX5S" target="_blank" class="service-card">
-            <div class="service-icon"><i class="fas fa-ticket-alt" style="color: var(--primary);"></i></div>
-            <h3>🎟️ Attraction Tickets</h3>
-            <p>Skip-the-line tickets for top attractions</p>
-            <span class="service-btn">Book Tickets →</span>
-        </a>
-        <a href="https://compensair.tpo.mx/lc5t7EhC" target="_blank" class="service-card">
-            <div class="service-icon"><i class="fas fa-gavel" style="color: var(--primary);"></i></div>
-            <h3>⚖️ Flight Compensation</h3>
-            <p>Get up to €600 for delayed flights</p>
-            <span class="service-btn">Check Claim →</span>
-        </a>
-    </div>
-</div>
-
-<div class="container">
-    <h2 class="section-title">🕋 Premium Umrah Packages 2026</h2>
-    <p class="section-subtitle">Experience spirituality with comfort near Haram</p>
-    
-    <div class="packages-grid">
-        <div class="package-card">
-            <div class="package-header"><div class="package-name">ECONOMY</div><div class="package-price">€999</div><small>per person</small></div>
-            <div class="package-content">
-                <ul class="feature-list">
-                    <li><i class="fas fa-star check"></i> ⭐ 3* Hotel with Shuttle</li>
-                    <li><i class="fas fa-kaaba check"></i> 🕋 5 Days Makkah</li>
-                    <li><i class="fas fa-mosque check"></i> 🕌 3 Days Madina</li>
-                    <li><i class="fas fa-plane check"></i> ✈️ Air Ticket + Visa</li>
-                    <li><i class="fas fa-times cross"></i> ❌ Food Not Included</li>
-                    <li><i class="fas fa-times cross"></i> ❌ Personal Expenses</li>
-                    <li><i class="fas fa-times cross"></i> ❌ Local Transport</li>
-                </ul>
-                <a href="https://wa.me/34611473217?text=I'm%20interested%20in%20ECONOMY%20Umrah%20Package%20(€999)" class="package-btn">Book Now →</a>
+    <!-- Flight Search Section -->
+    <div class="search-luxury">
+        <h3 style="text-align:center; margin-bottom:20px; font-size:24px; color:var(--primary-navy);">✈️ Search Flights</h3>
+        <form method="POST" action="" id="searchForm">
+            <div class="trip-toggle">
+                <label class="trip-option"><input type="radio" name="trip_type" value="oneway" checked onchange="toggleTripType()"> <label>✈️ One Way</label></label>
+                <label class="trip-option"><input type="radio" name="trip_type" value="return" onchange="toggleTripType()"> <label>🔄 Return</label></label>
+                <label class="trip-option"><input type="radio" name="trip_type" value="multi" onchange="toggleTripType()"> <label>🌍 Multi-City</label></label>
             </div>
-        </div>
-        
-        <div class="package-card">
-            <div class="package-header"><div class="package-name">ECONOMY PLUS</div><div class="package-price">€1,299</div><small>per person</small></div>
-            <div class="package-content">
-                <ul class="feature-list">
-                    <li><i class="fas fa-star check"></i><i class="fas fa-star check"></i> ⭐⭐ 4* Hotel</li>
-                    <li><i class="fas fa-kaaba check"></i> 🕋 5 Days Makkah</li>
-                    <li><i class="fas fa-mosque check"></i> 🕌 3 Days Madina</li>
-                    <li><i class="fas fa-plane check"></i> ✈️ Air Ticket + Visa</li>
-                    <li><i class="fas fa-taxi check"></i> 🚖 Airport Pickup Included</li>
-                    <li><i class="fas fa-times cross"></i> ❌ Food Not Included</li>
-                    <li><i class="fas fa-times cross"></i> ❌ Personal Expenses</li>
-                </ul>
-                <a href="https://wa.me/34611473217?text=I'm%20interested%20in%20ECONOMY%20PLUS%20Umrah%20Package%20(€1299)" class="package-btn">Book Now →</a>
+            
+            <div id="onewayFields">
+                <div class="form-row">
+                    <div class="form-group"><label>✈️ From</label><select name="origin" class="airport-select"><?php foreach($airportsList as $a) echo '<option value="'.$a['code'].'">'.$a['code'].' - '.$a['name'].'</option>'; ?></select></div>
+                    <div class="form-group"><label>📍 To</label><select name="destination" class="airport-select"><?php foreach($airportsList as $a) echo '<option value="'.$a['code'].'">'.$a['code'].' - '.$a['name'].'</option>'; ?></select></div>
+                    <div class="form-group"><label>📅 Departure</label><input type="date" name="departure_date" value="<?php echo date('Y-m-d', strtotime('+30 days')); ?>"></div>
+                </div>
             </div>
-        </div>
-        
-        <div class="package-card luxury">
-            <div class="package-header luxury-header"><div class="package-name">LUXURY</div><div class="package-price">Contact for Price</div><small>Premium Experience</small></div>
-            <div class="package-content">
-                <ul class="feature-list">
-                    <li><i class="fas fa-star check"></i><i class="fas fa-star check"></i><i class="fas fa-star check"></i><i class="fas fa-star check"></i> ⭐⭐⭐⭐ 4* & 5* Hotels</li>
-                    <li><i class="fas fa-kaaba check"></i> 🕋 5 Days Makkah</li>
-                    <li><i class="fas fa-mosque check"></i> 🕌 3 Days Madina</li>
-                    <li><i class="fas fa-plane check"></i> ✈️ Air Ticket + Visa</li>
-                    <li><i class="fas fa-utensils check"></i> 🍳 Breakfast Included</li>
-                    <li><i class="fas fa-car check"></i> 🚖 Airport + City Transport</li>
-                    <li><i class="fas fa-concierge-bell check"></i> 🛎️ Personal Concierge</li>
-                </ul>
-                <a href="https://wa.me/34611473217?text=I'm%20interested%20in%20LUXURY%20Umrah%20Package" class="package-btn">Contact for Price →</a>
+            
+            <div id="returnFields" style="display:none">
+                <div class="form-row">
+                    <div class="form-group"><label>✈️ From</label><select name="origin_return" class="airport-select"><?php foreach($airportsList as $a) echo '<option value="'.$a['code'].'">'.$a['code'].' - '.$a['name'].'</option>'; ?></select></div>
+                    <div class="form-group"><label>📍 To</label><select name="destination_return" class="airport-select"><?php foreach($airportsList as $a) echo '<option value="'.$a['code'].'">'.$a['code'].' - '.$a['name'].'</option>'; ?></select></div>
+                    <div class="form-group"><label>📅 Departure</label><input type="date" name="departure_date_return" value="<?php echo date('Y-m-d', strtotime('+30 days')); ?>"></div>
+                    <div class="form-group"><label>🔄 Return</label><input type="date" name="return_date" value="<?php echo date('Y-m-d', strtotime('+37 days')); ?>"></div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <h2 class="section-title">Contact Our Travel Experts</h2>
-    <p class="section-subtitle">We're here 24/7 to assist you</p>
-    
-    <div class="contact-grid">
-        <div class="contact-card"><i class="fas fa-phone-alt"></i><h3>Emergency</h3><div class="number">+34-632234216</div><span style="background: #dc2626; color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px;">24/7 Available</span></div>
-        <div class="contact-card"><i class="fab fa-whatsapp"></i><h3>WhatsApp</h3><div class="number">+34-611473217</div><p>Quick responses</p></div>
-        <div class="contact-card"><i class="fas fa-phone"></i><h3>Landline</h3><div class="number">937578907</div><p>Mon-Sat: 10:30-20:30</p></div>
-        <div class="contact-card"><i class="fab fa-linkedin"></i><h3>LinkedIn</h3><div class="number" style="font-size: 16px;">Mustafa Travels</div><a href="https://www.linkedin.com/company/mustafa-travels-tours" target="_blank" style="color: var(--primary);">Follow →</a></div>
-    </div>
-</div>
-
-<div class="container">
-    <div class="cta-section">
-        <h2>Need Help Planning Your Trip?</h2>
-        <p>Contact our travel experts for personalized assistance</p>
-        <a href="https://wa.me/34611473217" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp" style="font-size: 24px;"></i> Chat on WhatsApp</a>
-    </div>
-</div>
-
-<?php elseif ($page == 'umrah'): ?>
-
-<div class="container">
-    <h2 class="section-title">🕋 Premium Umrah Packages 2026</h2>
-    <p class="section-subtitle">Choose the perfect package for your spiritual journey</p>
-    
-    <div class="packages-grid">
-        <div class="package-card">
-            <div class="package-header"><div class="package-name">ECONOMY</div><div class="package-price">€999</div><small>per person</small></div>
-            <div class="package-content">
-                <ul class="feature-list"><li><i class="fas fa-star check"></i> ⭐ 3* Hotel with Shuttle</li><li><i class="fas fa-kaaba check"></i> 🕋 5 Days Makkah</li><li><i class="fas fa-mosque check"></i> 🕌 3 Days Madina</li><li><i class="fas fa-plane check"></i> ✈️ Air Ticket + Visa</li><li><i class="fas fa-times cross"></i> ❌ Food Not Included</li><li><i class="fas fa-times cross"></i> ❌ Personal Expenses</li><li><i class="fas fa-times cross"></i> ❌ Local Transport</li></ul>
-                <a href="https://wa.me/34611473217?text=I'm%20interested%20in%20ECONOMY%20Umrah%20Package%20(€999)" class="package-btn">Book Now →</a>
+            
+            <div id="multiFields" style="display:none">
+                <?php for($i=1;$i<=3;$i++){ ?>
+                <div class="multi-city-row"><h4 style="margin-bottom:15px">Segment <?php echo $i; ?></h4>
+                <div class="form-row">
+                    <div class="form-group"><label>From</label><select name="origin_<?php echo $i; ?>" class="airport-select"><?php foreach($airportsList as $a) echo '<option value="'.$a['code'].'">'.$a['code'].' - '.$a['name'].'</option>'; ?></select></div>
+                    <div class="form-group"><label>To</label><select name="destination_<?php echo $i; ?>" class="airport-select"><?php foreach($airportsList as $a) echo '<option value="'.$a['code'].'">'.$a['code'].' - '.$a['name'].'</option>'; ?></select></div>
+                    <div class="form-group"><label>Date</label><input type="date" name="date_<?php echo $i; ?>" value="<?php echo date('Y-m-d', strtotime('+'.(30+$i*5).' days')); ?>"></div>
+                </div></div>
+                <?php } ?>
             </div>
-        </div>
-        <div class="package-card">
-            <div class="package-header"><div class="package-name">ECONOMY PLUS</div><div class="package-price">€1,299</div><small>per person</small></div>
-            <div class="package-content">
-                <ul class="feature-list"><li><i class="fas fa-star check"></i><i class="fas fa-star check"></i> ⭐⭐ 4* Hotel</li><li><i class="fas fa-kaaba check"></i> 🕋 5 Days Makkah</li><li><i class="fas fa-mosque check"></i> 🕌 3 Days Madina</li><li><i class="fas fa-plane check"></i> ✈️ Air Ticket + Visa</li><li><i class="fas fa-taxi check"></i> 🚖 Airport Pickup Included</li><li><i class="fas fa-times cross"></i> ❌ Food Not Included</li><li><i class="fas fa-times cross"></i> ❌ Personal Expenses</li></ul>
-                <a href="https://wa.me/34611473217?text=I'm%20interested%20in%20ECONOMY%20PLUS%20Umrah%20Package%20(€1299)" class="package-btn">Book Now →</a>
+            
+            <div class="form-row">
+                <div class="form-group"><label>👥 Passengers</label><select name="passengers"><option value="1">1 Adult</option><option value="2">2 Adults</option><option value="3">3 Adults</option><option value="4">4 Adults</option></select></div>
+                <div class="form-group"><label>🛋️ Cabin</label><select name="cabin_class"><option value="economy">Economy</option><option value="business">Business</option><option value="first">First</option></select></div>
             </div>
-        </div>
-        <div class="package-card luxury">
-            <div class="package-header luxury-header"><div class="package-name">LUXURY</div><div class="package-price">Contact for Price</div><small>Premium Experience</small></div>
-            <div class="package-content">
-                <ul class="feature-list"><li><i class="fas fa-star check"></i><i class="fas fa-star check"></i><i class="fas fa-star check"></i><i class="fas fa-star check"></i> ⭐⭐⭐⭐ 4* & 5* Hotels</li><li><i class="fas fa-kaaba check"></i> 🕋 5 Days Makkah</li><li><i class="fas fa-mosque check"></i> 🕌 3 Days Madina</li><li><i class="fas fa-plane check"></i> ✈️ Air Ticket + Visa</li><li><i class="fas fa-utensils check"></i> 🍳 Breakfast Included</li><li><i class="fas fa-car check"></i> 🚖 Airport + City Transport</li><li><i class="fas fa-concierge-bell check"></i> 🛎️ Personal Concierge</li></ul>
-                <a href="https://wa.me/34611473217?text=I'm%20interested%20in%20LUXURY%20Umrah%20Package" class="package-btn">Contact for Price →</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Custom Umrah Request Form -->
-<div class="container">
-    <div class="form-section">
-        <h3><i class="fas fa-kaaba"></i> Custom Umrah Package Request</h3>
-        <p style="text-align: center; margin-bottom: 30px; color: var(--gray);">Tell us your preferred duration and we'll create a custom package for you</p>
-        
-        <form id="umrahRequestForm">
-            <div class="form-grid">
-                <div class="form-group"><label>Full Name *</label><input type="text" id="umrah_name" required placeholder="Enter your full name"></div>
-                <div class="form-group"><label>WhatsApp Number *</label><input type="tel" id="umrah_phone" required placeholder="+34 123456789"></div>
-                <div class="form-group"><label>Nationality *</label><select id="umrah_nationality" required><option value="">Select Nationality</option><option value="Pakistan">🇵🇰 Pakistan</option><option value="India">🇮🇳 India</option><option value="Bangladesh">🇧🇩 Bangladesh</option><option value="Spain">🇪🇸 Spain</option><option value="United Kingdom">🇬🇧 United Kingdom</option><option value="France">🇫🇷 France</option><option value="Germany">🇩🇪 Germany</option><option value="Italy">🇮🇹 Italy</option><option value="USA">🇺🇸 USA</option><option value="Canada">🇨🇦 Canada</option><option value="Other">Other</option></select></div>
-                <div class="form-group"><label>Number of People *</label><select id="umrah_people" required><option value="1">1 Person</option><option value="2">2 Persons</option><option value="3">3 Persons</option><option value="4">4 Persons</option><option value="5">5 Persons</option><option value="6+">6+ Persons</option></select></div>
-                <div class="form-group"><label>Days in Makkah *</label><select id="umrah_makkah_days" required><option value="3">3 Days</option><option value="5">5 Days</option><option value="7">7 Days</option><option value="10">10 Days</option><option value="14">14 Days</option><option value="21">21 Days</option><option value="30">30 Days</option></select></div>
-                <div class="form-group"><label>Days in Madina *</label><select id="umrah_madina_days" required><option value="3">3 Days</option><option value="5">5 Days</option><option value="7">7 Days</option><option value="10">10 Days</option><option value="14">14 Days</option></select></div>
-                <div class="form-group"><label>Preferred Package *</label><select id="umrah_package" required><option value="Economy (€999)">Economy - €999 (3* Hotel)</option><option value="Economy Plus (€1299)">Economy Plus - €1299 (4* Hotel)</option><option value="Luxury">Luxury - Contact for Price (5* Hotel)</option></select></div>
-                <div class="form-group"><label>Preferred Departure Date</label><input type="date" id="umrah_date"></div>
-            </div>
-            <div class="form-group"><label>Additional Requests</label><textarea id="umrah_message" rows="3" placeholder="Any special requirements..."></textarea></div>
-            <button type="button" class="submit-btn" onclick="sendUmrahRequest()"><i class="fab fa-whatsapp"></i> Send Request on WhatsApp</button>
+            <button type="submit" name="search_flights" class="search-btn">🔍 Search Flights</button>
         </form>
+        <?php if ($searchPerformed): ?><div style="margin-top:30px"><?php echo $flightResults; ?></div><?php endif; ?>
+    </div>
+    
+    <!-- Travelpayouts Widget - Affiliate Earnings -->
+    <div class="search-luxury" style="margin-top: 20px;">
+        <h3 style="text-align:center; margin-bottom:20px; font-size:24px; color:var(--primary-navy);">✈️ Compare & Book Flights (Best Prices)</h3>
+        <div id="tpl-search"></div>
+        <div id="tpl-tickets"></div>
+    </div>
+    
+    <div class="two-columns">
+        <div class="main-content">
+            <!-- Umrah Packages Section -->
+            <div id="umrah" style="padding:20px 0">
+                <div class="section-header"><h2>🕋 Premium Umrah Packages 2026</h2><p>Experience spiritual devotion with luxury accommodations near the Holy Mosques</p></div>
+                <div class="packages-grid">
+                    <div class="package-card">
+                        <div class="package-image" style="background-image:url('https://images.pexels.com/photos/4346403/pexels-photo-4346403.jpeg')"><div class="package-badge">€895</div></div>
+                        <div class="package-content">
+                            <h3>Essence Umrah Package</h3>
+                            <ul class="package-features">
+                                <li><i class="fas fa-check-circle"></i> 7 Days Makkah + 3 Days Madina</li>
+                                <li><i class="fas fa-check-circle"></i> 3-Star Hotel with Shuttle</li>
+                                <li><i class="fas fa-check-circle"></i> Economy Flight Tickets</li>
+                                <li><i class="fas fa-check-circle"></i> Umrah Visa Processing</li>
+                            </ul>
+                            <button class="package-btn" onclick="bookPackage('Essence Umrah Package', '€895')">View Details</button>
+                        </div>
+                    </div>
+                    <div class="package-card">
+                        <div class="package-image" style="background-image:url('https://images.pexels.com/photos/2895295/pexels-photo-2895295.jpeg')"><div class="package-badge">€999</div></div>
+                        <div class="package-content">
+                            <h3>Enhanced Umrah Package</h3>
+                            <ul class="package-features">
+                                <li><i class="fas fa-check-circle"></i> 7 Days Makkah + 3 Days Madina</li>
+                                <li><i class="fas fa-check-circle"></i> 4-Star Hotel with Shuttle</li>
+                                <li><i class="fas fa-check-circle"></i> Flight Tickets Included</li>
+                                <li><i class="fas fa-check-circle"></i> Fast-Track Visa Processing</li>
+                            </ul>
+                            <button class="package-btn" onclick="bookPackage('Enhanced Umrah Package', '€999')">View Details</button>
+                        </div>
+                    </div>
+                    <div class="package-card">
+                        <div class="package-image" style="background-image:url('https://images.pexels.com/photos/12808985/pexels-photo-12808985.jpeg')"><div class="package-badge">€1,299</div></div>
+                        <div class="package-content">
+                            <h3>Elite Umrah Package</h3>
+                            <ul class="package-features">
+                                <li><i class="fas fa-check-circle"></i> 6 Days Makkah + 4 Days Madina</li>
+                                <li><i class="fas fa-check-circle"></i> 5-Star Premium Hotel</li>
+                                <li><i class="fas fa-check-circle"></i> Business Class Upgrade</li>
+                                <li><i class="fas fa-check-circle"></i> VIP Concierge Service</li>
+                            </ul>
+                            <button class="package-btn" onclick="bookPackage('Elite Umrah Package', '€1,299')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hajj Section -->
+            <div id="hajj" style="background:#f8f9fa; border-radius:20px; padding:40px; text-align:center; margin:30px 0; border:2px dashed var(--primary-gold)">
+                <i class="fas fa-clock" style="font-size:48px; color:var(--primary-gold)"></i>
+                <h3 style="color:var(--primary-navy); margin:15px 0">Hajj 2026 - CLOSED FOR NOW</h3>
+                <p>Hajj 2026 packages are currently in development. Phase 2 bookings will open soon.</p>
+                <a href="https://wa.me/34611473217?text=I'm interested in Hajj 2026 packages" class="whatsapp-btn-elegant" style="margin-top:15px; display:inline-block">Notify Me When Open</a>
+            </div>
+            
+            <!-- Flight Deals Section -->
+            <div id="flights" style="margin-bottom:30px">
+                <div class="section-header"><h2>⭐ Exclusive Flight Deals</h2><p>Special offers from Barcelona to worldwide destinations</p></div>
+                <div class="deals-grid">
+                    <div class="deal-card"><div><strong>✈️ Etihad Airways</strong><br>Barcelona (BCN) → Lahore (LHE)</div><div class="deal-price">€580</div><a href="https://wa.me/34611473217?text=Interested in BCN to Lahore €580 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
+                    <div class="deal-card"><div><strong>✈️ Etihad Airways</strong><br>Barcelona (BCN) → Islamabad (ISB)</div><div class="deal-price">€585</div><a href="https://wa.me/34611473217?text=Interested in BCN to Islamabad €585 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
+                    <div class="deal-card"><div><strong>✈️ Emirates</strong><br>Barcelona (BCN) → Dubai (DXB)</div><div class="deal-price">€299</div><a href="https://wa.me/34611473217?text=Interested in BCN to Dubai €299 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
+                    <div class="deal-card"><div><strong>✈️ British Airways</strong><br>Barcelona (BCN) → London (LHR)</div><div class="deal-price">€79</div><a href="https://wa.me/34611473217?text=Interested in BCN to London €79 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
+                </div>
+            </div>
+            
+            <!-- Services Section -->
+            <div id="services" style="margin-bottom:30px">
+                <div class="section-header"><h2>⭐ Our Premium Services</h2><p>Comprehensive travel solutions tailored to your needs</p></div>
+                <div class="services-grid">
+                    <div class="service-card"><div class="service-icon"><i class="fas fa-passport"></i></div><h3>Visa Processing</h3><p>Expert visa processing for Umrah, Hajj & worldwide travel</p></div>
+                    <div class="service-card"><div class="service-icon"><i class="fas fa-hotel"></i></div><h3>Luxury Hotels</h3><p>5-star hotel reservations worldwide with best rates</p></div>
+                    <div class="service-card"><div class="service-icon"><i class="fas fa-car"></i></div><h3>Airport Transfers</h3><p>Private luxury transfers to/from airport</p></div>
+                    <div class="service-card"><div class="service-icon"><i class="fas fa-headset"></i></div><h3>24/7 Support</h3><p>Round-the-clock customer support for all bookings</p></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sidebar">
+            <!-- BCN Departures Widget -->
+            <div class="sidebar-widget">
+                <h3><i class="fas fa-plane-departure"></i> BCN Departures</h3>
+                <div class="flight-info"><div class="flight-time">08:30</div><div class="flight-route">BCN → LHR (British Airways)</div><span class="flight-status status-on-time">On Time</span></div>
+                <div class="flight-info"><div class="flight-time">09:15</div><div class="flight-route">BCN → CDG (Air France)</div><span class="flight-status status-on-time">On Time</span></div>
+                <div class="flight-info"><div class="flight-time">10:00</div><div class="flight-route">BCN → FCO (ITA Airways)</div><span class="flight-status status-on-time">On Time</span></div>
+                <div class="flight-info"><div class="flight-time">11:20</div><div class="flight-route">BCN → DXB (Emirates)</div><span class="flight-status status-on-time">On Time</span></div>
+                <div class="flight-info"><div class="flight-time">12:45</div><div class="flight-route">BCN → JFK (Delta)</div><span class="flight-status status-on-time">On Time</span></div>
+            </div>
+            
+            <!-- BCN Arrivals Widget -->
+            <div class="sidebar-widget">
+                <h3><i class="fas fa-plane-arrival"></i> BCN Arrivals</h3>
+                <div class="flight-info"><div class="flight-time">09:45</div><div class="flight-route">LHR → BCN (British Airways)</div><span class="flight-status status-on-time">On Time</span></div>
+                <div class="flight-info"><div class="flight-time">10:30</div><div class="flight-route">CDG → BCN (Air France)</div><span class="flight-status status-on-time">On Time</span></div>
+                <div class="flight-info"><div class="flight-time">11:15</div><div class="flight-route">DXB → BCN (Emirates)</div><span class="flight-status status-on-time">On Time</span></div>
+                <div class="flight-info"><div class="flight-time">13:00</div><div class="flight-route">LHE → BCN (Etihad)</div><span class="flight-status status-on-time">On Time</span></div>
+                <div class="flight-info"><div class="flight-time">14:30</div><div class="flight-route">JFK → BCN (Delta)</div><span class="flight-status status-on-time">On Time</span></div>
+            </div>
+            
+            <!-- Partner Airlines Widget -->
+            <div class="sidebar-widget">
+                <h3><i class="fas fa-building"></i> Partner Airlines</h3>
+                <div>
+                    <span class="airline-tag">Etihad Airways</span>
+                    <span class="airline-tag">Emirates</span>
+                    <span class="airline-tag">Qatar Airways</span>
+                    <span class="airline-tag">British Airways</span>
+                    <span class="airline-tag">Air France</span>
+                    <span class="airline-tag">Turkish Airlines</span>
+                    <span class="airline-tag">Singapore Airlines</span>
+                    <span class="airline-tag">Delta Air Lines</span>
+                    <span class="airline-tag">Lufthansa</span>
+                    <span class="airline-tag">KLM</span>
+                    <span class="airline-tag">Iberia</span>
+                    <span class="airline-tag">Vueling</span>
+                    <span class="airline-tag">Ryanair</span>
+                    <span class="airline-tag">EasyJet</span>
+                </div>
+            </div>
+            
+            <!-- Contact/Office Details Widget -->
+            <div class="sidebar-widget">
+                <h3><i class="fas fa-map-marker-alt"></i> Office Details</h3>
+                <div style="text-align:center">
+                    <p><strong>Mustafa Travels & Tours</strong></p>
+                    <p>Rambla Badal 141 Local 1 Bajo</p>
+                    <p>Barcelona 08028, Spain</p>
+                    <p>📞 <a href="tel:+34632234216" style="color:var(--primary-navy);">+34-632234216</a></p>
+                    <p>💬 <a href="https://wa.me/34611473217" style="color:var(--primary-navy);">+34-611473217</a></p>
+                    <p>✉️ <a href="mailto:mustafatravelstours@gmail.com" style="color:var(--primary-navy);">mustafatravelstours@gmail.com</a></p>
+                    <hr style="margin:15px 0;">
+                    <p><strong>Business Hours:</strong></p>
+                    <p>Mon-Thu: 10:30 - 20:30</p>
+                    <p>Fri: 10:30-13:00 & 15:00-20:30</p>
+                    <p>Sat: 10:30 - 19:30</p>
+                    <p>Sun: Closed</p>
+                </div>
+            </div>
+            
+            <!-- 24/7 Support Widget -->
+            <div class="sidebar-widget">
+                <h3><i class="fas fa-headset"></i> 24/7 Support</h3>
+                <div style="text-align:center">
+                    <a href="tel:+34632234216" style="display:block; background:#00695c; color:white; padding:12px; border-radius:50px; margin-bottom:10px; text-decoration:none;"><i class="fas fa-phone"></i> Call +34-632234216</a>
+                    <a href="https://wa.me/34611473217" style="display:block; background:#25D366; color:white; padding:12px; border-radius:50px; text-decoration:none;"><i class="fab fa-whatsapp"></i> WhatsApp +34-611473217</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<?php elseif ($page == 'offers'): ?>
+<!-- About Section -->
+<section id="about" style="padding:60px 0; background:var(--light-bg);">
+    <div class="container">
+        <div class="section-header"><h2>About Mustafa Travels</h2><p>Your trusted partner for spiritual and leisure travel since 2024</p></div>
+        <div class="about-content">
+            <div><p>Mustafa Travels & Tours has been crafting exceptional travel experiences since 2024. We specialize in premium Umrah and Hajj journeys, offering unparalleled service and attention to detail.</p><p style="margin-top: 20px;">Our commitment to excellence ensures every spiritual journey is memorable, comfortable, and deeply meaningful. We blend traditional values with modern luxury to create unforgettable experiences.</p><p style="margin-top: 20px;"><strong>✈️ 500+ Happy Travelers | 🌍 50+ Destinations | ⭐ 4.9/5 Rating</strong></p><p style="margin-top: 15px;"><strong>💰 Service Charge: €15 per ticket</strong> - For booking assistance, ticket delivery, and 24/7 support</p></div>
+            <div class="about-image" style="background-image:url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80')"></div>
+        </div>
+    </div>
+</section>
 
-<div class="container">
-    <h2 class="section-title">🔥 Super Offers & Special Deals</h2>
-    <p class="section-subtitle">Limited time offers - Book now to avail these exclusive deals</p>
-    
-    <!-- Main Offer Banner -->
-    <div style="background: linear-gradient(135deg, #0a4b6e, #1e7e6c); border-radius: 24px; padding: 40px; margin-bottom: 40px; color: white; text-align: center;">
-        <i class="fas fa-tag" style="font-size: 48px; color: var(--gold); margin-bottom: 20px; display: inline-block;"></i>
-        <h2 style="font-size: 36px; margin-bottom: 15px;">SPECIAL OFFER! TRAVEL DEALS!</h2>
-        <div style="background: rgba(255,255,255,0.1); border-radius: 20px; padding: 25px; margin: 20px 0;">
-            <h3 style="font-size: 28px;">✈️ BARCELONA → LAHORE → 590 €</h3>
-            <h3 style="font-size: 28px; margin-top: 10px;">✈️ BARCELONA → ISLAMABAD → 590 €</h3>
-            <p style="margin-top: 15px;">Yeh price makhsoos tareekho main hai</p>
+<!-- Footer -->
+<footer class="footer-elegant" id="contact">
+    <div class="container">
+        <div class="footer-content">
+            <div><h3>Mustafa Travels & Tours</h3><p>Rambla Badal 141 Local 1 Bajo<br>Barcelona 08028, Spain</p><p>📞 <a href="tel:+34632234216" style="color:var(--light-gold);">+34-632234216</a><br>💬 <a href="https://wa.me/34611473217" style="color:var(--light-gold);">+34-611473217</a><br>✉️ <a href="mailto:mustafatravelstours@gmail.com" style="color:var(--light-gold);">mustafatravelstours@gmail.com</a></p></div>
+            <div><h3>Quick Links</h3><p><a href="#home" style="color:rgba(255,255,255,0.7);">Home</a></p><p><a href="#umrah" style="color:rgba(255,255,255,0.7);">Umrah Packages</a></p><p><a href="#hajj" style="color:rgba(255,255,255,0.7);">Hajj 2026</a></p><p><a href="visa-services.php" style="color:var(--light-gold);">Visa Services</a></p><p><a href="#flights" style="color:rgba(255,255,255,0.7);">Flight Deals</a></p><p><a href="#services" style="color:rgba(255,255,255,0.7);">Services</a></p></div>
+            <div><h3>Popular Destinations</h3><p>Pakistan | India | Bangladesh</p><p>USA | Canada | UK</p><p>UAE | Saudi Arabia | Turkey</p><p>Spain | France | Germany</p><p>Singapore | Malaysia | Indonesia</p></div>
+            <div><h3>Business Hours</h3><p>Monday - Thursday: 10:30 - 20:30</p><p>Friday: 10:30 - 13:00 & 15:00 - 20:30</p><p>Saturday: 10:30 - 19:30</p><p>Sunday: Closed</p><p style="margin-top:10px;"><i class="fas fa-phone-alt"></i> 24/7 Emergency Support</p></div>
         </div>
-        <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 20px;">
-            <div><i class="fas fa-phone"></i> +34-632234216</div>
-            <div><i class="fab fa-whatsapp"></i> +34-611473217</div>
-            <div><i class="fas fa-globe"></i> www.mustafatravels.org</div>
-        </div>
-        <p style="margin-top: 15px;">📍 Barcelona 08028</p>
+        <div class="footer-bottom"><p>&copy; 2026 Mustafa Travels & Tours. All rights reserved. | Crafted with <i class="fas fa-heart" style="color:var(--primary-gold);"></i> for spiritual journeys | Service Charge: €15 per ticket</p></div>
     </div>
-    
-    <!-- Posters Grid - Yahan aap apne posters add karte rahenge -->
-    <div class="offers-grid">
-        
-        <!-- Poster 1 - Summer Flash Sale -->
-        <div class="offer-card">
-            <div style="background: linear-gradient(135deg, #0a4b6e, #1e7e6c); padding: 40px; text-align: center; color: white;">
-                <i class="fas fa-plane" style="font-size: 50px; margin-bottom: 15px;"></i>
-                <h3 style="font-size: 24px;">Summer Flash Sale!</h3>
-                <div style="font-size: 36px; font-weight: 800; margin: 15px 0;">€499</div>
-                <p>One Way to Dubai</p>
-                <small>*Limited seats</small>
-            </div>
-            <div class="offer-content" style="padding: 20px; text-align: center;">
-                <p>Book by 30 June 2026</p>
-                <a href="https://wa.me/34611473217?text=I'm%20interested%20in%20Dubai%20offer%20€499" class="offer-btn" style="display: inline-block; background: #25D366; color: white; padding: 10px 25px; border-radius: 50px; text-decoration: none; margin-top: 10px;">Book Now →</a>
-            </div>
-        </div>
-        
-        <!-- Poster 2 - Early Bird Umrah -->
-        <div class="offer-card">
-            <div style="background: linear-gradient(135deg, #1a4a7a, #0a2540); padding: 40px; text-align: center; color: white;">
-                <i class="fas fa-kaaba" style="font-size: 50px; margin-bottom: 15px;"></i>
-                <h3 style="font-size: 24px;">Early Bird Umrah</h3>
-                <div style="font-size: 36px; font-weight: 800; margin: 15px 0;">€999</div>
-                <p>Economy Package</p>
-                <small>*First 50 bookings</small>
-            </div>
-            <div class="offer-content" style="padding: 20px; text-align: center;">
-                <p>Valid for Dec 2026 - Jan 2027</p>
-                <a href="https://wa.me/34611473217?text=I'm%20interested%20in%20Early%20Bird%20Umrah%20€899" class="offer-btn" style="display: inline-block; background: #25D366; color: white; padding: 10px 25px; border-radius: 50px; text-decoration: none; margin-top: 10px;">Book Now →</a>
-            </div>
-        </div>
-        
-        <!-- Poster 3 - Family Package -->
-        <div class="offer-card">
-            <div style="background: linear-gradient(135deg, #b8860b, #d4af37); padding: 40px; text-align: center; color: #1a1a2e;">
-                <i class="fas fa-users" style="font-size: 50px; margin-bottom: 15px;"></i>
-                <h3 style="font-size: 24px;">Family Package</h3>
-                <div style="font-size: 36px; font-weight: 800; margin: 15px 0;">€950/person</div>
-                <p>4 Persons | Barcelona → Istanbul</p>
-                <small>*Return tickets included</small>
-            </div>
-            <div class="offer-content" style="padding: 20px; text-align: center;">
-                <p>Valid for whole family (2+2)</p>
-                <a href="https://wa.me/34611473217?text=I'm%20interested%20in%20Family%20Package%20€1499" class="offer-btn" style="display: inline-block; background: #25D366; color: white; padding: 10px 25px; border-radius: 50px; text-decoration: none; margin-top: 10px;">Book Now →</a>
-            </div>
-        </div>
-        
-    </div>
-    
-    <!-- Poster Template - Copy for new posters -->
-    <!-- 
-    <div class="offer-card">
-        <img src="YOUR_IMAGE_DIRECT_LINK_HERE" alt="Offer Title" style="width: 100%; height: auto;">
-        <div class="offer-content" style="padding: 20px; text-align: center;">
-            <h3>Your Offer Title</h3>
-            <p>Offer description here</p>
-            <a href="https://wa.me/34611473217?text=I'm%20interested%20in%20this%20offer" class="offer-btn" style="display: inline-block; background: #25D366; color: white; padding: 10px 25px; border-radius: 50px; text-decoration: none;">Book Now →</a>
-        </div>
-    </div>
-    -->
-        <?php elseif ($page == 'services'): ?>
-<div class="container">
-    <h2 class="section-title">Our Travel Services</h2>
-    <p class="section-subtitle">Complete travel solutions under one roof</p>
-    <div class="services-grid">
-        <a href="https://aviasales.tpo.mx/HEyfp6zU" target="_blank" class="service-card"><div class="service-icon"><i class="fas fa-plane"></i></div><h3>✈️ Flight Tickets</h3><p>Worldwide flight bookings</p><span class="service-btn">Search →</span></a>
-        <a href="https://www.agoda.com/?cid=YOUR_AGODA_ID" target="_blank" class="service-card"><div class="service-icon"><i class="fas fa-hotel"></i></div><h3>🏨 Hotels</h3><p>2.5M+ hotels worldwide</p><span class="service-btn">Book →</span></a>
-        <a href="https://ektatraveling.tpo.mx/jyKgc1bx" target="_blank" class="service-card"><div class="service-icon"><i class="fas fa-shield-alt"></i></div><h3>🛡️ Travel Insurance</h3><p>Medical & COVID coverage</p><span class="service-btn">Get →</span></a>
-        <a href="https://yesim.tpo.mx/t36uN2cA" target="_blank" class="service-card"><div class="service-icon"><i class="fas fa-sim-card"></i></div><h3>📱 eSIM Internet</h3><p>Stay connected worldwide</p><span class="service-btn">Buy →</span></a>
-        <a href="https://tiqets.tpo.mx/pqSwPX5S" target="_blank" class="service-card"><div class="service-icon"><i class="fas fa-ticket-alt"></i></div><h3>🎟️ Attraction Tickets</h3><p>Skip the line tickets</p><span class="service-btn">Book →</span></a>
-        <a href="https://compensair.tpo.mx/lc5t7EhC" target="_blank" class="service-card"><div class="service-icon"><i class="fas fa-gavel"></i></div><h3>⚖️ Flight Compensation</h3><p>Get up to €600</p><span class="service-btn">Check →</span></a>
-    </div>
-</div>
-
-<?php elseif ($page == 'about'): ?>
-<div class="container">
-    <div class="about-content">
-        <div class="profile-img"><img src="https://i.postimg.cc/sxd9YgRx/mustafa.jpg" alt="Ghulam Mustafa Haidry"></div>
-        <h1 style="text-align: center; margin-bottom: 20px;">About Mustafa Travels & Tours</h1>
-        <p style="text-align: center; font-size: 18px; margin-bottom: 30px;">Premium travel agency based in Barcelona since 2024</p>
-        
-        <h2>Founder's Message</h2>
-        <p>My name is <strong>Ghulam Mustafa Haidry</strong>. I started working as a travel agent in <strong>2019</strong> and founded my own travel agency <strong>Mustafa Travels & Tours</strong> in <strong>January 2024</strong>. With over 5 years of experience in the travel industry, I have served more than <strong>500 Umrah clients</strong> with a <strong>4.9/5 rating</strong>.</p>
-        
-        <h2>Our Services</h2>
-        <ul style="margin-left: 20px; margin-bottom: 20px;">
-            <li>✈️ Airline tickets worldwide</li>
-            <li>🏨 Hotel reservations globally</li>
-            <li>🚌 Bus, Train, Tram, and Ship tickets</li>
-            <li>🛡️ Travel insurance</li>
-            <li>🛂 Visa assistance for UK, USA, Canada, Japan Files</li>
-            <li>🌍 E-visa for Pakistan, India, Turkey, Morocco, Malaysia</li>
-            <li>🕋 Hajj and Umrah packages</li>
-        </ul>
-        
-        <h2>Our Commitment</h2>
-        <p>We are available <strong>24/7 for emergency services</strong>. Our team is dedicated to providing you with the best travel experience at competitive prices.</p>
-        
-        <div class="stats-row">
-            <div class="stat-box"><div class="stat-number">500+</div><div>Umrah Clients</div></div>
-            <div class="stat-box"><div class="stat-number">4.9/5</div><div>Customer Rating</div></div>
-            <div class="stat-box"><div class="stat-number">24/7</div><div>Emergency Support</div></div>
-            <div class="stat-box"><div class="stat-number">10+</div><div>Years Experience</div></div>
-        </div>
-    </div>
-</div>
-
-<?php elseif ($page == 'contact'): ?>
-<div class="container">
-    <h2 class="section-title">Contact Us</h2>
-    <p class="section-subtitle">Get in touch with our travel experts</p>
-    
-    <div class="contact-grid">
-        <div class="contact-card"><i class="fas fa-phone-alt"></i><h3>Emergency</h3><div class="number">+34-632234216</div><span style="background: #dc2626; color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px;">24/7</span></div>
-        <div class="contact-card"><i class="fab fa-whatsapp"></i><h3>WhatsApp</h3><div class="number">+34-611473217</div></div>
-        <div class="contact-card"><i class="fas fa-phone"></i><h3>Landline</h3><div class="number">937578907</div><p>Mon-Sat: 10:30-20:30</p></div>
-        <div class="contact-card"><i class="fas fa-envelope"></i><h3>Email</h3><div class="number" style="font-size: 14px;">mustafatravelstours@gmail.com</div></div>
-    </div>
-    
-    <div class="google-map">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2992.456789012345!2d2.123456789012345!3d41.37812345678901!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a4a2e0e0e0e0e0%3A0x1234567890abcdef!2sRambla%20Badal%20141%2C%20Barcelona!5e0!3m2!1sen!2ses!4v1234567890123!5m2!1sen!2ses" allowfullscreen="" loading="lazy"></iframe>
-    </div>
-    
-    <div class="form-section">
-        <h3><i class="fas fa-envelope"></i> Quick Message</h3>
-        <form id="quickContactForm">
-            <div class="form-grid">
-                <div class="form-group"><label>Name *</label><input type="text" id="quick_name" required></div>
-                <div class="form-group"><label>WhatsApp *</label><input type="tel" id="quick_phone" required></div>
-                <div class="form-group"><label>Subject</label><input type="text" id="quick_subject"></div>
-                <div class="form-group"><label>Message *</label><textarea id="quick_message" rows="3" required></textarea></div>
-            </div>
-            <button type="button" class="submit-btn" onclick="sendQuickMessage()"><i class="fab fa-whatsapp"></i> Send via WhatsApp</button>
-        </form>
-    </div>
-</div>
-<?php endif; ?>
-
-<footer class="footer">
-    <div class="footer-grid">
-        <div class="footer-col"><h4>Mustafa Travels</h4><p>Premium travel agency in Barcelona since 2024. Umrah, flights, visas & worldwide travel.</p><div class="social-icons"><a href="https://www.facebook.com/mustafatravelstours"><i class="fab fa-facebook-f"></i></a><a href="https://www.tiktok.com/mustafatravelstarragona"><i class="fab fa-tiktok"></i></a><a href="https://www.instagram.com/mustafatravelstours"><i class="fab fa-instagram"></i></a><a href="https://www.linkedin.com/company/mustafa-travels-tours"><i class="fab fa-linkedin-in"></i></a></div></div>
-        <div class="footer-col"><h4>Quick Links</h4><a href="?page=home">Home</a><a href="?page=umrah">Umrah Packages</a><a href="?page=offers">Super Offers</a><a href="?page=services">Services</a><a href="?page=about">About</a><a href="?page=contact">Contact</a></div>
-        <div class="footer-col"><h4>Contact</h4><p>📞 Emergency: +34-632234216</p><p>📞 Office: 937578907</p><p>💬 WhatsApp: +34-611473217</p><p>✉️ mustafatravelstours@gmail.com</p></div>
-        <div class="footer-col"><h4>Hours</h4><p>Mon-Sat: 10:30 - 20:30</p><p>Sun: Closed</p><p style="color: var(--gold);">Emergency: 24/7</p></div>
-    </div>
-    <div class="footer-bottom"><p>&copy; 2024 Mustafa Travels & Tours. All rights reserved. | Service Charge: €15 per booking</p></div>
 </footer>
 
+<!-- Chatbot -->
+<div class="chatbot-btn" onclick="toggleChatbot()">
+    <i class="fab fa-whatsapp"></i>
+</div>
+<div class="chatbot-window" id="chatbotWindow">
+    <div class="chatbot-header">
+        <h4>🤖 Mustafa Travels Assistant</h4>
+        <small>Ask me anything about flights, Umrah, or booking!</small>
+    </div>
+    <div class="chatbot-messages" id="chatMessages">
+        <div class="message bot">
+            <div class="msg-bubble">👋 Hello! Welcome to Mustafa Travels! How can I help you today?<br><br>You can ask me:<br>• Flight prices to Lahore<br>• Umrah packages<br>• Booking assistance<br>• Or just say "help"</div>
+        </div>
+    </div>
+    <div class="chatbot-input">
+        <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+        <button onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<!-- Booking Modal -->
+<div class="modal-overlay" id="bookingModal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeBookingModal()">&times;</button>
+        <h2 style="color: var(--primary-navy); margin-bottom: 20px;">✈️ Complete Your Booking</h2>
+        <form method="POST" action="" id="bookingForm">
+            <input type="hidden" name="offer_id" id="offer_id">
+            <input type="hidden" name="price" id="price">
+            <input type="hidden" name="currency" id="currency">
+            <input type="hidden" name="airline" id="airline">
+            <input type="hidden" name="origin" id="origin">
+            <input type="hidden" name="destination" id="destination">
+            <input type="hidden" name="departure_date" id="departure_date">
+            <input type="hidden" name="departure_time" id="departure_time">
+            <input type="hidden" name="arrival_date" id="arrival_date">
+            <input type="hidden" name="arrival_time" id="arrival_time">
+            <input type="hidden" name="duration" id="duration">
+            <input type="hidden" name="cabin_class" id="cabin_class">
+            
+            <div class="booking-summary" id="flightSummary"></div>
+            
+            <div class="booking-section">
+                <h3>👤 Passenger Details</h3>
+                <div class="booking-form-row">
+                    <div class="booking-form-group"><label>Title *</label><select name="passenger_title"><option value="Mr">Mr</option><option value="Mrs">Mrs</option><option value="Ms">Ms</option><option value="Dr">Dr</option></select></div>
+                    <div class="booking-form-group"><label>Given Name *</label><input type="text" name="passenger_given_name" required></div>
+                    <div class="booking-form-group"><label>Family Name *</label><input type="text" name="passenger_family_name" required></div>
+                </div>
+                <div class="booking-form-row">
+                    <div class="booking-form-group"><label>Date of Birth *</label><input type="date" name="passenger_dob" required></div>
+                    <div class="booking-form-group"><label>Gender *</label><select name="passenger_gender"><option value="male">Male</option><option value="female">Female</option></select></div>
+                </div>
+                <div class="booking-form-row">
+                    <div class="booking-form-group"><label>Passport Number *</label><input type="text" name="passenger_passport" required></div>
+                    <div class="booking-form-group"><label>Passport Expiry *</label><input type="date" name="passenger_passport_expiry" required></div>
+                </div>
+            </div>
+            
+            <div class="booking-section">
+                <h3>📞 Contact Details</h3>
+                <div class="booking-form-row">
+                    <div class="booking-form-group"><label>Email Address *</label><input type="email" name="contact_email" required></div>
+                    <div class="booking-form-group"><label>Phone Number *</label><input type="tel" name="contact_phone" required></div>
+                </div>
+            </div>
+            
+            <div class="price-breakdown" id="priceBreakdown"></div>
+            <p style="font-size:12px; color:#e65100; margin:10px 0; text-align:center;">💰 Service Charge: €15 included in total</p>
+            <button type="submit" name="confirm_booking" class="confirm-btn">✅ Confirm Booking</button>
+        </form>
+    </div>
+</div>
+
 <script>
-    const WHATSAPP_NUMBER = "34611473217";
-    
-    function sendUmrahRequest() {
-        const name = document.getElementById('umrah_name')?.value;
-        const phone = document.getElementById('umrah_phone')?.value;
-        const nationality = document.getElementById('umrah_nationality')?.value;
-        const people = document.getElementById('umrah_people')?.value;
-        const makkahDays = document.getElementById('umrah_makkah_days')?.value;
-        const madinaDays = document.getElementById('umrah_madina_days')?.value;
-        const packageType = document.getElementById('umrah_package')?.value;
-        const date = document.getElementById('umrah_date')?.value;
-        const message = document.getElementById('umrah_message')?.value;
-        
-        if (!name || !phone || !nationality) { alert('Please fill all required fields (*)'); return; }
-        
-        let msg = "🕋 *NEW UMRAH REQUEST* 🕋%0A";
-        msg += `%0A👤 *Name:* ${name}`;
-        msg += `%0A📱 *WhatsApp:* ${phone}`;
-        msg += `%0A🌍 *Nationality:* ${nationality}`;
-        msg += `%0A👥 *People:* ${people}`;
-        msg += `%0A🕋 *Makkah Days:* ${makkahDays}`;
-        msg += `%0A🕌 *Madina Days:* ${madinaDays}`;
-        msg += `%0A📦 *Package:* ${packageType}`;
-        if (date) msg += `%0A📅 *Date:* ${date}`;
-        if (message) msg += `%0A💬 *Message:* ${message}`;
-        
-        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
-    }
-    
-    function sendQuickMessage() {
-        const name = document.getElementById('quick_name')?.value;
-        const phone = document.getElementById('quick_phone')?.value;
-        const subject = document.getElementById('quick_subject')?.value;
-        const message = document.getElementById('quick_message')?.value;
-        
-        if (!name || !phone || !message) { alert('Please fill all required fields (*)'); return; }
-        
-        let msg = `📧 *NEW MESSAGE* 📧%0A`;
-        msg += `%0A👤 *Name:* ${name}`;
-        msg += `%0A📱 *WhatsApp:* ${phone}`;
-        if (subject) msg += `%0A📌 *Subject:* ${subject}`;
-        msg += `%0A💬 *Message:* ${message}`;
-        
-        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
-    }
-    
-    document.querySelectorAll('a[href*=".tpo.mx"], a[href*="aviasales"]').forEach(link => {
-        link.addEventListener('click', function() {
-            if(typeof gtag !== 'undefined') gtag('event', 'click', { 'event_category': 'affiliate' });
-        });
+$(document).ready(function() { 
+    $('.airport-select').select2({ 
+        width: '100%',
+        placeholder: 'Search airport by code or city name...',
+        allowClear: true
+    }); 
+});
+
+// Slider
+let currentSlide = 0;
+const slides = document.querySelectorAll('.luxury-slide');
+const dots = document.querySelectorAll('.slider-dot-luxury');
+function showSlide(i) { if(!slides.length) return; slides.forEach(s=>s.classList.remove('active')); dots.forEach(d=>d.classList.remove('active')); slides[i].classList.add('active'); dots[i].classList.add('active'); currentSlide=i; }
+if(slides.length) { setInterval(()=>{ currentSlide = (currentSlide+1)%slides.length; showSlide(currentSlide); }, 5000); dots.forEach((d,i)=>d.addEventListener('click',()=>showSlide(i))); }
+
+// Mobile menu
+document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() { document.querySelector('.nav-elegant')?.classList.toggle('active'); });
+
+// Smooth scroll
+document.querySelectorAll('.nav-elegant a, .logo-elegant, .luxury-btn').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if(href && href.startsWith('#')) {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            document.querySelector('.nav-elegant')?.classList.remove('active');
+        }
     });
+});
+
+function bookPackage(name, price) { window.open(`https://wa.me/34611473217?text=I'm interested in ${name} (${price})`, '_blank'); }
+
+function toggleTripType() {
+    const type = document.querySelector('input[name="trip_type"]:checked').value;
+    document.getElementById('onewayFields').style.display = type == 'oneway' ? 'block' : 'none';
+    document.getElementById('returnFields').style.display = type == 'return' ? 'block' : 'none';
+    document.getElementById('multiFields').style.display = type == 'multi' ? 'block' : 'none';
+}
+
+function selectFlight(offerId, price, currency, airline, origin, destination, depDate, depTime, arrDate, arrTime, duration, stops, cabinClass) {
+    document.getElementById('offer_id').value = offerId;
+    document.getElementById('price').value = price;
+    document.getElementById('currency').value = currency;
+    document.getElementById('airline').value = airline;
+    document.getElementById('origin').value = origin;
+    document.getElementById('destination').value = destination;
+    document.getElementById('departure_date').value = depDate;
+    document.getElementById('departure_time').value = depTime;
+    document.getElementById('arrival_date').value = arrDate;
+    document.getElementById('arrival_time').value = arrTime;
+    document.getElementById('duration').value = duration;
+    document.getElementById('cabin_class').value = cabinClass;
+    
+    let fare = Math.round(parseFloat(price) * 0.59);
+    let taxes = parseFloat(price) - fare;
+    let totalWithService = parseFloat(price) + 15;
+    
+    document.getElementById('flightSummary').innerHTML = `<strong>✈️ Flight Details</strong><br>${airline}<br>${origin} → ${destination}<br>Departure: ${depDate} at ${depTime}<br>Arrival: ${arrDate} at ${arrTime}<br>Duration: ${duration}<br>Class: ${cabinClass}`;
+    document.getElementById('priceBreakdown').innerHTML = `
+        <div class="price-row"><span>Flight Fare</span><span>${price} ${currency}</span></div>
+        <div class="price-row"><span>Service Charge</span><span>+ €15 EUR</span></div>
+        <div class="price-row total"><span>Total Amount</span><span>${totalWithService.toFixed(2)} ${currency}</span></div>`;
+    document.getElementById('bookingModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeBookingModal() { document.getElementById('bookingModal').classList.remove('active'); document.body.style.overflow = 'auto'; }
+document.querySelectorAll('.close-modal, .modal-overlay').forEach(el => { el.addEventListener('click', (e) => { if(e.target === document.getElementById('bookingModal') || e.target.classList.contains('close-modal')) closeBookingModal(); }); });
+
+// Chatbot Functions
+function toggleChatbot() {
+    const window = document.getElementById('chatbotWindow');
+    window.classList.toggle('active');
+}
+
+function sendChatMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    if(!message) return;
+    
+    const messagesDiv = document.getElementById('chatMessages');
+    messagesDiv.innerHTML += `<div class="message user"><div class="msg-bubble">${escapeHtml(message)}</div></div>`;
+    input.value = '';
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    
+    setTimeout(() => {
+        let response = getBotResponse(message.toLowerCase());
+        messagesDiv.innerHTML += `<div class="message bot"><div class="msg-bubble">${response}</div></div>`;
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }, 500);
+}
+
+function getBotResponse(msg) {
+    if(msg.includes('hello') || msg.includes('hi') || msg.includes('salam')) return '👋 Assalamu Alaikum! Welcome to Mustafa Travels! How can I help you today?';
+    if(msg.includes('flight') || msg.includes('ticket')) return '✈️ You can search flights using the form above! Just enter your origin, destination, and date. We offer One Way, Return, and Multi-City options. Our service charge is €15 per ticket.';
+    if(msg.includes('umrah')) return '🕋 We have 3 Umrah packages starting from €895. Includes flights, hotel near Haram, and visa processing. Would you like me to share the details?';
+    if(msg.includes('hajj')) return '🕋 Hajj 2026 packages are currently in development. Phase 2 bookings will open soon. Click "Notify Me" on our website to get updates!';
+    if(msg.includes('price') || msg.includes('cost')) return '💰 Our flight prices are real-time from Duffel API. Plus a €15 service charge per ticket. For Umrah packages, prices start from €895.';
+    if(msg.includes('contact') || msg.includes('phone') || msg.includes('whatsapp')) return '📞 You can reach us at:<br>📱 WhatsApp: +34-611473217<br>📞 Call: +34-632234216<br>✉️ Email: mustafatravelstours@gmail.com';
+    if(msg.includes('service charge') || msg.includes('commission') || msg.includes('fee')) return '💰 We charge a €15 service fee per ticket for booking assistance, ticket delivery, and 24/7 customer support.';
+    if(msg.includes('help')) return '🤖 I can help you with:<br>• Flight search and booking<br>• Umrah package details<br>• Hajj 2026 information<br>• Contact information<br>• Service charges<br><br>Just type what you need!';
+    if(msg.includes('lhr') || msg.includes('london')) return '✈️ Flights from Barcelona to London start from €79 + €15 service charge = €94. Would you like me to help you search?';
+    if(msg.includes('lhe') || msg.includes('lahore')) return '✈️ Flights from Barcelona to Lahore start from €580 + €15 service charge = €595 with Etihad Airways. 40kg baggage included!';
+    if(msg.includes('isb') || msg.includes('islamabad')) return '✈️ Flights from Barcelona to Islamabad start from €585 + €15 service charge = €600 with Etihad Airways. 40kg baggage included!';
+    if(msg.includes('dubai') || msg.includes('dxb')) return '✈️ Flights from Barcelona to Dubai start from €299 + €15 service charge = €314 with Emirates.';
+    return 'Thank you for your message! Our team will respond shortly. For urgent inquiries, please contact us on WhatsApp: +34-611473217';
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+toggleTripType();
+if(slides.length) showSlide(0);
 </script>
 </body>
 </html>
