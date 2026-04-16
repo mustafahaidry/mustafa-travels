@@ -670,8 +670,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
 <div class="flying-marquee-container">
     <div class="marquee-track">
         <div class="marquee-content">
-            <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €580 ✈️ BCN TO ISB: €585 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
-            <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €580 ✈️ BCN TO ISB: €585 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
+            <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €595 ✈️ BCN TO ISB: €595 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
+            <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €595 ✈️ BCN TO ISB: €595 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
         </div>
         <div class="flying-plane"><i class="fas fa-plane"></i></div>
     </div>
@@ -809,8 +809,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             <div id="flights" style="margin-bottom:30px">
                 <div class="section-header"><h2>⭐ Exclusive Flight Deals</h2><p>Special offers from Barcelona to worldwide destinations</p></div>
                 <div class="deals-grid">
-                    <div class="deal-card"><div><strong>✈️ Etihad Airways</strong><br>Barcelona (BCN) → Lahore (LHE)</div><div class="deal-price">€580</div><a href="https://wa.me/34611473217?text=Interested in BCN to Lahore €580 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
-                    <div class="deal-card"><div><strong>✈️ Etihad Airways</strong><br>Barcelona (BCN) → Islamabad (ISB)</div><div class="deal-price">€585</div><a href="https://wa.me/34611473217?text=Interested in BCN to Islamabad €585 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
+                    <div class="deal-card"><div><strong>✈️ Etihad Airways</strong><br>Barcelona (BCN) → Lahore (LHE)</div><div class="deal-price">€595</div><a href="https://wa.me/34611473217?text=Interested in BCN to Lahore €595 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
+                    <div class="deal-card"><div><strong>✈️ Etihad Airways</strong><br>Barcelona (BCN) → Islamabad (ISB)</div><div class="deal-price">€595</div><a href="https://wa.me/34611473217?text=Interested in BCN to Islamabad €595 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
                     <div class="deal-card"><div><strong>✈️ Emirates</strong><br>Barcelona (BCN) → Dubai (DXB)</div><div class="deal-price">€299</div><a href="https://wa.me/34611473217?text=Interested in BCN to Dubai €299 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
                     <div class="deal-card"><div><strong>✈️ British Airways</strong><br>Barcelona (BCN) → London (LHR)</div><div class="deal-price">€79</div><a href="https://wa.me/34611473217?text=Interested in BCN to London €79 + €15 service fee" class="whatsapp-btn-elegant" style="display:inline-block; padding:8px 16px; font-size:12px">Book Now</a></div>
                 </div>
@@ -1102,8 +1102,8 @@ function getBotResponse(msg) {
     if(msg.includes('service charge') || msg.includes('commission') || msg.includes('fee')) return '💰 We charge a €15 service fee per ticket for booking assistance, ticket delivery, and 24/7 customer support.';
     if(msg.includes('help')) return '🤖 I can help you with:<br>• Flight search and booking<br>• Umrah package details<br>• Hajj 2026 information<br>• Contact information<br>• Service charges<br><br>Just type what you need!';
     if(msg.includes('lhr') || msg.includes('london')) return '✈️ Flights from Barcelona to London start from €79 + €15 service charge = €94. Would you like me to help you search?';
-    if(msg.includes('lhe') || msg.includes('lahore')) return '✈️ Flights from Barcelona to Lahore start from €580 + €15 service charge = €595 with Etihad Airways. 40kg baggage included!';
-    if(msg.includes('isb') || msg.includes('islamabad')) return '✈️ Flights from Barcelona to Islamabad start from €585 + €15 service charge = €600 with Etihad Airways. 40kg baggage included!';
+    if(msg.includes('lhe') || msg.includes('lahore')) return '✈️ Flights from Barcelona to Lahore start from €595 + €15 service charge = €595 with Etihad Airways. 40kg baggage included!';
+    if(msg.includes('isb') || msg.includes('islamabad')) return '✈️ Flights from Barcelona to Islamabad start from €595 + €15 service charge = €600 with Etihad Airways. 40kg baggage included!';
     if(msg.includes('dubai') || msg.includes('dxb')) return '✈️ Flights from Barcelona to Dubai start from €299 + €15 service charge = €314 with Emirates.';
     return 'Thank you for your message! Our team will respond shortly. For urgent inquiries, please contact us on WhatsApp: +34-611473217';
 }
