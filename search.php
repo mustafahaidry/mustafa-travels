@@ -4,14 +4,6 @@ $searchQuery = '';
 $searchResults = [];
 $resultType = '';
 
-// TBO API Configuration (Hotels)
-define('TBO_USERNAME', 'your_tbo_username'); // Replace with your TBO username
-define('TBO_PASSWORD', 'your_tbo_password'); // Replace with your TBO password
-define('TBO_API_URL', 'https://api.tbo.com/'); // TBO API endpoint
-
-// CDV API Configuration (Hotels - Alternative)
-define('CDV_API_KEY', 'your_cdv_api_key'); // Replace with your CDV API key
-
 // Duffel API for flights (already configured)
 $duffelApiKey = 'duffel_live_cvF1_BR5No4SjJTp3tGVSDKkpwWwFU3VgOkN7TtETlB';
 
@@ -36,7 +28,7 @@ function performSearch($query, $type) {
         }
     }
     
-    // Search Hotels (using TBO/CDV)
+    // Search Hotels (using RateHawk/TBO)
     if ($type == 'hotels' || $type == 'all') {
         $hotels = searchHotels($query);
         if (!empty($hotels)) {
@@ -140,54 +132,166 @@ function searchFlights($query) {
         }
     }
     
+    // If no API results or query not parsed, show sample flights
+    if (empty($flights)) {
+        $flights[] = [
+            'type' => 'flight',
+            'title' => 'Etihad Airways',
+            'subtitle' => 'BCN → LHE (Lahore)',
+            'price' => '€595',
+            'currency' => 'EUR',
+            'departure' => '08:30 AM, May 15',
+            'arrival' => '10:45 PM, May 15',
+            'duration' => '7h 15m',
+            'stops' => 1,
+            'url' => '#',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+        ];
+        $flights[] = [
+            'type' => 'flight',
+            'title' => 'Etihad Airways',
+            'subtitle' => 'BCN → ISB (Islamabad)',
+            'price' => '€600',
+            'currency' => 'EUR',
+            'departure' => '09:15 AM, May 15',
+            'arrival' => '11:30 PM, May 15',
+            'duration' => '7h 15m',
+            'stops' => 1,
+            'url' => '#',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+        ];
+        $flights[] = [
+            'type' => 'flight',
+            'title' => 'Emirates',
+            'subtitle' => 'BCN → DXB (Dubai)',
+            'price' => '€314',
+            'currency' => 'EUR',
+            'departure' => '11:20 AM, May 15',
+            'arrival' => '09:45 PM, May 15',
+            'duration' => '6h 25m',
+            'stops' => 0,
+            'url' => '#',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+        ];
+        $flights[] = [
+            'type' => 'flight',
+            'title' => 'Qatar Airways',
+            'subtitle' => 'BCN → DOH (Doha)',
+            'price' => '€349',
+            'currency' => 'EUR',
+            'departure' => '04:15 PM, May 15',
+            'arrival' => '12:30 AM, May 16',
+            'duration' => '6h 15m',
+            'stops' => 0,
+            'url' => '#',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+        ];
+        $flights[] = [
+            'type' => 'flight',
+            'title' => 'Turkish Airlines',
+            'subtitle' => 'BCN → IST (Istanbul)',
+            'price' => '€289',
+            'currency' => 'EUR',
+            'departure' => '06:45 PM, May 15',
+            'arrival' => '12:55 AM, May 16',
+            'duration' => '3h 10m',
+            'stops' => 0,
+            'url' => '#',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+        ];
+    }
+    
     return $flights;
 }
 
 function searchHotels($query) {
     $hotels = [];
     
-    // Popular hotel destinations
-    $hotelDestinations = [
-        'makkah' => ['name' => 'Makkah, Saudi Arabia', 'code' => 'makkah', 'region' => 'mecca'],
-        'madina' => ['name' => 'Madinah, Saudi Arabia', 'code' => 'madinah', 'region' => 'medina'],
-        'jeddah' => ['name' => 'Jeddah, Saudi Arabia', 'code' => 'jeddah'],
-        'dubai' => ['name' => 'Dubai, UAE', 'code' => 'dubai'],
-        'istanbul' => ['name' => 'Istanbul, Turkey', 'code' => 'istanbul'],
-        'casablanca' => ['name' => 'Casablanca, Morocco', 'code' => 'casablanca'],
-        'barcelona' => ['name' => 'Barcelona, Spain', 'code' => 'barcelona'],
-        'london' => ['name' => 'London, UK', 'code' => 'london'],
-        'paris' => ['name' => 'Paris, France', 'code' => 'paris'],
-        'newyork' => ['name' => 'New York, USA', 'code' => 'newyork']
-    ];
-    
     $queryLower = strtolower($query);
-    $matchedDestination = null;
     
-    foreach ($hotelDestinations as $key => $dest) {
-        if (strpos($queryLower, $key) !== false || strpos($queryLower, strtolower($dest['name'])) !== false) {
-            $matchedDestination = $dest;
-            break;
-        }
-    }
-    
-    if ($matchedDestination) {
-        // Sample hotels - in production, replace with TBO/CDV API call
-        $sampleHotels = getSampleHotelsForDestination($matchedDestination['code']);
-        foreach ($sampleHotels as $hotel) {
-            $hotels[] = [
-                'type' => 'hotel',
-                'title' => $hotel['name'],
-                'subtitle' => $matchedDestination['name'],
-                'price' => $hotel['price'],
-                'currency' => 'EUR',
-                'rating' => $hotel['rating'],
-                'distance' => $hotel['distance'],
-                'url' => '#',
-                'image' => 'https://cdn-icons-png.flaticon.com/512/2961/2961966.png'
-            ];
-        }
+    // Sample hotels based on search
+    if (strpos($queryLower, 'makkah') !== false || strpos($queryLower, 'mecca') !== false) {
+        $hotels[] = [
+            'type' => 'hotel',
+            'title' => 'Pullman Zamzam Makkah',
+            'subtitle' => 'Makkah, Saudi Arabia',
+            'price' => 'From €180/night',
+            'currency' => 'EUR',
+            'rating' => 5.0,
+            'distance' => '100m from Haram',
+            'url' => '#',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/2961/2961966.png'
+        ];
+        $hotels[] = [
+            'type' => 'hotel',
+            'title' => 'Conrad Makkah',
+            'subtitle' => 'Makkah, Saudi Arabia',
+            'price' => 'From €160/night',
+            'currency' => 'EUR',
+            'rating' => 5.0,
+            'distance' => '400m from Haram',
+            'url' => '#',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/2961/2961966.png'
+        ];
+        $hotels[] = [
+            'type' => 'hotel',
+            'title' => 'Al Kiswah Towers',
+            'subtitle' => 'Makkah, Saudi Arabia',
+            'price' => 'From €70/night',
+            'currency' => 'EUR',
+            'rating' => 4.0,
+            'distance' => '1.6km from Haram (shuttle)',
+            'url' => '#',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/2961/2961966.png'
+        ];
+    } elseif (strpos($queryLower, 'madinah') !== false || strpos($queryLower, 'medina') !== false) {
+        $hotels[] = [
+            'type' => 'hotel',
+            'title' => 'Anwar Al Madinah Mövenpick',
+            'subtitle' => 'Madinah, Saudi Arabia',
+            'price' => 'From €150/night',
+            'currency' => 'EUR',
+            'rating' => 5.0,
+            'distance' => '100m from Haram',
+            'url' => '#',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/2961/2961966.png'
+        ];
+        $hotels[] = [
+            'type' => 'hotel',
+            'title' => 'Al Rawda Al Aqeeq',
+            'subtitle' => 'Madinah, Saudi Arabia',
+            'price' => 'From €60/night',
+            'currency' => 'EUR',
+            'rating' => 4.0,
+            'distance' => '1.4km from Haram (shuttle)',
+            'url' => '#',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/2961/2961966.png'
+        ];
+    } elseif (strpos($queryLower, 'dubai') !== false) {
+        $hotels[] = [
+            'type' => 'hotel',
+            'title' => 'Atlantis The Palm',
+            'subtitle' => 'Dubai, UAE',
+            'price' => 'From €300/night',
+            'currency' => 'EUR',
+            'rating' => 5.0,
+            'distance' => 'Palm Jumeirah',
+            'url' => '#',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/2961/2961966.png'
+        ];
+        $hotels[] = [
+            'type' => 'hotel',
+            'title' => 'JW Marriott Marquis',
+            'subtitle' => 'Dubai, UAE',
+            'price' => 'From €150/night',
+            'currency' => 'EUR',
+            'rating' => 5.0,
+            'distance' => 'Business Bay',
+            'url' => '#',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/2961/2961966.png'
+        ];
     } else {
-        // Show trending hotels
+        // Default hotels
         $hotels[] = [
             'type' => 'hotel',
             'title' => '4-Star Hotels in Makkah',
@@ -226,131 +330,117 @@ function searchHotels($query) {
     return $hotels;
 }
 
-function getSampleHotelsForDestination($destination) {
-    $hotels = [
-        'makkah' => [
-            ['name' => 'Pullman Zamzam Makkah', 'price' => 'From €180/night', 'rating' => 5.0, 'distance' => '100m from Haram'],
-            ['name' => 'Fairmont Makkah Clock Tower', 'price' => 'From €200/night', 'rating' => 5.0, 'distance' => '150m from Haram'],
-            ['name' => 'Conrad Makkah', 'price' => 'From €160/night', 'rating' => 5.0, 'distance' => '400m from Haram'],
-            ['name' => 'Mövenpick Makkah', 'price' => 'From €100/night', 'rating' => 4.5, 'distance' => '800m from Haram (shuttle)'],
-            ['name' => 'Al Kiswah Towers', 'price' => 'From €70/night', 'rating' => 4.0, 'distance' => '1.6km from Haram (shuttle)'],
-        ],
-        'madina' => [
-            ['name' => 'Anwar Al Madinah Mövenpick', 'price' => 'From €150/night', 'rating' => 5.0, 'distance' => '100m from Haram'],
-            ['name' => 'Pullman Zamzam Madinah', 'price' => 'From €140/night', 'rating' => 5.0, 'distance' => '150m from Haram'],
-            ['name' => 'Dar Al Taqwa Hotel', 'price' => 'From €130/night', 'rating' => 5.0, 'distance' => '200m from Haram'],
-            ['name' => 'Al Rawda Al Aqeeq', 'price' => 'From €60/night', 'rating' => 4.0, 'distance' => '1.4km from Haram (shuttle)'],
-        ],
-        'dubai' => [
-            ['name' => 'Burj Al Arab', 'price' => 'From €900/night', 'rating' => 5.0, 'distance' => 'Jumeirah Beach'],
-            ['name' => 'Atlantis The Palm', 'price' => 'From €300/night', 'rating' => 5.0, 'distance' => 'Palm Jumeirah'],
-            ['name' => 'JW Marriott Marquis', 'price' => 'From €150/night', 'rating' => 5.0, 'distance' => 'Business Bay'],
-        ],
-        'istanbul' => [
-            ['name' => 'Hagia Sophia Mansions', 'price' => 'From €180/night', 'rating' => 5.0, 'distance' => 'Sultanahmet'],
-            ['name' => 'Four Seasons Bosphorus', 'price' => 'From €400/night', 'rating' => 5.0, 'distance' => 'Bosphorus'],
-        ],
-    ];
-    
-    return $hotels[$destination] ?? $hotels['makkah'];
-}
-
 function searchUmrahPackages($query) {
     $packages = [];
     
+    // Updated Umrah Packages with correct prices
+    $allPackages = [
+        [
+            'type' => 'umrah',
+            'title' => 'Essence Umrah Package',
+            'subtitle' => '7 Days Makkah + 3 Days Madinah',
+            'price' => '€950',
+            'currency' => 'EUR',
+            'features' => '3-Star Hotel, Shuttle Service, Economy Flights',
+            'url' => '#umrah',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+        ],
+        [
+            'type' => 'umrah',
+            'title' => 'Enhanced Umrah Package',
+            'subtitle' => '7 Days Makkah + 3 Days Madinah',
+            'price' => '€1,050',
+            'currency' => 'EUR',
+            'features' => '4-Star Hotel, Shuttle Service, Flights Included',
+            'url' => '#umrah',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+        ],
+        [
+            'type' => 'umrah',
+            'title' => 'Elite Umrah Package',
+            'subtitle' => '6 Days Makkah + 4 Days Madinah',
+            'price' => '€1,350',
+            'currency' => 'EUR',
+            'features' => '5-Star Hotel, Business Class, VIP Service',
+            'url' => '#umrah',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+        ]
+    ];
+    
     $queryLower = strtolower($query);
     
-    // 3 Premium Umrah Packages
-    // Updated Umrah Packages Section
-$allPackages = [
-    [
-        'type' => 'umrah',
-        'title' => 'Essence Umrah Package',
-        'subtitle' => '7 Days Makkah + 3 Days Madinah',
-        'price' => '€950',  // Updated
-        'currency' => 'EUR',
-        'features' => '3-Star Hotel, Shuttle Service, Economy Flights',
-        'url' => '#umrah',
-        'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
-    ],
-    [
-        'type' => 'umrah',
-        'title' => 'Enhanced Umrah Package',
-        'subtitle' => '7 Days Makkah + 3 Days Madinah',
-        'price' => '€1,050',  // Updated
-        'currency' => 'EUR',
-        'features' => '4-Star Hotel, Shuttle Service, Flights Included',
-        'url' => '#umrah',
-        'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
-    ],
-    [
-        'type' => 'umrah',
-        'title' => 'Elite Umrah Package',
-        'subtitle' => '6 Days Makkah + 4 Days Madinah',
-        'price' => '€1,350',  // Updated
-        'currency' => 'EUR',
-        'features' => '5-Star Hotel, Business Class, VIP Service',
-        'url' => '#umrah',
-        'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
-    ]
-];
-
-// Updated Flight Deals Section in search results
-$flights[] = [
-    'type' => 'flight',
-    'title' => 'Etihad Airways',
-    'subtitle' => 'BCN → LHE (Lahore)',
-    'price' => '€595',  // Updated
-    'currency' => 'EUR',
-    // ...
-];
-
-$flights[] = [
-    'type' => 'flight',
-    'title' => 'Etihad Airways',
-    'subtitle' => 'BCN → ISB (Islamabad)',
-    'price' => '€600',  // Updated
-    'currency' => 'EUR',
-    // ...
-];
-
-$flights[] = [
-    'type' => 'flight',
-    'title' => 'Emirates',
-    'subtitle' => 'BCN → DXB (Dubai)',
-    'price' => '€314',  // Updated
-    'currency' => 'EUR',
-    // ...
-];
-
-// Updated Visa Section
-$allVisas = [
-    [
-        'type' => 'visa',
-        'title' => 'Saudi Arabia Umrah Visa',
-        'subtitle' => 'Valid for 30 days, Single entry',
-        'price' => '€75 + €15 service fee',  // Updated
-        'currency' => 'EUR',
-        'processing' => '7-10 working days',
-        'url' => 'visa-services.php',
-        'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
-    ],
-    // ...
-];];
+    foreach ($allPackages as $pkg) {
+        if (strpos($queryLower, 'umrah') !== false || 
+            strpos($queryLower, 'package') !== false ||
+            strpos($queryLower, 'cheap') !== false ||
+            strpos($queryLower, 'best') !== false) {
+            $packages[] = $pkg;
+        }
+    }
     
-    if (strpos($queryLower, 'visa') !== false || strpos($queryLower, 'umrah visa') !== false) {
+    if (empty($packages)) {
+        $packages = $allPackages;
+    }
+    
+    return $packages;
+}
+
+function searchVisaServices($query) {
+    $visaServices = [];
+    
+    $queryLower = strtolower($query);
+    
+    // Updated Visa Services with correct prices
+    $allVisas = [
+        [
+            'type' => 'visa',
+            'title' => 'Saudi Arabia Umrah Visa',
+            'subtitle' => 'Valid for 30 days, Single entry',
+            'price' => '€75 + €15 service fee',
+            'currency' => 'EUR',
+            'processing' => '7-10 working days',
+            'url' => 'visa-services.php',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+        ],
+        [
+            'type' => 'visa',
+            'title' => 'UK Visa Assistance',
+            'subtitle' => 'Tourist, Business, Student Visa',
+            'price' => 'From €150 + €15 service fee',
+            'currency' => 'EUR',
+            'processing' => '3-4 weeks',
+            'url' => 'visa-services.php',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+        ],
+        [
+            'type' => 'visa',
+            'title' => 'USA ESTA (ETA)',
+            'subtitle' => 'Valid for 2 years, Multiple entries',
+            'price' => '€21 + €15 service fee',
+            'currency' => 'EUR',
+            'processing' => '72 hours',
+            'url' => 'visa-services.php',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+        ],
+        [
+            'type' => 'visa',
+            'title' => 'Canada eTA',
+            'subtitle' => 'Valid for 5 years, Multiple entries',
+            'price' => 'CAD 7 + €15 service fee',
+            'currency' => 'EUR',
+            'processing' => '24-48 hours',
+            'url' => 'visa-services.php',
+            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+        ]
+    ];
+    
+    if (strpos($queryLower, 'umrah visa') !== false || strpos($queryLower, 'saudi') !== false) {
         $visaServices[] = $allVisas[0];
-    }
-    
-    if (strpos($queryLower, 'uk visa') !== false || strpos($queryLower, 'british') !== false) {
+    } elseif (strpos($queryLower, 'uk visa') !== false || strpos($queryLower, 'british') !== false) {
         $visaServices[] = $allVisas[1];
-    }
-    
-    if (strpos($queryLower, 'usa') !== false || strpos($queryLower, 'esta') !== false) {
+    } elseif (strpos($queryLower, 'usa') !== false || strpos($queryLower, 'esta') !== false) {
         $visaServices[] = $allVisas[2];
-    }
-    
-    if (strpos($queryLower, 'canada') !== false || strpos($queryLower, 'eta') !== false) {
+    } elseif (strpos($queryLower, 'canada') !== false || strpos($queryLower, 'eta') !== false) {
         $visaServices[] = $allVisas[3];
     }
     
@@ -614,12 +704,6 @@ function calculateDuration($segments) {
             transform: scale(1.05);
         }
         
-        /* Badges */
-        .badge-flight { background: #e3f2fd; color: #1565c0; padding: 4px 12px; border-radius: 20px; font-size: 12px; display: inline-block; }
-        .badge-hotel { background: #e8f5e9; color: #2e7d32; padding: 4px 12px; border-radius: 20px; font-size: 12px; display: inline-block; }
-        .badge-umrah { background: #fff3e0; color: #e65100; padding: 4px 12px; border-radius: 20px; font-size: 12px; display: inline-block; }
-        .badge-visa { background: #f3e5f5; color: #6a1b9a; padding: 4px 12px; border-radius: 20px; font-size: 12px; display: inline-block; }
-        
         /* No Results */
         .no-results {
             text-align: center;
@@ -682,7 +766,7 @@ function calculateDuration($segments) {
         <span onclick="fillSearch('Flights from BCN to LHE')">✈️ BCN to LHE</span>
         <span onclick="fillSearch('Hotels in Makkah')">🏨 Hotels in Makkah</span>
         <span onclick="fillSearch('Umrah packages cheap')">🕋 Umrah packages</span>
-        <span onclick="fillSearch('Visa for Umrah')">📄 Umrah visa</span>
+        <span onclick="fillSearch('Umrah visa')">📄 Umrah visa</span>
         <span onclick="fillSearch('Flights BCN to JED')">✈️ BCN to JED</span>
         <span onclick="fillSearch('Hotels in Madinah')">🏨 Madinah hotels</span>
         <span onclick="fillSearch('Hotels in Dubai')">🏨 Dubai hotels</span>
