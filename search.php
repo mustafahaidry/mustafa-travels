@@ -261,102 +261,82 @@ function searchUmrahPackages($query) {
     $queryLower = strtolower($query);
     
     // 3 Premium Umrah Packages
-    $allPackages = [
-        [
-            'type' => 'umrah',
-            'title' => 'Essence Umrah Package',
-            'subtitle' => '7 Days Makkah + 3 Days Madinah',
-            'price' => '€895',
-            'currency' => 'EUR',
-            'features' => '3-Star Hotel, Shuttle Service, Economy Flights',
-            'url' => '#umrah',
-            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
-        ],
-        [
-            'type' => 'umrah',
-            'title' => 'Enhanced Umrah Package',
-            'subtitle' => '7 Days Makkah + 3 Days Madinah',
-            'price' => '€999',
-            'currency' => 'EUR',
-            'features' => '4-Star Hotel, Shuttle Service, Flights Included',
-            'url' => '#umrah',
-            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
-        ],
-        [
-            'type' => 'umrah',
-            'title' => 'Elite Umrah Package',
-            'subtitle' => '6 Days Makkah + 4 Days Madinah',
-            'price' => '€1,299',
-            'currency' => 'EUR',
-            'features' => '5-Star Hotel, Business Class, VIP Service',
-            'url' => '#umrah',
-            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
-        ]
-    ];
-    
-    foreach ($allPackages as $pkg) {
-        if (strpos($queryLower, 'umrah') !== false || 
-            strpos($queryLower, 'package') !== false ||
-            strpos($queryLower, 'cheap') !== false ||
-            strpos($queryLower, 'best') !== false) {
-            $packages[] = $pkg;
-        }
-    }
-    
-    if (empty($packages)) {
-        $packages = $allPackages;
-    }
-    
-    return $packages;
-}
+    // Updated Umrah Packages Section
+$allPackages = [
+    [
+        'type' => 'umrah',
+        'title' => 'Essence Umrah Package',
+        'subtitle' => '7 Days Makkah + 3 Days Madinah',
+        'price' => '€950',  // Updated
+        'currency' => 'EUR',
+        'features' => '3-Star Hotel, Shuttle Service, Economy Flights',
+        'url' => '#umrah',
+        'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+    ],
+    [
+        'type' => 'umrah',
+        'title' => 'Enhanced Umrah Package',
+        'subtitle' => '7 Days Makkah + 3 Days Madinah',
+        'price' => '€1,050',  // Updated
+        'currency' => 'EUR',
+        'features' => '4-Star Hotel, Shuttle Service, Flights Included',
+        'url' => '#umrah',
+        'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+    ],
+    [
+        'type' => 'umrah',
+        'title' => 'Elite Umrah Package',
+        'subtitle' => '6 Days Makkah + 4 Days Madinah',
+        'price' => '€1,350',  // Updated
+        'currency' => 'EUR',
+        'features' => '5-Star Hotel, Business Class, VIP Service',
+        'url' => '#umrah',
+        'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+    ]
+];
 
-function searchVisaServices($query) {
-    $visaServices = [];
-    
-    $queryLower = strtolower($query);
-    
-    $allVisas = [
-        [
-            'type' => 'visa',
-            'title' => 'Saudi Arabia Umrah Visa',
-            'subtitle' => 'Valid for 30 days, Single entry',
-            'price' => '€60 + €15 service fee',
-            'currency' => 'EUR',
-            'processing' => '7-10 working days',
-            'url' => 'visa-services.php',
-            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
-        ],
-        [
-            'type' => 'visa',
-            'title' => 'UK Visa Assistance',
-            'subtitle' => 'Tourist, Business, Student Visa',
-            'price' => 'From €150 + €15 service fee',
-            'currency' => 'EUR',
-            'processing' => '3-4 weeks',
-            'url' => 'visa-services.php',
-            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
-        ],
-        [
-            'type' => 'visa',
-            'title' => 'USA ESTA (ETA)',
-            'subtitle' => 'Valid for 2 years, Multiple entries',
-            'price' => '€21 + €15 service fee',
-            'currency' => 'EUR',
-            'processing' => '72 hours',
-            'url' => 'visa-services.php',
-            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
-        ],
-        [
-            'type' => 'visa',
-            'title' => 'Canada eTA',
-            'subtitle' => 'Valid for 5 years, Multiple entries',
-            'price' => 'CAD 7 + €15 service fee',
-            'currency' => 'EUR',
-            'processing' => '24-48 hours',
-            'url' => 'visa-services.php',
-            'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
-        ]
-    ];
+// Updated Flight Deals Section in search results
+$flights[] = [
+    'type' => 'flight',
+    'title' => 'Etihad Airways',
+    'subtitle' => 'BCN → LHE (Lahore)',
+    'price' => '€595',  // Updated
+    'currency' => 'EUR',
+    // ...
+];
+
+$flights[] = [
+    'type' => 'flight',
+    'title' => 'Etihad Airways',
+    'subtitle' => 'BCN → ISB (Islamabad)',
+    'price' => '€600',  // Updated
+    'currency' => 'EUR',
+    // ...
+];
+
+$flights[] = [
+    'type' => 'flight',
+    'title' => 'Emirates',
+    'subtitle' => 'BCN → DXB (Dubai)',
+    'price' => '€314',  // Updated
+    'currency' => 'EUR',
+    // ...
+];
+
+// Updated Visa Section
+$allVisas = [
+    [
+        'type' => 'visa',
+        'title' => 'Saudi Arabia Umrah Visa',
+        'subtitle' => 'Valid for 30 days, Single entry',
+        'price' => '€75 + €15 service fee',  // Updated
+        'currency' => 'EUR',
+        'processing' => '7-10 working days',
+        'url' => 'visa-services.php',
+        'image' => 'https://cdn-icons-png.flaticon.com/512/3114/3114883.png'
+    ],
+    // ...
+];];
     
     if (strpos($queryLower, 'visa') !== false || strpos($queryLower, 'umrah visa') !== false) {
         $visaServices[] = $allVisas[0];
