@@ -1001,6 +1001,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         <div class="marquee-content">
             <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €595 ✈️ BCN TO ISB: €595 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
             <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €595 ✈️ BCN TO ISB: €595 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
+            <span class="marquee-text">✈️ یہ تمام آفرز محدود اور مخصوص دنوں کی ہیں برائے مہربانی اس کو ہر دن کے حساب سے مت دیکھیں ✈️ CALL +34-632234216 ✈️</span>
         </div>
         <div class="flying-plane"><i class="fas fa-plane"></i></div>
     </div>
