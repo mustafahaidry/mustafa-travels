@@ -365,7 +365,7 @@ $pageKeywords = "visa services, e-visa, visa assistance, ETA, Pakistan visa, Ind
                     <div class="visa-detail"><i class="fas fa-clock"></i> Processing: 7-10 working days</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Tourist & Business Visa</div>
                     <div class="visa-detail"><i class="fas fa-envelope"></i> Online application available</div>
-                    <div class="visa-price">From €60 + €15 service fee</div>
+                    <div class="visa-price">From €80 + €15 service fee</div>
                     <div class="visa-btn">Apply Now →</div>
                 </div>
             </div>
@@ -380,7 +380,7 @@ $pageKeywords = "visa services, e-visa, visa assistance, ETA, Pakistan visa, Ind
                     <div class="visa-detail"><i class="fas fa-clock"></i> Processing: 3-5 working days</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> e-Tourist Visa (eTV)</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> e-Business Visa</div>
-                    <div class="visa-price">From €25 + €15 service fee</div>
+                    <div class="visa-price">From €150 + €15 service fee</div>
                     <div class="visa-btn">Apply Now →</div>
                 </div>
             </div>
@@ -395,7 +395,7 @@ $pageKeywords = "visa services, e-visa, visa assistance, ETA, Pakistan visa, Ind
                     <div class="visa-detail"><i class="fas fa-clock"></i> Processing: 7-10 working days</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Tourist & Business Visa</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Online application available</div>
-                    <div class="visa-price">From €50 + €15 service fee</div>
+                    <div class="visa-price">From €150 + €15 service fee</div>
                     <div class="visa-btn">Apply Now →</div>
                 </div>
             </div>
@@ -410,7 +410,7 @@ $pageKeywords = "visa services, e-visa, visa assistance, ETA, Pakistan visa, Ind
                     <div class="visa-detail"><i class="fas fa-clock"></i> Processing: 3-5 working days</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Tourist Visa on Arrival</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> E-Visa available</div>
-                    <div class="visa-price">From €30 + €15 service fee</div>
+                    <div class="visa-price">From €100 + €15 service fee</div>
                     <div class="visa-btn">Apply Now →</div>
                 </div>
             </div>
@@ -425,7 +425,7 @@ $pageKeywords = "visa services, e-visa, visa assistance, ETA, Pakistan visa, Ind
                     <div class="visa-detail"><i class="fas fa-clock"></i> Processing: 1-3 working days</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Tourist & Business Visa</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Multiple entry available</div>
-                    <div class="visa-price">From €50 + €15 service fee</div>
+                    <div class="visa-price">From €85 + €15 service fee</div>
                     <div class="visa-btn">Apply Now →</div>
                 </div>
             </div>
@@ -440,7 +440,7 @@ $pageKeywords = "visa services, e-visa, visa assistance, ETA, Pakistan visa, Ind
                     <div class="visa-detail"><i class="fas fa-clock"></i> Processing: 5-7 working days</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> eNTRI & eVisa available</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Tourist & Business</div>
-                    <div class="visa-price">From €40 + €15 service fee</div>
+                    <div class="visa-price">From €150 + €15 service fee</div>
                     <div class="visa-btn">Apply Now →</div>
                 </div>
             </div>
@@ -452,10 +452,12 @@ $pageKeywords = "visa services, e-visa, visa assistance, ETA, Pakistan visa, Ind
                     <h3>Morocco</h3>
                 </div>
                 <div class="visa-card-body">
-                    <div class="visa-detail"><i class="fas fa-clock"></i> Processing: 5-7 working days</div>
+                    <div class="visa-detail"><i class="fas fa-clock"></i>Normal Processing: 3 working days</div>
+                    <div class="visa-detail"><i class="fas fa-clock"></i> Urgent Processing: 1 working days</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Tourist & Business Visa</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Online application</div>
-                    <div class="visa-price">From €35 + €15 service fee</div>
+                    <div class="visa-price">From 100 EURO</div>
+                    <div class="Urgent visa-price">From 180 EURO </div>
                     <div class="visa-btn">Apply Now →</div>
                 </div>
             </div>
@@ -481,7 +483,7 @@ $pageKeywords = "visa services, e-visa, visa assistance, ETA, Pakistan visa, Ind
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Tourist & Visitor Visa</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Business & Work Visa</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Student Visa</div>
-                    <div class="visa-price">From €150 + €15 service fee</div>
+                    <div class="visa-price">From €200 + €15 service fee</div>
                     <div class="visa-btn">Get Assistance →</div>
                 </div>
             </div>
@@ -497,7 +499,7 @@ $pageKeywords = "visa services, e-visa, visa assistance, ETA, Pakistan visa, Ind
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> B1/B2 Tourist/Business</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Student Visa (F1)</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Work Visa (H1B/L1)</div>
-                    <div class="visa-price">From €185 + €15 service fee</div>
+                    <div class="visa-price">From €285 + €15 service fee</div>
                     <div class="visa-btn">Get Assistance →</div>
                 </div>
             </div>
@@ -513,7 +515,7 @@ $pageKeywords = "visa services, e-visa, visa assistance, ETA, Pakistan visa, Ind
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Tourist Visa (TRV)</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Business Visa</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Study Permit</div>
-                    <div class="visa-price">From €100 + €15 service fee</div>
+                    <div class="visa-price">From €280 + €15 service fee</div>
                     <div class="visa-btn">Get Assistance →</div>
                 </div>
             </div>
@@ -529,7 +531,7 @@ $pageKeywords = "visa services, e-visa, visa assistance, ETA, Pakistan visa, Ind
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Tourist Visa</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Business Visa</div>
                     <div class="visa-detail"><i class="fas fa-check-circle"></i> Transit Visa</div>
-                    <div class="visa-price">From €45 + €15 service fee</div>
+                    <div class="visa-price">From €150 + €15 service fee</div>
                     <div class="visa-btn">Get Assistance →</div>
                 </div>
             </div>
@@ -549,7 +551,7 @@ $pageKeywords = "visa services, e-visa, visa assistance, ETA, Pakistan visa, Ind
                 <div class="country-flag">🇺🇸</div>
                 <h4>USA ESTA</h4>
                 <p>Electronic System for Travel Authorization. Valid for 2 years. Multiple entries.</p>
-                <div class="visa-price" style="font-size: 20px;">From €21 + €15 service fee</div>
+                <div class="visa-price" style="font-size: 20px;">From €35 + €15 service fee</div>
                 <div class="visa-btn" style="margin-top: 10px;">Apply ESTA →</div>
             </div>
             
@@ -558,7 +560,7 @@ $pageKeywords = "visa services, e-visa, visa assistance, ETA, Pakistan visa, Ind
                 <div class="country-flag">🇬🇧</div>
                 <h4>UK ETA</h4>
                 <p>Electronic Travel Authorization for UK. Valid for 2 years. Multiple entries.</p>
-                <div class="visa-price" style="font-size: 20px;">From £10 + €15 service fee</div>
+                <div class="visa-price" style="font-size: 20px;">From £30 + €15 service fee</div>
                 <div class="visa-btn" style="margin-top: 10px;">Apply ETA →</div>
             </div>
             
@@ -567,7 +569,7 @@ $pageKeywords = "visa services, e-visa, visa assistance, ETA, Pakistan visa, Ind
                 <div class="country-flag">🇦🇺</div>
                 <h4>Australia ETA</h4>
                 <p>Electronic Travel Authority. Valid for 12 months. Multiple entries.</p>
-                <div class="visa-price" style="font-size: 20px;">From AUD 20 + €15 service fee</div>
+                <div class="visa-price" style="font-size: 20px;">From AUD 80 + €15 service fee</div>
                 <div class="visa-btn" style="margin-top: 10px;">Apply ETA →</div>
             </div>
             
@@ -576,7 +578,7 @@ $pageKeywords = "visa services, e-visa, visa assistance, ETA, Pakistan visa, Ind
                 <div class="country-flag">🇨🇦</div>
                 <h4>Canada eTA</h4>
                 <p>Electronic Travel Authorization. Valid for 5 years. Multiple entries.</p>
-                <div class="visa-price" style="font-size: 20px;">From CAD 7 + €15 service fee</div>
+                <div class="visa-price" style="font-size: 20px;">From CAD 30 + €15 service fee</div>
                 <div class="visa-btn" style="margin-top: 10px;">Apply eTA →</div>
             </div>
         </div>
