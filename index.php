@@ -989,6 +989,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
                 <a href="blog.php">Blog</a>
                 <a href="#flights">Flight Deals</a>
                 <a href="#services">Services</a>
+                 <a href="search.php">Search</a>
                 <a href="privacy-policy.php">Privacy</a>
                 <a href="https://wa.me/34611473217" class="whatsapp-btn-elegant"><i class="fab fa-whatsapp"></i> Book Now</a>
             </nav>
