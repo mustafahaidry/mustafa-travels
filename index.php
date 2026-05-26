@@ -582,9 +582,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     
-    <title>Mustafa Travels | Umrah, Hajj & Flight Deals from Barcelona</title>
-    <meta name="description" content="Best travel agency in Barcelona for Umrah packages 2026, Hajj bookings, cheap flights to Pakistan, London, Dubai, USA. 24/7 support. Best price guarantee.">
-    <meta name="keywords" content="Umrah packages, Hajj 2026, Barcelona travel agency, cheap flights, Etihad Airways, visa services">
+    <title>Mustafa Travels | Eid ul Adha Mubarak | Umrah & Flight Deals from Barcelona</title>
+    <meta name="description" content="Best travel agency in Barcelona for Umrah packages 2026, cheap flights to Pakistan, London, Dubai, USA. 24/7 support. Best price guarantee.">
+    <meta name="keywords" content="Umrah packages, Eid ul Adha, Barcelona travel agency, cheap flights, Etihad Airways, visa services">
     <meta name="author" content="Mustafa Travels & Tours">
     <meta name="robots" content="index, follow">
     
@@ -595,16 +595,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
     <meta name="ICBM" content="41.385064, 2.173403">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="Mustafa Travels | Umrah, Hajj & Flights from Barcelona">
-    <meta property="og:description" content="Premium Umrah packages, Hajj 2026, cheap flights from Barcelona to worldwide destinations.">
+    <meta property="og:title" content="Mustafa Travels | Eid ul Adha Mubarak | Umrah & Flights from Barcelona">
+    <meta property="og:description" content="Premium Umrah packages, flight deals from Barcelona to worldwide destinations. Eid ul Adha Mubarak!">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://mustafatravels.org">
     <meta property="og:image" content="https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg">
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    meta name="twitter:title" content="Mustafa Travels">
-    <meta name="twitter:description" content="Best Umrah, Hajj and flight deals from Barcelona">
+    <meta name="twitter:title" content="Mustafa Travels | Eid ul Adha Mubarak">
+    <meta name="twitter:description" content="Best Umrah and flight deals from Barcelona">
     
     <!-- Canonical URL & Sitemap -->
     <link rel="canonical" href="https://mustafatravels.org">
@@ -642,6 +642,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         .two-columns { display: flex; gap: 30px; margin: 40px 0; }
         .main-content { flex: 3; }
         .sidebar { flex: 1; }
+        
+        /* Eid Banner */
+        .eid-banner {
+            background: linear-gradient(135deg, #0c4a3a 0%, #1a237e 50%, #d4af37 100%);
+            padding: 25px 20px;
+            text-align: center;
+            border-radius: 20px;
+            margin: 20px 0 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        .eid-banner::before {
+            content: '★';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 30px;
+            color: rgba(255,255,255,0.2);
+            animation: starGlow 3s infinite;
+        }
+        .eid-banner::after {
+            content: '☾';
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            font-size: 35px;
+            color: rgba(255,255,255,0.2);
+            animation: starGlow 3s infinite reverse;
+        }
+        @keyframes starGlow {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+        .eid-banner h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            color: var(--primary-gold);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+        .eid-banner h1 i {
+            font-size: 48px;
+            margin: 0 15px;
+        }
+        .eid-banner p {
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        .eid-banner .eid-subtitle {
+            font-size: 14px;
+            color: var(--light-gold);
+            margin-top: 10px;
+        }
         
         /* Header */
         .elegant-header {
@@ -799,10 +855,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         .package-btn { background: linear-gradient(135deg, var(--primary-teal), var(--primary-navy)); color: var(--white); padding: 14px; border-radius: 8px; border: none; cursor: pointer; width: 100%; font-weight: 600; transition: var(--transition); }
         .package-btn:hover { transform: translateY(-2px); }
         
-        /* Hajj Section */
-        .hajj-section { padding: 80px 0; background: linear-gradient(135deg, var(--light-bg) 0%, #e8f4f3 100%); }
-        .hajj-waiting { text-align: center; padding: 60px; background: #f8f9fa; border-radius: var(--radius); border: 2px dashed var(--primary-gold); }
-        
         /* Flight Deals */
         .deals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
         .deal-card { background: var(--white); border-radius: var(--radius); padding: 20px; border-left: 4px solid var(--primary-gold); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; box-shadow: var(--shadow); transition: var(--transition); }
@@ -952,6 +1004,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             .nav-elegant.active { display: flex; }
             .mobile-menu-toggle { display: block; background: var(--primary-gold); padding: 12px; border-radius: 50px; text-align: center; width: fit-content; margin: 10px auto; cursor: pointer; color: var(--primary-navy); }
             .footer-content { text-align: center; }
+            .eid-banner h1 { font-size: 28px; }
+            .eid-banner h1 i { font-size: 32px; }
         }
         .mobile-menu-toggle { display: none; }
     </style>
@@ -984,12 +1038,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             <nav class="nav-elegant">
                 <a href="#home">Home</a>
                 <a href="#umrah">Umrah</a>
-                <a href="#hajj">Hajj 2026</a>
                 <a href="visa-services.php">Visa Services</a>
                 <a href="blog.php">Blog</a>
                 <a href="#flights">Flight Deals</a>
                 <a href="#services">Services</a>
-                 <a href="search.php">Search</a>
+                <a href="search.php">Search</a>
                 <a href="privacy-policy.php">Privacy</a>
                 <a href="https://wa.me/34611473217" class="whatsapp-btn-elegant"><i class="fab fa-whatsapp"></i> Book Now</a>
             </nav>
@@ -1000,11 +1053,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
 <div class="flying-marquee-container">
     <div class="marquee-track">
         <div class="marquee-content">
-            <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €595 ✈️ BCN TO ISB: €595 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
-            <span class="marquee-text">✈️ SPECIAL FLIGHT DEALS ✈️ BCN TO LHE: €595 ✈️ BCN TO ISB: €595 ✈️ BCN TO LHR: €79 ✈️ 40KG BAGGAGE ✈️ CALL +34-632234216 ✈️</span>
-            <span class="marquee-text">✈️ یہ تمام آفرز محدود اور مخصوص دنوں کی ہیں برائے مہربانی اس کو ہر دن کے حساب سے مت دیکھیں ✈️ CALL +34-632234216 ✈️</span>
+            <span class="marquee-text">🐑 EID UL ADHA MUBARAK! 🐑 MAY ALLAH ACCEPT YOUR SACRIFICES 🐑 SPECIAL FLIGHT DEALS 🐑 BCN TO LHE: €595 🐑 BCN TO ISB: €595 🐑</span>
+            <span class="marquee-text">🐑 EID UL ADHA MUBARAK! 🐑 MAY ALLAH ACCEPT YOUR SACRIFICES 🐑 SPECIAL FLIGHT DEALS 🐑 BCN TO LHE: €595 🐑 BCN TO ISB: €595 🐑</span>
         </div>
         <div class="flying-plane"><i class="fas fa-plane"></i></div>
+    </div>
+</div>
+
+<!-- EID UL ADHA BANNER -->
+<div class="container">
+    <div class="eid-banner">
+        <h1>
+            <i class="fas fa-moon"></i>
+            عيد الأضحى مبارك
+            <i class="fas fa-star-and-crescent"></i>
+        </h1>
+        <h1>EID UL ADHA MUBARAK!</h1>
+        <p>🐑 May Allah accept your sacrifices and bless you and your family 🐑</p>
+        <div class="eid-subtitle">✨ Taqabbalallahu minna wa minkum ✨</div>
     </div>
 </div>
 
@@ -1013,7 +1079,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
         <div class="slide-overlay"><div class="slide-content-luxury"><h2>Premium Umrah Experiences 2026</h2><p>Journey with elegance and devotion. Luxury accommodations near Haram.</p><a href="#umrah" class="luxury-btn">Explore Packages <i class="fas fa-arrow-right"></i></a></div></div>
     </div>
     <div class="luxury-slide" style="background-image: url('https://images.pexels.com/photos/29102586/pexels-photo-29102586.jpeg');">
-        <div class="slide-overlay"><div class="slide-content-luxury"><h2>Hajj 2026 - Coming Soon</h2><p>Register your interest for Hajj 2026 packages.</p><a href="#hajj" class="luxury-btn">Learn More <i class="fas fa-arrow-right"></i></a></div></div>
+        <div class="slide-overlay"><div class="slide-content-luxury"><h2>Eid ul Adha Mubarak!</h2><p>Celebrate this blessed occasion with your loved ones.</p><a href="#flights" class="luxury-btn">Book Flights <i class="fas fa-arrow-right"></i></a></div></div>
     </div>
     <div class="luxury-slide" style="background-image: url('https://images.unsplash.com/photo-1591824438703-50d4c4e5d45a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');">
         <div class="slide-overlay"><div class="slide-content-luxury"><h2>Worldwide Flight Deals</h2><p>Best prices from Barcelona to Pakistan, London, Dubai, USA & more.</p><a href="#flights" class="luxury-btn">View Deals <i class="fas fa-arrow-right"></i></a></div></div>
@@ -1128,14 +1194,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
                 </div>
             </div>
             
-            <!-- Hajj Section -->
-            <div id="hajj" style="background:#f8f9fa; border-radius:20px; padding:40px; text-align:center; margin:30px 0; border:2px dashed var(--primary-gold)">
-                <i class="fas fa-clock" style="font-size:48px; color:var(--primary-gold)"></i>
-                <h3 style="color:var(--primary-navy); margin:15px 0">Hajj 2026 - CLOSED FOR NOW</h3>
-                <p>Hajj 2026 packages are currently in development. Phase 2 bookings will open soon.</p>
-                <a href="https://wa.me/34611473217?text=I'm interested in Hajj 2026 packages" class="whatsapp-btn-elegant" style="margin-top:15px; display:inline-block">Notify Me When Open</a>
-            </div>
-            
             <!-- Flight Deals -->
             <div id="flights" style="margin-bottom:30px">
                 <div class="section-header"><h2>⭐ Exclusive Flight Deals</h2><p>Special offers from Barcelona to worldwide destinations</p></div>
@@ -1234,7 +1292,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
     <div class="container">
         <div class="section-header"><h2>About Mustafa Travels</h2><p>Your trusted partner for spiritual and leisure travel since 2024</p></div>
         <div class="about-content">
-            <div><p>Mustafa Travels & Tours has been crafting exceptional travel experiences since 2024. We specialize in premium Umrah and Hajj journeys, offering unparalleled service and attention to detail.</p><p style="margin-top: 20px;">Our commitment to excellence ensures every spiritual journey is memorable, comfortable, and deeply meaningful. We blend traditional values with modern luxury to create unforgettable experiences.</p><p style="margin-top: 20px;"><strong>✈️ 500+ Happy Travelers | 🌍 50+ Destinations | ⭐ 4.9/5 Rating</strong></p><p style="margin-top: 15px;"><strong>💰 Service Charge: €15 per ticket</strong> - For booking assistance, ticket delivery, and 24/7 support</p></div>
+            <div><p>Mustafa Travels & Tours has been crafting exceptional travel experiences since 2024. We specialize in premium Umrah journeys, offering unparalleled service and attention to detail.</p><p style="margin-top: 20px;">Our commitment to excellence ensures every spiritual journey is memorable, comfortable, and deeply meaningful. We blend traditional values with modern luxury to create unforgettable experiences.</p><p style="margin-top: 20px;"><strong>✈️ 500+ Happy Travelers | 🌍 50+ Destinations | ⭐ 4.9/5 Rating</strong></p><p style="margin-top: 15px;"><strong>💰 Service Charge: €15 per ticket</strong> - For booking assistance, ticket delivery, and 24/7 support</p></div>
             <div class="about-image" style="background-image:url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80')"></div>
         </div>
     </div>
@@ -1253,7 +1311,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
                 <h3>Quick Links</h3>
                 <p><a href="#home">Home</a></p>
                 <p><a href="#umrah">Umrah Packages</a></p>
-                <p><a href="#hajj">Hajj 2026</a></p>
                 <p><a href="visa-services.php">Visa Services</a></p>
                 <p><a href="blog.php">Blog</a></p>
                 <p><a href="#flights">Flight Deals</a></p>
@@ -1279,7 +1336,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 Mustafa Travels & Tours. All rights reserved. | Service Charge: €15 per ticket</p>
+            <p>&copy; 2026 Mustafa Travels & Tours. All rights reserved. | Service Charge: €15 per ticket | Eid ul Adha Mubarak!</p>
         </div>
     </div>
 </footer>
@@ -1295,7 +1352,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_flights'])) {
     </div>
     <div class="chatbot-messages" id="chatMessages">
         <div class="message bot">
-            <div class="msg-bubble">👋 Hello! Welcome to Mustafa Travels! How can I help you today?<br><br>You can ask me:<br>• Flight prices to Lahore<br>• Umrah packages<br>• Booking assistance<br>• Or just say "help"</div>
+            <div class="msg-bubble">🐑 Eid ul Adha Mubarak! 👋 Welcome to Mustafa Travels! How can I help you today?<br><br>You can ask me:<br>• Flight prices to Lahore<br>• Umrah packages<br>• Booking assistance<br>• Or just say "help"</div>
         </div>
     </div>
     <div class="chatbot-input">
@@ -1450,15 +1507,15 @@ function sendChatMessage() {
 }
 
 function getBotResponse(msg) {
-    if(msg.includes('hello') || msg.includes('hi') || msg.includes('salam')) return '👋 Assalamu Alaikum! Welcome to Mustafa Travels! How can I help you today?';
+    if(msg.includes('eid') || msg.includes('adha')) return '🐑 Eid ul Adha Mubarak! May Allah accept your sacrifices and bless you and your family. Taqabbalallahu minna wa minkum!';
+    if(msg.includes('hello') || msg.includes('hi') || msg.includes('salam')) return '🐑 Eid ul Adha Mubarak! 👋 Assalamu Alaikum! Welcome to Mustafa Travels! How can I help you today?';
     if(msg.includes('flight') || msg.includes('ticket')) return '✈️ You can search flights using the form above! We offer One Way, Return, and Multi-City options. Service charge: €15 per ticket.';
     if(msg.includes('umrah')) return '🕋 We have 3 Umrah packages starting from €895. Includes flights, hotel near Haram, and visa processing.';
-    if(msg.includes('hajj')) return '🕋 Hajj 2026 packages are currently in development. Phase 2 bookings will open soon.';
     if(msg.includes('price') || msg.includes('cost')) return '💰 Our flight prices are real-time from Duffel API. Plus €15 service charge per ticket. Umrah packages start from €895.';
     if(msg.includes('contact') || msg.includes('phone') || msg.includes('whatsapp')) return '📞 You can reach us at:<br>📱 WhatsApp: +34-611473217<br>📞 Call: +34-632234216<br>✉️ Email: mustafatravelstours@gmail.com';
     if(msg.includes('service charge') || msg.includes('commission')) return '💰 We charge €15 service fee per ticket for booking assistance, ticket delivery, and 24/7 customer support.';
-    if(msg.includes('help')) return '🤖 I can help with:<br>• Flight search and booking<br>• Umrah packages<br>• Hajj 2026 info<br>• Contact details<br>• Service charges<br><br>Just type what you need!';
-    return 'Thank you for your message! For urgent inquiries, please contact us on WhatsApp: +34-611473217';
+    if(msg.includes('help')) return '🤖 I can help with:<br>• Flight search and booking<br>• Umrah packages<br>• Eid ul Adha greetings<br>• Contact details<br>• Service charges<br><br>Just type what you need!';
+    return 'Thank you for your message! Eid ul Adha Mubarak! For urgent inquiries, please contact us on WhatsApp: +34-611473217';
 }
 
 function escapeHtml(text) {
