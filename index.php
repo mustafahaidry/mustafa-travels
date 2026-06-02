@@ -1,52 +1,65 @@
 <?php
-// ========== UMRAH QUOTATION BUILDER ==========
-// Professional tool for Expedia & Bedsonline partnership
-// All prices are per bed per night | 50 SAR commission added internally
-
-// Exchange rate: 1 SAR = 0.245 EUR
-define('SAR_TO_EUR', 0.245);
-
-// Hotel Databases - Makkah Hotels with rates (per bed per night in SAR)
-$makkahHotels = [
-    ["name" => "Ajwa Zaifa", "distance" => "Shuttle Service (2 Star)", "rates" => ["sharing" => 13, "quad" => 13, "trp" => 15, "dbl" => 18, "single" => 25]],
-    ["name" => "Qila Ajyad", "distance" => "1000 m (Comp.Shuttle)", "rates" => ["sharing" => 17, "quad" => 17, "trp" => 20, "dbl" => 25, "single" => 35]],
-    ["name" => "Dyar Matar", "distance" => "1200 m (Economy)", "rates" => ["sharing" => 19, "quad" => 19, "trp" => 23, "dbl" => 28, "single" => 40]],
-    ["name" => "Jada Khalil", "distance" => "1200 m (Star)", "rates" => ["sharing" => 21, "quad" => 21, "trp" => 25, "dbl" => 32, "single" => 45]],
-    ["name" => "Kiswah Tower", "distance" => "Shuttle Service", "rates" => ["sharing" => 24, "quad" => 24, "trp" => 29, "dbl" => 37, "single" => 53]],
-    ["name" => "Multiqa Ibadat & Tara Jawarat", "distance" => "750-800 m (Star)", "rates" => ["sharing" => 24, "quad" => 24, "trp" => 29, "dbl" => 37, "single" => 53]],
-    ["name" => "Saif Al Majd", "distance" => "600-650 m (Star)", "rates" => ["sharing" => 31, "quad" => 31, "trp" => 38, "dbl" => 48, "single" => 70]],
-    ["name" => "Jafria (Masar Al Aez 2)", "distance" => "550-600 m (Star)", "rates" => ["sharing" => 31, "quad" => 31, "trp" => 38, "dbl" => 48, "single" => 70]],
-    ["name" => "Jawarat Bait (Arafat Zehbi)", "distance" => "600 m (Star)", "rates" => ["sharing" => 38, "quad" => 38, "trp" => 43, "dbl" => 55, "single" => 80]],
-    ["name" => "Badar Masa", "distance" => "600 m (Room Basis)", "rates" => ["sharing" => 57, "quad" => 57, "trp" => 70, "dbl" => 92, "single" => 135]],
-    ["name" => "Swiss Khalil / Blora Moazan", "distance" => "350-400 m (Star)", "rates" => ["sharing" => 49, "quad" => 49, "trp" => 63, "dbl" => 93, "single" => 93]],
-    ["name" => "Emar Andulusia", "distance" => "300 m (Room Basis)", "rates" => ["sharing" => 68, "quad" => 68, "trp" => 88, "dbl" => 130, "single" => 130]]
-];
-
-$madinahHotels = [
-    ["name" => "Kinan Madina", "distance" => "900 m (Economy Plus)", "rates" => ["sharing" => 25, "quad" => 25, "trp" => 30, "dbl" => 38, "single" => 55]],
-    ["name" => "Dar Ajyad 1", "distance" => "750 m (Economy Plus)", "rates" => ["sharing" => 29, "quad" => 29, "trp" => 35, "dbl" => 45, "single" => 65]],
-    ["name" => "Abdullah Fouzan (Dyar Hijaz)", "distance" => "600 m (Economy Plus)", "rates" => ["sharing" => 35, "quad" => 35, "trp" => 43, "dbl" => 55, "single" => 80]],
-    ["name" => "Karam Golden", "distance" => "550 m (Star)", "rates" => ["sharing" => 37, "quad" => 37, "trp" => 45, "dbl" => 58, "single" => 85]],
-    ["name" => "Ansar Plus", "distance" => "500 m (Economy Plus)", "rates" => ["sharing" => 38, "quad" => 38, "trp" => 46, "dbl" => 60, "single" => 88]],
-    ["name" => "Widyar Al Madina / Rou Khair", "distance" => "350 m (Star)", "rates" => ["sharing" => 40, "quad" => 40, "trp" => 49, "dbl" => 63, "single" => 93]],
-    ["name" => "Rou Taiba", "distance" => "100 m (Star)", "rates" => ["sharing" => 55, "quad" => 55, "trp" => 63, "dbl" => 82, "single" => 120]]
-];
-
-// Function to convert SAR to EUR with internal 50 SAR commission
-function getFinalEuroPrice($sarRate) {
-    $withCommission = $sarRate + 50; // 50 SAR commission added internally
-    return ($withCommission * SAR_TO_EUR);
-}
+// No PHP needed for this page - pure HTML/CSS/JS
+// Save as index.php or index.html
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- SEO Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UmrahQuo Pro | Professional Umrah Quotation System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Mustafa Travels & Tours | Premium Umrah & Hajj Packages from Barcelona</title>
+    <meta name="description" content="Premium Umrah packages, Hajj 2026 bookings, and worldwide travel services from Barcelona. Experience spiritual journeys with luxury accommodations near Haram.">
+    <meta name="keywords" content="Umrah packages, Hajj 2026, Barcelona travel agency, Makkah hotels, Madina tours, Muslim travel, spiritual journeys, flight tickets">
+    <meta name="author" content="Mustafa Travels & Tours">
+    
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="Mustafa Travels & Tours | Luxury Umrah & Hajj Experiences">
+    <meta property="og:description" content="Specialists in premium Umrah packages and Hajj 2026 journeys with 5-star accommodations near Holy Mosques.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TravelAgency",
+        "name": "Mustafa Travels & Tours",
+        "description": "Premium Umrah, Hajj & Worldwide Travel Specialists",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Rambla Badal 141 Local 1 Bajo",
+            "addressLocality": "Barcelona",
+            "postalCode": "08028",
+            "addressCountry": "ES"
+        },
+        "telephone": "+34-632234216",
+        "email": "mustafatravelstours@gmail.com",
+        "openingHours": "Mo-Th 10:30-20:30, Fr 10:30-13:00,15:00-20:30, Sa 10:30-19:30",
+        "priceRange": "€€€",
+        "url": "https://mustafatravelstours.com"
+    }
+    </script>
+    
+    <!-- Fonts and Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --primary-gold: #d4af37;
+            --primary-navy: #1a237e;
+            --primary-teal: #00695c;
+            --light-gold: #f5e8c8;
+            --light-bg: #f9f7f2;
+            --text-dark: #2c3e50;
+            --text-light: #666;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --radius: 12px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -54,49 +67,117 @@ function getFinalEuroPrice($sarRate) {
         }
 
         body {
-            background: #f0f2f5;
-            font-family: 'Inter', sans-serif;
-            padding: 40px 20px;
-            color: #1a2c1c;
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--light-bg);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+            color: var(--primary-navy);
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 0 20px;
         }
 
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .header h1 {
-            font-size: 32px;
-            color: #0a2b22;
+        /* ========== UMRAH QUOTATION BUTTON ========== */
+        .umrah-quote-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #d4af37, #b8942e);
+            color: #1a237e;
+            padding: 16px 32px;
+            border-radius: 60px;
             font-weight: 700;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
         }
-        .header p {
-            color: #666;
-            margin-top: 10px;
+        
+        .umrah-quote-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
         }
-        .badge {
-            display: inline-block;
-            background: #d4af37;
-            color: #0a2b22;
-            padding: 5px 15px;
-            border-radius: 50px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-top: 10px;
+        
+        /* ========== MODAL STYLES ========== */
+        .quotation-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
         }
-
-        /* Main Layout */
-        .quotation-wrapper {
+        
+        .quotation-modal.active {
+            display: flex;
+        }
+        
+        .quotation-modal-content {
+            background: #f0f2f5;
+            width: 95%;
+            max-width: 1400px;
+            height: 90%;
+            border-radius: 24px;
+            overflow-y: auto;
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .modal-close-btn {
+            position: sticky;
+            top: 15px;
+            right: 20px;
+            float: right;
+            background: #dc3545;
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 101;
+            margin: 15px;
+            transition: var(--transition);
+        }
+        
+        .modal-close-btn:hover {
+            background: #c82333;
+            transform: scale(1.05);
+        }
+        
+        .modal-inner {
+            padding: 20px;
+            clear: both;
+        }
+        
+        /* Quotation Styles inside Modal */
+        .quo-wrapper {
             display: flex;
             gap: 30px;
             flex-wrap: wrap;
         }
-        .hotel-panel {
+        .quo-hotel-panel {
             flex: 2;
             min-width: 320px;
             background: white;
@@ -104,708 +185,1265 @@ function getFinalEuroPrice($sarRate) {
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             overflow: hidden;
         }
-        .extras-panel {
+        .quo-extras-panel {
             flex: 1.2;
             min-width: 300px;
             background: white;
             border-radius: 24px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            overflow: hidden;
         }
-
-        /* City Tabs */
-        .city-tabs {
+        .quo-city-tabs {
             display: flex;
             background: #f8f9fa;
             border-bottom: 1px solid #e9ecef;
         }
-        .city-tab {
+        .quo-city-tab {
             flex: 1;
-            padding: 18px;
+            padding: 16px;
             text-align: center;
             font-weight: 600;
             cursor: pointer;
             background: transparent;
             border: none;
-            font-size: 16px;
+            font-size: 15px;
             transition: all 0.3s;
             color: #666;
         }
-        .city-tab.active {
+        .quo-city-tab.active {
             background: white;
             color: #1f6e43;
             border-bottom: 3px solid #d4af37;
         }
-
-        /* Hotel Selector */
-        .hotel-selector {
-            padding: 25px;
+        .quo-selector {
+            padding: 20px;
             border-bottom: 1px solid #eee;
         }
-        .hotel-selector label {
+        .quo-selector label {
             font-weight: 600;
             display: block;
-            margin-bottom: 10px;
-            color: #0a2b22;
+            margin-bottom: 8px;
+            color: #1a2c1c;
         }
-        .hotel-dropdown {
+        .quo-dropdown {
             width: 100%;
-            padding: 14px 16px;
+            padding: 12px 16px;
             border: 2px solid #e9ecef;
             border-radius: 12px;
-            font-size: 15px;
-            font-weight: 500;
+            font-size: 14px;
             cursor: pointer;
-            background: white;
         }
-        .hotel-dropdown:focus {
-            outline: none;
-            border-color: #d4af37;
+        .quo-details {
+            padding: 20px;
         }
-
-        /* Hotel Details */
-        .hotel-details {
-            padding: 25px;
-        }
-        .hotel-name {
-            font-size: 22px;
+        .quo-hotel-name {
+            font-size: 20px;
             font-weight: 700;
-            color: #0a2b22;
+            color: #1a2c1c;
             margin-bottom: 8px;
         }
-        .distance {
+        .quo-distance {
             display: inline-block;
             background: #e8f5e9;
             color: #1f6e43;
             padding: 4px 12px;
             border-radius: 50px;
             font-size: 12px;
-            font-weight: 600;
             margin-bottom: 20px;
         }
-        .per-bed-note {
+        .quo-perbed {
             display: inline-block;
             background: #f5e8c8;
             color: #8B6914;
             padding: 4px 12px;
             border-radius: 50px;
             font-size: 12px;
-            font-weight: 600;
             margin-left: 10px;
         }
-
-        /* Nights Section */
-        .nights-section {
+        .quo-nights {
             background: #f8f9fa;
-            padding: 18px;
+            padding: 15px;
             border-radius: 16px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
-        .nights-label {
-            font-weight: 600;
-            margin-bottom: 10px;
-            display: block;
-        }
-        .nights-input {
+        .quo-nights input {
             width: 100px;
             padding: 10px;
             border: 2px solid #e9ecef;
             border-radius: 12px;
             text-align: center;
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 15px;
+            margin-top: 8px;
         }
-        .total-nights {
-            margin-top: 10px;
-            font-size: 13px;
-            color: #1f6e43;
-            font-weight: 600;
-        }
-
-        /* Room Options */
-        .room-grid {
+        .quo-room-grid {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-top: 10px;
+            gap: 10px;
         }
-        .room-option {
+        .quo-room {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px;
+            padding: 12px;
             background: #f8f9fa;
-            border-radius: 16px;
+            border-radius: 14px;
             cursor: pointer;
-            transition: all 0.2s;
             border: 2px solid transparent;
+            flex-wrap: wrap;
+            gap: 10px;
         }
-        .room-option:hover {
-            background: #f0f2f5;
-        }
-        .room-option.selected {
+        .quo-room.selected {
             background: #e8f5e9;
             border-color: #1f6e43;
         }
-        .room-left {
+        .quo-room-left {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
+            flex-wrap: wrap;
         }
-        .radio-custom {
-            width: 20px;
-            height: 20px;
-            accent-color: #1f6e43;
-        }
-        .room-badge {
+        .quo-room-badge {
             font-weight: 700;
             background: white;
-            padding: 6px 16px;
+            padding: 5px 14px;
             border-radius: 50px;
-            font-size: 13px;
-            color: #0a2b22;
+            font-size: 12px;
         }
-        .rate-editable {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .rate-input {
+        .quo-rate-input {
             width: 80px;
-            padding: 8px;
+            padding: 6px;
             border: 2px solid #e9ecef;
             border-radius: 10px;
             text-align: center;
-            font-weight: 600;
         }
-        .final-price {
+        .quo-price {
             font-weight: 700;
             color: #1f6e43;
-            font-size: 16px;
+            font-size: 15px;
         }
-        .price-note {
-            font-size: 11px;
-            color: #999;
-        }
-
-        /* Extras Panel */
-        .extras-header {
-            padding: 25px;
+        .quo-extras-header {
+            padding: 20px;
             border-bottom: 1px solid #eee;
         }
-        .extras-header h3 {
-            color: #0a2b22;
-            font-size: 20px;
+        .quo-extras-header h3 {
+            color: #1a2c1c;
+            font-size: 18px;
         }
-        .service-item {
-            padding: 18px 25px;
+        .quo-service {
+            padding: 15px 20px;
             border-bottom: 1px solid #eee;
         }
-        .service-title {
-            font-weight: 600;
-            margin-bottom: 10px;
-            display: block;
-        }
-        .taxi-item {
+        .quo-taxi-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
+            padding: 10px 0;
+            flex-wrap: wrap;
+            gap: 10px;
         }
-        .taxi-item:last-child {
-            border-bottom: none;
-        }
-        .taxi-btn {
+        .quo-taxi-btn {
             background: #f0f2f5;
             border: none;
-            padding: 8px 20px;
+            padding: 6px 16px;
             border-radius: 50px;
             cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s;
+            font-size: 13px;
         }
-        .taxi-btn.active {
+        .quo-taxi-btn.active {
             background: #1f6e43;
             color: white;
         }
-        .visa-select {
+        .quo-visa {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 2px solid #e9ecef;
             border-radius: 12px;
-            font-size: 14px;
             margin-top: 8px;
         }
-        .checkbox-label {
+        .quo-checkbox {
             display: flex;
             align-items: center;
             gap: 10px;
+            margin: 10px 0;
             cursor: pointer;
         }
-        .checkbox-label input {
-            width: 18px;
-            height: 18px;
-        }
-
-        /* Summary Box */
-        .summary-box {
-            background: #0a2b22;
+        .quo-summary {
+            background: #1a2c1c;
             color: white;
-            padding: 25px;
-            margin: 0 25px 25px 25px;
-            border-radius: 20px;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 18px;
         }
-        .summary-box h4 {
-            margin-bottom: 15px;
-            font-size: 18px;
-        }
-        .total-amount {
-            font-size: 36px;
+        .quo-total {
+            font-size: 32px;
             font-weight: 800;
             background: #d4af37;
             display: inline-block;
-            padding: 8px 24px;
-            border-radius: 60px;
-            color: #0a2b22;
-            margin: 15px 0;
+            padding: 6px 20px;
+            border-radius: 50px;
+            color: #1a2c1c;
+            margin: 10px 0;
         }
-        .whatsapp-btn {
+        .quo-whatsapp {
             display: inline-block;
             background: #25D366;
             color: white;
-            padding: 14px 24px;
+            padding: 12px 20px;
             border-radius: 50px;
             text-decoration: none;
-            font-weight: 600;
-            margin-top: 15px;
-            width: 100%;
             text-align: center;
-            transition: all 0.2s;
+            width: 100%;
+            margin-top: 12px;
+            font-weight: 600;
         }
-        .whatsapp-btn:hover {
-            background: #20b859;
-        }
-        .not-included {
-            font-size: 12px;
-            margin-top: 15px;
-            padding-top: 15px;
+        .quo-not-included {
+            font-size: 11px;
+            margin-top: 12px;
+            padding-top: 12px;
             border-top: 1px solid rgba(255,255,255,0.2);
         }
-        .better-rate {
+        .quo-better {
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             background: #fef3e2;
-            margin: 20px;
-            border-radius: 16px;
+            margin: 15px;
+            border-radius: 14px;
+            font-size: 13px;
         }
-        .better-rate a {
+        .quo-better a {
             color: #1f6e43;
             font-weight: 600;
             text-decoration: none;
         }
+        @media (max-width: 768px) {
+            .quo-room { flex-direction: column; align-items: stretch; }
+            .quo-room-left { justify-content: space-between; }
+        }
 
-        /* Footer */
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #888;
-            font-size: 12px;
+        /* Elegant Header - Keep your original styles below */
+        .elegant-header {
+            background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-teal) 100%);
+            padding: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--white);
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .contact-info-elegant {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .contact-info-elegant span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 300;
+        }
+
+        .contact-info-elegant i {
+            color: var(--primary-gold);
+            font-size: 16px;
+        }
+
+        .social-elegant a {
+            color: var(--white);
+            margin-left: 15px;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .social-elegant a:hover {
+            color: var(--primary-gold);
+            transform: translateY(-2px);
+        }
+
+        .main-header-elegant {
+            padding: 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-elegant {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 20px;
+        }
+
+        .logo-icon-elegant {
+            background: var(--primary-gold);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: var(--primary-navy);
+            box-shadow: var(--shadow);
+        }
+
+        .logo-text-elegant {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-main-elegant {
+            font-family: 'Crimson Text', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 1px;
+        }
+
+        .logo-sub-elegant {
+            font-size: 14px;
+            color: var(--light-gold);
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        .nav-elegant {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-elegant a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            position: relative;
+            padding: 8px 0;
+            transition: var(--transition);
+        }
+
+        .nav-elegant a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gold);
+            transition: var(--transition);
+        }
+
+        .nav-elegant a:hover:after,
+        .nav-elegant a.active:after {
+            width: 100%;
+        }
+
+        .nav-elegant a:hover,
+        .nav-elegant a.active {
+            color: var(--primary-gold);
+        }
+
+        .whatsapp-btn-elegant {
+            background: linear-gradient(135deg, #25D366 0%, #1da851 100%);
+            color: var(--white);
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-btn-elegant:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+
+        /* Continue with your remaining styles... */
+        .luxury-slider { height: 700px; position: relative; overflow: hidden; border-radius: 0 0 var(--radius) var(--radius); box-shadow: var(--shadow); }
+        .luxury-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.2s ease-in-out; }
+        .luxury-slide.active { opacity: 1; }
+        .slide-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(26, 35, 126, 0.85) 0%, rgba(0, 105, 92, 0.85) 100%); display: flex; align-items: center; }
+        .slide-content-luxury { max-width: 800px; padding-left: 100px; color: var(--white); }
+        .slide-content-luxury h2 { font-size: 56px; color: var(--white); margin-bottom: 25px; line-height: 1.2; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+        .slide-content-luxury p { font-size: 20px; margin-bottom: 40px; color: rgba(255,255,255,0.9); max-width: 600px; }
+        .luxury-btn { display: inline-flex; align-items: center; gap: 12px; background: var(--primary-gold); color: var(--primary-navy); padding: 18px 36px; border-radius: 50px; font-weight: 600; text-decoration: none; font-size: 16px; transition: var(--transition); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); }
+        .luxury-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4); background: var(--light-gold); }
+        .slider-controls { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; }
+        .slider-dot-luxury { width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: var(--transition); border: 2px solid transparent; }
+        .slider-dot-luxury.active { background: var(--primary-gold); transform: scale(1.2); border-color: var(--white); }
+        .search-luxury { background: var(--white); padding: 40px; border-radius: var(--radius); box-shadow: var(--shadow); margin-top: -60px; position: relative; z-index: 10; margin-bottom: 80px; border-top: 4px solid var(--primary-gold); }
+        .search-luxury h3 { text-align: center; margin-bottom: 35px; font-size: 28px; color: var(--primary-navy); position: relative; display: inline-block; left: 50%; transform: translateX(-50%); }
+        .search-luxury h3:after { content: ''; position: absolute; bottom: -10px; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--primary-gold), var(--primary-teal)); }
+        .search-form-luxury { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .form-group-luxury { position: relative; }
+        .form-group-luxury label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--primary-teal); }
+        .form-group-luxury input, .form-group-luxury select { width: 100%; padding: 16px 20px; border: 2px solid #e8e8e8; border-radius: 10px; font-size: 15px; font-family: 'Montserrat', sans-serif; transition: var(--transition); background: var(--white); }
+        .form-group-luxury input:focus, .form-group-luxury select:focus { border-color: var(--primary-gold); outline: none; box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); }
+        .search-btn-luxury { grid-column: span 1; background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-navy) 100%); color: var(--white); border: none; border-radius: 10px; padding: 16px 30px; font-size: 16px; font-weight: 600; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 12px; }
+        .search-btn-luxury:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26, 35, 126, 0.3); }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 42px; margin-bottom: 20px; color: var(--primary-navy); position: relative; display: inline-block; }
+        .section-header h2:after { content: ''; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: var(--primary-gold); border-radius: 2px; }
+        .section-header p { color: var(--text-light); max-width: 700px; margin: 25px auto 0; font-size: 18px; }
+        .packages-luxury { padding: 100px 0; background: var(--white); }
+        .packages-grid-luxury { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+        .package-card-luxury { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); position: relative; }
+        .package-card-luxury:hover { transform: translateY(-15px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); }
+        .package-image-luxury { height: 250px; background-size: cover; background-position: center; position: relative; }
+        .package-badge { position: absolute; top: 20px; right: 20px; background: var(--primary-gold); color: var(--primary-navy); padding: 8px 20px; border-radius: 50px; font-weight: 700; font-size: 16px; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3); }
+        .package-content-luxury { padding: 35px; }
+        .package-content-luxury h3 { font-size: 24px; margin-bottom: 15px; color: var(--primary-navy); }
+        .package-content-luxury p { color: var(--text-light); margin-bottom: 25px; font-size: 15px; line-height: 1.8; }
+        .package-features-luxury { list-style: none; margin-bottom: 30px; }
+        .package-features-luxury li { padding: 12px 0; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 12px; font-size: 15px; }
+        .package-features-luxury li:last-child { border-bottom: none; }
+        .package-features-luxury i { color: var(--primary-gold); font-size: 16px; }
+        .package-btn-luxury { display: block; text-align: center; background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-navy) 100%); color: var(--white); padding: 16px 30px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: var(--transition); border: none; cursor: pointer; width: 100%; font-family: 'Montserrat', sans-serif; font-size: 16px; }
+        .package-btn-luxury:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26, 35, 126, 0.3); }
+        .hajj-section-luxury { padding: 100px 0; background: linear-gradient(135deg, var(--light-bg) 0%, #e8f4f3 100%); position: relative; }
+        .hajj-badge-special { position: absolute; top: 20px; left: 20px; background: var(--primary-navy); color: var(--white); padding: 10px 25px; border-radius: 50px; font-weight: 700; font-size: 14px; z-index: 2; display: flex; align-items: center; gap: 8px; }
+        .hajj-package-luxury { border: 2px solid var(--primary-gold); background: var(--white); }
+        .flight-deals-section { padding: 100px 0; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); }
+        .flight-deals-container { max-width: 900px; margin: 0 auto; }
+        .flight-deal-card { background: var(--white); border-radius: var(--radius); padding: 30px; margin-bottom: 25px; box-shadow: var(--shadow); border-left: 5px solid var(--primary-gold); transition: var(--transition); display: flex; align-items: center; justify-content: space-between; gap: 30px; }
+        .flight-deal-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); }
+        .flight-airline { display: flex; flex-direction: column; align-items: center; min-width: 120px; }
+        .airline-logo { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: var(--white); font-size: 24px; }
+        .airline-name { font-weight: 700; font-size: 16px; color: var(--primary-navy); text-align: center; }
+        .flight-details { flex-grow: 1; }
+        .flight-route { display: flex; align-items: center; gap: 20px; margin-bottom: 15px; font-size: 18px; font-weight: 600; }
+        .flight-route .city { color: var(--primary-navy); font-size: 20px; }
+        .flight-route i { color: var(--primary-gold); font-size: 24px; }
+        .flight-price { font-size: 32px; font-weight: 700; color: var(--primary-teal); margin-bottom: 10px; }
+        .luggage-info { color: var(--text-light); font-size: 15px; margin-bottom: 5px; }
+        .validity { color: #666; font-size: 14px; font-style: italic; }
+        .flight-book-btn { background: linear-gradient(135deg, #25D366 0%, #1da851 100%); color: var(--white); padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 10px; transition: var(--transition); white-space: nowrap; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
+        .flight-book-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); }
+        .poster-contact-info { background: var(--white); border-radius: var(--radius); padding: 30px; margin-top: 40px; box-shadow: var(--shadow); text-align: center; border-top: 4px solid var(--primary-gold); }
+        .poster-contact-info h3 { color: var(--primary-navy); margin-bottom: 20px; font-size: 24px; }
+        .poster-address { color: var(--text-light); margin-bottom: 20px; font-size: 16px; line-height: 1.6; }
+        .poster-phones { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; flex-wrap: wrap; }
+        .phone-number { display: flex; align-items: center; gap: 10px; color: var(--primary-teal); font-weight: 600; font-size: 16px; }
+        .poster-websites { display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap; }
+        .website-link { color: var(--primary-navy); text-decoration: none; font-size: 15px; transition: var(--transition); display: flex; align-items: center; gap: 8px; }
+        .website-link:hover { color: var(--primary-gold); transform: translateY(-2px); }
+        .services-elegant { padding: 100px 0; background: var(--white); }
+        .services-grid-elegant { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
+        .service-card-elegant { background: var(--white); padding: 40px 30px; border-radius: var(--radius); text-align: center; transition: var(--transition); border: 1px solid #f0f0f0; position: relative; overflow: hidden; }
+        .service-card-elegant:before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--primary-gold), var(--primary-teal)); }
+        .service-card-elegant:hover { transform: translateY(-10px); box-shadow: var(--shadow); }
+        .service-icon-elegant { width: 80px; height: 80px; background: linear-gradient(135deg, var(--light-gold) 0%, #fff8e1 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; font-size: 32px; color: var(--primary-teal); transition: var(--transition); }
+        .service-card-elegant:hover .service-icon-elegant { transform: scale(1.1); background: linear-gradient(135deg, var(--primary-gold) 0%, #e8c154 100%); color: var(--white); }
+        .service-card-elegant h3 { font-size: 20px; margin-bottom: 15px; color: var(--primary-navy); }
+        .service-card-elegant p { color: var(--text-light); font-size: 14px; line-height: 1.7; }
+        .about-elegant { padding: 100px 0; background: linear-gradient(135deg, var(--light-bg) 0%, #f0f0f0 100%); }
+        .about-content-elegant { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .about-text-elegant h2 { font-size: 42px; margin-bottom: 30px; color: var(--primary-navy); }
+        .about-text-elegant p { color: var(--text-light); margin-bottom: 25px; font-size: 16px; line-height: 1.8; }
+        .about-features-elegant { list-style: none; margin-top: 30px; }
+        .about-features-elegant li { padding: 15px 0; display: flex; align-items: center; gap: 15px; font-size: 16px; color: var(--primary-navy); border-bottom: 1px solid #eee; }
+        .about-features-elegant li:last-child { border-bottom: none; }
+        .about-features-elegant i { color: var(--primary-gold); font-size: 18px; background: var(--light-gold); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .about-image-elegant { height: 500px; background-size: cover; background-position: center; border-radius: var(--radius); box-shadow: var(--shadow); position: relative; }
+        .about-image-elegant:after { content: ''; position: absolute; top: 20px; left: 20px; right: -20px; bottom: -20px; border: 2px solid var(--primary-gold); border-radius: var(--radius); z-index: -1; }
+        .footer-elegant { background: linear-gradient(135deg, var(--primary-navy) 0%, #0d1440 100%); color: var(--white); padding: 80px 0 40px; position: relative; }
+        .footer-content-elegant { display: grid; grid-template-columns: repeat(4, 1fr); gap: 50px; margin-bottom: 60px; }
+        .footer-column-elegant h3 { font-size: 22px; margin-bottom: 30px; color: var(--white); position: relative; padding-bottom: 15px; }
+        .footer-column-elegant h3:after { content: ''; position: absolute; bottom: 0; left: 0; width: 50px; height: 3px; background: var(--primary-gold); }
+        .footer-logo-elegant { font-family: 'Crimson Text', serif; font-size: 28px; font-weight: 700; margin-bottom: 20px; color: var(--white); letter-spacing: 1px; }
+        .footer-column-elegant p { color: rgba(255,255,255,0.7); margin-bottom: 25px; line-height: 1.8; font-size: 15px; }
+        .footer-links-elegant { list-style: none; }
+        .footer-links-elegant li { margin-bottom: 15px; }
+        .footer-links-elegant a { color: rgba(255,255,255,0.7); text-decoration: none; transition: var(--transition); font-size: 15px; display: flex; align-items: center; gap: 10px; }
+        .footer-links-elegant a:hover { color: var(--primary-gold); transform: translateX(5px); }
+        .contact-list-elegant { list-style: none; }
+        .contact-list-elegant li { margin-bottom: 20px; display: flex; align-items: flex-start; gap: 15px; color: rgba(255,255,255,0.7); font-size: 15px; }
+        .contact-list-elegant i { color: var(--primary-gold); font-size: 18px; margin-top: 3px; }
+        .footer-bottom-elegant { text-align: center; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); font-size: 14px; }
+
+        @media (max-width: 1200px) {
+            .packages-grid-luxury, .services-grid-elegant, .footer-content-elegant { grid-template-columns: repeat(2, 1fr); }
+            .search-form-luxury { grid-template-columns: repeat(2, 1fr); }
+            .about-content-elegant { grid-template-columns: 1fr; }
+            .slide-content-luxury { padding-left: 50px; }
+            .flight-deal-card { flex-direction: column; text-align: center; gap: 20px; }
+            .flight-airline { margin-bottom: 15px; }
         }
 
         @media (max-width: 768px) {
-            body { padding: 20px; }
-            .room-option { flex-direction: column; gap: 10px; align-items: stretch; }
-            .room-left { justify-content: space-between; }
+            .header-top-bar { flex-direction: column; gap: 15px; text-align: center; }
+            .contact-info-elegant { flex-direction: column; gap: 15px; }
+            .main-header-elegant { flex-direction: column; gap: 30px; text-align: center; }
+            .nav-elegant { flex-direction: column; gap: 20px; }
+            .packages-grid-luxury, .services-grid-elegant, .footer-content-elegant { grid-template-columns: 1fr; }
+            .search-form-luxury { grid-template-columns: 1fr; }
+            .slide-content-luxury { padding: 0 30px; text-align: center; }
+            .slide-content-luxury h2 { font-size: 36px; }
+            .slide-content-luxury p { font-size: 18px; }
+            .section-header h2 { font-size: 32px; }
+            .poster-phones { flex-direction: column; gap: 15px; }
+            .poster-websites { flex-direction: column; gap: 15px; }
         }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <h1>🕋 UmrahQuo Pro</h1>
-        <p>Professional Umrah Quotation System | Partner Rates</p>
-        <div class="badge">✨ Expedia & Bedsonline Partner ✨</div>
-    </div>
+    <!-- Elegant Header -->
+    <header class="elegant-header">
+        <div class="container">
+            <div class="header-top-bar">
+                <div class="contact-info-elegant">
+                    <span><i class="fas fa-phone"></i> +34-632234216</span>
+                    <span><i class="fab fa-whatsapp"></i> +34-611473217</span>
+                    <span><i class="fas fa-map-marker-alt"></i> Rambla Badal 141, Barcelona</span>
+                </div>
+                <div class="social-elegant">
+                    <a href="https://www.facebook.com/mustafatravelstours" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/mustafa_tours" aria-label="Twitter" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/mustafatraveltours/" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
 
-    <div class="quotation-wrapper">
-        <!-- LEFT PANEL - HOTEL SELECTION -->
-        <div class="hotel-panel">
-            <div class="city-tabs">
-                <button class="city-tab active" data-city="makkah">🕋 MAKKAH HOTELS</button>
-                <button class="city-tab" data-city="madinah">🕌 MADINAH HOTELS</button>
-            </div>
-            
-            <div class="hotel-selector">
-                <label>🏨 Select Hotel</label>
-                <select id="hotelSelect" class="hotel-dropdown"></select>
-            </div>
-            
-            <div id="hotelDetails" class="hotel-details">
-                <!-- Dynamic content loaded via JS -->
-                <div style="text-align: center; padding: 40px; color: #999;">Loading hotels...</div>
-            </div>
-        </div>
-
-        <!-- RIGHT PANEL - EXTRAS & TOTAL -->
-        <div class="extras-panel">
-            <div class="extras-header">
-                <h3>➕ Additional Services</h3>
-            </div>
-            
-            <div class="service-item">
-                <span class="service-title">🕌 Ziyarat Tours</span>
-                <label class="checkbox-label">
-                    <input type="checkbox" id="makkahZiyarat"> Makkah Ziyarat (by bus) - +7 SAR service fee
-                </label>
-                <label class="checkbox-label" style="margin-top: 10px;">
-                    <input type="checkbox" id="madinahZiyarat"> Madinah Ziyarat (by bus) - +7 SAR service fee
-                </label>
-            </div>
-            
-            <div class="service-item">
-                <span class="service-title">🛂 Visa Fee</span>
-                <select id="visaSelect" class="visa-select">
-                    <option value="220">Pakistani Umrah Visa — 220 EUR</option>
-                    <option value="120">Spanish Umrah Visa — 120 EUR</option>
-                </select>
-            </div>
-            
-            <div class="service-item">
-                <span class="service-title">🚖 Private Taxi Transfers</span>
-                <div class="taxi-item">
-                    <span>Jeddah (JED) → Makkah</span>
-                    <button class="taxi-btn" data-taxi="jeddahMakkah">➕ Select (350 SAR)</button>
-                </div>
-                <div class="taxi-item">
-                    <span>Makkah → Madinah</span>
-                    <button class="taxi-btn" data-taxi="makkahMadinah">➕ Select (400 SAR)</button>
-                </div>
-                <div class="taxi-item">
-                    <span>Madinah → Jeddah</span>
-                    <button class="taxi-btn" data-taxi="madinahJeddah">➕ Select (350 SAR)</button>
-                </div>
-            </div>
-            
-            <div class="summary-box">
-                <h4>💰 TOTAL QUOTATION</h4>
-                <div class="total-amount" id="grandTotal">0.00 €</div>
-                <div class="not-included">
-                    <strong>✈️ NOT INCLUDED:</strong><br>
-                    Airline ticket • Meals • Personal expenses
-                </div>
-                <a href="#" id="whatsappQuotationBtn" class="whatsapp-btn">
-                    <i class="fab fa-whatsapp"></i> Send Quotation via WhatsApp
+            <div class="main-header-elegant">
+                <a href="#" class="logo-elegant">
+                    <div class="logo-icon-elegant">
+                        <i class="fas fa-kaaba"></i>
+                    </div>
+                    <div class="logo-text-elegant">
+                        <div class="logo-main-elegant">MUSTAFA TRAVELS & TOURS</div>
+                        <div class="logo-sub-elegant">PREMIUM TRAVEL EXPERIENCES</div>
+                    </div>
                 </a>
+
+                <nav class="nav-elegant">
+                    <a href="#home" class="active">Home</a>
+                    <a href="#umrah">Umrah Packages</a>
+                    <a href="#hajj">Hajj 2026</a>
+                    <a href="#flights">Flight Deals</a>
+                    <a href="#services">Services</a>
+                    <a href="#about">About Us</a>
+                    <a href="#contact">Contact</a>
+                    <a href="https://wa.me/34611473217" class="whatsapp-btn-elegant" target="_blank" rel="noopener">
+                        <i class="fab fa-whatsapp"></i> Book Now
+                    </a>
+                </nav>
             </div>
-            
-            <div class="better-rate">
-                🌟 Want better rates than these hotels?<br>
-                <a href="#" id="betterRateBtn">📱 Contact our B2B desk on WhatsApp →</a>
+        </div>
+    </header>
+
+    <!-- UMRAH QUOTATION BUTTON - Added in Hero Section -->
+    <div class="container" style="text-align: center; margin-top: 30px;">
+        <button class="umrah-quote-btn" onclick="openQuotationModal()">
+            <i class="fas fa-calculator"></i> 🕋 Get Custom Umrah Quotation
+            <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <!-- Luxury Hero Slider -->
+    <section class="luxury-slider" id="home">
+        <div class="luxury-slide active" style="background-image: url('https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg');">
+            <div class="slide-overlay">
+                <div class="slide-content-luxury animate-fade-in-up">
+                    <h2>Premium Umrah Experiences 2024</h2>
+                    <p>Journey with elegance and devotion. Our exclusive Umrah packages offer luxury accommodations near Haram with personalized spiritual guidance.</p>
+                    <a href="#umrah" class="luxury-btn">Explore Packages <i class="fas fa-arrow-right"></i></a>
+                </div>
             </div>
         </div>
-    </div>
-    
-    <div class="footer">
-        <p>All prices are per bed per night. Final EUR price includes partner adjustments. Distances in meters.</p>
-        <p>© 2026 Mustafa Travels & Tours | Partner with Expedia & Bedsonline</p>
-    </div>
-</div>
-
-<script>
-// ========== CONFIGURATION ==========
-const SAR_TO_EUR = 0.245;
-
-function convertSarToEur(sar) {
-    return (sar * SAR_TO_EUR).toFixed(2);
-}
-
-// Hotel Data from PHP
-const makkahHotels = <?php echo json_encode($makkahHotels); ?>;
-const madinahHotels = <?php echo json_encode($madinahHotels); ?>;
-
-// State Variables
-let currentCity = 'makkah';
-let currentHotel = null;
-let selectedRoom = 'sharing';
-let numberOfNights = 5;
-let roomOverrides = {};
-let taxiSelections = {
-    jeddahMakkah: false,
-    makkahMadinah: false,
-    madinahJeddah: false
-};
-
-// Helper: Get final nightly EUR for a room (includes internal 50 SAR commission)
-function getNightlyEuroForRoom(roomKey) {
-    if (!currentHotel) return 0;
-    let baseRate = currentHotel.rates[roomKey];
-    if (roomOverrides[roomKey] !== undefined) {
-        baseRate = roomOverrides[roomKey];
-    }
-    const withCommission = baseRate + 50; // 50 SAR commission added internally (hidden from user)
-    return parseFloat(convertSarToEur(withCommission));
-}
-
-// Helper: Get total hotel cost (nightly × nights)
-function getTotalHotelEuro() {
-    if (!currentHotel || !selectedRoom) return 0;
-    const nightly = getNightlyEuroForRoom(selectedRoom);
-    return nightly * numberOfNights;
-}
-
-// Helper: Get Ziyarat total EUR
-function getZiyaratEuro() {
-    let total = 0;
-    const makkahChecked = document.getElementById('makkahZiyarat')?.checked;
-    const madinahChecked = document.getElementById('madinahZiyarat')?.checked;
-    // Base ziyarat cost 35 SAR + our 7 SAR fee = 42 SAR total
-    if (makkahChecked) total += parseFloat(convertSarToEur(35 + 7));
-    if (madinahChecked) total += parseFloat(convertSarToEur(35 + 7));
-    return total;
-}
-
-// Helper: Get selected taxi total EUR
-function getTaxiTotalEuro() {
-    let total = 0;
-    if (taxiSelections.jeddahMakkah) total += parseFloat(convertSarToEur(350));
-    if (taxiSelections.makkahMadinah) total += parseFloat(convertSarToEur(400));
-    if (taxiSelections.madinahJeddah) total += parseFloat(convertSarToEur(350));
-    return total;
-}
-
-// Update grand total
-function updateGrandTotal() {
-    const hotelTotal = getTotalHotelEuro();
-    const visaEuro = parseFloat(document.getElementById('visaSelect').value);
-    const taxiTotal = getTaxiTotalEuro();
-    const ziyaratTotal = getZiyaratEuro();
-    const total = hotelTotal + visaEuro + taxiTotal + ziyaratTotal;
-    document.getElementById('grandTotal').innerHTML = total.toFixed(2) + ' €';
-}
-
-// Populate hotel dropdown
-function populateHotelSelect() {
-    const hotels = currentCity === 'makkah' ? makkahHotels : madinahHotels;
-    const select = document.getElementById('hotelSelect');
-    select.innerHTML = '';
-    hotels.forEach((hotel, index) => {
-        const option = document.createElement('option');
-        option.value = index;
-        option.textContent = `${hotel.name} — ${hotel.distance}`;
-        select.appendChild(option);
-    });
-    if (hotels.length) {
-        loadHotelDetails(0);
-    }
-}
-
-// Load hotel details and render rooms
-function loadHotelDetails(index) {
-    const hotels = currentCity === 'makkah' ? makkahHotels : madinahHotels;
-    if (!hotels[index]) return;
-    currentHotel = hotels[index];
-    
-    const roomKeys = Object.keys(currentHotel.rates);
-    if (!selectedRoom || !roomKeys.includes(selectedRoom)) {
-        selectedRoom = roomKeys[0];
-    }
-    
-    let html = `
-        <div class="hotel-name">🏨 ${currentHotel.name}</div>
-        <div>
-            <span class="distance">📍 ${currentHotel.distance}</span>
-            <span class="per-bed-note">🛏️ Per bed / per night</span>
+        
+        <div class="luxury-slide" style="background-image: url('https://images.pexels.com/photos/29102586/pexels-photo-29102586.jpeg');">
+            <div class="slide-overlay">
+                <div class="slide-content-luxury">
+                    <h2>Hajj 2026 - Book Your Spiritual Journey</h2>
+                    <p>Secure your place for Hajj 2026 with our premium packages featuring 5-star accommodations and comprehensive services.</p>
+                    <a href="#hajj" class="luxury-btn">Book Hajj 2026 <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
         </div>
         
-        <div class="nights-section">
-            <label class="nights-label">📅 Number of Nights</label>
-            <input type="number" id="nightsInput" class="nights-input" value="${numberOfNights}" min="1" max="30">
-            <div class="total-nights" id="totalNightsDisplay">Total: ${(getNightlyEuroForRoom(selectedRoom) * numberOfNights).toFixed(2)} EUR for ${numberOfNights} nights</div>
+        <div class="luxury-slide" style="background-image: url('https://images.unsplash.com/photo-1591824438703-50d4c4e5d45a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');">
+            <div class="slide-overlay">
+                <div class="slide-content-luxury">
+                    <h2>Luxury Worldwide Travel</h2>
+                    <p>Discover exquisite destinations with our curated luxury travel packages for discerning travelers.</p>
+                    <a href="#services" class="luxury-btn">Explore Destinations <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
         </div>
-        
-        <div class="room-grid">
-    `;
-    
-    roomKeys.forEach(room => {
-        const baseRate = currentHotel.rates[room];
-        const currentOverride = roomOverrides[room] !== undefined ? roomOverrides[room] : baseRate;
-        const nightlyEuro = getNightlyEuroForRoom(room);
-        const isSelected = (selectedRoom === room);
-        
-        html += `
-            <div class="room-option ${isSelected ? 'selected' : ''}" data-room="${room}" onclick="selectRoom('${room}')">
-                <div class="room-left">
-                    <input type="radio" name="roomRadio" class="radio-custom" value="${room}" ${isSelected ? 'checked' : ''} onclick="event.stopPropagation(); selectRoom('${room}')">
-                    <span class="room-badge">${room.toUpperCase()}</span>
-                    <div class="rate-editable" onclick="event.stopPropagation()">
-                        <input type="number" class="rate-input" data-room="${room}" value="${currentOverride}" step="5">
-                        <span style="font-size:12px;">SAR</span>
+
+        <div class="slider-controls">
+            <div class="slider-dot-luxury active" data-slide="0"></div>
+            <div class="slider-dot-luxury" data-slide="1"></div>
+            <div class="slider-dot-luxury" data-slide="2"></div>
+        </div>
+    </section>
+
+    <!-- ========== UMRAH QUOTATION MODAL ========== -->
+    <div id="quotationModal" class="quotation-modal">
+        <div class="quotation-modal-content">
+            <button class="modal-close-btn" onclick="closeQuotationModal()">✕</button>
+            <div class="modal-inner">
+                <div class="quo-wrapper">
+                    <!-- LEFT: HOTEL SECTION -->
+                    <div class="quo-hotel-panel">
+                        <div class="quo-city-tabs">
+                            <button class="quo-city-tab active" data-city="makkah">🕋 MAKKAH HOTELS</button>
+                            <button class="quo-city-tab" data-city="madinah">🕌 MADINAH HOTELS</button>
+                        </div>
+                        
+                        <div class="quo-selector">
+                            <label>🏨 Select Hotel</label>
+                            <select id="quoHotelSelect" class="quo-dropdown"></select>
+                        </div>
+                        
+                        <div id="quoHotelDetails" class="quo-details">
+                            <div style="text-align: center; padding: 40px; color: #999;">Loading hotels...</div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: EXTRAS & TOTAL -->
+                    <div class="quo-extras-panel">
+                        <div class="quo-extras-header">
+                            <h3>➕ Additional Services</h3>
+                        </div>
+                        
+                        <div class="quo-service">
+                            <label class="quo-checkbox">
+                                <input type="checkbox" id="quoMakkahZiyarat"> 🕌 Makkah Ziyarat (by bus) - +7 SAR fee
+                            </label>
+                            <label class="quo-checkbox">
+                                <input type="checkbox" id="quoMadinahZiyarat"> 🕌 Madinah Ziyarat (by bus) - +7 SAR fee
+                            </label>
+                        </div>
+                        
+                        <div class="quo-service">
+                            <label style="font-weight:600;">🛂 Visa Fee</label>
+                            <select id="quoVisaSelect" class="quo-visa">
+                                <option value="220">Pakistani Umrah Visa — 220 EUR</option>
+                                <option value="120">Spanish Umrah Visa — 120 EUR</option>
+                            </select>
+                        </div>
+                        
+                        <div class="quo-service">
+                            <label style="font-weight:600; margin-bottom:10px; display:block;">🚖 Private Taxi Transfers</label>
+                            <div class="quo-taxi-item">
+                                <span>Jeddah Airport → Makkah (350 SAR)</span>
+                                <button class="quo-taxi-btn" data-taxi="jeddahMakkah">➕ Select</button>
+                            </div>
+                            <div class="quo-taxi-item">
+                                <span>Makkah → Madinah (400 SAR)</span>
+                                <button class="quo-taxi-btn" data-taxi="makkahMadinah">➕ Select</button>
+                            </div>
+                            <div class="quo-taxi-item">
+                                <span>Madinah → Jeddah Airport (350 SAR)</span>
+                                <button class="quo-taxi-btn" data-taxi="madinahJeddah">➕ Select</button>
+                            </div>
+                        </div>
+                        
+                        <div class="quo-summary">
+                            <h4>💰 TOTAL QUOTATION</h4>
+                            <div class="quo-total" id="quoGrandTotal">0.00 €</div>
+                            <div class="quo-not-included">
+                                ✈️ NOT INCLUDED: Airline ticket • Meals • Personal expenses
+                            </div>
+                            <a href="#" id="quoWhatsappBtn" class="quo-whatsapp">
+                                <i class="fab fa-whatsapp"></i> Send Quotation via WhatsApp
+                            </a>
+                        </div>
+                        
+                        <div class="quo-better">
+                            🌟 Want better rates than these hotels? <a href="#" id="quoBetterRateBtn">Contact our B2B desk →</a>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <span class="final-price">€${nightlyEuro.toFixed(2)}</span>
-                    <span class="price-note"> /night/bed</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rest of your original content continues here -->
+    <!-- Elegant Search Box -->
+    <div class="container">
+        <div class="search-luxury animate-fade-in-up">
+            <h3>Design Your Perfect Journey</h3>
+            <form class="search-form-luxury" id="searchForm">
+                <div class="form-group-luxury">
+                    <label>Destination</label>
+                    <select id="destinationSelect">
+                        <option value="">Select Destination</option>
+                        <option value="makkah">Makkah, Saudi Arabia</option>
+                        <option value="madina">Madina, Saudi Arabia</option>
+                        <option value="dubai">Dubai, UAE</option>
+                        <option value="istanbul">Istanbul, Turkey</option>
+                        <option value="london">London, UK</option>
+                        <option value="paris">Paris, France</option>
+                    </select>
+                </div>
+                <div class="form-group-luxury">
+                    <label>Package Type</label>
+                    <select id="packageType">
+                        <option value="">Select Package</option>
+                        <option value="umrah">Umrah Package</option>
+                        <option value="hajj">Hajj Package 2026</option>
+                        <option value="family">Family Vacation</option>
+                        <option value="luxury">Luxury Holiday</option>
+                        <option value="business">Business Travel</option>
+                    </select>
+                </div>
+                <div class="form-group-luxury">
+                    <label>Check In</label>
+                    <input type="date" id="checkIn">
+                </div>
+                <div class="form-group-luxury">
+                    <label>Check Out</label>
+                    <input type="date" id="checkOut">
+                </div>
+                <button type="submit" class="search-btn-luxury" id="searchSubmit">
+                    <i class="fas fa-search"></i> Search Packages
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Umrah Packages Section -->
+    <section class="packages-luxury" id="umrah">
+        <div class="container">
+            <div class="section-header">
+                <h2>Premium Umrah Packages 2024</h2>
+                <p>Experience spiritual devotion with luxury accommodations near the Holy Mosques</p>
+            </div>
+
+            <div class="packages-grid-luxury">
+                <!-- Economy Package -->
+                <div class="package-card-luxury animate-fade-in-up">
+                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/4346403/pexels-photo-4346403.jpeg');">
+                        <div class="package-badge">€895</div>
+                    </div>
+                    <div class="package-content-luxury">
+                        <h3>Essence Umrah Package</h3>
+                        <p>A beautiful beginning to your spiritual journey with essential comforts and proximity to Haram.</p>
+                        <ul class="package-features-luxury">
+                            <li><i class="fas fa-check-circle"></i> 7 Days Makkah + 3 Days Madina</li>
+                            <li><i class="fas fa-check-circle"></i> 3-Star Hotel with Shuttle</li>
+                            <li><i class="fas fa-check-circle"></i> Economy Flight Tickets</li>
+                            <li><i class="fas fa-check-circle"></i> Umrah Visa Processing</li>
+                            <li><i class="fas fa-check-circle"></i> Airport Transfers</li>
+                        </ul>
+                        <button class="package-btn-luxury view-package-btn" data-package="economy">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Economy Plus Package -->
+                <div class="package-card-luxury animate-fade-in-up">
+                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/2895295/pexels-photo-2895295.jpeg');">
+                        <div class="package-badge">€999</div>
+                    </div>
+                    <div class="package-content-luxury">
+                        <h3>Enhanced Umrah Package</h3>
+                        <p>Elevated comfort with premium hotels and additional services for a seamless spiritual experience.</p>
+                        <ul class="package-features-luxury">
+                            <li><i class="fas fa-check-circle"></i> 7 Days Makkah + 3 Days Madina</li>
+                            <li><i class="fas fa-check-circle"></i> 4-Star Hotel with Shuttle</li>
+                            <li><i class="fas fa-check-circle"></i> Flight Tickets Included</li>
+                            <li><i class="fas fa-check-circle"></i> Fast-Track Visa Processing</li>
+                            <li><i class="fas fa-check-circle"></i> Luxury Airport Transfers</li>
+                        </ul>
+                        <button class="package-btn-luxury view-package-btn" data-package="economy-plus">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Business Class Package -->
+                <div class="package-card-luxury animate-fade-in-up">
+                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/12808985/pexels-photo-12808985.jpeg');">
+                        <div class="package-badge">€1,299</div>
+                    </div>
+                    <div class="package-content-luxury">
+                        <h3>Elite Umrah Package</h3>
+                        <p>The ultimate spiritual journey with luxury accommodations and personalized concierge service.</p>
+                        <ul class="package-features-luxury">
+                            <li><i class="fas fa-check-circle"></i> 6 Days Makkah + 4 Days Madina</li>
+                            <li><i class="fas fa-check-circle"></i> 5-Star Premium Hotel</li>
+                            <li><i class="fas fa-check-circle"></i> Business Class Upgrade</li>
+                            <li><i class="fas fa-check-circle"></i> Premium Visa Processing</li>
+                            <li><i class="fas fa-check-circle"></i> Private Luxury Transfers</li>
+                        </ul>
+                        <button class="package-btn-luxury view-package-btn" data-package="business">View Details</button>
+                    </div>
                 </div>
             </div>
-        `;
-    });
-    
-    html += `</div>`;
-    document.getElementById('hotelDetails').innerHTML = html;
-    
-    // Attach event listeners
-    const nightsInput = document.getElementById('nightsInput');
-    if (nightsInput) {
-        nightsInput.addEventListener('change', (e) => {
-            numberOfNights = parseInt(e.target.value) || 1;
-            updateTotalNightsDisplay();
-            updateGrandTotal();
-        });
-    }
-    
-    // Attach rate input listeners
-    document.querySelectorAll('.rate-input').forEach(input => {
-        const room = input.getAttribute('data-room');
-        input.addEventListener('input', (e) => {
-            const newVal = parseFloat(e.target.value);
-            if (!isNaN(newVal) && newVal >= 0) {
-                roomOverrides[room] = newVal;
-            } else {
-                delete roomOverrides[room];
-            }
-            updateRoomDisplay(room);
-            if (selectedRoom === room) {
-                updateTotalNightsDisplay();
-                updateGrandTotal();
-            }
-        });
-    });
-    
-    updateTotalNightsDisplay();
-    updateGrandTotal();
-}
+        </div>
+    </section>
 
-function updateTotalNightsDisplay() {
-    const nightly = getNightlyEuroForRoom(selectedRoom);
-    const total = nightly * numberOfNights;
-    const displayDiv = document.getElementById('totalNightsDisplay');
-    if (displayDiv) {
-        displayDiv.innerHTML = `Total: ${total.toFixed(2)} EUR for ${numberOfNights} nights`;
-    }
-}
+    <!-- Continue with your remaining sections... -->
+    <section class="hajj-section-luxury" id="hajj">
+        <div class="container">
+            <div class="section-header">
+                <h2>Hajj Packages 2026</h2>
+                <p>Secure your spiritual journey with our exclusive Hajj 2026 packages</p>
+            </div>
 
-function updateRoomDisplay(room) {
-    const nightlyEuro = getNightlyEuroForRoom(room);
-    const roomDiv = document.querySelector(`.room-option[data-room="${room}"]`);
-    if (roomDiv) {
-        const priceSpan = roomDiv.querySelector('.final-price');
-        if (priceSpan) {
-            priceSpan.innerHTML = `€${nightlyEuro.toFixed(2)}`;
+            <div class="packages-grid-luxury">
+                <!-- Hajj Economy Package -->
+                <div class="package-card-luxury hajj-package-luxury animate-fade-in-up">
+                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/4346403/pexels-photo-4346403.jpeg');">
+                        <div class="hajj-badge-special"><i class="fas fa-kaaba"></i> HAJJ 2026</div>
+                        <div class="package-badge">€7,890</div>
+                    </div>
+                    <div class="package-content-luxury">
+                        <h3>Essence Hajj Package 2026</h3>
+                        <p>A complete Hajj journey with essential services and comfortable accommodation for 2026.</p>
+                        <ul class="package-features-luxury">
+                            <li><i class="fas fa-star"></i> Approved Quota</li>
+                            <li><i class="fas fa-star"></i> Accommodation in Makkah & Madina</li>
+                            <li><i class="fas fa-star"></i> Economy Flight Tickets</li>
+                            <li><i class="fas fa-star"></i> Hajj Visa Processing</li>
+                            <li><i class="fas fa-star"></i> Transportation During Hajj</li>
+                        </ul>
+                        <button class="package-btn-luxury view-hajj-btn" data-package="hajj-economy">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Hajj Premium Package -->
+                <div class="package-card-luxury hajj-package-luxury animate-fade-in-up">
+                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg');">
+                        <div class="hajj-badge-special"><i class="fas fa-kaaba"></i> HAJJ 2026</div>
+                        <div class="package-badge">€12,900</div>
+                    </div>
+                    <div class="package-content-luxury">
+                        <h3>Elite Hajj Package 2026</h3>
+                        <p>Premium Hajj experience with luxury accommodations and exclusive VIP services for 2026.</p>
+                        <ul class="package-features-luxury">
+                            <li><i class="fas fa-crown"></i> Guaranteed Quota</li>
+                            <li><i class="fas fa-crown"></i> 5-Star Hotel near Haram</li>
+                            <li><i class="fas fa-crown"></i> Business Class Flights</li>
+                            <li><i class="fas fa-crown"></i> Premium Visa Processing</li>
+                            <li><i class="fas fa-crown"></i> Personal Hajj Guide</li>
+                        </ul>
+                        <button class="package-btn-luxury view-hajj-btn" data-package="hajj-premium">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FLIGHT DEALS SECTION -->
+    <section class="flight-deals-section" id="flights">
+        <div class="container">
+            <div class="section-header">
+                <h2>Exclusive Flight Deals</h2>
+                <p>Special offers from Barcelona to Pakistan and worldwide destinations</p>
+            </div>
+
+            <div class="flight-deals-container">
+                <div class="flight-deal-card animate-fade-in-up">
+                    <div class="flight-airline">
+                        <div class="airline-logo" style="background: #BED742;">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <div class="airline-name">ETIHAD AIRWAYS</div>
+                    </div>
+                    <div class="flight-details">
+                        <div class="flight-route">
+                            <span class="city">BARCELONA</span>
+                            <i class="fas fa-long-arrow-alt-right"></i>
+                            <span class="city">LAHORE</span>
+                        </div>
+                        <div class="flight-price">€ 580 EURO</div>
+                        <div class="luggage-info">40KG CHECK-IN | 7KG HAND CARRY</div>
+                        <div class="validity">Limited Seats Available</div>
+                    </div>
+                    <a href="https://wa.me/34611473217?text=I'm interested in BARCELONA to LAHORE flight (€580)" class="flight-book-btn" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Book Now</a>
+                </div>
+
+                <div class="flight-deal-card animate-fade-in-up">
+                    <div class="flight-airline">
+                        <div class="airline-logo" style="background: #BED742;">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <div class="airline-name">ETIHAD AIRWAYS</div>
+                    </div>
+                    <div class="flight-details">
+                        <div class="flight-route">
+                            <span class="city">BARCELONA</span>
+                            <i class="fas fa-long-arrow-alt-right"></i>
+                            <span class="city">ISLAMABAD</span>
+                        </div>
+                        <div class="flight-price">€ 585 EURO</div>
+                        <div class="luggage-info">40KG CHECK-IN | 7KG HAND CARRY</div>
+                        <div class="validity">Limited Seats Available</div>
+                    </div>
+                    <a href="https://wa.me/34611473217?text=I'm interested in BARCELONA to ISLAMABAD flight (€585)" class="flight-book-btn" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Book Now</a>
+                </div>
+
+                <div class="poster-contact-info animate-fade-in-up">
+                    <h3>Mustafa Travels & Tours</h3>
+                    <p class="poster-address">Rambla Badal 141-Local 1 Bajo<br>Barcelona 08028</p>
+                    <div class="poster-phones">
+                        <div class="phone-number"><i class="fas fa-phone"></i> +34-632234216</div>
+                        <div class="phone-number"><i class="fab fa-whatsapp"></i> +34-611473217</div>
+                        <div class="phone-number"><i class="fas fa-phone"></i> +34-631984997</div>
+                    </div>
+                    <div class="poster-websites">
+                        <a href="https://www.mustafatravels.com" class="website-link" target="_blank" rel="noopener"><i class="fas fa-globe"></i> www.mustafatravels.com</a>
+                        <a href="https://www.mustafatravels.org" class="website-link" target="_blank" rel="noopener"><i class="fas fa-globe"></i> www.mustafatravels.org</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-elegant" id="services">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Premium Services</h2>
+                <p>Comprehensive travel solutions tailored to your spiritual and luxury needs</p>
+            </div>
+            <div class="services-grid-elegant">
+                <div class="service-card-elegant animate-fade-in-up"><div class="service-icon-elegant"><i class="fas fa-passport"></i></div><h3>Visa Processing</h3><p>Expert visa processing for Umrah, Hajj, and worldwide travel with guaranteed approval</p></div>
+                <div class="service-card-elegant animate-fade-in-up"><div class="service-icon-elegant"><i class="fas fa-kaaba"></i></div><h3>Umrah Packages</h3><p>Complete spiritual journeys with luxury accommodations near Holy Mosques</p></div>
+                <div class="service-card-elegant animate-fade-in-up"><div class="service-icon-elegant"><i class="fas fa-hotel"></i></div><h3>Luxury Hotels</h3><p>5-star hotel reservations worldwide with exclusive amenities and locations</p></div>
+                <div class="service-card-elegant animate-fade-in-up"><div class="service-icon-elegant"><i class="fas fa-mosque"></i></div><h3>Hajj 2026</h3><p>Guaranteed Hajj quotas with premium services for the spiritual journey of a lifetime</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-elegant" id="about">
+        <div class="container">
+            <div class="about-content-elegant">
+                <div class="about-text-elegant animate-fade-in-up">
+                    <h2>Experience Excellence in Spiritual Travel</h2>
+                    <p>Mustafa Travels & Tours has been crafting exceptional travel experiences since 2024. We specialize in premium Umrah and Hajj journeys, offering unparalleled service and attention to detail.</p>
+                    <p>Our commitment to excellence ensures every spiritual journey is memorable, comfortable, and deeply meaningful. We blend traditional values with modern luxury to create unforgettable experiences.</p>
+                    <ul class="about-features-elegant">
+                        <li><i class="fas fa-check"></i> Expert Travel Consultants</li>
+                        <li><i class="fas fa-check"></i> 24/7 Premium Support</li>
+                        <li><i class="fas fa-check"></i> Exclusive Hotel Partnerships</li>
+                        <li><i class="fas fa-check"></i> Approved Hajj Quotas for Europeans</li>
+                        <li><i class="fas fa-check"></i> Personalized Service</li>
+                    </ul>
+                </div>
+                <div class="about-image-elegant" style="background-image: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');"></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer-elegant" id="contact">
+        <div class="container">
+            <div class="footer-content-elegant">
+                <div class="footer-column-elegant">
+                    <div class="footer-logo-elegant">MUSTAFA TRAVELS & TOURS</div>
+                    <p>Specialists in premium Umrah, Hajj & Worldwide Travel experiences. Crafting spiritual journeys with elegance since 2024.</p>
+                    <ul class="contact-list-elegant">
+                        <li><i class="fas fa-map-marker-alt"></i> Rambla Badal 141 Local 1 Bajo, Barcelona 08028</li>
+                        <li><i class="fas fa-phone"></i> +34-632234216</li>
+                        <li><i class="fab fa-whatsapp"></i> +34-611473217</li>
+                        <li><i class="fas fa-envelope"></i> mustafatravelstours@gmail.com</li>
+                    </ul>
+                </div>
+                <div class="footer-column-elegant">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links-elegant">
+                        <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#umrah"><i class="fas fa-chevron-right"></i> Umrah Packages</a></li>
+                        <li><a href="#hajj"><i class="fas fa-chevron-right"></i> Hajj 2026</a></li>
+                        <li><a href="#flights"><i class="fas fa-chevron-right"></i> Flight Deals</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Services</a></li>
+                        <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column-elegant">
+                    <h3>Our Services</h3>
+                    <ul class="footer-links-elegant">
+                        <li><a href="#umrah"><i class="fas fa-chevron-right"></i> Umrah Packages</a></li>
+                        <li><a href="#hajj"><i class="fas fa-chevron-right"></i> Hajj 2026</a></li>
+                        <li><a href="#flights"><i class="fas fa-chevron-right"></i> Flight Booking</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Hotel Reservation</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Visa Services</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column-elegant">
+                    <h3>Business Hours</h3>
+                    <ul class="footer-links-elegant">
+                        <li><i class="far fa-clock"></i> Monday - Thursday: 10:30 AM - 8:30 PM</li>
+                        <li><i class="far fa-clock"></i> Friday: 10:30 AM - 1:00 PM & 3:00 PM - 8:30 PM</li>
+                        <li><i class="far fa-clock"></i> Saturday: 10:30 AM - 7:30 PM</li>
+                        <li><i class="far fa-clock"></i> Sunday: Closed</li>
+                        <li><i class="fas fa-phone-alt"></i> 24/7 Emergency Support</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom-elegant">
+                <p>&copy; 2024 Mustafa Travels & Tours. All rights reserved. | Crafted with <i class="fas fa-heart" style="color: #d4af37;"></i> for spiritual journeys</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Modal Functions
+        function openQuotationModal() {
+            document.getElementById('quotationModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
-    }
-}
-
-function selectRoom(room) {
-    selectedRoom = room;
-    // Update UI
-    document.querySelectorAll('.room-option').forEach(opt => {
-        opt.classList.remove('selected');
-    });
-    const selectedDiv = document.querySelector(`.room-option[data-room="${room}"]`);
-    if (selectedDiv) {
-        selectedDiv.classList.add('selected');
-    }
-    const radio = document.querySelector(`input[name="roomRadio"][value="${room}"]`);
-    if (radio) radio.checked = true;
-    
-    updateTotalNightsDisplay();
-    updateGrandTotal();
-}
-
-// City tab switching
-function initCityTabs() {
-    const tabs = document.querySelectorAll('.city-tab');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            currentCity = tab.getAttribute('data-city');
-            roomOverrides = {};
-            selectedRoom = 'sharing';
-            numberOfNights = 5;
-            populateHotelSelect();
-        });
-    });
-}
-
-// Taxi button handlers
-function initTaxiButtons() {
-    const taxiBtns = document.querySelectorAll('.taxi-btn');
-    taxiBtns.forEach(btn => {
-        const taxiKey = btn.getAttribute('data-taxi');
-        btn.addEventListener('click', () => {
-            taxiSelections[taxiKey] = !taxiSelections[taxiKey];
-            if (taxiSelections[taxiKey]) {
-                btn.textContent = `✓ Selected (${btn.textContent.match(/\d+/)?.[0] || ''} SAR)`;
-                btn.classList.add('active');
-            } else {
-                const originalText = btn.getAttribute('data-original') || btn.textContent.replace('✓ Selected', '➕ Select');
-                btn.textContent = originalText;
-                btn.classList.remove('active');
+        
+        function closeQuotationModal() {
+            document.getElementById('quotationModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal on outside click
+        document.getElementById('quotationModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeQuotationModal();
             }
-            updateGrandTotal();
         });
-        // Store original text
-        btn.setAttribute('data-original', btn.textContent);
-    });
-}
 
-// WhatsApp handlers
-function initWhatsAppButtons() {
-    const quotationBtn = document.getElementById('whatsappQuotationBtn');
-    const betterRateBtn = document.getElementById('betterRateBtn');
-    const whatsappNumber = '34611473217'; // Without + for URL
-    
-    quotationBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const hotelName = currentHotel?.name || 'Not selected';
-        const roomType = selectedRoom.toUpperCase();
-        const total = document.getElementById('grandTotal').innerText;
-        const nights = numberOfNights;
-        const taxis = Object.entries(taxiSelections).filter(([,v]) => v).map(([k]) => k.replace(/([A-Z])/g, ' $1').trim()).join(', ') || 'None';
-        const msg = `🕋 *UMRAH QUOTATION*\n\n🏨 Hotel: ${hotelName}\n🛏️ Room: ${roomType}\n🌙 Nights: ${nights}\n💰 Total: ${total}\n\n🚖 Selected Taxis: ${taxis}\n\n✅ Includes: Hotel (per bed/night), visa fee, selected taxis, ziyarat\n❌ Not included: Airline ticket, meals, personal expenses\n\n📞 Please process my booking.`;
-        window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`, '_blank');
-    });
-    
-    betterRateBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const msg = `Hello, I'm interested in better rates for Umrah hotels. I'm a partner with Expedia/Bedsonline. Please share your best offers.`;
-        window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(msg)}`, '_blank');
-    });
-}
+        // ========== UMRAH QUOTATION JAVASCRIPT ==========
+        (function() {
+            const SAR_TO_EUR = 0.245;
+            
+            const MAKKAH_HOTELS = [
+                { name: "Ajwa Zaifa", distance: "Shuttle Service", rates: { sharing: 13, quad: 13, trp: 15, dbl: 18, single: 25 } },
+                { name: "Qila Ajyad", distance: "1000 m", rates: { sharing: 17, quad: 17, trp: 20, dbl: 25, single: 35 } },
+                { name: "Dyar Matar", distance: "1200 m", rates: { sharing: 19, quad: 19, trp: 23, dbl: 28, single: 40 } },
+                { name: "Jada Khalil", distance: "1200 m", rates: { sharing: 21, quad: 21, trp: 25, dbl: 32, single: 45 } },
+                { name: "Kiswah Tower", distance: "Shuttle Service", rates: { sharing: 24, quad: 24, trp: 29, dbl: 37, single: 53 } },
+                { name: "Multiqa Ibadat", distance: "750-800 m", rates: { sharing: 24, quad: 24, trp: 29, dbl: 37, single: 53 } },
+                { name: "Saif Al Majd", distance: "600-650 m", rates: { sharing: 31, quad: 31, trp: 38, dbl: 48, single: 70 } },
+                { name: "Jafria", distance: "550-600 m", rates: { sharing: 31, quad: 31, trp: 38, dbl: 48, single: 70 } },
+                { name: "Jawarat Bait", distance: "600 m", rates: { sharing: 38, quad: 38, trp: 43, dbl: 55, single: 80 } },
+                { name: "Badar Masa", distance: "600 m", rates: { sharing: 57, quad: 57, trp: 70, dbl: 92, single: 135 } },
+                { name: "Swiss Khalil", distance: "350-400 m", rates: { sharing: 49, quad: 49, trp: 63, dbl: 93, single: 93 } },
+                { name: "Emar Andulusia", distance: "300 m", rates: { sharing: 68, quad: 68, trp: 88, dbl: 130, single: 130 } }
+            ];
+            
+            const MADINAH_HOTELS = [
+                { name: "Kinan Madina", distance: "900 m", rates: { sharing: 25, quad: 25, trp: 30, dbl: 38, single: 55 } },
+                { name: "Dar Ajyad 1", distance: "750 m", rates: { sharing: 29, quad: 29, trp: 35, dbl: 45, single: 65 } },
+                { name: "Abdullah Fouzan", distance: "600 m", rates: { sharing: 35, quad: 35, trp: 43, dbl: 55, single: 80 } },
+                { name: "Karam Golden", distance: "550 m", rates: { sharing: 37, quad: 37, trp: 45, dbl: 58, single: 85 } },
+                { name: "Ansar Plus", distance: "500 m", rates: { sharing: 38, quad: 38, trp: 46, dbl: 60, single: 88 } },
+                { name: "Widyar Al Madina", distance: "350 m", rates: { sharing: 40, quad: 40, trp: 49, dbl: 63, single: 93 } },
+                { name: "Rou Taiba", distance: "100 m", rates: { sharing: 55, quad: 55, trp: 63, dbl: 82, single: 120 } }
+            ];
+            
+            let currentCity = 'makkah';
+            let currentHotel = null;
+            let selectedRoom = 'sharing';
+            let nights = 5;
+            let roomOverrides = {};
+            let taxiSelections = { jeddahMakkah: false, makkahMadinah: false, madinahJeddah: false };
+            
+            function convertSar(sar) { return (sar * SAR_TO_EUR).toFixed(2); }
+            
+            function getNightlyEuro(room) {
+                if (!currentHotel) return 0;
+                let base = currentHotel.rates[room];
+                if (roomOverrides[room] !== undefined) base = roomOverrides[room];
+                return parseFloat(convertSar(base + 50));
+            }
+            
+            function getHotelTotal() { return getNightlyEuro(selectedRoom) * nights; }
+            
+            function getZiyaratTotal() {
+                let total = 0;
+                if (document.getElementById('quoMakkahZiyarat')?.checked) total += parseFloat(convertSar(35 + 7));
+                if (document.getElementById('quoMadinahZiyarat')?.checked) total += parseFloat(convertSar(35 + 7));
+                return total;
+            }
+            
+            function getTaxiTotal() {
+                let total = 0;
+                if (taxiSelections.jeddahMakkah) total += parseFloat(convertSar(350));
+                if (taxiSelections.makkahMadinah) total += parseFloat(convertSar(400));
+                if (taxiSelections.madinahJeddah) total += parseFloat(convertSar(350));
+                return total;
+            }
+            
+            function updateTotal() {
+                const total = getHotelTotal() + parseFloat(document.getElementById('quoVisaSelect').value) + getTaxiTotal() + getZiyaratTotal();
+                document.getElementById('quoGrandTotal').innerHTML = total.toFixed(2) + ' €';
+            }
+            
+            function populateHotels() {
+                const hotels = currentCity === 'makkah' ? MAKKAH_HOTELS : MADINAH_HOTELS;
+                const select = document.getElementById('quoHotelSelect');
+                select.innerHTML = '';
+                hotels.forEach((h, i) => { select.innerHTML += `<option value="${i}">${h.name} — ${h.distance}</option>`; });
+                loadHotel(0);
+            }
+            
+            function loadHotel(index) {
+                const hotels = currentCity === 'makkah' ? MAKKAH_HOTELS : MADINAH_HOTELS;
+                currentHotel = hotels[index];
+                if (!currentHotel) return;
+                const rooms = Object.keys(currentHotel.rates);
+                if (!rooms.includes(selectedRoom)) selectedRoom = rooms[0];
+                
+                let html = `<div class="quo-hotel-name">🏨 ${currentHotel.name}</div>
+                    <div><span class="quo-distance">📍 ${currentHotel.distance}</span><span class="quo-perbed">🛏️ Per bed / night</span></div>
+                    <div class="quo-nights"><label>📅 Number of Nights: </label><input type="number" id="quoNights" value="${nights}" min="1" max="30"></div>
+                    <div class="quo-room-grid">`;
+                
+                rooms.forEach(room => {
+                    const val = roomOverrides[room] !== undefined ? roomOverrides[room] : currentHotel.rates[room];
+                    const nightly = getNightlyEuro(room);
+                    html += `<div class="quo-room ${selectedRoom === room ? 'selected' : ''}" data-room="${room}">
+                        <div class="quo-room-left">
+                            <input type="radio" name="quoRoomRadio" value="${room}" ${selectedRoom === room ? 'checked' : ''}>
+                            <span class="quo-room-badge">${room.toUpperCase()}</span>
+                            <input type="number" class="quo-rate-input" data-room="${room}" value="${val}" step="5" style="width:80px;"> <span>SAR</span>
+                        </div>
+                        <div><span class="quo-price">€${nightly.toFixed(2)}</span> /night/bed</div>
+                    </div>`;
+                });
+                html += `</div>`;
+                document.getElementById('quoHotelDetails').innerHTML = html;
+                
+                document.getElementById('quoNights').addEventListener('change', (e) => { nights = parseInt(e.target.value) || 1; updateTotal(); });
+                document.querySelectorAll('input[name="quoRoomRadio"]').forEach(radio => {
+                    radio.addEventListener('change', (e) => { selectedRoom = e.target.value; loadHotel(index); updateTotal(); });
+                });
+                document.querySelectorAll('.quo-rate-input').forEach(inp => {
+                    const room = inp.getAttribute('data-room');
+                    inp.addEventListener('input', (e) => {
+                        let v = parseFloat(e.target.value);
+                        if (!isNaN(v)) roomOverrides[room] = v;
+                        else delete roomOverrides[room];
+                        loadHotel(index);
+                        updateTotal();
+                    });
+                });
+                updateTotal();
+            }
+            
+            document.querySelectorAll('.quo-city-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.quo-city-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentCity = tab.getAttribute('data-city');
+                    roomOverrides = {};
+                    selectedRoom = 'sharing';
+                    nights = 5;
+                    populateHotels();
+                });
+            });
+            
+            document.querySelectorAll('.quo-taxi-btn').forEach(btn => {
+                const taxi = btn.getAttribute('data-taxi');
+                btn.addEventListener('click', () => {
+                    taxiSelections[taxi] = !taxiSelections[taxi];
+                    btn.textContent = taxiSelections[taxi] ? '✓ Selected' : '➕ Select';
+                    btn.classList.toggle('active', taxiSelections[taxi]);
+                    updateTotal();
+                });
+            });
+            
+            document.getElementById('quoMakkahZiyarat').addEventListener('change', () => updateTotal());
+            document.getElementById('quoMadinahZiyarat').addEventListener('change', () => updateTotal());
+            document.getElementById('quoVisaSelect').addEventListener('change', () => updateTotal());
+            document.getElementById('quoHotelSelect').addEventListener('change', (e) => loadHotel(parseInt(e.target.value)));
+            
+            document.getElementById('quoWhatsappBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                const msg = `🕋 UMRAH QUOTATION\nHotel: ${currentHotel?.name}\nRoom: ${selectedRoom.toUpperCase()}\nNights: ${nights}\nTotal: ${document.getElementById('quoGrandTotal').innerHTML}\n\nPlease process my booking.`;
+                window.open(`https://wa.me/34611473217?text=${encodeURIComponent(msg)}`, '_blank');
+            });
+            
+            document.getElementById('quoBetterRateBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                window.open(`https://wa.me/34611473217?text=${encodeURIComponent('Need better rates for Umrah hotels - B2B partner inquiry')}`, '_blank');
+            });
+            
+            populateHotels();
+        })();
 
-// Event listeners for extras
-function initExtrasListeners() {
-    document.getElementById('makkahZiyarat').addEventListener('change', () => updateGrandTotal());
-    document.getElementById('madinahZiyarat').addEventListener('change', () => updateGrandTotal());
-    document.getElementById('visaSelect').addEventListener('change', () => updateGrandTotal());
-}
+        // Your original JavaScript code continues here...
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.luxury-slide');
+        const dots = document.querySelectorAll('.slider-dot-luxury');
 
-// Hotel select change
-document.getElementById('hotelSelect').addEventListener('change', (e) => {
-    loadHotelDetails(parseInt(e.target.value));
-});
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+            currentSlide = index;
+        }
 
-// Initialize
-function init() {
-    initCityTabs();
-    populateHotelSelect();
-    initTaxiButtons();
-    initExtrasListeners();
-    initWhatsAppButtons();
-}
-init();
-</script>
+        setInterval(() => { currentSlide = (currentSlide + 1) % slides.length; showSlide(currentSlide); }, 5000);
+        dots.forEach((dot, index) => { dot.addEventListener('click', () => showSlide(index)); });
+
+        // Package Data
+        const packageData = {
+            economy: { title: "Essence Umrah Package", price: "€895", description: "A beautiful beginning to your spiritual journey with essential comforts and proximity to Haram.", features: ["7 Days Makkah + 3 Days Madina","3-Star Hotel with Shuttle Service","Economy Flight Tickets Included","Umrah Visa Processing","Airport Transfers","Basic Umrah Guidance","Travel Insurance Coverage"] },
+            "economy-plus": { title: "Enhanced Umrah Package", price: "€999", description: "Elevated comfort with premium hotels and additional services for a seamless spiritual experience.", features: ["7 Days Makkah + 3 Days Madina","4-Star Hotel with Shuttle Service","Flight Tickets Included","Fast-Track Visa Processing","Luxury Airport Transfers","Comprehensive Umrah Guidance","24/7 Support Team"] },
+            business: { title: "Elite Umrah Package", price: "€1,299", description: "The ultimate spiritual journey with luxury accommodations and personalized concierge service.", features: ["6 Days Makkah + 4 Days Madina","5-Star Premium Hotel near Haram","Business Class Upgrade Available","Premium Fast-Track Visa","Private Luxury Transfers","Personal Umrah Guide","VIP Concierge Service"] }
+        };
+
+        document.querySelectorAll('.view-package-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const packageType = this.getAttribute('data-package');
+                const pkg = packageData[packageType];
+                if (pkg) {
+                    const modalHTML = `<div class="modal-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:1000;"><div class="modal-content" style="background:white;padding:50px;border-radius:20px;max-width:600px;width:90%;position:relative;"><button class="close-modal" style="position:absolute;top:20px;right:20px;background:none;border:none;font-size:24px;cursor:pointer;">&times;</button><h2 style="color:#1a237e;">${pkg.title}</h2><div style="color:#d4af37;font-size:24px;font-weight:bold;margin:20px 0;">${pkg.price}</div><p style="color:#666;margin-bottom:30px;">${pkg.description}</p><h3 style="color:#1a237e;margin-bottom:15px;">Package Includes:</h3><ul style="list-style:none;margin-bottom:40px;">${pkg.features.map(f => `<li style="padding:10px 0;border-bottom:1px solid #eee;display:flex;align-items:center;gap:10px;"><i class="fas fa-check" style="color:#d4af37;"></i> ${f}</li>`).join('')}</ul><a href="https://wa.me/34611473217?text=I'm interested in ${pkg.title} (${pkg.price})" class="whatsapp-btn-elegant" style="display:block;text-align:center;text-decoration:none;"><i class="fab fa-whatsapp"></i> Book on WhatsApp</a></div></div>`;
+                    document.body.insertAdjacentHTML('beforeend', modalHTML);
+                    document.querySelector('.close-modal').addEventListener('click', () => { document.querySelector('.modal-overlay').remove(); });
+                    document.querySelector('.modal-overlay').addEventListener('click', (e) => { if (e.target.classList.contains('modal-overlay')) document.querySelector('.modal-overlay').remove(); });
+                }
+            });
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) window.scrollTo({ top: targetElement.offsetTop - 100, behavior: 'smooth' });
+            });
+        });
+
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const destination = document.getElementById('destinationSelect').value;
+            const packageType = document.getElementById('packageType').value;
+            if (!destination || !packageType) { alert('Please select both destination and package type'); return; }
+            window.open(`https://wa.me/34611473217?text=${encodeURIComponent(`Hello! I'm looking for ${packageType} packages to ${destination}. Please send me details.`)}`, '_blank');
+        });
+
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('checkIn').min = today;
+        document.getElementById('checkOut').min = today;
+        document.getElementById('checkIn').addEventListener('change', function() { document.getElementById('checkOut').min = this.value; });
+
+        document.querySelectorAll('.view-hajj-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const packageType = this.getAttribute('data-package');
+                let hajjPackage = packageType === 'hajj-economy' ? { title: "Essence Hajj Package 2026", price: "€7,890", description: "A complete Hajj journey with essential services.", features: ["Approved Hajj Quota","Accommodation in Makkah & Madina","Economy Flight Tickets Included","Hajj Visa Processing","Transportation During Hajj Rituals","Experienced Hajj Guide","Medical Assistance Available"] } : { title: "Elite Hajj Package 2026", price: "€12,900", description: "Premium Hajj experience with luxury accommodations.", features: ["Guaranteed Hajj Quota","5-Star Hotel within 500m of Haram","Business Class Flight Tickets","Premium Fast-Track Visa Processing","Personal Hajj Guide & Assistant","VIP Transportation Services","Luxury Accommodation in Mina & Arafat"] };
+                const modalHTML = `<div class="modal-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:1000;"><div class="modal-content" style="background:white;padding:50px;border-radius:20px;max-width:600px;width:90%;position:relative;"><button class="close-modal" style="position:absolute;top:20px;right:20px;background:none;border:none;font-size:24px;cursor:pointer;">&times;</button><div style="display:flex;align-items:center;gap:15px;margin-bottom:20px;"><i class="fas fa-kaaba" style="color:#d4af37;font-size:32px;"></i><h2 style="color:#1a237e;">${hajjPackage.title}</h2></div><div style="color:#d4af37;font-size:28px;font-weight:bold;margin-bottom:20px;">${hajjPackage.price}</div><p style="color:#666;margin-bottom:30px;">${hajjPackage.description}</p><h3 style="color:#1a237e;margin-bottom:15px;">Package Includes:</h3><ul style="list-style:none;margin-bottom:40px;">${hajjPackage.features.map(f => `<li style="padding:12px 0;border-bottom:1px solid #eee;display:flex;align-items:center;gap:12px;"><i class="fas fa-star" style="color:#d4af37;"></i> ${f}</li>`).join('')}</ul><a href="https://wa.me/34611473217?text=I'm interested in ${hajjPackage.title} (${hajjPackage.price})" class="whatsapp-btn-elegant" style="display:block;text-align:center;text-decoration:none;"><i class="fab fa-whatsapp"></i> Book Hajj 2026</a></div></div>`;
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+                document.querySelector('.close-modal').addEventListener('click', () => { document.querySelector('.modal-overlay').remove(); });
+                document.querySelector('.modal-overlay').addEventListener('click', (e) => { if (e.target.classList.contains('modal-overlay')) document.querySelector('.modal-overlay').remove(); });
+            });
+        });
+    </script>
 </body>
 </html>
