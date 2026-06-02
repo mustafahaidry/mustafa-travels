@@ -1540,7 +1540,7 @@
                         <div class="airline-logo" style="background: #BED742;">
                             <i class="fas fa-plane"></i>
                         </div>
-                        <div class="airline-name">ETIHAD AIRWAYS</div>
+                        <div class="airline-name">SAUDI AIRWAYS</div>
                     </div>
                     <div class="flight-details">
                         <div class="flight-route">
@@ -1548,11 +1548,11 @@
                             <i class="fas fa-long-arrow-alt-right"></i>
                             <span class="city">LAHORE</span>
                         </div>
-                        <div class="flight-price">€ 580 EURO</div>
+                        <div class="flight-price">€ 600 EURO</div>
                         <div class="luggage-info">40KG CHECK-IN | 7KG HAND CARRY</div>
                         <div class="validity">Limited Seats Available</div>
                     </div>
-                    <a href="https://wa.me/34611473217?text=I'm interested in BARCELONA to LAHORE flight (€580)" class="flight-book-btn" target="_blank"><i class="fab fa-whatsapp"></i> Book Now</a>
+                    <a href="https://wa.me/34611473217?text=I'm interested in BARCELONA to LAHORE flight (€600)" class="flight-book-btn" target="_blank"><i class="fab fa-whatsapp"></i> Book Now</a>
                 </div>
 
                 <div class="flight-deal-card animate-fade-in-up">
@@ -1560,7 +1560,7 @@
                         <div class="airline-logo" style="background: #BED742;">
                             <i class="fas fa-plane"></i>
                         </div>
-                        <div class="airline-name">ETIHAD AIRWAYS</div>
+                        <div class="airline-name">SAUDI AIRWAYS</div>
                     </div>
                     <div class="flight-details">
                         <div class="flight-route">
@@ -1568,11 +1568,11 @@
                             <i class="fas fa-long-arrow-alt-right"></i>
                             <span class="city">ISLAMABAD</span>
                         </div>
-                        <div class="flight-price">€ 585 EURO</div>
+                        <div class="flight-price">€ 600 EURO</div>
                         <div class="luggage-info">40KG CHECK-IN | 7KG HAND CARRY</div>
                         <div class="validity">Limited Seats Available</div>
                     </div>
-                    <a href="https://wa.me/34611473217?text=I'm interested in BARCELONA to ISLAMABAD flight (€585)" class="flight-book-btn" target="_blank"><i class="fab fa-whatsapp"></i> Book Now</a>
+                    <a href="https://wa.me/34611473217?text=I'm interested in BARCELONA to ISLAMABAD flight (€600)" class="flight-book-btn" target="_blank"><i class="fab fa-whatsapp"></i> Book Now</a>
                 </div>
 
                 <div class="poster-contact-info animate-fade-in-up">
