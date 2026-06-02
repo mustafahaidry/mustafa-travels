@@ -8,14 +8,14 @@
     <!-- SEO Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mustafa Travels & Tours | Premium Umrah & Hajj Packages from Barcelona</title>
-    <meta name="description" content="Premium Umrah packages, Hajj 2026 bookings, and worldwide travel services from Barcelona. Experience spiritual journeys with luxury accommodations near Haram.">
-    <meta name="keywords" content="Umrah packages, Hajj 2026, Barcelona travel agency, Makkah hotels, Madina tours, Muslim travel, spiritual journeys, flight tickets">
+    <title>Mustafa Travels & Tours | Premium Umrah Packages from Barcelona</title>
+    <meta name="description" content="Premium Umrah packages and worldwide travel services from Barcelona. Experience spiritual journeys with luxury accommodations near Haram.">
+    <meta name="keywords" content="Umrah packages, Barcelona travel agency, Makkah hotels, Madina tours, Muslim travel, spiritual journeys, flight tickets">
     <meta name="author" content="Mustafa Travels & Tours">
     
     <!-- Open Graph Tags -->
-    <meta property="og:title" content="Mustafa Travels & Tours | Luxury Umrah & Hajj Experiences">
-    <meta property="og:description" content="Specialists in premium Umrah packages and Hajj 2026 journeys with 5-star accommodations near Holy Mosques.">
+    <meta property="og:title" content="Mustafa Travels & Tours | Luxury Umrah Experiences">
+    <meta property="og:description" content="Specialists in premium Umrah packages with 5-star accommodations near Holy Mosques.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg">
     
@@ -25,7 +25,7 @@
         "@context": "https://schema.org",
         "@type": "TravelAgency",
         "name": "Mustafa Travels & Tours",
-        "description": "Premium Umrah, Hajj & Worldwide Travel Specialists",
+        "description": "Premium Umrah & Worldwide Travel Specialists",
         "address": {
             "@type": "PostalAddress",
             "streetAddress": "Rambla Badal 141 Local 1 Bajo",
@@ -419,7 +419,7 @@
             .quo-room-left { justify-content: space-between; }
         }
 
-        /* Elegant Header - Keep your original styles below */
+        /* Elegant Header */
         .elegant-header {
             background: linear-gradient(135deg, var(--primary-navy) 0%, var(--primary-teal) 100%);
             padding: 15px 0;
@@ -572,131 +572,750 @@
             box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
         }
 
-        /* Continue with your remaining styles... */
-        .luxury-slider { height: 700px; position: relative; overflow: hidden; border-radius: 0 0 var(--radius) var(--radius); box-shadow: var(--shadow); }
-        .luxury-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center; opacity: 0; transition: opacity 1.2s ease-in-out; }
-        .luxury-slide.active { opacity: 1; }
-        .slide-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(26, 35, 126, 0.85) 0%, rgba(0, 105, 92, 0.85) 100%); display: flex; align-items: center; }
-        .slide-content-luxury { max-width: 800px; padding-left: 100px; color: var(--white); }
-        .slide-content-luxury h2 { font-size: 56px; color: var(--white); margin-bottom: 25px; line-height: 1.2; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-        .slide-content-luxury p { font-size: 20px; margin-bottom: 40px; color: rgba(255,255,255,0.9); max-width: 600px; }
-        .luxury-btn { display: inline-flex; align-items: center; gap: 12px; background: var(--primary-gold); color: var(--primary-navy); padding: 18px 36px; border-radius: 50px; font-weight: 600; text-decoration: none; font-size: 16px; transition: var(--transition); box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); }
-        .luxury-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4); background: var(--light-gold); }
-        .slider-controls { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); display: flex; gap: 15px; }
-        .slider-dot-luxury { width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,0.3); cursor: pointer; transition: var(--transition); border: 2px solid transparent; }
-        .slider-dot-luxury.active { background: var(--primary-gold); transform: scale(1.2); border-color: var(--white); }
-        .search-luxury { background: var(--white); padding: 40px; border-radius: var(--radius); box-shadow: var(--shadow); margin-top: -60px; position: relative; z-index: 10; margin-bottom: 80px; border-top: 4px solid var(--primary-gold); }
-        .search-luxury h3 { text-align: center; margin-bottom: 35px; font-size: 28px; color: var(--primary-navy); position: relative; display: inline-block; left: 50%; transform: translateX(-50%); }
-        .search-luxury h3:after { content: ''; position: absolute; bottom: -10px; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--primary-gold), var(--primary-teal)); }
-        .search-form-luxury { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-        .form-group-luxury { position: relative; }
-        .form-group-luxury label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--primary-teal); }
-        .form-group-luxury input, .form-group-luxury select { width: 100%; padding: 16px 20px; border: 2px solid #e8e8e8; border-radius: 10px; font-size: 15px; font-family: 'Montserrat', sans-serif; transition: var(--transition); background: var(--white); }
-        .form-group-luxury input:focus, .form-group-luxury select:focus { border-color: var(--primary-gold); outline: none; box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); }
-        .search-btn-luxury { grid-column: span 1; background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-navy) 100%); color: var(--white); border: none; border-radius: 10px; padding: 16px 30px; font-size: 16px; font-weight: 600; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 12px; }
-        .search-btn-luxury:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26, 35, 126, 0.3); }
-        .section-header { text-align: center; margin-bottom: 60px; }
-        .section-header h2 { font-size: 42px; margin-bottom: 20px; color: var(--primary-navy); position: relative; display: inline-block; }
-        .section-header h2:after { content: ''; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); width: 80px; height: 4px; background: var(--primary-gold); border-radius: 2px; }
-        .section-header p { color: var(--text-light); max-width: 700px; margin: 25px auto 0; font-size: 18px; }
-        .packages-luxury { padding: 100px 0; background: var(--white); }
-        .packages-grid-luxury { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
-        .package-card-luxury { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); position: relative; }
-        .package-card-luxury:hover { transform: translateY(-15px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); }
-        .package-image-luxury { height: 250px; background-size: cover; background-position: center; position: relative; }
-        .package-badge { position: absolute; top: 20px; right: 20px; background: var(--primary-gold); color: var(--primary-navy); padding: 8px 20px; border-radius: 50px; font-weight: 700; font-size: 16px; box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3); }
-        .package-content-luxury { padding: 35px; }
-        .package-content-luxury h3 { font-size: 24px; margin-bottom: 15px; color: var(--primary-navy); }
-        .package-content-luxury p { color: var(--text-light); margin-bottom: 25px; font-size: 15px; line-height: 1.8; }
-        .package-features-luxury { list-style: none; margin-bottom: 30px; }
-        .package-features-luxury li { padding: 12px 0; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 12px; font-size: 15px; }
-        .package-features-luxury li:last-child { border-bottom: none; }
-        .package-features-luxury i { color: var(--primary-gold); font-size: 16px; }
-        .package-btn-luxury { display: block; text-align: center; background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-navy) 100%); color: var(--white); padding: 16px 30px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: var(--transition); border: none; cursor: pointer; width: 100%; font-family: 'Montserrat', sans-serif; font-size: 16px; }
-        .package-btn-luxury:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26, 35, 126, 0.3); }
-        .hajj-section-luxury { padding: 100px 0; background: linear-gradient(135deg, var(--light-bg) 0%, #e8f4f3 100%); position: relative; }
-        .hajj-badge-special { position: absolute; top: 20px; left: 20px; background: var(--primary-navy); color: var(--white); padding: 10px 25px; border-radius: 50px; font-weight: 700; font-size: 14px; z-index: 2; display: flex; align-items: center; gap: 8px; }
-        .hajj-package-luxury { border: 2px solid var(--primary-gold); background: var(--white); }
-        .flight-deals-section { padding: 100px 0; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); }
-        .flight-deals-container { max-width: 900px; margin: 0 auto; }
-        .flight-deal-card { background: var(--white); border-radius: var(--radius); padding: 30px; margin-bottom: 25px; box-shadow: var(--shadow); border-left: 5px solid var(--primary-gold); transition: var(--transition); display: flex; align-items: center; justify-content: space-between; gap: 30px; }
-        .flight-deal-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); }
-        .flight-airline { display: flex; flex-direction: column; align-items: center; min-width: 120px; }
-        .airline-logo { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; color: var(--white); font-size: 24px; }
-        .airline-name { font-weight: 700; font-size: 16px; color: var(--primary-navy); text-align: center; }
-        .flight-details { flex-grow: 1; }
-        .flight-route { display: flex; align-items: center; gap: 20px; margin-bottom: 15px; font-size: 18px; font-weight: 600; }
-        .flight-route .city { color: var(--primary-navy); font-size: 20px; }
-        .flight-route i { color: var(--primary-gold); font-size: 24px; }
-        .flight-price { font-size: 32px; font-weight: 700; color: var(--primary-teal); margin-bottom: 10px; }
-        .luggage-info { color: var(--text-light); font-size: 15px; margin-bottom: 5px; }
-        .validity { color: #666; font-size: 14px; font-style: italic; }
-        .flight-book-btn { background: linear-gradient(135deg, #25D366 0%, #1da851 100%); color: var(--white); padding: 14px 28px; border-radius: 10px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 10px; transition: var(--transition); white-space: nowrap; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
-        .flight-book-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4); }
-        .poster-contact-info { background: var(--white); border-radius: var(--radius); padding: 30px; margin-top: 40px; box-shadow: var(--shadow); text-align: center; border-top: 4px solid var(--primary-gold); }
-        .poster-contact-info h3 { color: var(--primary-navy); margin-bottom: 20px; font-size: 24px; }
-        .poster-address { color: var(--text-light); margin-bottom: 20px; font-size: 16px; line-height: 1.6; }
-        .poster-phones { display: flex; justify-content: center; gap: 30px; margin-bottom: 25px; flex-wrap: wrap; }
-        .phone-number { display: flex; align-items: center; gap: 10px; color: var(--primary-teal); font-weight: 600; font-size: 16px; }
-        .poster-websites { display: flex; justify-content: center; gap: 20px; margin-top: 20px; flex-wrap: wrap; }
-        .website-link { color: var(--primary-navy); text-decoration: none; font-size: 15px; transition: var(--transition); display: flex; align-items: center; gap: 8px; }
-        .website-link:hover { color: var(--primary-gold); transform: translateY(-2px); }
-        .services-elegant { padding: 100px 0; background: var(--white); }
-        .services-grid-elegant { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
-        .service-card-elegant { background: var(--white); padding: 40px 30px; border-radius: var(--radius); text-align: center; transition: var(--transition); border: 1px solid #f0f0f0; position: relative; overflow: hidden; }
-        .service-card-elegant:before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--primary-gold), var(--primary-teal)); }
-        .service-card-elegant:hover { transform: translateY(-10px); box-shadow: var(--shadow); }
-        .service-icon-elegant { width: 80px; height: 80px; background: linear-gradient(135deg, var(--light-gold) 0%, #fff8e1 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 25px; font-size: 32px; color: var(--primary-teal); transition: var(--transition); }
-        .service-card-elegant:hover .service-icon-elegant { transform: scale(1.1); background: linear-gradient(135deg, var(--primary-gold) 0%, #e8c154 100%); color: var(--white); }
-        .service-card-elegant h3 { font-size: 20px; margin-bottom: 15px; color: var(--primary-navy); }
-        .service-card-elegant p { color: var(--text-light); font-size: 14px; line-height: 1.7; }
-        .about-elegant { padding: 100px 0; background: linear-gradient(135deg, var(--light-bg) 0%, #f0f0f0 100%); }
-        .about-content-elegant { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-        .about-text-elegant h2 { font-size: 42px; margin-bottom: 30px; color: var(--primary-navy); }
-        .about-text-elegant p { color: var(--text-light); margin-bottom: 25px; font-size: 16px; line-height: 1.8; }
-        .about-features-elegant { list-style: none; margin-top: 30px; }
-        .about-features-elegant li { padding: 15px 0; display: flex; align-items: center; gap: 15px; font-size: 16px; color: var(--primary-navy); border-bottom: 1px solid #eee; }
-        .about-features-elegant li:last-child { border-bottom: none; }
-        .about-features-elegant i { color: var(--primary-gold); font-size: 18px; background: var(--light-gold); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-        .about-image-elegant { height: 500px; background-size: cover; background-position: center; border-radius: var(--radius); box-shadow: var(--shadow); position: relative; }
-        .about-image-elegant:after { content: ''; position: absolute; top: 20px; left: 20px; right: -20px; bottom: -20px; border: 2px solid var(--primary-gold); border-radius: var(--radius); z-index: -1; }
-        .footer-elegant { background: linear-gradient(135deg, var(--primary-navy) 0%, #0d1440 100%); color: var(--white); padding: 80px 0 40px; position: relative; }
-        .footer-content-elegant { display: grid; grid-template-columns: repeat(4, 1fr); gap: 50px; margin-bottom: 60px; }
-        .footer-column-elegant h3 { font-size: 22px; margin-bottom: 30px; color: var(--white); position: relative; padding-bottom: 15px; }
-        .footer-column-elegant h3:after { content: ''; position: absolute; bottom: 0; left: 0; width: 50px; height: 3px; background: var(--primary-gold); }
-        .footer-logo-elegant { font-family: 'Crimson Text', serif; font-size: 28px; font-weight: 700; margin-bottom: 20px; color: var(--white); letter-spacing: 1px; }
-        .footer-column-elegant p { color: rgba(255,255,255,0.7); margin-bottom: 25px; line-height: 1.8; font-size: 15px; }
-        .footer-links-elegant { list-style: none; }
-        .footer-links-elegant li { margin-bottom: 15px; }
-        .footer-links-elegant a { color: rgba(255,255,255,0.7); text-decoration: none; transition: var(--transition); font-size: 15px; display: flex; align-items: center; gap: 10px; }
-        .footer-links-elegant a:hover { color: var(--primary-gold); transform: translateX(5px); }
-        .contact-list-elegant { list-style: none; }
-        .contact-list-elegant li { margin-bottom: 20px; display: flex; align-items: flex-start; gap: 15px; color: rgba(255,255,255,0.7); font-size: 15px; }
-        .contact-list-elegant i { color: var(--primary-gold); font-size: 18px; margin-top: 3px; }
-        .footer-bottom-elegant { text-align: center; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); font-size: 14px; }
+        /* Luxury Hero Slider */
+        .luxury-slider {
+            height: 600px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0 0 var(--radius) var(--radius);
+            box-shadow: var(--shadow);
+        }
+        .luxury-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+        }
+        .luxury-slide.active {
+            opacity: 1;
+        }
+        .slide-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(26, 35, 126, 0.85) 0%, rgba(0, 105, 92, 0.85) 100%);
+            display: flex;
+            align-items: center;
+        }
+        .slide-content-luxury {
+            max-width: 800px;
+            padding-left: 100px;
+            color: var(--white);
+        }
+        .slide-content-luxury h2 {
+            font-size: 56px;
+            color: var(--white);
+            margin-bottom: 25px;
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .slide-content-luxury p {
+            font-size: 20px;
+            margin-bottom: 40px;
+            color: rgba(255,255,255,0.9);
+            max-width: 600px;
+        }
+        .luxury-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--primary-gold);
+            color: var(--primary-navy);
+            padding: 18px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 16px;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+        .luxury-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+            background: var(--light-gold);
+        }
+        .slider-controls {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+        }
+        .slider-dot-luxury {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+        .slider-dot-luxury.active {
+            background: var(--primary-gold);
+            transform: scale(1.2);
+            border-color: var(--white);
+        }
+        
+        /* Elegant Search Box */
+        .search-luxury {
+            background: var(--white);
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-top: -50px;
+            position: relative;
+            z-index: 10;
+            margin-bottom: 80px;
+            border-top: 4px solid var(--primary-gold);
+        }
+        .search-luxury h3 {
+            text-align: center;
+            margin-bottom: 35px;
+            font-size: 28px;
+            color: var(--primary-navy);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .search-luxury h3:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-gold), var(--primary-teal));
+        }
+        .search-form-luxury {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .form-group-luxury {
+            position: relative;
+        }
+        .form-group-luxury label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary-teal);
+        }
+        .form-group-luxury input,
+        .form-group-luxury select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e8e8e8;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Montserrat', sans-serif;
+            transition: var(--transition);
+            background: var(--white);
+        }
+        .form-group-luxury input:focus,
+        .form-group-luxury select:focus {
+            border-color: var(--primary-gold);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+        .search-btn-luxury {
+            grid-column: span 1;
+            background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-navy) 100%);
+            color: var(--white);
+            border: none;
+            border-radius: 10px;
+            padding: 16px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .search-btn-luxury:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 35, 126, 0.3);
+        }
+        
+        /* Section Header */
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .section-header h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            color: var(--primary-navy);
+            position: relative;
+            display: inline-block;
+        }
+        .section-header h2:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary-gold);
+            border-radius: 2px;
+        }
+        .section-header p {
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 25px auto 0;
+            font-size: 18px;
+        }
+        
+        /* Umrah Packages */
+        .packages-luxury {
+            padding: 80px 0;
+            background: var(--white);
+        }
+        .packages-grid-luxury {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+        .package-card-luxury {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+        .package-card-luxury:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        .package-image-luxury {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .package-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-gold);
+            color: var(--primary-navy);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+        }
+        .package-content-luxury {
+            padding: 35px;
+        }
+        .package-content-luxury h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--primary-navy);
+        }
+        .package-content-luxury p {
+            color: var(--text-light);
+            margin-bottom: 25px;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+        .package-features-luxury {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        .package-features-luxury li {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+        }
+        .package-features-luxury li:last-child {
+            border-bottom: none;
+        }
+        .package-features-luxury i {
+            color: var(--primary-gold);
+            font-size: 16px;
+        }
+        .package-btn-luxury {
+            display: block;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-navy) 100%);
+            color: var(--white);
+            padding: 16px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+        }
+        .package-btn-luxury:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26, 35, 126, 0.3);
+        }
+        
+        /* Flight Deals Section */
+        .flight-deals-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        .flight-deals-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .flight-deal-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--primary-gold);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+        }
+        .flight-deal-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        .flight-airline {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 120px;
+        }
+        .airline-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            color: var(--white);
+            font-size: 24px;
+        }
+        .airline-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--primary-navy);
+            text-align: center;
+        }
+        .flight-details {
+            flex-grow: 1;
+        }
+        .flight-route {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .flight-route .city {
+            color: var(--primary-navy);
+            font-size: 20px;
+        }
+        .flight-route i {
+            color: var(--primary-gold);
+            font-size: 24px;
+        }
+        .flight-price {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-teal);
+            margin-bottom: 10px;
+        }
+        .luggage-info {
+            color: var(--text-light);
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+        .validity {
+            color: #666;
+            font-size: 14px;
+            font-style: italic;
+        }
+        .flight-book-btn {
+            background: linear-gradient(135deg, #25D366 0%, #1da851 100%);
+            color: var(--white);
+            padding: 14px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+        .flight-book-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+        .poster-contact-info {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-top: 40px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border-top: 4px solid var(--primary-gold);
+        }
+        .poster-contact-info h3 {
+            color: var(--primary-navy);
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .poster-address {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .poster-phones {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .phone-number {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-teal);
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .poster-websites {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .website-link {
+            color: var(--primary-navy);
+            text-decoration: none;
+            font-size: 15px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .website-link:hover {
+            color: var(--primary-gold);
+            transform: translateY(-2px);
+        }
+        
+        /* Services Section */
+        .services-elegant {
+            padding: 80px 0;
+            background: var(--white);
+        }
+        .services-grid-elegant {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        .service-card-elegant {
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: var(--radius);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid #f0f0f0;
+            position: relative;
+            overflow: hidden;
+        }
+        .service-card-elegant:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-gold), var(--primary-teal));
+        }
+        .service-card-elegant:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow);
+        }
+        .service-icon-elegant {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--light-gold) 0%, #fff8e1 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 32px;
+            color: var(--primary-teal);
+            transition: var(--transition);
+        }
+        .service-card-elegant:hover .service-icon-elegant {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, var(--primary-gold) 0%, #e8c154 100%);
+            color: var(--white);
+        }
+        .service-card-elegant h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--primary-navy);
+        }
+        .service-card-elegant p {
+            color: var(--text-light);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+        
+        /* About Section */
+        .about-elegant {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #f0f0f0 100%);
+        }
+        .about-content-elegant {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .about-text-elegant h2 {
+            font-size: 42px;
+            margin-bottom: 30px;
+            color: var(--primary-navy);
+        }
+        .about-text-elegant p {
+            color: var(--text-light);
+            margin-bottom: 25px;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        .about-features-elegant {
+            list-style: none;
+            margin-top: 30px;
+        }
+        .about-features-elegant li {
+            padding: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 16px;
+            color: var(--primary-navy);
+            border-bottom: 1px solid #eee;
+        }
+        .about-features-elegant li:last-child {
+            border-bottom: none;
+        }
+        .about-features-elegant i {
+            color: var(--primary-gold);
+            font-size: 18px;
+            background: var(--light-gold);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .about-image-elegant {
+            height: 500px;
+            background-size: cover;
+            background-position: center;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        .about-image-elegant:after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: -20px;
+            bottom: -20px;
+            border: 2px solid var(--primary-gold);
+            border-radius: var(--radius);
+            z-index: -1;
+        }
+        
+        /* Footer */
+        .footer-elegant {
+            background: linear-gradient(135deg, var(--primary-navy) 0%, #0d1440 100%);
+            color: var(--white);
+            padding: 80px 0 40px;
+            position: relative;
+        }
+        .footer-content-elegant {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 50px;
+            margin-bottom: 60px;
+        }
+        .footer-column-elegant h3 {
+            font-size: 22px;
+            margin-bottom: 30px;
+            color: var(--white);
+            position: relative;
+            padding-bottom: 15px;
+        }
+        .footer-column-elegant h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary-gold);
+        }
+        .footer-logo-elegant {
+            font-family: 'Crimson Text', serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--white);
+            letter-spacing: 1px;
+        }
+        .footer-column-elegant p {
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 25px;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+        .footer-links-elegant {
+            list-style: none;
+        }
+        .footer-links-elegant li {
+            margin-bottom: 15px;
+        }
+        .footer-links-elegant a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .footer-links-elegant a:hover {
+            color: var(--primary-gold);
+            transform: translateX(5px);
+        }
+        .contact-list-elegant {
+            list-style: none;
+        }
+        .contact-list-elegant li {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            color: rgba(255,255,255,0.7);
+            font-size: 15px;
+        }
+        .contact-list-elegant i {
+            color: var(--primary-gold);
+            font-size: 18px;
+            margin-top: 3px;
+        }
+        .footer-bottom-elegant {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+        }
 
         @media (max-width: 1200px) {
-            .packages-grid-luxury, .services-grid-elegant, .footer-content-elegant { grid-template-columns: repeat(2, 1fr); }
-            .search-form-luxury { grid-template-columns: repeat(2, 1fr); }
-            .about-content-elegant { grid-template-columns: 1fr; }
-            .slide-content-luxury { padding-left: 50px; }
-            .flight-deal-card { flex-direction: column; text-align: center; gap: 20px; }
-            .flight-airline { margin-bottom: 15px; }
+            .packages-grid-luxury, .services-grid-elegant, .footer-content-elegant {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .search-form-luxury {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .about-content-elegant {
+                grid-template-columns: 1fr;
+            }
+            .slide-content-luxury {
+                padding-left: 50px;
+            }
+            .flight-deal-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            .flight-airline {
+                margin-bottom: 15px;
+            }
         }
 
         @media (max-width: 768px) {
-            .header-top-bar { flex-direction: column; gap: 15px; text-align: center; }
-            .contact-info-elegant { flex-direction: column; gap: 15px; }
-            .main-header-elegant { flex-direction: column; gap: 30px; text-align: center; }
-            .nav-elegant { flex-direction: column; gap: 20px; }
-            .packages-grid-luxury, .services-grid-elegant, .footer-content-elegant { grid-template-columns: 1fr; }
-            .search-form-luxury { grid-template-columns: 1fr; }
-            .slide-content-luxury { padding: 0 30px; text-align: center; }
-            .slide-content-luxury h2 { font-size: 36px; }
-            .slide-content-luxury p { font-size: 18px; }
-            .section-header h2 { font-size: 32px; }
-            .poster-phones { flex-direction: column; gap: 15px; }
-            .poster-websites { flex-direction: column; gap: 15px; }
+            .header-top-bar {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            .contact-info-elegant {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .main-header-elegant {
+                flex-direction: column;
+                gap: 30px;
+                text-align: center;
+            }
+            .nav-elegant {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .packages-grid-luxury, .services-grid-elegant, .footer-content-elegant {
+                grid-template-columns: 1fr;
+            }
+            .search-form-luxury {
+                grid-template-columns: 1fr;
+            }
+            .slide-content-luxury {
+                padding: 0 30px;
+                text-align: center;
+            }
+            .slide-content-luxury h2 {
+                font-size: 36px;
+            }
+            .slide-content-luxury p {
+                font-size: 18px;
+            }
+            .section-header h2 {
+                font-size: 32px;
+            }
+            .poster-phones {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .poster-websites {
+                flex-direction: column;
+                gap: 15px;
+            }
         }
 
         @keyframes fadeInUp {
@@ -717,9 +1336,9 @@
                     <span><i class="fas fa-map-marker-alt"></i> Rambla Badal 141, Barcelona</span>
                 </div>
                 <div class="social-elegant">
-                    <a href="https://www.facebook.com/mustafatravelstours" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://x.com/mustafa_tours" aria-label="Twitter" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
-                    <a href="https://www.instagram.com/mustafatraveltours/" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
 
@@ -737,12 +1356,11 @@
                 <nav class="nav-elegant">
                     <a href="#home" class="active">Home</a>
                     <a href="#umrah">Umrah Packages</a>
-                    <a href="#hajj">Hajj 2026</a>
                     <a href="#flights">Flight Deals</a>
                     <a href="#services">Services</a>
                     <a href="#about">About Us</a>
                     <a href="#contact">Contact</a>
-                    <a href="https://wa.me/34611473217" class="whatsapp-btn-elegant" target="_blank" rel="noopener">
+                    <a href="https://wa.me/34611473217" class="whatsapp-btn-elegant" target="_blank">
                         <i class="fab fa-whatsapp"></i> Book Now
                     </a>
                 </nav>
@@ -750,7 +1368,7 @@
         </div>
     </header>
 
-    <!-- UMRAH QUOTATION BUTTON - Added in Hero Section -->
+    <!-- UMRAH QUOTATION BUTTON -->
     <div class="container" style="text-align: center; margin-top: 30px;">
         <button class="umrah-quote-btn" onclick="openQuotationModal()">
             <i class="fas fa-calculator"></i> 🕋 Get Custom Umrah Quotation
@@ -763,19 +1381,19 @@
         <div class="luxury-slide active" style="background-image: url('https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg');">
             <div class="slide-overlay">
                 <div class="slide-content-luxury animate-fade-in-up">
-                    <h2>Premium Umrah Experiences 2024</h2>
+                    <h2>Premium Umrah Experiences</h2>
                     <p>Journey with elegance and devotion. Our exclusive Umrah packages offer luxury accommodations near Haram with personalized spiritual guidance.</p>
                     <a href="#umrah" class="luxury-btn">Explore Packages <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
         
-        <div class="luxury-slide" style="background-image: url('https://images.pexels.com/photos/29102586/pexels-photo-29102586.jpeg');">
+        <div class="luxury-slide" style="background-image: url('https://images.pexels.com/photos/2895295/pexels-photo-2895295.jpeg');">
             <div class="slide-overlay">
                 <div class="slide-content-luxury">
-                    <h2>Hajj 2026 - Book Your Spiritual Journey</h2>
-                    <p>Secure your place for Hajj 2026 with our premium packages featuring 5-star accommodations and comprehensive services.</p>
-                    <a href="#hajj" class="luxury-btn">Book Hajj 2026 <i class="fas fa-arrow-right"></i></a>
+                    <h2>Luxury Umrah Packages 2024</h2>
+                    <p>Experience the spiritual journey with 5-star accommodations and VIP services.</p>
+                    <a href="#umrah" class="luxury-btn">View Packages <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
@@ -796,6 +1414,270 @@
             <div class="slider-dot-luxury" data-slide="2"></div>
         </div>
     </section>
+
+    <!-- Elegant Search Box -->
+    <div class="container">
+        <div class="search-luxury animate-fade-in-up">
+            <h3>Design Your Perfect Journey</h3>
+            <form class="search-form-luxury" id="searchForm">
+                <div class="form-group-luxury">
+                    <label>Destination</label>
+                    <select id="destinationSelect">
+                        <option value="">Select Destination</option>
+                        <option value="makkah">Makkah, Saudi Arabia</option>
+                        <option value="madina">Madina, Saudi Arabia</option>
+                        <option value="dubai">Dubai, UAE</option>
+                        <option value="istanbul">Istanbul, Turkey</option>
+                        <option value="london">London, UK</option>
+                        <option value="paris">Paris, France</option>
+                    </select>
+                </div>
+                <div class="form-group-luxury">
+                    <label>Package Type</label>
+                    <select id="packageType">
+                        <option value="">Select Package</option>
+                        <option value="umrah">Umrah Package</option>
+                        <option value="family">Family Vacation</option>
+                        <option value="luxury">Luxury Holiday</option>
+                        <option value="business">Business Travel</option>
+                    </select>
+                </div>
+                <div class="form-group-luxury">
+                    <label>Check In</label>
+                    <input type="date" id="checkIn">
+                </div>
+                <div class="form-group-luxury">
+                    <label>Check Out</label>
+                    <input type="date" id="checkOut">
+                </div>
+                <button type="submit" class="search-btn-luxury" id="searchSubmit">
+                    <i class="fas fa-search"></i> Search Packages
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Umrah Packages Section -->
+    <section class="packages-luxury" id="umrah">
+        <div class="container">
+            <div class="section-header">
+                <h2>Premium Umrah Packages</h2>
+                <p>Experience spiritual devotion with luxury accommodations near the Holy Mosques</p>
+            </div>
+
+            <div class="packages-grid-luxury">
+                <!-- Economy Package -->
+                <div class="package-card-luxury animate-fade-in-up">
+                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/4346403/pexels-photo-4346403.jpeg');">
+                        <div class="package-badge">€895</div>
+                    </div>
+                    <div class="package-content-luxury">
+                        <h3>Essence Umrah Package</h3>
+                        <p>A beautiful beginning to your spiritual journey with essential comforts and proximity to Haram.</p>
+                        <ul class="package-features-luxury">
+                            <li><i class="fas fa-check-circle"></i> 7 Days Makkah + 3 Days Madina</li>
+                            <li><i class="fas fa-check-circle"></i> 3-Star Hotel with Shuttle</li>
+                            <li><i class="fas fa-check-circle"></i> Economy Flight Tickets</li>
+                            <li><i class="fas fa-check-circle"></i> Umrah Visa Processing</li>
+                            <li><i class="fas fa-check-circle"></i> Airport Transfers</li>
+                        </ul>
+                        <button class="package-btn-luxury view-package-btn" data-package="economy">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Economy Plus Package -->
+                <div class="package-card-luxury animate-fade-in-up">
+                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/2895295/pexels-photo-2895295.jpeg');">
+                        <div class="package-badge">€999</div>
+                    </div>
+                    <div class="package-content-luxury">
+                        <h3>Enhanced Umrah Package</h3>
+                        <p>Elevated comfort with premium hotels and additional services for a seamless spiritual experience.</p>
+                        <ul class="package-features-luxury">
+                            <li><i class="fas fa-check-circle"></i> 7 Days Makkah + 3 Days Madina</li>
+                            <li><i class="fas fa-check-circle"></i> 4-Star Hotel with Shuttle</li>
+                            <li><i class="fas fa-check-circle"></i> Flight Tickets Included</li>
+                            <li><i class="fas fa-check-circle"></i> Fast-Track Visa Processing</li>
+                            <li><i class="fas fa-check-circle"></i> Luxury Airport Transfers</li>
+                        </ul>
+                        <button class="package-btn-luxury view-package-btn" data-package="economy-plus">View Details</button>
+                    </div>
+                </div>
+
+                <!-- Business Class Package -->
+                <div class="package-card-luxury animate-fade-in-up">
+                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/12808985/pexels-photo-12808985.jpeg');">
+                        <div class="package-badge">€1,299</div>
+                    </div>
+                    <div class="package-content-luxury">
+                        <h3>Elite Umrah Package</h3>
+                        <p>The ultimate spiritual journey with luxury accommodations and personalized concierge service.</p>
+                        <ul class="package-features-luxury">
+                            <li><i class="fas fa-check-circle"></i> 6 Days Makkah + 4 Days Madina</li>
+                            <li><i class="fas fa-check-circle"></i> 5-Star Premium Hotel</li>
+                            <li><i class="fas fa-check-circle"></i> Business Class Upgrade</li>
+                            <li><i class="fas fa-check-circle"></i> Premium Visa Processing</li>
+                            <li><i class="fas fa-check-circle"></i> Private Luxury Transfers</li>
+                        </ul>
+                        <button class="package-btn-luxury view-package-btn" data-package="business">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FLIGHT DEALS SECTION -->
+    <section class="flight-deals-section" id="flights">
+        <div class="container">
+            <div class="section-header">
+                <h2>Exclusive Flight Deals</h2>
+                <p>Special offers from Barcelona to Pakistan and worldwide destinations</p>
+            </div>
+
+            <div class="flight-deals-container">
+                <div class="flight-deal-card animate-fade-in-up">
+                    <div class="flight-airline">
+                        <div class="airline-logo" style="background: #BED742;">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <div class="airline-name">ETIHAD AIRWAYS</div>
+                    </div>
+                    <div class="flight-details">
+                        <div class="flight-route">
+                            <span class="city">BARCELONA</span>
+                            <i class="fas fa-long-arrow-alt-right"></i>
+                            <span class="city">LAHORE</span>
+                        </div>
+                        <div class="flight-price">€ 580 EURO</div>
+                        <div class="luggage-info">40KG CHECK-IN | 7KG HAND CARRY</div>
+                        <div class="validity">Limited Seats Available</div>
+                    </div>
+                    <a href="https://wa.me/34611473217?text=I'm interested in BARCELONA to LAHORE flight (€580)" class="flight-book-btn" target="_blank"><i class="fab fa-whatsapp"></i> Book Now</a>
+                </div>
+
+                <div class="flight-deal-card animate-fade-in-up">
+                    <div class="flight-airline">
+                        <div class="airline-logo" style="background: #BED742;">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <div class="airline-name">ETIHAD AIRWAYS</div>
+                    </div>
+                    <div class="flight-details">
+                        <div class="flight-route">
+                            <span class="city">BARCELONA</span>
+                            <i class="fas fa-long-arrow-alt-right"></i>
+                            <span class="city">ISLAMABAD</span>
+                        </div>
+                        <div class="flight-price">€ 585 EURO</div>
+                        <div class="luggage-info">40KG CHECK-IN | 7KG HAND CARRY</div>
+                        <div class="validity">Limited Seats Available</div>
+                    </div>
+                    <a href="https://wa.me/34611473217?text=I'm interested in BARCELONA to ISLAMABAD flight (€585)" class="flight-book-btn" target="_blank"><i class="fab fa-whatsapp"></i> Book Now</a>
+                </div>
+
+                <div class="poster-contact-info animate-fade-in-up">
+                    <h3>Mustafa Travels & Tours</h3>
+                    <p class="poster-address">Rambla Badal 141-Local 1 Bajo<br>Barcelona 08028</p>
+                    <div class="poster-phones">
+                        <div class="phone-number"><i class="fas fa-phone"></i> +34-632234216</div>
+                        <div class="phone-number"><i class="fab fa-whatsapp"></i> +34-611473217</div>
+                        <div class="phone-number"><i class="fas fa-phone"></i> +34-631984997</div>
+                    </div>
+                    <div class="poster-websites">
+                        <a href="#" class="website-link" target="_blank"><i class="fas fa-globe"></i> www.mustafatravels.com</a>
+                        <a href="#" class="website-link" target="_blank"><i class="fas fa-globe"></i> www.mustafatravels.org</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-elegant" id="services">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Premium Services</h2>
+                <p>Comprehensive travel solutions tailored to your spiritual and luxury needs</p>
+            </div>
+            <div class="services-grid-elegant">
+                <div class="service-card-elegant animate-fade-in-up"><div class="service-icon-elegant"><i class="fas fa-passport"></i></div><h3>Visa Processing</h3><p>Expert visa processing for Umrah and worldwide travel with guaranteed approval</p></div>
+                <div class="service-card-elegant animate-fade-in-up"><div class="service-icon-elegant"><i class="fas fa-kaaba"></i></div><h3>Umrah Packages</h3><p>Complete spiritual journeys with luxury accommodations near Holy Mosques</p></div>
+                <div class="service-card-elegant animate-fade-in-up"><div class="service-icon-elegant"><i class="fas fa-hotel"></i></div><h3>Luxury Hotels</h3><p>5-star hotel reservations worldwide with exclusive amenities and locations</p></div>
+                <div class="service-card-elegant animate-fade-in-up"><div class="service-icon-elegant"><i class="fas fa-plane"></i></div><h3>Flight Booking</h3><p>Best deals on flights from Barcelona to worldwide destinations</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-elegant" id="about">
+        <div class="container">
+            <div class="about-content-elegant">
+                <div class="about-text-elegant animate-fade-in-up">
+                    <h2>Experience Excellence in Spiritual Travel</h2>
+                    <p>Mustafa Travels & Tours has been crafting exceptional travel experiences since 2024. We specialize in premium Umrah journeys, offering unparalleled service and attention to detail.</p>
+                    <p>Our commitment to excellence ensures every spiritual journey is memorable, comfortable, and deeply meaningful. We blend traditional values with modern luxury to create unforgettable experiences.</p>
+                    <ul class="about-features-elegant">
+                        <li><i class="fas fa-check"></i> Expert Travel Consultants</li>
+                        <li><i class="fas fa-check"></i> 24/7 Premium Support</li>
+                        <li><i class="fas fa-check"></i> Exclusive Hotel Partnerships</li>
+                        <li><i class="fas fa-check"></i> Personalized Service</li>
+                    </ul>
+                </div>
+                <div class="about-image-elegant" style="background-image: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-elegant" id="contact">
+        <div class="container">
+            <div class="footer-content-elegant">
+                <div class="footer-column-elegant">
+                    <div class="footer-logo-elegant">MUSTAFA TRAVELS & TOURS</div>
+                    <p>Specialists in premium Umrah & Worldwide Travel experiences. Crafting spiritual journeys with elegance since 2024.</p>
+                    <ul class="contact-list-elegant">
+                        <li><i class="fas fa-map-marker-alt"></i> Rambla Badal 141 Local 1 Bajo, Barcelona 08028</li>
+                        <li><i class="fas fa-phone"></i> +34-632234216</li>
+                        <li><i class="fab fa-whatsapp"></i> +34-611473217</li>
+                        <li><i class="fas fa-envelope"></i> mustafatravelstours@gmail.com</li>
+                    </ul>
+                </div>
+                <div class="footer-column-elegant">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links-elegant">
+                        <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
+                        <li><a href="#umrah"><i class="fas fa-chevron-right"></i> Umrah Packages</a></li>
+                        <li><a href="#flights"><i class="fas fa-chevron-right"></i> Flight Deals</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Services</a></li>
+                        <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                        <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column-elegant">
+                    <h3>Our Services</h3>
+                    <ul class="footer-links-elegant">
+                        <li><a href="#umrah"><i class="fas fa-chevron-right"></i> Umrah Packages</a></li>
+                        <li><a href="#flights"><i class="fas fa-chevron-right"></i> Flight Booking</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Hotel Reservation</a></li>
+                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Visa Services</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column-elegant">
+                    <h3>Business Hours</h3>
+                    <ul class="footer-links-elegant">
+                        <li><i class="far fa-clock"></i> Monday - Thursday: 10:30 AM - 8:30 PM</li>
+                        <li><i class="far fa-clock"></i> Friday: 10:30 AM - 1:00 PM & 3:00 PM - 8:30 PM</li>
+                        <li><i class="far fa-clock"></i> Saturday: 10:30 AM - 7:30 PM</li>
+                        <li><i class="far fa-clock"></i> Sunday: Closed</li>
+                        <li><i class="fas fa-phone-alt"></i> 24/7 Emergency Support</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom-elegant">
+                <p>&copy; 2024 Mustafa Travels & Tours. All rights reserved. | Crafted with <i class="fas fa-heart" style="color: #d4af37;"></i> for spiritual journeys</p>
+            </div>
+        </div>
+    </footer>
 
     <!-- ========== UMRAH QUOTATION MODAL ========== -->
     <div id="quotationModal" class="quotation-modal">
@@ -878,323 +1760,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Rest of your original content continues here -->
-    <!-- Elegant Search Box -->
-    <div class="container">
-        <div class="search-luxury animate-fade-in-up">
-            <h3>Design Your Perfect Journey</h3>
-            <form class="search-form-luxury" id="searchForm">
-                <div class="form-group-luxury">
-                    <label>Destination</label>
-                    <select id="destinationSelect">
-                        <option value="">Select Destination</option>
-                        <option value="makkah">Makkah, Saudi Arabia</option>
-                        <option value="madina">Madina, Saudi Arabia</option>
-                        <option value="dubai">Dubai, UAE</option>
-                        <option value="istanbul">Istanbul, Turkey</option>
-                        <option value="london">London, UK</option>
-                        <option value="paris">Paris, France</option>
-                    </select>
-                </div>
-                <div class="form-group-luxury">
-                    <label>Package Type</label>
-                    <select id="packageType">
-                        <option value="">Select Package</option>
-                        <option value="umrah">Umrah Package</option>
-                        <option value="hajj">Hajj Package 2026</option>
-                        <option value="family">Family Vacation</option>
-                        <option value="luxury">Luxury Holiday</option>
-                        <option value="business">Business Travel</option>
-                    </select>
-                </div>
-                <div class="form-group-luxury">
-                    <label>Check In</label>
-                    <input type="date" id="checkIn">
-                </div>
-                <div class="form-group-luxury">
-                    <label>Check Out</label>
-                    <input type="date" id="checkOut">
-                </div>
-                <button type="submit" class="search-btn-luxury" id="searchSubmit">
-                    <i class="fas fa-search"></i> Search Packages
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Umrah Packages Section -->
-    <section class="packages-luxury" id="umrah">
-        <div class="container">
-            <div class="section-header">
-                <h2>Premium Umrah Packages 2024</h2>
-                <p>Experience spiritual devotion with luxury accommodations near the Holy Mosques</p>
-            </div>
-
-            <div class="packages-grid-luxury">
-                <!-- Economy Package -->
-                <div class="package-card-luxury animate-fade-in-up">
-                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/4346403/pexels-photo-4346403.jpeg');">
-                        <div class="package-badge">€895</div>
-                    </div>
-                    <div class="package-content-luxury">
-                        <h3>Essence Umrah Package</h3>
-                        <p>A beautiful beginning to your spiritual journey with essential comforts and proximity to Haram.</p>
-                        <ul class="package-features-luxury">
-                            <li><i class="fas fa-check-circle"></i> 7 Days Makkah + 3 Days Madina</li>
-                            <li><i class="fas fa-check-circle"></i> 3-Star Hotel with Shuttle</li>
-                            <li><i class="fas fa-check-circle"></i> Economy Flight Tickets</li>
-                            <li><i class="fas fa-check-circle"></i> Umrah Visa Processing</li>
-                            <li><i class="fas fa-check-circle"></i> Airport Transfers</li>
-                        </ul>
-                        <button class="package-btn-luxury view-package-btn" data-package="economy">View Details</button>
-                    </div>
-                </div>
-
-                <!-- Economy Plus Package -->
-                <div class="package-card-luxury animate-fade-in-up">
-                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/2895295/pexels-photo-2895295.jpeg');">
-                        <div class="package-badge">€999</div>
-                    </div>
-                    <div class="package-content-luxury">
-                        <h3>Enhanced Umrah Package</h3>
-                        <p>Elevated comfort with premium hotels and additional services for a seamless spiritual experience.</p>
-                        <ul class="package-features-luxury">
-                            <li><i class="fas fa-check-circle"></i> 7 Days Makkah + 3 Days Madina</li>
-                            <li><i class="fas fa-check-circle"></i> 4-Star Hotel with Shuttle</li>
-                            <li><i class="fas fa-check-circle"></i> Flight Tickets Included</li>
-                            <li><i class="fas fa-check-circle"></i> Fast-Track Visa Processing</li>
-                            <li><i class="fas fa-check-circle"></i> Luxury Airport Transfers</li>
-                        </ul>
-                        <button class="package-btn-luxury view-package-btn" data-package="economy-plus">View Details</button>
-                    </div>
-                </div>
-
-                <!-- Business Class Package -->
-                <div class="package-card-luxury animate-fade-in-up">
-                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/12808985/pexels-photo-12808985.jpeg');">
-                        <div class="package-badge">€1,299</div>
-                    </div>
-                    <div class="package-content-luxury">
-                        <h3>Elite Umrah Package</h3>
-                        <p>The ultimate spiritual journey with luxury accommodations and personalized concierge service.</p>
-                        <ul class="package-features-luxury">
-                            <li><i class="fas fa-check-circle"></i> 6 Days Makkah + 4 Days Madina</li>
-                            <li><i class="fas fa-check-circle"></i> 5-Star Premium Hotel</li>
-                            <li><i class="fas fa-check-circle"></i> Business Class Upgrade</li>
-                            <li><i class="fas fa-check-circle"></i> Premium Visa Processing</li>
-                            <li><i class="fas fa-check-circle"></i> Private Luxury Transfers</li>
-                        </ul>
-                        <button class="package-btn-luxury view-package-btn" data-package="business">View Details</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Continue with your remaining sections... -->
-    <section class="hajj-section-luxury" id="hajj">
-        <div class="container">
-            <div class="section-header">
-                <h2>Hajj Packages 2026</h2>
-                <p>Secure your spiritual journey with our exclusive Hajj 2026 packages</p>
-            </div>
-
-            <div class="packages-grid-luxury">
-                <!-- Hajj Economy Package -->
-                <div class="package-card-luxury hajj-package-luxury animate-fade-in-up">
-                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/4346403/pexels-photo-4346403.jpeg');">
-                        <div class="hajj-badge-special"><i class="fas fa-kaaba"></i> HAJJ 2026</div>
-                        <div class="package-badge">€7,890</div>
-                    </div>
-                    <div class="package-content-luxury">
-                        <h3>Essence Hajj Package 2026</h3>
-                        <p>A complete Hajj journey with essential services and comfortable accommodation for 2026.</p>
-                        <ul class="package-features-luxury">
-                            <li><i class="fas fa-star"></i> Approved Quota</li>
-                            <li><i class="fas fa-star"></i> Accommodation in Makkah & Madina</li>
-                            <li><i class="fas fa-star"></i> Economy Flight Tickets</li>
-                            <li><i class="fas fa-star"></i> Hajj Visa Processing</li>
-                            <li><i class="fas fa-star"></i> Transportation During Hajj</li>
-                        </ul>
-                        <button class="package-btn-luxury view-hajj-btn" data-package="hajj-economy">View Details</button>
-                    </div>
-                </div>
-
-                <!-- Hajj Premium Package -->
-                <div class="package-card-luxury hajj-package-luxury animate-fade-in-up">
-                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg');">
-                        <div class="hajj-badge-special"><i class="fas fa-kaaba"></i> HAJJ 2026</div>
-                        <div class="package-badge">€12,900</div>
-                    </div>
-                    <div class="package-content-luxury">
-                        <h3>Elite Hajj Package 2026</h3>
-                        <p>Premium Hajj experience with luxury accommodations and exclusive VIP services for 2026.</p>
-                        <ul class="package-features-luxury">
-                            <li><i class="fas fa-crown"></i> Guaranteed Quota</li>
-                            <li><i class="fas fa-crown"></i> 5-Star Hotel near Haram</li>
-                            <li><i class="fas fa-crown"></i> Business Class Flights</li>
-                            <li><i class="fas fa-crown"></i> Premium Visa Processing</li>
-                            <li><i class="fas fa-crown"></i> Personal Hajj Guide</li>
-                        </ul>
-                        <button class="package-btn-luxury view-hajj-btn" data-package="hajj-premium">View Details</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FLIGHT DEALS SECTION -->
-    <section class="flight-deals-section" id="flights">
-        <div class="container">
-            <div class="section-header">
-                <h2>Exclusive Flight Deals</h2>
-                <p>Special offers from Barcelona to Pakistan and worldwide destinations</p>
-            </div>
-
-            <div class="flight-deals-container">
-                <div class="flight-deal-card animate-fade-in-up">
-                    <div class="flight-airline">
-                        <div class="airline-logo" style="background: #BED742;">
-                            <i class="fas fa-plane"></i>
-                        </div>
-                        <div class="airline-name">ETIHAD AIRWAYS</div>
-                    </div>
-                    <div class="flight-details">
-                        <div class="flight-route">
-                            <span class="city">BARCELONA</span>
-                            <i class="fas fa-long-arrow-alt-right"></i>
-                            <span class="city">LAHORE</span>
-                        </div>
-                        <div class="flight-price">€ 580 EURO</div>
-                        <div class="luggage-info">40KG CHECK-IN | 7KG HAND CARRY</div>
-                        <div class="validity">Limited Seats Available</div>
-                    </div>
-                    <a href="https://wa.me/34611473217?text=I'm interested in BARCELONA to LAHORE flight (€580)" class="flight-book-btn" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Book Now</a>
-                </div>
-
-                <div class="flight-deal-card animate-fade-in-up">
-                    <div class="flight-airline">
-                        <div class="airline-logo" style="background: #BED742;">
-                            <i class="fas fa-plane"></i>
-                        </div>
-                        <div class="airline-name">ETIHAD AIRWAYS</div>
-                    </div>
-                    <div class="flight-details">
-                        <div class="flight-route">
-                            <span class="city">BARCELONA</span>
-                            <i class="fas fa-long-arrow-alt-right"></i>
-                            <span class="city">ISLAMABAD</span>
-                        </div>
-                        <div class="flight-price">€ 585 EURO</div>
-                        <div class="luggage-info">40KG CHECK-IN | 7KG HAND CARRY</div>
-                        <div class="validity">Limited Seats Available</div>
-                    </div>
-                    <a href="https://wa.me/34611473217?text=I'm interested in BARCELONA to ISLAMABAD flight (€585)" class="flight-book-btn" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Book Now</a>
-                </div>
-
-                <div class="poster-contact-info animate-fade-in-up">
-                    <h3>Mustafa Travels & Tours</h3>
-                    <p class="poster-address">Rambla Badal 141-Local 1 Bajo<br>Barcelona 08028</p>
-                    <div class="poster-phones">
-                        <div class="phone-number"><i class="fas fa-phone"></i> +34-632234216</div>
-                        <div class="phone-number"><i class="fab fa-whatsapp"></i> +34-611473217</div>
-                        <div class="phone-number"><i class="fas fa-phone"></i> +34-631984997</div>
-                    </div>
-                    <div class="poster-websites">
-                        <a href="https://www.mustafatravels.com" class="website-link" target="_blank" rel="noopener"><i class="fas fa-globe"></i> www.mustafatravels.com</a>
-                        <a href="https://www.mustafatravels.org" class="website-link" target="_blank" rel="noopener"><i class="fas fa-globe"></i> www.mustafatravels.org</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="services-elegant" id="services">
-        <div class="container">
-            <div class="section-header">
-                <h2>Our Premium Services</h2>
-                <p>Comprehensive travel solutions tailored to your spiritual and luxury needs</p>
-            </div>
-            <div class="services-grid-elegant">
-                <div class="service-card-elegant animate-fade-in-up"><div class="service-icon-elegant"><i class="fas fa-passport"></i></div><h3>Visa Processing</h3><p>Expert visa processing for Umrah, Hajj, and worldwide travel with guaranteed approval</p></div>
-                <div class="service-card-elegant animate-fade-in-up"><div class="service-icon-elegant"><i class="fas fa-kaaba"></i></div><h3>Umrah Packages</h3><p>Complete spiritual journeys with luxury accommodations near Holy Mosques</p></div>
-                <div class="service-card-elegant animate-fade-in-up"><div class="service-icon-elegant"><i class="fas fa-hotel"></i></div><h3>Luxury Hotels</h3><p>5-star hotel reservations worldwide with exclusive amenities and locations</p></div>
-                <div class="service-card-elegant animate-fade-in-up"><div class="service-icon-elegant"><i class="fas fa-mosque"></i></div><h3>Hajj 2026</h3><p>Guaranteed Hajj quotas with premium services for the spiritual journey of a lifetime</p></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="about-elegant" id="about">
-        <div class="container">
-            <div class="about-content-elegant">
-                <div class="about-text-elegant animate-fade-in-up">
-                    <h2>Experience Excellence in Spiritual Travel</h2>
-                    <p>Mustafa Travels & Tours has been crafting exceptional travel experiences since 2024. We specialize in premium Umrah and Hajj journeys, offering unparalleled service and attention to detail.</p>
-                    <p>Our commitment to excellence ensures every spiritual journey is memorable, comfortable, and deeply meaningful. We blend traditional values with modern luxury to create unforgettable experiences.</p>
-                    <ul class="about-features-elegant">
-                        <li><i class="fas fa-check"></i> Expert Travel Consultants</li>
-                        <li><i class="fas fa-check"></i> 24/7 Premium Support</li>
-                        <li><i class="fas fa-check"></i> Exclusive Hotel Partnerships</li>
-                        <li><i class="fas fa-check"></i> Approved Hajj Quotas for Europeans</li>
-                        <li><i class="fas fa-check"></i> Personalized Service</li>
-                    </ul>
-                </div>
-                <div class="about-image-elegant" style="background-image: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');"></div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer-elegant" id="contact">
-        <div class="container">
-            <div class="footer-content-elegant">
-                <div class="footer-column-elegant">
-                    <div class="footer-logo-elegant">MUSTAFA TRAVELS & TOURS</div>
-                    <p>Specialists in premium Umrah, Hajj & Worldwide Travel experiences. Crafting spiritual journeys with elegance since 2024.</p>
-                    <ul class="contact-list-elegant">
-                        <li><i class="fas fa-map-marker-alt"></i> Rambla Badal 141 Local 1 Bajo, Barcelona 08028</li>
-                        <li><i class="fas fa-phone"></i> +34-632234216</li>
-                        <li><i class="fab fa-whatsapp"></i> +34-611473217</li>
-                        <li><i class="fas fa-envelope"></i> mustafatravelstours@gmail.com</li>
-                    </ul>
-                </div>
-                <div class="footer-column-elegant">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links-elegant">
-                        <li><a href="#home"><i class="fas fa-chevron-right"></i> Home</a></li>
-                        <li><a href="#umrah"><i class="fas fa-chevron-right"></i> Umrah Packages</a></li>
-                        <li><a href="#hajj"><i class="fas fa-chevron-right"></i> Hajj 2026</a></li>
-                        <li><a href="#flights"><i class="fas fa-chevron-right"></i> Flight Deals</a></li>
-                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Services</a></li>
-                        <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column-elegant">
-                    <h3>Our Services</h3>
-                    <ul class="footer-links-elegant">
-                        <li><a href="#umrah"><i class="fas fa-chevron-right"></i> Umrah Packages</a></li>
-                        <li><a href="#hajj"><i class="fas fa-chevron-right"></i> Hajj 2026</a></li>
-                        <li><a href="#flights"><i class="fas fa-chevron-right"></i> Flight Booking</a></li>
-                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Hotel Reservation</a></li>
-                        <li><a href="#services"><i class="fas fa-chevron-right"></i> Visa Services</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column-elegant">
-                    <h3>Business Hours</h3>
-                    <ul class="footer-links-elegant">
-                        <li><i class="far fa-clock"></i> Monday - Thursday: 10:30 AM - 8:30 PM</li>
-                        <li><i class="far fa-clock"></i> Friday: 10:30 AM - 1:00 PM & 3:00 PM - 8:30 PM</li>
-                        <li><i class="far fa-clock"></i> Saturday: 10:30 AM - 7:30 PM</li>
-                        <li><i class="far fa-clock"></i> Sunday: Closed</li>
-                        <li><i class="fas fa-phone-alt"></i> 24/7 Emergency Support</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom-elegant">
-                <p>&copy; 2024 Mustafa Travels & Tours. All rights reserved. | Crafted with <i class="fas fa-heart" style="color: #d4af37;"></i> for spiritual journeys</p>
-            </div>
-        </div>
-    </footer>
 
     <script>
         // Modal Functions
@@ -1375,7 +1940,7 @@
             populateHotels();
         })();
 
-        // Your original JavaScript code continues here...
+        // Slider Functionality
         let currentSlide = 0;
         const slides = document.querySelectorAll('.luxury-slide');
         const dots = document.querySelectorAll('.slider-dot-luxury');
@@ -1411,6 +1976,7 @@
             });
         });
 
+        // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1421,6 +1987,7 @@
             });
         });
 
+        // Search form
         document.getElementById('searchForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const destination = document.getElementById('destinationSelect').value;
@@ -1433,17 +2000,6 @@
         document.getElementById('checkIn').min = today;
         document.getElementById('checkOut').min = today;
         document.getElementById('checkIn').addEventListener('change', function() { document.getElementById('checkOut').min = this.value; });
-
-        document.querySelectorAll('.view-hajj-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const packageType = this.getAttribute('data-package');
-                let hajjPackage = packageType === 'hajj-economy' ? { title: "Essence Hajj Package 2026", price: "€7,890", description: "A complete Hajj journey with essential services.", features: ["Approved Hajj Quota","Accommodation in Makkah & Madina","Economy Flight Tickets Included","Hajj Visa Processing","Transportation During Hajj Rituals","Experienced Hajj Guide","Medical Assistance Available"] } : { title: "Elite Hajj Package 2026", price: "€12,900", description: "Premium Hajj experience with luxury accommodations.", features: ["Guaranteed Hajj Quota","5-Star Hotel within 500m of Haram","Business Class Flight Tickets","Premium Fast-Track Visa Processing","Personal Hajj Guide & Assistant","VIP Transportation Services","Luxury Accommodation in Mina & Arafat"] };
-                const modalHTML = `<div class="modal-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:1000;"><div class="modal-content" style="background:white;padding:50px;border-radius:20px;max-width:600px;width:90%;position:relative;"><button class="close-modal" style="position:absolute;top:20px;right:20px;background:none;border:none;font-size:24px;cursor:pointer;">&times;</button><div style="display:flex;align-items:center;gap:15px;margin-bottom:20px;"><i class="fas fa-kaaba" style="color:#d4af37;font-size:32px;"></i><h2 style="color:#1a237e;">${hajjPackage.title}</h2></div><div style="color:#d4af37;font-size:28px;font-weight:bold;margin-bottom:20px;">${hajjPackage.price}</div><p style="color:#666;margin-bottom:30px;">${hajjPackage.description}</p><h3 style="color:#1a237e;margin-bottom:15px;">Package Includes:</h3><ul style="list-style:none;margin-bottom:40px;">${hajjPackage.features.map(f => `<li style="padding:12px 0;border-bottom:1px solid #eee;display:flex;align-items:center;gap:12px;"><i class="fas fa-star" style="color:#d4af37;"></i> ${f}</li>`).join('')}</ul><a href="https://wa.me/34611473217?text=I'm interested in ${hajjPackage.title} (${hajjPackage.price})" class="whatsapp-btn-elegant" style="display:block;text-align:center;text-decoration:none;"><i class="fab fa-whatsapp"></i> Book Hajj 2026</a></div></div>`;
-                document.body.insertAdjacentHTML('beforeend', modalHTML);
-                document.querySelector('.close-modal').addEventListener('click', () => { document.querySelector('.modal-overlay').remove(); });
-                document.querySelector('.modal-overlay').addEventListener('click', (e) => { if (e.target.classList.contains('modal-overlay')) document.querySelector('.modal-overlay').remove(); });
-            });
-        });
     </script>
 </body>
 </html>
