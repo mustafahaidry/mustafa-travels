@@ -9,37 +9,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mustafa Travels & Tours | Premium Umrah Packages from Barcelona</title>
-    <meta name="description" content="Premium Umrah packages and worldwide travel services from Barcelona. Experience spiritual journeys with luxury accommodations near Haram.">
-    <meta name="keywords" content="Umrah packages, Barcelona travel agency, Makkah hotels, Madina tours, Muslim travel, spiritual journeys, flight tickets">
+    <meta name="description" content="Premium Umrah packages from Barcelona. Economy and Economy Plus packages with hotels near Haram. Best Umrah deals 2026.">
+    <meta name="keywords" content="Umrah packages, Barcelona travel agency, Makkah hotels, Madina hotels, Qila Ajyad, Saif Al Majd, Swiss Khalil, Umrah deals">
     <meta name="author" content="Mustafa Travels & Tours">
     
     <!-- Open Graph Tags -->
-    <meta property="og:title" content="Mustafa Travels & Tours | Luxury Umrah Experiences">
-    <meta property="og:description" content="Specialists in premium Umrah packages with 5-star accommodations near Holy Mosques.">
+    <meta property="og:title" content="Mustafa Travels & Tours | Umrah Packages 2026">
+    <meta property="og:description" content="Economy and Economy Plus Umrah packages with hotels near Haram. Best deals from Barcelona.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg">
-    
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "TravelAgency",
-        "name": "Mustafa Travels & Tours",
-        "description": "Premium Umrah & Worldwide Travel Specialists",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Rambla Badal 141 Local 1 Bajo",
-            "addressLocality": "Barcelona",
-            "postalCode": "08028",
-            "addressCountry": "ES"
-        },
-        "telephone": "+34-632234216",
-        "email": "mustafatravelstours@gmail.com",
-        "openingHours": "Mo-Th 10:30-20:30, Fr 10:30-13:00,15:00-20:30, Sa 10:30-19:30",
-        "priceRange": "€€€",
-        "url": "https://mustafatravelstours.com"
-    }
-    </script>
     
     <!-- Fonts and Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -778,7 +756,7 @@
             font-size: 18px;
         }
         
-        /* Umrah Packages */
+        /* Umrah Packages - Updated with new packages */
         .packages-luxury {
             padding: 80px 0;
             background: var(--white);
@@ -801,10 +779,19 @@
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
         .package-image-luxury {
-            height: 250px;
+            height: 200px;
             background-size: cover;
             background-position: center;
             position: relative;
+            background: linear-gradient(135deg, var(--primary-navy), var(--primary-teal));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .package-image-luxury i {
+            font-size: 60px;
+            color: var(--primary-gold);
+            opacity: 0.8;
         }
         .package-badge {
             position: absolute;
@@ -819,44 +806,62 @@
             box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
         }
         .package-content-luxury {
-            padding: 35px;
+            padding: 25px;
         }
         .package-content-luxury h3 {
-            font-size: 24px;
-            margin-bottom: 15px;
+            font-size: 20px;
+            margin-bottom: 10px;
             color: var(--primary-navy);
+        }
+        .package-content-luxury .price {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-teal);
+            margin-bottom: 15px;
         }
         .package-content-luxury p {
             color: var(--text-light);
-            margin-bottom: 25px;
-            font-size: 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
             line-height: 1.8;
         }
         .package-features-luxury {
             list-style: none;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
         .package-features-luxury li {
-            padding: 12px 0;
+            padding: 8px 0;
             border-bottom: 1px solid #f0f0f0;
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 15px;
+            gap: 10px;
+            font-size: 13px;
         }
         .package-features-luxury li:last-child {
             border-bottom: none;
         }
         .package-features-luxury i {
             color: var(--primary-gold);
-            font-size: 16px;
+            font-size: 14px;
+        }
+        .hotel-note {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        .hotel-note i {
+            color: var(--primary-gold);
+            margin-right: 5px;
         }
         .package-btn-luxury {
             display: block;
             text-align: center;
             background: linear-gradient(135deg, var(--primary-teal) 0%, var(--primary-navy) 100%);
             color: var(--white);
-            padding: 16px 30px;
+            padding: 14px 20px;
             border-radius: 10px;
             text-decoration: none;
             font-weight: 600;
@@ -865,7 +870,7 @@
             cursor: pointer;
             width: 100%;
             font-family: 'Montserrat', sans-serif;
-            font-size: 16px;
+            font-size: 15px;
         }
         .package-btn-luxury:hover {
             transform: translateY(-2px);
@@ -1381,8 +1386,8 @@
         <div class="luxury-slide active" style="background-image: url('https://images.pexels.com/photos/33270402/pexels-photo-33270402.jpeg');">
             <div class="slide-overlay">
                 <div class="slide-content-luxury animate-fade-in-up">
-                    <h2>Premium Umrah Experiences</h2>
-                    <p>Journey with elegance and devotion. Our exclusive Umrah packages offer luxury accommodations near Haram with personalized spiritual guidance.</p>
+                    <h2>Premium Umrah Packages 2026</h2>
+                    <p>Experience spiritual devotion with luxury accommodations near the Holy Mosques. Economy & Economy Plus packages available.</p>
                     <a href="#umrah" class="luxury-btn">Explore Packages <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
@@ -1391,8 +1396,8 @@
         <div class="luxury-slide" style="background-image: url('https://images.pexels.com/photos/2895295/pexels-photo-2895295.jpeg');">
             <div class="slide-overlay">
                 <div class="slide-content-luxury">
-                    <h2>Luxury Umrah Packages 2024</h2>
-                    <p>Experience the spiritual journey with 5-star accommodations and VIP services.</p>
+                    <h2>Best Umrah Deals 2026</h2>
+                    <p>Starting from only €310! Includes hotels near Haram with shuttle service.</p>
                     <a href="#umrah" class="luxury-btn">View Packages <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
@@ -1457,71 +1462,159 @@
         </div>
     </div>
 
-    <!-- Umrah Packages Section -->
+    <!-- Umrah Packages Section - UPDATED FROM POSTER -->
     <section class="packages-luxury" id="umrah">
         <div class="container">
             <div class="section-header">
-                <h2>Premium Umrah Packages</h2>
-                <p>Experience spiritual devotion with luxury accommodations near the Holy Mosques</p>
+                <h2>عمره پیکجز</h2>
+                <h2 style="font-size: 36px; margin-top: 10px;">UMRAH PACKAGES 2026</h2>
+                <p>Economy & Economy Plus packages with hotels near Haram | Valid for June 2026</p>
             </div>
 
             <div class="packages-grid-luxury">
-                <!-- Economy Package -->
+                <!-- PACKAGE 1 - Economy 8 Nights -->
                 <div class="package-card-luxury animate-fade-in-up">
-                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/4346403/pexels-photo-4346403.jpeg');">
-                        <div class="package-badge">€895</div>
+                    <div class="package-image-luxury">
+                        <i class="fas fa-hotel"></i>
+                        <div class="package-badge">€310</div>
                     </div>
                     <div class="package-content-luxury">
-                        <h3>Essence Umrah Package</h3>
-                        <p>A beautiful beginning to your spiritual journey with essential comforts and proximity to Haram.</p>
+                        <h3>Economy Package No.1</h3>
+                        <div class="price">€310</div>
+                        <p><strong>8 Nights</strong> | 5 Nights Makkah + 3 Nights Madinah</p>
+                        <div class="hotel-note">
+                            <i class="fas fa-hotel"></i> <strong>Makkah:</strong> Qila Ajyad (1000m - Shuttle or Walk)<br>
+                            <i class="fas fa-hotel"></i> <strong>Madinah:</strong> Dar Ajyad 1 (750m)
+                        </div>
                         <ul class="package-features-luxury">
-                            <li><i class="fas fa-check-circle"></i> 7 Days Makkah + 3 Days Madina</li>
-                            <li><i class="fas fa-check-circle"></i> 3-Star Hotel with Shuttle</li>
-                            <li><i class="fas fa-check-circle"></i> Economy Flight Tickets</li>
-                            <li><i class="fas fa-check-circle"></i> Umrah Visa Processing</li>
-                            <li><i class="fas fa-check-circle"></i> Airport Transfers</li>
+                            <li><i class="fas fa-check-circle"></i> Without Flight Ticket</li>
+                            <li><i class="fas fa-check-circle"></i> Sharing Basis</li>
+                            <li><i class="fas fa-check-circle"></i> Valid June 2026</li>
                         </ul>
-                        <button class="package-btn-luxury view-package-btn" data-package="economy">View Details</button>
+                        <button class="package-btn-luxury view-package-btn" data-package="economy1">Book Now</button>
                     </div>
                 </div>
 
-                <!-- Economy Plus Package -->
+                <!-- PACKAGE 2 - Economy 10 Nights -->
                 <div class="package-card-luxury animate-fade-in-up">
-                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/2895295/pexels-photo-2895295.jpeg');">
-                        <div class="package-badge">€999</div>
+                    <div class="package-image-luxury">
+                        <i class="fas fa-hotel"></i>
+                        <div class="package-badge">€345</div>
                     </div>
                     <div class="package-content-luxury">
-                        <h3>Enhanced Umrah Package</h3>
-                        <p>Elevated comfort with premium hotels and additional services for a seamless spiritual experience.</p>
+                        <h3>Economy Package No.2</h3>
+                        <div class="price">€345</div>
+                        <p><strong>10 Nights</strong> | 5 Nights Makkah + 5 Nights Madinah</p>
+                        <div class="hotel-note">
+                            <i class="fas fa-hotel"></i> <strong>Makkah:</strong> Qila Ajyad (1000m - Shuttle or Walk)<br>
+                            <i class="fas fa-hotel"></i> <strong>Madinah:</strong> Dar Ajyad 1 (750m)
+                        </div>
                         <ul class="package-features-luxury">
-                            <li><i class="fas fa-check-circle"></i> 7 Days Makkah + 3 Days Madina</li>
-                            <li><i class="fas fa-check-circle"></i> 4-Star Hotel with Shuttle</li>
-                            <li><i class="fas fa-check-circle"></i> Flight Tickets Included</li>
-                            <li><i class="fas fa-check-circle"></i> Fast-Track Visa Processing</li>
-                            <li><i class="fas fa-check-circle"></i> Luxury Airport Transfers</li>
+                            <li><i class="fas fa-check-circle"></i> Without Flight Ticket</li>
+                            <li><i class="fas fa-check-circle"></i> Sharing Basis</li>
+                            <li><i class="fas fa-check-circle"></i> Valid June 2026</li>
                         </ul>
-                        <button class="package-btn-luxury view-package-btn" data-package="economy-plus">View Details</button>
+                        <button class="package-btn-luxury view-package-btn" data-package="economy2">Book Now</button>
                     </div>
                 </div>
 
-                <!-- Business Class Package -->
+                <!-- PACKAGE 3 - Economy Plus 8 Nights -->
                 <div class="package-card-luxury animate-fade-in-up">
-                    <div class="package-image-luxury" style="background-image: url('https://images.pexels.com/photos/12808985/pexels-photo-12808985.jpeg');">
-                        <div class="package-badge">€1,299</div>
+                    <div class="package-image-luxury">
+                        <i class="fas fa-star"></i>
+                        <div class="package-badge">€360</div>
                     </div>
                     <div class="package-content-luxury">
-                        <h3>Elite Umrah Package</h3>
-                        <p>The ultimate spiritual journey with luxury accommodations and personalized concierge service.</p>
+                        <h3>Economy Plus No.1</h3>
+                        <div class="price">€360</div>
+                        <p><strong>8 Nights</strong> | 5 Nights Makkah + 3 Nights Madinah</p>
+                        <div class="hotel-note">
+                            <i class="fas fa-hotel"></i> <strong>Makkah:</strong> Saif Al Majd (600m)<br>
+                            <i class="fas fa-hotel"></i> <strong>Madinah:</strong> Karam Golden (550m)
+                        </div>
                         <ul class="package-features-luxury">
-                            <li><i class="fas fa-check-circle"></i> 6 Days Makkah + 4 Days Madina</li>
-                            <li><i class="fas fa-check-circle"></i> 5-Star Premium Hotel</li>
-                            <li><i class="fas fa-check-circle"></i> Business Class Upgrade</li>
-                            <li><i class="fas fa-check-circle"></i> Premium Visa Processing</li>
-                            <li><i class="fas fa-check-circle"></i> Private Luxury Transfers</li>
+                            <li><i class="fas fa-check-circle"></i> Without Flight Ticket</li>
+                            <li><i class="fas fa-check-circle"></i> Sharing Basis</li>
+                            <li><i class="fas fa-check-circle"></i> Valid June 2026</li>
                         </ul>
-                        <button class="package-btn-luxury view-package-btn" data-package="business">View Details</button>
+                        <button class="package-btn-luxury view-package-btn" data-package="economyplus1">Book Now</button>
                     </div>
                 </div>
+
+                <!-- PACKAGE 4 - Economy Plus 10 Nights -->
+                <div class="package-card-luxury animate-fade-in-up">
+                    <div class="package-image-luxury">
+                        <i class="fas fa-star"></i>
+                        <div class="package-badge">€390</div>
+                    </div>
+                    <div class="package-content-luxury">
+                        <h3>Economy Plus No.2</h3>
+                        <div class="price">€390</div>
+                        <p><strong>10 Nights</strong> | 5 Nights Makkah + 5 Nights Madinah</p>
+                        <div class="hotel-note">
+                            <i class="fas fa-hotel"></i> <strong>Makkah:</strong> Saif Al Majd (600m)<br>
+                            <i class="fas fa-hotel"></i> <strong>Madinah:</strong> Karam Golden (550m)
+                        </div>
+                        <ul class="package-features-luxury">
+                            <li><i class="fas fa-check-circle"></i> Without Flight Ticket</li>
+                            <li><i class="fas fa-check-circle"></i> Sharing Basis</li>
+                            <li><i class="fas fa-check-circle"></i> Valid June 2026</li>
+                        </ul>
+                        <button class="package-btn-luxury view-package-btn" data-package="economyplus2">Book Now</button>
+                    </div>
+                </div>
+
+                <!-- PACKAGE 5 - Economy Plus+ (with Visa & Ziyarat) -->
+                <div class="package-card-luxury animate-fade-in-up">
+                    <div class="package-image-luxury">
+                        <i class="fas fa-crown"></i>
+                        <div class="package-badge">€390</div>
+                    </div>
+                    <div class="package-content-luxury">
+                        <h3>Economy Plus+ Package</h3>
+                        <div class="price">€390</div>
+                        <p><strong>8 Nights</strong> | 5 Nights Makkah + 3 Nights Madinah</p>
+                        <div class="hotel-note">
+                            <i class="fas fa-hotel"></i> <strong>Makkah:</strong> Swiss Khalil/Blora Moazan (350m)<br>
+                            <i class="fas fa-hotel"></i> <strong>Madinah:</strong> Widyar Al Madina / Rou Khair (350m)
+                        </div>
+                        <ul class="package-features-luxury">
+                            <li><i class="fas fa-check-circle"></i> Visa (Pakistan National)</li>
+                            <li><i class="fas fa-check-circle"></i> Makkah Ziyarat (Bus)</li>
+                            <li><i class="fas fa-check-circle"></i> Madinah Ziyarat (Bus)</li>
+                            <li><i class="fas fa-check-circle"></i> Sharing Basis</li>
+                        </ul>
+                        <button class="package-btn-luxury view-package-btn" data-package="premium1">Book Now</button>
+                    </div>
+                </div>
+
+                <!-- PACKAGE 6 - Near Hotel Package -->
+                <div class="package-card-luxury animate-fade-in-up">
+                    <div class="package-image-luxury">
+                        <i class="fas fa-kaaba"></i>
+                        <div class="package-badge">€415</div>
+                    </div>
+                    <div class="package-content-luxury">
+                        <h3>Near Hotel Package</h3>
+                        <div class="price">€415</div>
+                        <p><strong>8 Nights</strong> | 5 Nights Makkah + 3 Nights Madinah</p>
+                        <div class="hotel-note">
+                            <i class="fas fa-hotel"></i> <strong>Makkah:</strong> Emar Andulusia (300m)<br>
+                            <i class="fas fa-hotel"></i> <strong>Madinah:</strong> Rou Taiba (100m)
+                        </div>
+                        <ul class="package-features-luxury">
+                            <li><i class="fas fa-check-circle"></i> Visa (Pakistan National)</li>
+                            <li><i class="fas fa-check-circle"></i> Makkah Ziyarat (Bus)</li>
+                            <li><i class="fas fa-check-circle"></i> Madinah Ziyarat (Bus)</li>
+                            <li><i class="fas fa-check-circle"></i> Closest Hotels to Haram</li>
+                        </ul>
+                        <button class="package-btn-luxury view-package-btn" data-package="premium2">Book Now</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px; padding: 15px; background: #f5f5f5; border-radius: 10px;">
+                <p style="font-size: 14px; color: #666;"><i class="fas fa-info-circle"></i> All packages are WITHOUT flight tickets | Sharing basis | Terms & Conditions Apply | Valid for June 2026</p>
             </div>
         </div>
     </section>
@@ -1540,7 +1633,7 @@
                         <div class="airline-logo" style="background: #BED742;">
                             <i class="fas fa-plane"></i>
                         </div>
-                        <div class="airline-name">SAUDI AIRWAYS</div>
+                        <div class="airline-name">ETIHAD AIRWAYS</div>
                     </div>
                     <div class="flight-details">
                         <div class="flight-route">
@@ -1548,11 +1641,11 @@
                             <i class="fas fa-long-arrow-alt-right"></i>
                             <span class="city">LAHORE</span>
                         </div>
-                        <div class="flight-price">€ 600 EURO</div>
-                        <div class="luggage-info">1PC 23KG CHECK-IN | 7KG HAND CARRY</div>
+                        <div class="flight-price">€ 580 EURO</div>
+                        <div class="luggage-info">40KG CHECK-IN | 7KG HAND CARRY</div>
                         <div class="validity">Limited Seats Available</div>
                     </div>
-                    <a href="https://wa.me/34611473217?text=I'm interested in BARCELONA to LAHORE flight (€600)" class="flight-book-btn" target="_blank"><i class="fab fa-whatsapp"></i> Book Now</a>
+                    <a href="https://wa.me/34611473217?text=I'm interested in BARCELONA to LAHORE flight (€580)" class="flight-book-btn" target="_blank"><i class="fab fa-whatsapp"></i> Book Now</a>
                 </div>
 
                 <div class="flight-deal-card animate-fade-in-up">
@@ -1560,7 +1653,7 @@
                         <div class="airline-logo" style="background: #BED742;">
                             <i class="fas fa-plane"></i>
                         </div>
-                        <div class="airline-name">SAUDI AIRWAYS</div>
+                        <div class="airline-name">ETIHAD AIRWAYS</div>
                     </div>
                     <div class="flight-details">
                         <div class="flight-route">
@@ -1568,11 +1661,11 @@
                             <i class="fas fa-long-arrow-alt-right"></i>
                             <span class="city">ISLAMABAD</span>
                         </div>
-                        <div class="flight-price">€ 600 EURO</div>
-                        <div class="luggage-info">1PC 23KG CHECK-IN | 7KG HAND CARRY</div>
+                        <div class="flight-price">€ 585 EURO</div>
+                        <div class="luggage-info">40KG CHECK-IN | 7KG HAND CARRY</div>
                         <div class="validity">Limited Seats Available</div>
                     </div>
-                    <a href="https://wa.me/34611473217?text=I'm interested in BARCELONA to ISLAMABAD flight (€600)" class="flight-book-btn" target="_blank"><i class="fab fa-whatsapp"></i> Book Now</a>
+                    <a href="https://wa.me/34611473217?text=I'm interested in BARCELONA to ISLAMABAD flight (€585)" class="flight-book-btn" target="_blank"><i class="fab fa-whatsapp"></i> Book Now</a>
                 </div>
 
                 <div class="poster-contact-info animate-fade-in-up">
@@ -1675,6 +1768,7 @@
             </div>
             <div class="footer-bottom-elegant">
                 <p>&copy; 2024 Mustafa Travels & Tours. All rights reserved. | Crafted with <i class="fas fa-heart" style="color: #d4af37;"></i> for spiritual journeys</p>
+                <p style="margin-top: 10px; font-size: 12px;">Terms & Conditions Apply | Valid for June 2026</p>
             </div>
         </div>
     </footer>
@@ -1956,11 +2050,14 @@
         setInterval(() => { currentSlide = (currentSlide + 1) % slides.length; showSlide(currentSlide); }, 5000);
         dots.forEach((dot, index) => { dot.addEventListener('click', () => showSlide(index)); });
 
-        // Package Data
+        // Package Data for Modal
         const packageData = {
-            economy: { title: "Essence Umrah Package", price: "€895", description: "A beautiful beginning to your spiritual journey with essential comforts and proximity to Haram.", features: ["7 Days Makkah + 3 Days Madina","3-Star Hotel with Shuttle Service","Economy Flight Tickets Included","Umrah Visa Processing","Airport Transfers","Basic Umrah Guidance","Travel Insurance Coverage"] },
-            "economy-plus": { title: "Enhanced Umrah Package", price: "€999", description: "Elevated comfort with premium hotels and additional services for a seamless spiritual experience.", features: ["7 Days Makkah + 3 Days Madina","4-Star Hotel with Shuttle Service","Flight Tickets Included","Fast-Track Visa Processing","Luxury Airport Transfers","Comprehensive Umrah Guidance","24/7 Support Team"] },
-            business: { title: "Elite Umrah Package", price: "€1,299", description: "The ultimate spiritual journey with luxury accommodations and personalized concierge service.", features: ["6 Days Makkah + 4 Days Madina","5-Star Premium Hotel near Haram","Business Class Upgrade Available","Premium Fast-Track Visa","Private Luxury Transfers","Personal Umrah Guide","VIP Concierge Service"] }
+            economy1: { title: "Economy Package No.1", price: "€310", description: "5 Nights Makkah + 3 Nights Madinah | Qila Ajyad (Makkah) + Dar Ajyad 1 (Madinah)", features: ["5 Nights Makkah - Qila Ajyad (1000m)", "3 Nights Madinah - Dar Ajyad 1 (750m)", "Without Flight Ticket", "Sharing Basis", "Valid June 2026"] },
+            economy2: { title: "Economy Package No.2", price: "€345", description: "5 Nights Makkah + 5 Nights Madinah | Qila Ajyad (Makkah) + Dar Ajyad 1 (Madinah)", features: ["5 Nights Makkah - Qila Ajyad (1000m)", "5 Nights Madinah - Dar Ajyad 1 (750m)", "Without Flight Ticket", "Sharing Basis", "Valid June 2026"] },
+            economyplus1: { title: "Economy Plus No.1", price: "€360", description: "5 Nights Makkah + 3 Nights Madinah | Saif Al Majd (Makkah) + Karam Golden (Madinah)", features: ["5 Nights Makkah - Saif Al Majd (600m)", "3 Nights Madinah - Karam Golden (550m)", "Without Flight Ticket", "Sharing Basis", "Valid June 2026"] },
+            economyplus2: { title: "Economy Plus No.2", price: "€390", description: "5 Nights Makkah + 5 Nights Madinah | Saif Al Majd (Makkah) + Karam Golden (Madinah)", features: ["5 Nights Makkah - Saif Al Majd (600m)", "5 Nights Madinah - Karam Golden (550m)", "Without Flight Ticket", "Sharing Basis", "Valid June 2026"] },
+            premium1: { title: "Economy Plus+ Package", price: "€390", description: "5 Nights Makkah + 3 Nights Madinah | Swiss Khalil + Widyar Al Madina", features: ["Makkah: Swiss Khalil/Blora Moazan (350m)", "Madinah: Widyar Al Madina / Rou Khair (350m)", "Visa (Pakistan National) Included", "Makkah Ziyarat (Bus)", "Madinah Ziyarat (Bus)", "Sharing Basis"] },
+            premium2: { title: "Near Hotel Package", price: "€415", description: "5 Nights Makkah + 3 Nights Madinah | Closest hotels to Haram", features: ["Makkah: Emar Andulusia (300m)", "Madinah: Rou Taiba (100m)", "Visa (Pakistan National) Included", "Makkah Ziyarat (Bus)", "Madinah Ziyarat (Bus)", "Closest Hotels to Haram"] }
         };
 
         document.querySelectorAll('.view-package-btn').forEach(button => {
@@ -1968,7 +2065,7 @@
                 const packageType = this.getAttribute('data-package');
                 const pkg = packageData[packageType];
                 if (pkg) {
-                    const modalHTML = `<div class="modal-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:1000;"><div class="modal-content" style="background:white;padding:50px;border-radius:20px;max-width:600px;width:90%;position:relative;"><button class="close-modal" style="position:absolute;top:20px;right:20px;background:none;border:none;font-size:24px;cursor:pointer;">&times;</button><h2 style="color:#1a237e;">${pkg.title}</h2><div style="color:#d4af37;font-size:24px;font-weight:bold;margin:20px 0;">${pkg.price}</div><p style="color:#666;margin-bottom:30px;">${pkg.description}</p><h3 style="color:#1a237e;margin-bottom:15px;">Package Includes:</h3><ul style="list-style:none;margin-bottom:40px;">${pkg.features.map(f => `<li style="padding:10px 0;border-bottom:1px solid #eee;display:flex;align-items:center;gap:10px;"><i class="fas fa-check" style="color:#d4af37;"></i> ${f}</li>`).join('')}</ul><a href="https://wa.me/34611473217?text=I'm interested in ${pkg.title} (${pkg.price})" class="whatsapp-btn-elegant" style="display:block;text-align:center;text-decoration:none;"><i class="fab fa-whatsapp"></i> Book on WhatsApp</a></div></div>`;
+                    const modalHTML = `<div class="modal-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:1000;"><div class="modal-content" style="background:white;padding:40px;border-radius:20px;max-width:550px;width:90%;position:relative;"><button class="close-modal" style="position:absolute;top:15px;right:15px;background:none;border:none;font-size:24px;cursor:pointer;">&times;</button><h2 style="color:#1a237e;margin-bottom:10px;">${pkg.title}</h2><div style="color:#d4af37;font-size:28px;font-weight:bold;margin:15px 0;">${pkg.price}</div><p style="color:#666;margin-bottom:20px;">${pkg.description}</p><h3 style="color:#1a237e;margin-bottom:15px;">Package Includes:</h3><ul style="list-style:none;margin-bottom:30px;">${pkg.features.map(f => `<li style="padding:8px 0;border-bottom:1px solid #eee;display:flex;align-items:center;gap:10px;"><i class="fas fa-check" style="color:#d4af37;"></i> ${f}</li>`).join('')}</ul><a href="https://wa.me/34611473217?text=I'm interested in ${pkg.title} (${pkg.price})" class="whatsapp-btn-elegant" style="display:block;text-align:center;text-decoration:none;"><i class="fab fa-whatsapp"></i> Book Now on WhatsApp</a></div></div>`;
                     document.body.insertAdjacentHTML('beforeend', modalHTML);
                     document.querySelector('.close-modal').addEventListener('click', () => { document.querySelector('.modal-overlay').remove(); });
                     document.querySelector('.modal-overlay').addEventListener('click', (e) => { if (e.target.classList.contains('modal-overlay')) document.querySelector('.modal-overlay').remove(); });
