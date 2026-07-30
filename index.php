@@ -1,6 +1,16 @@
 <?php
 // No PHP needed for this page - pure HTML/CSS/JS
 // Save as index.php or index.html
+
+// Dynamic variables (optional - aap change kar sakte hain)
+$siteTitle = "Mustafa Travels & Tours | Premium Umrah Packages from Barcelona";
+$phone1 = "+34-632234216";
+$phone2 = "+34-631984997";
+$phone3 = "+34-611473217";
+$whatsapp = "+34-611473217";
+$address = "Rambla Badal 141, Barcelona";
+$email = "mustafatravelstours@gmail.com";
+$website = "www.mustafatravels.com";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +18,7 @@
     <!-- SEO Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mustafa Travels & Tours | Premium Umrah Packages from Barcelona</title>
+    <title><?php echo $siteTitle; ?></title>
     <meta name="description" content="Premium Umrah packages from Barcelona. Economy and Economy Plus packages with hotels near Haram. Best Umrah deals 2026.">
     <meta name="keywords" content="Umrah packages, Barcelona travel agency, Makkah hotels, Madina hotels, Qila Ajyad, Saif Al Majd, Swiss Khalil, Umrah deals">
     <meta name="author" content="Mustafa Travels & Tours">
@@ -443,6 +453,109 @@
         .social-elegant a:hover {
             color: var(--primary-gold);
             transform: translateY(-2px);
+        }
+
+        /* ====== MARQUEE NOTICE STYLES (added) ====== */
+        .marquee-notice-wrapper {
+            background: #0f2a24;
+            background: linear-gradient(135deg, #0f2a24 0%, #1a3f34 100%);
+            border-radius: 40px;
+            padding: 0.4rem 1rem 0.4rem 2rem;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3);
+            border: 1px solid #7f9f7a;
+            margin: 6px 0 12px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .marquee-notice-inner {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            display: flex;
+            align-items: center;
+            min-height: 50px;
+        }
+        .marquee-notice-content {
+            display: inline-block;
+            padding-right: 2rem;
+            animation: scrollMarqueeNotice 32s linear infinite;
+            will-change: transform;
+            font-size: 0;
+        }
+        .lang-notice-block {
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 0.95rem;
+            padding: 0 1.2rem;
+            border-right: 2px solid #9bb89b;
+            margin-right: 0.2rem;
+            color: #fcf7ed;
+            text-shadow: 0 1px 3px #0a1f18;
+            font-weight: 450;
+            letter-spacing: 0.2px;
+            line-height: 1.3;
+            white-space: nowrap;
+        }
+        .lang-notice-block:last-child {
+            border-right: none;
+        }
+        .lang-notice-block i {
+            margin-right: 8px;
+            color: #e2cba8;
+            font-size: 0.9rem;
+        }
+        .lang-notice-block strong {
+            font-weight: 600;
+            color: #ffde9e;
+        }
+        .lang-notice-block .highlight-badge {
+            background: #b48b4b;
+            padding: 0.1rem 0.6rem;
+            border-radius: 30px;
+            color: #0f261e;
+            font-weight: 600;
+            margin: 0 4px;
+            font-size: 0.8rem;
+        }
+        .lang-notice-block .rule-badge {
+            background: #af3a3a;
+            color: #ffe6c7;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 600;
+            margin: 0 5px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+        .lang-notice-block .lang-label {
+            font-size: 0.65rem;
+            background: #2e4d3d;
+            padding: 0.1rem 0.6rem;
+            border-radius: 30px;
+            margin-left: 6px;
+            color: #d4d9c0;
+            letter-spacing: 0.4px;
+            display: inline-block;
+        }
+        .marquee-notice-wrapper:hover .marquee-notice-content {
+            animation-play-state: paused;
+        }
+        @keyframes scrollMarqueeNotice {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .marquee-notice-icon {
+            color: #ebd5b0;
+            margin-right: 0.6rem;
+            font-size: 1.2rem;
+            display: inline-block;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+        @media (max-width: 600px) {
+            .lang-notice-block { font-size: 0.75rem; padding: 0 0.6rem; }
+            .lang-notice-block .highlight-badge, .lang-notice-block .rule-badge { font-size: 0.65rem; padding: 0.1rem 0.4rem; }
+            .marquee-notice-wrapper { padding: 0.3rem 0.6rem; }
         }
 
         .main-header-elegant {
@@ -1336,9 +1449,9 @@
         <div class="container">
             <div class="header-top-bar">
                 <div class="contact-info-elegant">
-                    <span><i class="fas fa-phone"></i> +34-632234216</span>
-                    <span><i class="fab fa-whatsapp"></i> +34-611473217</span>
-                    <span><i class="fas fa-map-marker-alt"></i> Rambla Badal 141, Barcelona</span>
+                    <span><i class="fas fa-phone"></i> <?php echo $phone1; ?></span>
+                    <span><i class="fab fa-whatsapp"></i> <?php echo $phone3; ?></span>
+                    <span><i class="fas fa-map-marker-alt"></i> <?php echo $address; ?></span>
                 </div>
                 <div class="social-elegant">
                     <a href="#" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
@@ -1346,6 +1459,62 @@
                     <a href="#" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
+
+            <!-- ====== MARQUEE NOTICE ====== -->
+            <div class="marquee-notice-wrapper">
+                <div class="marquee-notice-inner">
+                    <span class="marquee-notice-icon"><i class="fas fa-bullhorn"></i></span>
+                    <div class="marquee-notice-content" id="marqueeNoticeContent">
+                        <!-- ENGLISH -->
+                        <span class="lang-notice-block">
+                            <i class="fas fa-flag"></i> 
+                            <strong>IMPORTANT NOTICE!</strong> 
+                            <span class="rule-badge">UMRAH VISA</span> 
+                            <span class="highlight-badge">1st SECTOR TRANSPORT</span> 
+                            mandatory with us. 
+                            <span style="color: #f5d79c;">Saudi Govt. rule.</span> 
+                            <span class="lang-label">EN</span>
+                        </span>
+                        <!-- URDU -->
+                        <span class="lang-notice-block" style="font-family: 'Segoe UI', 'Nafees Web', 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', serif;">
+                            <i class="fas fa-flag"></i> 
+                            <strong>اہم نوٹ!</strong> 
+                            <span class="rule-badge">عمرہ ویزا</span> 
+                            <span class="highlight-badge">پہلے سیکٹر کی ٹرانسپورٹ</span> 
+                            ہم سے لینا ضروری ہے۔ 
+                            <span style="color: #f5d79c;">سعودی حکومت کا اصول</span> 
+                            <span class="lang-label">UR</span>
+                        </span>
+                        <!-- SPANISH -->
+                        <span class="lang-notice-block">
+                            <i class="fas fa-flag"></i> 
+                            <strong>¡AVISO IMPORTANTE!</strong> 
+                            <span class="rule-badge">VISA UMRAH</span> 
+                            <span class="highlight-badge">TRANSPORTE 1er SECTOR</span> 
+                            obligatorio con nosotros. 
+                            <span style="color: #f5d79c;">Norma del Gobierno Saudí</span> 
+                            <span class="lang-label">ES</span>
+                        </span>
+                        <!-- EXTRA: safety / responsibility -->
+                        <span class="lang-notice-block" style="border-right: 2px solid #9bb89b;">
+                            <i class="fas fa-hand-holding-heart"></i> 
+                            <strong>Aap ki Rahat, Hamari Zimmedari</strong> 
+                            <i class="fas fa-plane" style="margin-left: 10px; color: #e2cba8;"></i> 
+                            <span style="color:#ffdba4;">SAFE JOURNEY</span> 
+                            <span style="color:#d4d9c0;">·</span> 
+                            <span style="color:#ffdba4;">SPIRITUAL JOURNEY</span>
+                            <span class="lang-label">UR/EN</span>
+                        </span>
+                        <!-- Services mention -->
+                        <span class="lang-notice-block">
+                            <i class="fas fa-ticket-alt"></i> 
+                            <strong>Airline · Hotels · eVisa</strong> 
+                            <span class="lang-label">SERVICES</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <!-- ====== END MARQUEE ====== -->
 
             <div class="main-header-elegant">
                 <a href="#" class="logo-elegant">
@@ -1365,7 +1534,7 @@
                     <a href="#services">Services</a>
                     <a href="#about">About Us</a>
                     <a href="#contact">Contact</a>
-                    <a href="https://wa.me/34611473217" class="whatsapp-btn-elegant" target="_blank">
+                    <a href="https://wa.me/<?php echo str_replace('+', '', $whatsapp); ?>" class="whatsapp-btn-elegant" target="_blank">
                         <i class="fab fa-whatsapp"></i> Book Now
                     </a>
                 </nav>
@@ -1462,7 +1631,7 @@
         </div>
     </div>
 
-    <!-- Umrah Packages Section - UPDATED FROM POSTER -->
+    <!-- Umrah Packages Section -->
     <section class="packages-luxury" id="umrah">
         <div class="container">
             <div class="section-header">
@@ -1645,7 +1814,7 @@
                         <div class="luggage-info">1PC 23KG CHECK-IN | 7KG HAND CARRY</div>
                         <div class="validity">Limited Seats Available</div>
                     </div>
-                    <a href="https://wa.me/34611473217?text=I'm interested in BARCELONA to LAHORE flight (€580)" class="flight-book-btn" target="_blank"><i class="fab fa-whatsapp"></i> Book Now</a>
+                    <a href="https://wa.me/<?php echo str_replace('+', '', $whatsapp); ?>?text=I'm interested in BARCELONA to LAHORE flight (€600)" class="flight-book-btn" target="_blank"><i class="fab fa-whatsapp"></i> Book Now</a>
                 </div>
 
                 <div class="flight-deal-card animate-fade-in-up">
@@ -1665,19 +1834,19 @@
                         <div class="luggage-info">1PC 23KG CHECK-IN | 7KG HAND CARRY</div>
                         <div class="validity">Limited Seats Available</div>
                     </div>
-                    <a href="https://wa.me/34611473217?text=I'm interested in BARCELONA to ISLAMABAD flight (€585)" class="flight-book-btn" target="_blank"><i class="fab fa-whatsapp"></i> Book Now</a>
+                    <a href="https://wa.me/<?php echo str_replace('+', '', $whatsapp); ?>?text=I'm interested in BARCELONA to ISLAMABAD flight (€600)" class="flight-book-btn" target="_blank"><i class="fab fa-whatsapp"></i> Book Now</a>
                 </div>
 
                 <div class="poster-contact-info animate-fade-in-up">
                     <h3>Mustafa Travels & Tours</h3>
-                    <p class="poster-address">Rambla Badal 141-Local 1 Bajo<br>Barcelona 08028</p>
+                    <p class="poster-address"><?php echo $address; ?><br>Barcelona 08028</p>
                     <div class="poster-phones">
-                        <div class="phone-number"><i class="fas fa-phone"></i> +34-632234216</div>
-                        <div class="phone-number"><i class="fab fa-whatsapp"></i> +34-611473217</div>
-                        <div class="phone-number"><i class="fas fa-phone"></i> +34-631984997</div>
+                        <div class="phone-number"><i class="fas fa-phone"></i> <?php echo $phone1; ?></div>
+                        <div class="phone-number"><i class="fab fa-whatsapp"></i> <?php echo $phone3; ?></div>
+                        <div class="phone-number"><i class="fas fa-phone"></i> <?php echo $phone2; ?></div>
                     </div>
                     <div class="poster-websites">
-                        <a href="#" class="website-link" target="_blank"><i class="fas fa-globe"></i> www.mustafatravels.com</a>
+                        <a href="#" class="website-link" target="_blank"><i class="fas fa-globe"></i> <?php echo $website; ?></a>
                         <a href="#" class="website-link" target="_blank"><i class="fas fa-globe"></i> www.mustafatravels.org</a>
                     </div>
                 </div>
@@ -1729,10 +1898,10 @@
                     <div class="footer-logo-elegant">MUSTAFA TRAVELS & TOURS</div>
                     <p>Specialists in premium Umrah & Worldwide Travel experiences. Crafting spiritual journeys with elegance since 2024.</p>
                     <ul class="contact-list-elegant">
-                        <li><i class="fas fa-map-marker-alt"></i> Rambla Badal 141 Local 1 Bajo, Barcelona 08028</li>
-                        <li><i class="fas fa-phone"></i> +34-632234216</li>
-                        <li><i class="fab fa-whatsapp"></i> +34-611473217</li>
-                        <li><i class="fas fa-envelope"></i> mustafatravelstours@gmail.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> <?php echo $address; ?>, Barcelona 08028</li>
+                        <li><i class="fas fa-phone"></i> <?php echo $phone1; ?></li>
+                        <li><i class="fab fa-whatsapp"></i> <?php echo $phone3; ?></li>
+                        <li><i class="fas fa-envelope"></i> <?php echo $email; ?></li>
                     </ul>
                 </div>
                 <div class="footer-column-elegant">
@@ -1856,6 +2025,18 @@
     </div>
 
     <script>
+        // ====== DUPLICATE MARQUEE CONTENT FOR SEAMLESS LOOP ======
+        (function() {
+            const mc = document.getElementById('marqueeNoticeContent');
+            if (mc) {
+                const children = Array.from(mc.children);
+                children.forEach(child => {
+                    const cloned = child.cloneNode(true);
+                    mc.appendChild(cloned);
+                });
+            }
+        })();
+
         // Modal Functions
         function openQuotationModal() {
             document.getElementById('quotationModal').classList.add('active');
@@ -2023,12 +2204,12 @@
             document.getElementById('quoWhatsappBtn').addEventListener('click', (e) => {
                 e.preventDefault();
                 const msg = `🕋 UMRAH QUOTATION\nHotel: ${currentHotel?.name}\nRoom: ${selectedRoom.toUpperCase()}\nNights: ${nights}\nTotal: ${document.getElementById('quoGrandTotal').innerHTML}\n\nPlease process my booking.`;
-                window.open(`https://wa.me/34611473217?text=${encodeURIComponent(msg)}`, '_blank');
+                window.open(`https://wa.me/<?php echo str_replace('+', '', $whatsapp); ?>?text=${encodeURIComponent(msg)}`, '_blank');
             });
             
             document.getElementById('quoBetterRateBtn').addEventListener('click', (e) => {
                 e.preventDefault();
-                window.open(`https://wa.me/34611473217?text=${encodeURIComponent('Need better rates for Umrah hotels - B2B partner inquiry')}`, '_blank');
+                window.open(`https://wa.me/<?php echo str_replace('+', '', $whatsapp); ?>?text=${encodeURIComponent('Need better rates for Umrah hotels - B2B partner inquiry')}`, '_blank');
             });
             
             populateHotels();
@@ -2065,7 +2246,7 @@
                 const packageType = this.getAttribute('data-package');
                 const pkg = packageData[packageType];
                 if (pkg) {
-                    const modalHTML = `<div class="modal-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:1000;"><div class="modal-content" style="background:white;padding:40px;border-radius:20px;max-width:550px;width:90%;position:relative;"><button class="close-modal" style="position:absolute;top:15px;right:15px;background:none;border:none;font-size:24px;cursor:pointer;">&times;</button><h2 style="color:#1a237e;margin-bottom:10px;">${pkg.title}</h2><div style="color:#d4af37;font-size:28px;font-weight:bold;margin:15px 0;">${pkg.price}</div><p style="color:#666;margin-bottom:20px;">${pkg.description}</p><h3 style="color:#1a237e;margin-bottom:15px;">Package Includes:</h3><ul style="list-style:none;margin-bottom:30px;">${pkg.features.map(f => `<li style="padding:8px 0;border-bottom:1px solid #eee;display:flex;align-items:center;gap:10px;"><i class="fas fa-check" style="color:#d4af37;"></i> ${f}</li>`).join('')}</ul><a href="https://wa.me/34611473217?text=I'm interested in ${pkg.title} (${pkg.price})" class="whatsapp-btn-elegant" style="display:block;text-align:center;text-decoration:none;"><i class="fab fa-whatsapp"></i> Book Now on WhatsApp</a></div></div>`;
+                    const modalHTML = `<div class="modal-overlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;z-index:1000;"><div class="modal-content" style="background:white;padding:40px;border-radius:20px;max-width:550px;width:90%;position:relative;"><button class="close-modal" style="position:absolute;top:15px;right:15px;background:none;border:none;font-size:24px;cursor:pointer;">&times;</button><h2 style="color:#1a237e;margin-bottom:10px;">${pkg.title}</h2><div style="color:#d4af37;font-size:28px;font-weight:bold;margin:15px 0;">${pkg.price}</div><p style="color:#666;margin-bottom:20px;">${pkg.description}</p><h3 style="color:#1a237e;margin-bottom:15px;">Package Includes:</h3><ul style="list-style:none;margin-bottom:30px;">${pkg.features.map(f => `<li style="padding:8px 0;border-bottom:1px solid #eee;display:flex;align-items:center;gap:10px;"><i class="fas fa-check" style="color:#d4af37;"></i> ${f}</li>`).join('')}</ul><a href="https://wa.me/<?php echo str_replace('+', '', $whatsapp); ?>?text=I'm interested in ${pkg.title} (${pkg.price})" class="whatsapp-btn-elegant" style="display:block;text-align:center;text-decoration:none;"><i class="fab fa-whatsapp"></i> Book Now on WhatsApp</a></div></div>`;
                     document.body.insertAdjacentHTML('beforeend', modalHTML);
                     document.querySelector('.close-modal').addEventListener('click', () => { document.querySelector('.modal-overlay').remove(); });
                     document.querySelector('.modal-overlay').addEventListener('click', (e) => { if (e.target.classList.contains('modal-overlay')) document.querySelector('.modal-overlay').remove(); });
@@ -2090,7 +2271,7 @@
             const destination = document.getElementById('destinationSelect').value;
             const packageType = document.getElementById('packageType').value;
             if (!destination || !packageType) { alert('Please select both destination and package type'); return; }
-            window.open(`https://wa.me/34611473217?text=${encodeURIComponent(`Hello! I'm looking for ${packageType} packages to ${destination}. Please send me details.`)}`, '_blank');
+            window.open(`https://wa.me/<?php echo str_replace('+', '', $whatsapp); ?>?text=${encodeURIComponent(`Hello! I'm looking for ${packageType} packages to ${destination}. Please send me details.`)}`, '_blank');
         });
 
         const today = new Date().toISOString().split('T')[0];
