@@ -2,14 +2,4 @@ services:
   - type: web
     name: mustafa-travels
     runtime: docker
-    plan: starter
     autoDeploy: true
-    envVars:
-      - key: MUSTAFA_DATA_DIR
-        value: /var/data
-      - key: MUSTAFA_UPLOAD_DIR
-        value: /var/data/uploads
-    disk:
-      name: mustafa-travels-data
-      mountPath: /var/data
-      sizeGB: 1

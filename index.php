@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__.'/partials.php';
-$featured=$pdo->query("SELECT * FROM offers WHERE active=1 AND featured=1 ORDER BY id DESC LIMIT 8")->fetchAll(PDO::FETCH_ASSOC);
+$featured=sb_select('offers','select=*&active=eq.true&featured=eq.true&order=id.desc&limit=8');
 site_header('Home');
 ?>
 <section class="hero">
@@ -46,7 +46,7 @@ site_header('Home');
     <?php endforeach; ?>
   <?php else: foreach($featured as $o): ?>
     <article class="offer-card">
-      <div class="offer-media" <?php if($o['image']): ?>style="background-image:url('<?=h($o['image'])?>')"<?php endif; ?>><span class="offer-badge"><?=h($o['badge'] ?: 'Special Offer')?></span></div>
+      <div class="offer-media" <?php if($o['image_url']): ?>style="background-image:url('<?=h($o['image_url'])?>')"<?php endif; ?>><span class="offer-badge"><?=h($o['badge'] ?: 'Special Offer')?></span></div>
       <div class="offer-body"><small><?=h($o['airline'])?></small><h3><?=h($o['title'])?></h3><p><?=h($o['travel_dates'])?> · <?=h($o['baggage'])?></p><div class="price"><?=h($o['currency'])?> <?=number_format((float)$o['price'],0)?></div><a class="btn btn-dark" href="https://wa.me/<?=WHATSAPP?>?text=<?=urlencode('I am interested in: '.$o['title'])?>" target="_blank">Book / Ask Now</a></div>
     </article>
   <?php endforeach; endif; ?>
