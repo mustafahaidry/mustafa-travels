@@ -187,12 +187,12 @@ if (isset($_GET['search'])) {
         }
 
         $payload = [
-            'data' => [
-                'slices' => $slices,
-                'passengers' => $passengers,
-                'cabin_class' => $cabin,
-                'return_offers' => true
-            ]
+    'data' => [
+        'slices' => $slices,
+        'passengers' => $passengers,
+        'cabin_class' => $cabin
+    ]
+
         ];
 
         $api = duffel_request(
