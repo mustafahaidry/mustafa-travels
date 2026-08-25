@@ -15,14 +15,16 @@ site_header('Home');
     <div class="hero-trust"><div><strong>8+</strong><small>Years Travel Experience</small></div><div><strong>10,000+</strong><small>Clients Served</small></div><div><strong>500+</strong><small>Umrah Packages</small></div><div><strong>24/7</strong><small>Emergency Support</small></div></div>
   </div>
   <div class="hero-dots"><button class="active"></button><button></button><button></button></div>
-</section>
-
 <section class="section">
-    <div class="container">
-        <div id="tpwl-search"></div>
-        <div id="tpwl-tickets"></div>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="eyebrow dark">LATEST DEALS</span>
+        <h2>Special Offers</h2>
+      </div>
+      <a href="offers.php">View all offers →</a>
     </div>
-</section>
+    <div class="offers-grid">
 <?php if(!$featured): ?>
     <?php foreach([
       ['Barcelona → Islamabad','From €640','Etihad Airways','40kg + 7kg'],
@@ -37,10 +39,9 @@ site_header('Home');
       <div class="offer-body"><small><?=h($o['airline'])?></small><h3><?=h($o['title'])?></h3><p><?=h($o['travel_dates'])?> · <?=h($o['baggage'])?></p><div class="price"><?=h($o['currency'])?> <?=number_format((float)$o['price'],0)?></div><a class="btn btn-dark" href="https://wa.me/<?=WHATSAPP?>?text=<?=urlencode('I am interested in: '.$o['title'])?>" target="_blank">Book / Ask Now</a></div>
     </article>
   <?php endforeach; endif; ?>
-  </div>
- </div>
+   </div>
+    </div>
 </section>
-
 <section class="section section-soft">
  <div class="container">
   <div class="section-head centered"><div><span class="eyebrow dark">WHAT WE DO</span><h2>Complete Travel Services</h2><p>One trusted team for your journey from planning to return.</p></div></div>
