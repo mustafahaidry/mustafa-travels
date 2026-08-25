@@ -18,25 +18,15 @@ site_header('Home');
 </section>
 
 <section class="search-card-wrap">
- <div class="container">
-  <div class="search-card">
-    <div class="search-tabs"><button class="active">✈ Flights</button><button>▦ Hotels</button><button>☾ Umrah</button><button>✓ Visa</button></div>
-    <form class="quick-search" action="contact.php" method="get">
-      <label>From<input name="from" placeholder="Barcelona (BCN)"></label>
-      <label>To<input name="to" placeholder="Islamabad / Lahore / Worldwide"></label>
-      <label>Departure<input type="date" name="departure"></label>
-      <label>Return<input type="date" name="return"></label>
-      <button class="btn btn-primary" type="submit">Request Fare</button>
-    </form>
-  </div>
- </div>
-</section>
+    <div class="container">
+        <div id="tpwl-search"></div>
 
-<section class="section">
- <div class="container">
-  <div class="section-head"><div><span class="eyebrow dark">LATEST DEALS</span><h2>Special Offers</h2></div><a href="offers.php">View all offers →</a></div>
-  <div class="offers-grid">
-  <?php if(!$featured): ?>
+        <div style="margin-top:24px;">
+            <div id="tpwl-tickets"></div>
+        </div>
+    </div>
+</section>
+<?php if(!$featured): ?>
     <?php foreach([
       ['Barcelona → Islamabad','From €640','Etihad Airways','40kg + 7kg'],
       ['Barcelona → Lahore','From €655','Qatar Airways','45kg + 7kg'],
