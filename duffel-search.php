@@ -1,495 +1,888 @@
 <?php
-declare(strict_types=1);
+require_once __DIR__ . '/partials.php';
 
 /*
 |--------------------------------------------------------------------------
-| Mustafa Travels & Tours - Duffel Flight Search API
+| DUFFEL TEST FLIGHT SEARCH
 |--------------------------------------------------------------------------
-| TEST BACKEND
-| This file receives flight search data from flights-test.php
-| and sends it securely to Duffel.
-|--------------------------------------------------------------------------
-*/
-
-header('Content-Type: application/json; charset=utf-8');
-header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
-
-
-/*
-|--------------------------------------------------------------------------
-| Only allow POST requests
-|--------------------------------------------------------------------------
-*/
-
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405);
-
-    echo json_encode([
-        'success' => false,
-        'message' => 'POST request required.'
-    ]);
-
-    exit;
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Get Duffel API key from Render Environment
+| API key Render Environment Variable se li jayegi:
+| DUFFEL_API_KEY
 |--------------------------------------------------------------------------
 */
 
 $duffelKey = getenv('DUFFEL_API_KEY') ?: '';
 
-if ($duffelKey === '') {
-    http_response_code(500);
-
-    echo json_encode([
-        'success' => false,
-        'message' => 'DUFFEL_API_KEY is not configured on the server.'
-    ]);
-
-    exit;
-}
+$results = [];
+$error   = '';
+$searched = false;
 
 
 /*
 |--------------------------------------------------------------------------
-| Read incoming JSON
+| DUFFEL API REQUEST
 |--------------------------------------------------------------------------
 */
 
-$rawInput = file_get_contents('php://input');
-
-$input = json_decode($rawInput ?: '', true);
-
-if (!is_array($input)) {
-    http_response_code(400);
-
-    echo json_encode([
-        'success' => false,
-        'message' => 'Invalid request data.'
-    ]);
-
-    exit;
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Get and clean search fields
-|--------------------------------------------------------------------------
-*/
-
-$origin = strtoupper(trim((string)($input['origin'] ?? '')));
-$destination = strtoupper(trim((string)($input['destination'] ?? '')));
-
-$departureDate = trim((string)($input['departure_date'] ?? ''));
-$returnDate = trim((string)($input['return_date'] ?? ''));
-
-$adults = (int)($input['adults'] ?? 1);
-$children = (int)($input['children'] ?? 0);
-$infants = (int)($input['infants'] ?? 0);
-
-$cabinClass = trim((string)($input['cabin_class'] ?? 'economy'));
-
-
-/*
-|--------------------------------------------------------------------------
-| Validation
-|--------------------------------------------------------------------------
-*/
-
-if (!preg_match('/^[A-Z]{3}$/', $origin)) {
-    http_response_code(422);
-
-    echo json_encode([
-        'success' => false,
-        'message' => 'Origin must be a valid 3-letter IATA code, for example BCN.'
-    ]);
-
-    exit;
-}
-
-
-if (!preg_match('/^[A-Z]{3}$/', $destination)) {
-    http_response_code(422);
-
-    echo json_encode([
-        'success' => false,
-        'message' => 'Destination must be a valid 3-letter IATA code, for example LHE.'
-    ]);
-
-    exit;
-}
-
-
-if ($origin === $destination) {
-    http_response_code(422);
-
-    echo json_encode([
-        'success' => false,
-        'message' => 'Origin and destination cannot be the same.'
-    ]);
-
-    exit;
-}
-
-
-function valid_date(string $date): bool
+function duffel_request(string $endpoint, string $method = 'GET', ?array $body = null): array
 {
-    if ($date === '') {
-        return false;
+    global $duffelKey;
+
+    if ($duffelKey === '') {
+        return [
+            'ok' => false,
+            'status' => 0,
+            'data' => null,
+            'error' => 'DUFFEL_API_KEY is missing from server environment.'
+        ];
     }
 
-    $d = DateTime::createFromFormat('Y-m-d', $date);
+    $url = 'https://api.duffel.com' . $endpoint;
 
-    return $d && $d->format('Y-m-d') === $date;
-}
+    $ch = curl_init($url);
 
-
-if (!valid_date($departureDate)) {
-    http_response_code(422);
-
-    echo json_encode([
-        'success' => false,
-        'message' => 'Please select a valid departure date.'
-    ]);
-
-    exit;
-}
-
-
-$today = date('Y-m-d');
-
-if ($departureDate < $today) {
-    http_response_code(422);
-
-    echo json_encode([
-        'success' => false,
-        'message' => 'Departure date cannot be in the past.'
-    ]);
-
-    exit;
-}
-
-
-if ($returnDate !== '') {
-
-    if (!valid_date($returnDate)) {
-        http_response_code(422);
-
-        echo json_encode([
-            'success' => false,
-            'message' => 'Please select a valid return date.'
-        ]);
-
-        exit;
-    }
-
-    if ($returnDate < $departureDate) {
-        http_response_code(422);
-
-        echo json_encode([
-            'success' => false,
-            'message' => 'Return date cannot be before departure date.'
-        ]);
-
-        exit;
-    }
-}
-
-
-if ($adults < 1 || $adults > 9) {
-    http_response_code(422);
-
-    echo json_encode([
-        'success' => false,
-        'message' => 'Adults must be between 1 and 9.'
-    ]);
-
-    exit;
-}
-
-
-if ($children < 0 || $children > 8) {
-    $children = 0;
-}
-
-
-if ($infants < 0 || $infants > $adults) {
-    $infants = 0;
-}
-
-
-$allowedCabins = [
-    'economy',
-    'premium_economy',
-    'business',
-    'first'
-];
-
-if (!in_array($cabinClass, $allowedCabins, true)) {
-    $cabinClass = 'economy';
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Build Duffel slices
-|--------------------------------------------------------------------------
-*/
-
-$slices = [
-    [
-        'origin' => $origin,
-        'destination' => $destination,
-        'departure_date' => $departureDate
-    ]
-];
-
-
-if ($returnDate !== '') {
-
-    $slices[] = [
-        'origin' => $destination,
-        'destination' => $origin,
-        'departure_date' => $returnDate
-    ];
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Build passengers
-|--------------------------------------------------------------------------
-*/
-
-$passengers = [];
-
-
-/* Adults */
-
-for ($i = 0; $i < $adults; $i++) {
-
-    $passengers[] = [
-        'type' => 'adult'
-    ];
-}
-
-
-/* Children */
-
-for ($i = 0; $i < $children; $i++) {
-
-    $passengers[] = [
-        'age' => 8
-    ];
-}
-
-
-/* Infants */
-
-for ($i = 0; $i < $infants; $i++) {
-
-    $passengers[] = [
-        'age' => 1
-    ];
-}
-
-
-/*
-|--------------------------------------------------------------------------
-| Duffel request payload
-|--------------------------------------------------------------------------
-*/
-
-$payload = [
-    'data' => [
-        'slices' => $slices,
-        'passengers' => $passengers,
-        'cabin_class' => $cabinClass
-    ]
-];
-
-
-/*
-|--------------------------------------------------------------------------
-| Send request to Duffel
-|--------------------------------------------------------------------------
-*/
-
-$url = 'https://api.duffel.com/air/offer_requests'
-     . '?return_offers=true'
-     . '&supplier_timeout=20000';
-
-
-$ch = curl_init($url);
-
-curl_setopt_array($ch, [
-
-    CURLOPT_RETURNTRANSFER => true,
-
-    CURLOPT_POST => true,
-
-    CURLOPT_HTTPHEADER => [
+    $headers = [
         'Authorization: Bearer ' . $duffelKey,
-        'Duffel-Version: v2',
         'Accept: application/json',
-        'Accept-Encoding: gzip',
-        'Content-Type: application/json'
-    ],
+        'Content-Type: application/json',
+        'Duffel-Version: v2'
+    ];
 
-    CURLOPT_POSTFIELDS => json_encode(
-        $payload,
-        JSON_UNESCAPED_SLASHES
-    ),
-
-    CURLOPT_ENCODING => '',
-
-    CURLOPT_CONNECTTIMEOUT => 10,
-
-    CURLOPT_TIMEOUT => 35
-]);
-
-
-$response = curl_exec($ch);
-
-$httpCode = (int)curl_getinfo(
-    $ch,
-    CURLINFO_HTTP_CODE
-);
-
-$curlError = curl_error($ch);
-
-curl_close($ch);
-
-
-/*
-|--------------------------------------------------------------------------
-| cURL error
-|--------------------------------------------------------------------------
-*/
-
-if ($response === false) {
-
-    http_response_code(502);
-
-    echo json_encode([
-        'success' => false,
-        'message' => 'Could not connect to Duffel.',
-        'error' => $curlError
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => $headers,
+        CURLOPT_TIMEOUT => 60,
+        CURLOPT_CONNECTTIMEOUT => 15,
     ]);
 
-    exit;
+    if ($method === 'POST') {
+        curl_setopt($ch, CURLOPT_POST, true);
+
+        if ($body !== null) {
+            curl_setopt(
+                $ch,
+                CURLOPT_POSTFIELDS,
+                json_encode($body, JSON_UNESCAPED_SLASHES)
+            );
+        }
+    }
+
+    $response = curl_exec($ch);
+    $curlError = curl_error($ch);
+    $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+    curl_close($ch);
+
+    if ($response === false) {
+        return [
+            'ok' => false,
+            'status' => $status,
+            'data' => null,
+            'error' => $curlError ?: 'Duffel connection failed.'
+        ];
+    }
+
+    $json = json_decode($response, true);
+
+    if ($status < 200 || $status >= 300) {
+
+        $message = '';
+
+        if (isset($json['errors'][0]['message'])) {
+            $message = $json['errors'][0]['message'];
+        } elseif (isset($json['errors'][0]['title'])) {
+            $message = $json['errors'][0]['title'];
+        } else {
+            $message = 'Duffel API returned HTTP ' . $status;
+        }
+
+        return [
+            'ok' => false,
+            'status' => $status,
+            'data' => $json,
+            'error' => $message
+        ];
+    }
+
+    return [
+        'ok' => true,
+        'status' => $status,
+        'data' => $json,
+        'error' => ''
+    ];
 }
 
 
 /*
 |--------------------------------------------------------------------------
-| Decode Duffel response
+| FORM VALUES
 |--------------------------------------------------------------------------
 */
 
-$data = json_decode($response, true);
+$origin      = strtoupper(trim($_GET['origin'] ?? 'BCN'));
+$destination = strtoupper(trim($_GET['destination'] ?? 'LHE'));
+$departure   = trim($_GET['departure'] ?? '');
+$returnDate  = trim($_GET['return_date'] ?? '');
+$adults      = max(1, min(9, (int)($_GET['adults'] ?? 1)));
+$cabin       = trim($_GET['cabin'] ?? 'economy');
 
 
-if (!is_array($data)) {
+/*
+|--------------------------------------------------------------------------
+| SEARCH
+|--------------------------------------------------------------------------
+*/
 
-    http_response_code(502);
+if (isset($_GET['search'])) {
 
-    echo json_encode([
-        'success' => false,
-        'message' => 'Duffel returned an invalid response.'
-    ]);
+    $searched = true;
 
-    exit;
+    if (!preg_match('/^[A-Z]{3}$/', $origin)) {
+        $error = 'Please enter a valid 3-letter origin airport code.';
+    }
+
+    elseif (!preg_match('/^[A-Z]{3}$/', $destination)) {
+        $error = 'Please enter a valid 3-letter destination airport code.';
+    }
+
+    elseif ($origin === $destination) {
+        $error = 'Origin and destination cannot be the same.';
+    }
+
+    elseif ($departure === '') {
+        $error = 'Please select a departure date.';
+    }
+
+    elseif ($departure < date('Y-m-d')) {
+        $error = 'Departure date cannot be in the past.';
+    }
+
+    elseif ($returnDate !== '' && $returnDate < $departure) {
+        $error = 'Return date cannot be before departure date.';
+    }
+
+    else {
+
+        $slices = [
+            [
+                'origin' => $origin,
+                'destination' => $destination,
+                'departure_date' => $departure
+            ]
+        ];
+
+        if ($returnDate !== '') {
+            $slices[] = [
+                'origin' => $destination,
+                'destination' => $origin,
+                'departure_date' => $returnDate
+            ];
+        }
+
+        $passengers = [];
+
+        for ($i = 0; $i < $adults; $i++) {
+            $passengers[] = [
+                'type' => 'adult'
+            ];
+        }
+
+        $payload = [
+            'data' => [
+                'slices' => $slices,
+                'passengers' => $passengers,
+                'cabin_class' => $cabin,
+                'return_offers' => true
+            ]
+        ];
+
+        $api = duffel_request(
+            '/air/offer_requests?return_offers=true&supplier_timeout=20000',
+            'POST',
+            $payload
+        );
+
+        if (!$api['ok']) {
+
+            $error = 'Duffel search error: ' . $api['error'];
+
+            error_log(
+                'DUFFEL SEARCH ERROR | HTTP ' .
+                $api['status'] .
+                ' | ' .
+                json_encode($api['data'])
+            );
+
+        } else {
+
+            $results = $api['data']['data']['offers'] ?? [];
+
+            /*
+             * Cheapest first
+             */
+            usort($results, function ($a, $b) {
+
+                $priceA = (float)($a['total_amount'] ?? 0);
+                $priceB = (float)($b['total_amount'] ?? 0);
+
+                return $priceA <=> $priceB;
+            });
+
+            /*
+             * Test page: first 20 offers only
+             */
+            $results = array_slice($results, 0, 20);
+        }
+    }
 }
 
 
 /*
 |--------------------------------------------------------------------------
-| Duffel API error
+| HELPERS
 |--------------------------------------------------------------------------
 */
 
-if ($httpCode < 200 || $httpCode >= 300) {
+function flight_time(?string $datetime): string
+{
+    if (!$datetime) return '';
 
-    error_log(
-        'DUFFEL SEARCH ERROR HTTP '
-        . $httpCode
-        . ' BODY: '
-        . $response
-    );
+    $timestamp = strtotime($datetime);
 
-    http_response_code($httpCode);
+    return $timestamp ? date('H:i', $timestamp) : $datetime;
+}
 
-    echo json_encode([
-        'success' => false,
-        'message' => 'Duffel flight search failed.',
-        'duffel_error' => $data['errors'] ?? []
-    ]);
+function flight_date(?string $datetime): string
+{
+    if (!$datetime) return '';
 
-    exit;
+    $timestamp = strtotime($datetime);
+
+    return $timestamp ? date('d M Y', $timestamp) : $datetime;
+}
+
+function duration_text(?string $duration): string
+{
+    if (!$duration) return '';
+
+    $duration = str_replace('PT', '', $duration);
+
+    return strtolower($duration);
 }
 
 
-/*
-|--------------------------------------------------------------------------
-| Extract offers
-|--------------------------------------------------------------------------
-*/
+site_header('Duffel Flight Search');
+?>
 
-$offerRequest = $data['data'] ?? [];
+<style>
 
-$offers = $offerRequest['offers'] ?? [];
-
-if (!is_array($offers)) {
-    $offers = [];
+.duffel-page{
+    background:#f4f7fb;
+    padding:55px 0 80px;
+    min-height:700px;
 }
 
+.duffel-container{
+    width:min(1180px,92%);
+    margin:auto;
+}
 
-/*
-|--------------------------------------------------------------------------
-| Sort cheapest first
-|--------------------------------------------------------------------------
-*/
+.duffel-heading{
+    margin-bottom:25px;
+}
 
-usort($offers, function ($a, $b) {
+.duffel-heading h1{
+    margin:5px 0 8px;
+    font-size:38px;
+}
 
-    $priceA = (float)($a['total_amount'] ?? 999999999);
-    $priceB = (float)($b['total_amount'] ?? 999999999);
+.duffel-heading p{
+    color:#64748b;
+    margin:0;
+}
 
-    return $priceA <=> $priceB;
-});
+.duffel-search-box{
+    background:white;
+    border:1px solid #dbe4ef;
+    border-radius:18px;
+    padding:25px;
+    box-shadow:0 10px 35px rgba(15,23,42,.06);
+}
+
+.duffel-form{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 1fr .75fr 1fr;
+    gap:12px;
+    align-items:end;
+}
+
+.duffel-field label{
+    display:block;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:7px;
+    color:#334155;
+}
+
+.duffel-field input,
+.duffel-field select{
+    width:100%;
+    height:50px;
+    border:1px solid #cbd5e1;
+    border-radius:10px;
+    padding:0 13px;
+    font-size:15px;
+    background:#fff;
+    box-sizing:border-box;
+}
+
+.duffel-search-btn{
+    height:50px;
+    border:0;
+    border-radius:10px;
+    background:#0b6edc;
+    color:#fff;
+    font-weight:800;
+    font-size:15px;
+    cursor:pointer;
+    padding:0 18px;
+}
+
+.duffel-search-btn:hover{
+    background:#075bb8;
+}
+
+.duffel-error{
+    margin-top:20px;
+    background:#fff1f2;
+    border:1px solid #fecdd3;
+    color:#be123c;
+    padding:15px 18px;
+    border-radius:10px;
+}
+
+.results-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin:35px 0 18px;
+}
+
+.results-head h2{
+    margin:0;
+}
+
+.results-head span{
+    color:#64748b;
+}
+
+.flight-result{
+    background:#fff;
+    border:1px solid #dbe4ef;
+    border-radius:16px;
+    padding:22px;
+    margin-bottom:15px;
+    display:grid;
+    grid-template-columns:180px 1fr 180px;
+    gap:25px;
+    align-items:center;
+    box-shadow:0 5px 20px rgba(15,23,42,.04);
+}
+
+.airline-name{
+    font-weight:800;
+    font-size:16px;
+}
+
+.airline-small{
+    color:#64748b;
+    font-size:12px;
+    margin-top:5px;
+}
+
+.slice{
+    padding:7px 0;
+}
+
+.slice + .slice{
+    border-top:1px solid #eef2f7;
+    margin-top:8px;
+    padding-top:14px;
+}
+
+.route-row{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.airport{
+    font-size:18px;
+    font-weight:800;
+}
+
+.time{
+    font-size:16px;
+    font-weight:700;
+}
+
+.route-line{
+    flex:1;
+    height:1px;
+    background:#cbd5e1;
+    position:relative;
+}
+
+.route-line:after{
+    content:"✈";
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    background:#fff;
+    padding:0 8px;
+    color:#64748b;
+}
+
+.slice-info{
+    color:#64748b;
+    font-size:12px;
+    margin-top:7px;
+}
+
+.price-box{
+    text-align:right;
+}
+
+.price-label{
+    font-size:12px;
+    color:#64748b;
+}
+
+.price{
+    font-size:28px;
+    font-weight:800;
+    margin:3px 0 12px;
+    color:#0f172a;
+}
+
+.select-btn{
+    display:inline-block;
+    background:#071f3f;
+    color:#fff !important;
+    padding:11px 18px;
+    border-radius:9px;
+    text-decoration:none;
+    font-weight:700;
+    font-size:13px;
+}
+
+.no-results{
+    background:#fff;
+    border:1px solid #dbe4ef;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    color:#64748b;
+}
+
+.test-badge{
+    display:inline-block;
+    background:#e0f2fe;
+    color:#0369a1;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:800;
+}
+
+@media(max-width:950px){
+
+    .duffel-form{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .flight-result{
+        grid-template-columns:1fr;
+    }
+
+    .price-box{
+        text-align:left;
+    }
+}
+
+@media(max-width:600px){
+
+    .duffel-form{
+        grid-template-columns:1fr;
+    }
+
+    .duffel-heading h1{
+        font-size:30px;
+    }
+
+}
+
+</style>
 
 
-/*
-|--------------------------------------------------------------------------
-| Return result to our website
-|--------------------------------------------------------------------------
-*/
+<section class="duffel-page">
 
-echo json_encode([
-    'success' => true,
+<div class="duffel-container">
 
-    'search' => [
-        'origin' => $origin,
-        'destination' => $destination,
-        'departure_date' => $departureDate,
-        'return_date' => $returnDate,
-        'adults' => $adults,
-        'children' => $children,
-        'infants' => $infants,
-        'cabin_class' => $cabinClass
-    ],
+    <div class="duffel-heading">
 
-    'offer_request_id' => $offerRequest['id'] ?? null,
+        <span class="test-badge">DUFFEL TEST SEARCH</span>
 
-    'live_mode' => $offerRequest['live_mode'] ?? null,
+        <h1>Search Live Flights</h1>
 
-    'count' => count($offers),
+        <p>
+            Test live flight availability directly from the Duffel API.
+        </p>
 
-    'offers' => $offers
+    </div>
 
-], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+    <div class="duffel-search-box">
+
+        <form method="get" class="duffel-form">
+
+            <div class="duffel-field">
+
+                <label>From</label>
+
+                <input
+                    type="text"
+                    name="origin"
+                    maxlength="3"
+                    placeholder="BCN"
+                    value="<?=h($origin)?>"
+                    required
+                >
+
+            </div>
+
+
+            <div class="duffel-field">
+
+                <label>To</label>
+
+                <input
+                    type="text"
+                    name="destination"
+                    maxlength="3"
+                    placeholder="LHE"
+                    value="<?=h($destination)?>"
+                    required
+                >
+
+            </div>
+
+
+            <div class="duffel-field">
+
+                <label>Departure</label>
+
+                <input
+                    type="date"
+                    name="departure"
+                    min="<?=date('Y-m-d')?>"
+                    value="<?=h($departure)?>"
+                    required
+                >
+
+            </div>
+
+
+            <div class="duffel-field">
+
+                <label>Return</label>
+
+                <input
+                    type="date"
+                    name="return_date"
+                    min="<?=date('Y-m-d')?>"
+                    value="<?=h($returnDate)?>"
+                >
+
+            </div>
+
+
+            <div class="duffel-field">
+
+                <label>Adults</label>
+
+                <select name="adults">
+
+                    <?php for($i=1;$i<=9;$i++): ?>
+
+                        <option
+                            value="<?=$i?>"
+                            <?=$adults === $i ? 'selected' : ''?>
+                        >
+                            <?=$i?>
+                        </option>
+
+                    <?php endfor; ?>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <button
+                    class="duffel-search-btn"
+                    type="submit"
+                    name="search"
+                    value="1"
+                >
+                    Search Flights
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <?php if($error): ?>
+
+        <div class="duffel-error">
+            <strong>Search failed:</strong>
+            <?=h($error)?>
+        </div>
+
+    <?php endif; ?>
+
+
+    <?php if($searched && !$error): ?>
+
+        <div class="results-head">
+
+            <h2>Available Flights</h2>
+
+            <span>
+                <?=count($results)?> results shown
+            </span>
+
+        </div>
+
+
+        <?php if(!$results): ?>
+
+            <div class="no-results">
+
+                No flights were returned for this search.
+
+            </div>
+
+        <?php endif; ?>
+
+
+        <?php foreach($results as $offer): ?>
+
+            <?php
+
+            $owner =
+                $offer['owner']['name']
+                ?? 'Airline';
+
+            $currency =
+                $offer['total_currency']
+                ?? 'EUR';
+
+            $amount =
+                $offer['total_amount']
+                ?? '0';
+
+            $slices =
+                $offer['slices']
+                ?? [];
+
+            $offerId =
+                $offer['id']
+                ?? '';
+
+            ?>
+
+
+            <article class="flight-result">
+
+
+                <div>
+
+                    <div class="airline-name">
+                        <?=h($owner)?>
+                    </div>
+
+                    <div class="airline-small">
+                        Duffel Live Offer
+                    </div>
+
+                </div>
+
+
+                <div>
+
+
+                <?php foreach($slices as $slice): ?>
+
+                    <?php
+
+                    $segments =
+                        $slice['segments']
+                        ?? [];
+
+                    $first =
+                        $segments[0]
+                        ?? [];
+
+                    $last =
+                        $segments
+                        ? $segments[count($segments)-1]
+                        : [];
+
+                    $from =
+                        $first['origin']['iata_code']
+                        ?? '';
+
+                    $to =
+                        $last['destination']['iata_code']
+                        ?? '';
+
+                    $departTime =
+                        $first['departing_at']
+                        ?? '';
+
+                    $arrivalTime =
+                        $last['arriving_at']
+                        ?? '';
+
+                    $stops =
+                        max(0,count($segments)-1);
+
+                    ?>
+
+
+                    <div class="slice">
+
+
+                        <div class="route-row">
+
+
+                            <div>
+
+                                <div class="airport">
+                                    <?=h($from)?>
+                                </div>
+
+                                <div class="time">
+                                    <?=h(flight_time($departTime))?>
+                                </div>
+
+                            </div>
+
+
+                            <div class="route-line"></div>
+
+
+                            <div>
+
+                                <div class="airport">
+                                    <?=h($to)?>
+                                </div>
+
+                                <div class="time">
+                                    <?=h(flight_time($arrivalTime))?>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="slice-info">
+
+                            <?=h(flight_date($departTime))?>
+
+                            ·
+
+                            <?php if($stops === 0): ?>
+
+                                Direct flight
+
+                            <?php elseif($stops === 1): ?>
+
+                                1 stop
+
+                            <?php else: ?>
+
+                                <?=$stops?> stops
+
+                            <?php endif; ?>
+
+                        </div>
+
+
+                    </div>
+
+
+                <?php endforeach; ?>
+
+
+                </div>
+
+
+                <div class="price-box">
+
+                    <div class="price-label">
+                        Total price
+                    </div>
+
+                    <div class="price">
+
+                        <?=h($currency)?>
+
+                        <?=number_format((float)$amount,2)?>
+
+                    </div>
+
+
+                    <a
+                        class="select-btn"
+                        href="https://wa.me/<?=WHATSAPP?>?text=<?=urlencode(
+                            'Hello Mustafa Travels, I found a flight on your website. Route: ' .
+                            $origin . '-' .
+                            $destination .
+                            ', Price: ' .
+                            $currency . ' ' .
+                            $amount .
+                            ', Duffel Offer ID: ' .
+                            $offerId
+                        )?>"
+                        target="_blank"
+                    >
+                        Select Flight
+                    </a>
+
+                </div>
+
+
+            </article>
+
+
+        <?php endforeach; ?>
+
+
+    <?php endif; ?>
+
+
+</div>
+
+</section>
+
+
+<?php site_footer(); ?>
