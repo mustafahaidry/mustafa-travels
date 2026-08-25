@@ -17,13 +17,10 @@ site_header('Home');
   <div class="hero-dots"><button class="active"></button><button></button><button></button></div>
 </section>
 
-<section class="search-card-wrap">
+<section class="section">
     <div class="container">
         <div id="tpwl-search"></div>
-
-        <div style="margin-top:24px;">
-            <div id="tpwl-tickets"></div>
-        </div>
+        <div id="tpwl-tickets"></div>
     </div>
 </section>
 <?php if(!$featured): ?>
