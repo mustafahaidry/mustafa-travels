@@ -11,6 +11,18 @@ function site_header(string $title='Home'): void { ?>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
+
+<!-- Travelpayouts White Label -->
+<script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1">
+(function () {
+  var script = document.createElement("script");
+  script.async = 1;
+  script.type = "module";
+  script.src = "https://tpwdg.com/wl_web/main.js?wl_id=16109";
+  document.head.appendChild(script);
+})();
+</script>
+
 </head>
 <body>
 <div class="topbar">
