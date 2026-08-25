@@ -4,7 +4,7 @@ session_start();
 
 const SITE_NAME = 'Mustafa Travels & Tours';
 const ADMIN_USER = 'admin';
-const ADMIN_PASS = 'ChangeMe123!'; // CHANGE AFTER DEPLOY
+const ADMIN_PASS = 'Alizaminhaidry786@!'; // CHANGE AFTER DEPLOY
 const WHATSAPP = '34611473217';
 const PHONE1 = '+34 632 234 216';
 const PHONE2 = '+34 611 473 217';
