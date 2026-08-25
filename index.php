@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__.'/partials.php';
-$featured=sb_select('offers','select=*&active=eq.true&featured=eq.true&order=id.desc&limit=8');
+$featured=$pdo->query("SELECT * FROM offers WHERE active=1 AND featured=1 ORDER BY id DESC LIMIT 8")->fetchAll(PDO::FETCH_ASSOC);
 site_header('Home');
 ?>
 <section class="hero">
@@ -15,17 +15,28 @@ site_header('Home');
     <div class="hero-trust"><div><strong>8+</strong><small>Years Travel Experience</small></div><div><strong>10,000+</strong><small>Clients Served</small></div><div><strong>500+</strong><small>Umrah Packages</small></div><div><strong>24/7</strong><small>Emergency Support</small></div></div>
   </div>
   <div class="hero-dots"><button class="active"></button><button></button><button></button></div>
+</section>
+
+<section class="search-card-wrap">
+ <div class="container">
+  <div class="search-card">
+    <div class="search-tabs"><button class="active">✈ Flights</button><button>▦ Hotels</button><button>☾ Umrah</button><button>✓ Visa</button></div>
+    <form class="quick-search" action="contact.php" method="get">
+      <label>From<input name="from" placeholder="Barcelona (BCN)"></label>
+      <label>To<input name="to" placeholder="Islamabad / Lahore / Worldwide"></label>
+      <label>Departure<input type="date" name="departure"></label>
+      <label>Return<input type="date" name="return"></label>
+      <button class="btn btn-primary" type="submit">Request Fare</button>
+    </form>
+  </div>
+ </div>
+</section>
+
 <section class="section">
-  <div class="container">
-    <div class="section-head">
-      <div>
-        <span class="eyebrow dark">LATEST DEALS</span>
-        <h2>Special Offers</h2>
-      </div>
-      <a href="offers.php">View all offers →</a>
-    </div>
-    <div class="offers-grid">
-<?php if(!$featured): ?>
+ <div class="container">
+  <div class="section-head"><div><span class="eyebrow dark">LATEST DEALS</span><h2>Special Offers</h2></div><a href="offers.php">View all offers →</a></div>
+  <div class="offers-grid">
+  <?php if(!$featured): ?>
     <?php foreach([
       ['Barcelona → Islamabad','From €640','Etihad Airways','40kg + 7kg'],
       ['Barcelona → Lahore','From €655','Qatar Airways','45kg + 7kg'],
@@ -35,13 +46,14 @@ site_header('Home');
     <?php endforeach; ?>
   <?php else: foreach($featured as $o): ?>
     <article class="offer-card">
-      <div class="offer-media" <?php if($o['image_url']): ?>style="background-image:url('<?=h($o['image_url'])?>')"<?php endif; ?>><span class="offer-badge"><?=h($o['badge'] ?: 'Special Offer')?></span></div>
+      <div class="offer-media" <?php if($o['image']): ?>style="background-image:url('<?=h($o['image'])?>')"<?php endif; ?>><span class="offer-badge"><?=h($o['badge'] ?: 'Special Offer')?></span></div>
       <div class="offer-body"><small><?=h($o['airline'])?></small><h3><?=h($o['title'])?></h3><p><?=h($o['travel_dates'])?> · <?=h($o['baggage'])?></p><div class="price"><?=h($o['currency'])?> <?=number_format((float)$o['price'],0)?></div><a class="btn btn-dark" href="https://wa.me/<?=WHATSAPP?>?text=<?=urlencode('I am interested in: '.$o['title'])?>" target="_blank">Book / Ask Now</a></div>
     </article>
   <?php endforeach; endif; ?>
-   </div>
-    </div>
+  </div>
+ </div>
 </section>
+
 <section class="section section-soft">
  <div class="container">
   <div class="section-head centered"><div><span class="eyebrow dark">WHAT WE DO</span><h2>Complete Travel Services</h2><p>One trusted team for your journey from planning to return.</p></div></div>
