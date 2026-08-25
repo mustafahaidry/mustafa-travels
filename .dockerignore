@@ -1,0 +1,6 @@
+data/*.sqlite
+data/*.sqlite-*
+uploads/*
+.git
+.github
+README*.txt

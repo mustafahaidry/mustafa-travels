@@ -1,0 +1,6 @@
+<?php require_once __DIR__.'/partials.php'; site_header('Umrah & Hajj'); ?>
+<section class="page-hero umrah-hero"><div class="container"><span class="eyebrow">UMRAH & HAJJ</span><h1>A spiritual journey, professionally arranged.</h1><p>Packages tailored around your dates, budget and hotel preferences.</p></div></section>
+<section class="section"><div class="container"><div class="section-head centered"><div><span class="eyebrow dark">PACKAGE SERVICES</span><h2>Build your Umrah package</h2></div></div>
+<div class="service-grid"><div class="service-card"><div class="service-icon">✈</div><h3>Flights</h3><p>Flexible airline and routing options.</p></div><div class="service-card"><div class="service-icon">▦</div><h3>Makkah & Madinah Hotels</h3><p>Economy to premium options based on distance and budget.</p></div><div class="service-card"><div class="service-icon">✓</div><h3>Visa Support</h3><p>Umrah visa assistance according to applicable requirements.</p></div><div class="service-card"><div class="service-icon">🚐</div><h3>Transport</h3><p>Jeddah–Makkah–Madinah and airport transfer options.</p></div></div>
+<div class="center-actions"><a class="btn btn-primary btn-lg" href="contact.php?service=Umrah">Request Umrah Quote</a></div></div></section>
+<?php site_footer(); ?>

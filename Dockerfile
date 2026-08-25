@@ -1,21 +1,19 @@
 FROM php:8.2-apache
 
-RUN apt-get update && apt-get install -y curl libcurl4-openssl-dev \
-    && docker-php-ext-install curl
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libsqlite3-dev \
+    && docker-php-ext-install pdo pdo_sqlite \
+    && a2enmod rewrite headers \
+    && rm -rf /var/lib/apt/lists/*
 
-# Hide Apache version
-RUN echo "ServerTokens Prod" >> /etc/apache2/apache2.conf
-RUN echo "ServerSignature Off" >> /etc/apache2/apache2.conf
-
-# Hide PHP version
-RUN echo "expose_php = Off" >> /usr/local/etc/php/conf.d/php.ini
-
-# Security Headers
-RUN a2enmod headers
-RUN echo "Header set X-Content-Type-Options \"nosniff\"" >> /etc/apache2/apache2.conf
-RUN echo "Header set X-Frame-Options \"SAMEORIGIN\"" >> /etc/apache2/apache2.conf
-
+WORKDIR /var/www/html
 COPY . /var/www/html/
+
+RUN mkdir -p /var/www/html/data /var/www/html/uploads \
+    && chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/data /var/www/html/uploads
+
+ENV APACHE_DOCUMENT_ROOT=/var/www/html
 
 EXPOSE 80
 
