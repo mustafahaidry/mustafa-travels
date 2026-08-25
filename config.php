@@ -187,23 +187,27 @@ function sb_select(
    INSERT
    ========================================================= */
 
-function sb_insert(
-    string $table,
-    array $row
-): bool {
-
+function sb_insert(string $table, array $row): bool
+{
     $r = sb_request(
         $table,
         'POST',
         $row,
         [
-            'Prefer: return=minimal'
+            'Prefer: return=representation'
         ]
     );
 
+    if (!$r['ok']) {
+        error_log(
+            'SUPABASE INSERT ERROR | HTTP '.$r['code'].
+            ' | BODY: '.(string)$r['raw'].
+            ' | CURL: '.(string)$r['error']
+        );
+    }
+
     return $r['ok'];
 }
-
 
 /* =========================================================
    UPDATE
