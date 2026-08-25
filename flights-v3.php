@@ -1,1183 +1,353 @@
 <?php
 require_once __DIR__ . '/partials.php';
 
-$results = [];
-$error   = '';
-
-function duffel_api_request(string $endpoint, array $payload): array
-{
-    $apiKey = getenv('DUFFEL_API_KEY');
-
-    if (!$apiKey) {
-        return [
-            'ok' => false,
-            'error' => 'DUFFEL_API_KEY is not configured.'
-        ];
-    }
-
-    $ch = curl_init('https://api.duffel.com' . $endpoint);
-
-    curl_setopt_array($ch, [
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_POST => true,
-        CURLOPT_HTTPHEADER => [
-            'Authorization: Bearer ' . $apiKey,
-            'Duffel-Version: v2',
-            'Accept: application/json',
-            'Content-Type: application/json'
-        ],
-        CURLOPT_POSTFIELDS => json_encode($payload),
-        CURLOPT_TIMEOUT => 45
-    ]);
-
-    $response = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $curlError = curl_error($ch);
-
-    curl_close($ch);
-
-    if ($curlError) {
-        return [
-            'ok' => false,
-            'error' => $curlError
-        ];
-    }
-
-    $data = json_decode($response, true);
-
-    if ($httpCode < 200 || $httpCode >= 300) {
-
-        $message = $data['errors'][0]['message']
-            ?? $data['errors'][0]['title']
-            ?? 'Duffel API request failed.';
-
-        return [
-            'ok' => false,
-            'error' => $message,
-            'raw' => $data
-        ];
-    }
-
-    return [
-        'ok' => true,
-        'data' => $data
-    ];
-}
-
-
-/* ---------------------------------------------------------
-   SEARCH
---------------------------------------------------------- */
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $origin      = strtoupper(trim($_POST['origin'] ?? ''));
-    $destination = strtoupper(trim($_POST['destination'] ?? ''));
-    $departure   = trim($_POST['departure'] ?? '');
-    $returnDate  = trim($_POST['return_date'] ?? '');
-
-    $adults   = max(1, (int)($_POST['adults'] ?? 1));
-    $children = max(0, (int)($_POST['children'] ?? 0));
-    $infants  = max(0, (int)($_POST['infants'] ?? 0));
-
-    $cabin = $_POST['cabin'] ?? 'economy';
-
-    $allowedCabins = [
-        'economy',
-        'premium_economy',
-        'business',
-        'first'
-    ];
-
-    if (!in_array($cabin, $allowedCabins, true)) {
-        $cabin = 'economy';
-    }
-
-    if (
-        strlen($origin) !== 3 ||
-        strlen($destination) !== 3 ||
-        !$departure
-    ) {
-        $error = 'Please enter valid airport codes and departure date.';
-    } else {
-
-        $slices = [
-            [
-                'origin' => $origin,
-                'destination' => $destination,
-                'departure_date' => $departure
-            ]
-        ];
-
-        if ($returnDate !== '') {
-
-            $slices[] = [
-                'origin' => $destination,
-                'destination' => $origin,
-                'departure_date' => $returnDate
-            ];
-        }
-
-        $passengers = [];
-
-        for ($i = 0; $i < $adults; $i++) {
-            $passengers[] = [
-                'type' => 'adult'
-            ];
-        }
-
-        for ($i = 0; $i < $children; $i++) {
-            $passengers[] = [
-                'type' => 'child'
-            ];
-        }
-
-        /*
-         * Duffel infant_without_seat passenger.
-         * Infant should normally be associated with an adult
-         * during the later booking/passenger-details stage.
-         */
-        for ($i = 0; $i < $infants; $i++) {
-            $passengers[] = [
-                'type' => 'infant_without_seat'
-            ];
-        }
-
-        $payload = [
-            'data' => [
-                'slices' => $slices,
-                'passengers' => $passengers,
-                'cabin_class' => $cabin
-            ]
-        ];
-
-        $api = duffel_api_request(
-            '/air/offer_requests?return_offers=true&supplier_timeout=20000',
-            $payload
-        );
-
-        if (!$api['ok']) {
-            $error = $api['error'];
-        } else {
-            $results = $api['data']['data']['offers'] ?? [];
-        }
-    }
-}
-
-
-site_header('Flight Search');
+site_header('Flights');
 ?>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
 <style>
-
-.flight-v3-page{
-    background:#f4f8fc;
-    min-height:750px;
-    padding:48px 0 80px;
-}
-
-.flight-v3-wrap{
-    max-width:1180px;
-    margin:auto;
-}
-
-.flight-v3-title{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-end;
-    margin-bottom:20px;
-}
-
-.flight-v3-title h1{
-    margin:0;
-    font-size:36px;
-    color:#06244b;
-}
-
-.flight-v3-title p{
-    margin:7px 0 0;
-    color:#64748b;
-}
-
-.test-badge{
-    background:#dff3ff;
-    color:#0877bd;
-    font-size:11px;
-    font-weight:800;
-    padding:8px 14px;
-    border-radius:50px;
-}
-
-.flight-box{
-    background:white;
-    border:1px solid #dce6f0;
-    border-radius:18px;
-    padding:20px;
-    box-shadow:0 18px 40px rgba(20,50,80,.08);
-}
-
-.trip-tabs{
-    display:flex;
-    gap:8px;
-    margin-bottom:16px;
-}
-
-.trip-tab{
-    border:1px solid #d6e1ec;
-    background:#fff;
-    padding:10px 18px;
-    border-radius:50px;
-    font-weight:700;
-    cursor:pointer;
-}
-
-.trip-tab.active{
-    background:#062b5c;
-    color:#fff;
-    border-color:#062b5c;
-}
-
-.search-grid{
-    display:grid;
-    grid-template-columns:
-        1.2fr
-        42px
-        1.2fr
-        1fr
-        1fr
-        1.15fr
-        145px;
-    gap:10px;
-    align-items:stretch;
-}
-
-.search-field{
-    border:1px solid #cad8e6;
-    border-radius:12px;
-    padding:9px 12px;
-    position:relative;
-    background:#fff;
-}
-
-.search-field label{
-    display:block;
-    font-size:10px;
-    font-weight:800;
-    color:#69809b;
-    margin-bottom:4px;
-}
-
-.search-field input,
-.search-field select{
-    width:100%;
-    border:0;
-    outline:0;
-    font-size:15px;
-    font-weight:700;
-    color:#0b2440;
-    background:transparent;
-}
-
-.swap{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:20px;
-    color:#0b5fa5;
-}
-
-.search-btn{
-    border:0;
-    border-radius:12px;
-    background:#0d8ee5;
-    color:#fff;
-    font-weight:800;
-    cursor:pointer;
-    font-size:14px;
-}
-
-.search-btn:hover{
-    background:#067cc9;
-}
-
-.passenger-panel{
-    margin-top:14px;
-    padding-top:14px;
-    border-top:1px solid #e8eef5;
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:12px;
-}
-
-.passenger-field label{
-    display:block;
-    font-size:12px;
-    font-weight:700;
-    margin-bottom:5px;
-    color:#566b82;
-}
-
-.passenger-field select{
-    width:100%;
-    padding:10px;
-    border:1px solid #d4dfeb;
-    border-radius:9px;
-    background:white;
-}
-
-.autocomplete{
-    position:absolute;
-    top:100%;
-    left:0;
-    right:0;
-    background:#fff;
-    border:1px solid #dce5ef;
-    border-radius:10px;
-    margin-top:5px;
-    z-index:100;
-    box-shadow:0 15px 35px rgba(0,0,0,.12);
-    overflow:hidden;
-    display:none;
-}
-
-.autocomplete div{
-    padding:11px 12px;
-    cursor:pointer;
-    border-bottom:1px solid #edf2f7;
-}
-
-.autocomplete div:hover{
-    background:#f2f8ff;
-}
-
-.autocomplete strong{
-    color:#062b5c;
-}
-
-.autocomplete small{
-    display:block;
-    color:#718096;
-    margin-top:2px;
-}
-
-.error-box{
-    margin-top:22px;
-    background:#fff0f0;
-    border:1px solid #ffc9c9;
-    color:#a61b1b;
-    padding:15px;
-    border-radius:12px;
-}
-
-.results-title{
-    margin:35px 0 15px;
-    font-size:25px;
-    color:#06244b;
-}
-
-.flight-result{
-    background:white;
-    border:1px solid #dce5ef;
-    border-radius:16px;
-    margin-bottom:15px;
-    overflow:hidden;
-    box-shadow:0 8px 25px rgba(20,40,60,.05);
-}
-
-.result-main{
-    display:grid;
-    grid-template-columns:1fr 1fr 220px;
-    align-items:center;
-    padding:20px;
-}
-
-.airline{
-    display:flex;
-    gap:15px;
-    align-items:center;
-}
-
-.airline-logo{
-    width:52px;
-    height:52px;
-    object-fit:contain;
-}
-
-.airline-name{
-    font-weight:800;
-    color:#0b2440;
-}
-
-.route-time{
-    font-size:20px;
-    font-weight:800;
-    color:#081c36;
-}
-
-.route-sub{
-    color:#66798e;
-    font-size:13px;
-    margin-top:5px;
-}
-
-.price-area{
-    text-align:right;
-}
-
-.price{
-    font-size:26px;
-    font-weight:900;
-    color:#06244b;
-}
-
-.select-flight{
-    display:inline-block;
-    margin-top:8px;
-    background:#081c36;
-    color:white;
-    padding:10px 20px;
-    border-radius:8px;
-    text-decoration:none;
-    font-weight:800;
-}
-
-.offer-info{
-    padding:12px 20px;
-    border-top:1px solid #edf1f5;
-    display:flex;
-    gap:25px;
-    flex-wrap:wrap;
-    color:#586d83;
-    font-size:13px;
-}
-
-@media(max-width:1000px){
-
-    .search-grid{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .swap{
-        display:none;
-    }
-
-    .search-btn{
-        min-height:55px;
-    }
-
-    .passenger-panel{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .result-main{
-        grid-template-columns:1fr;
-        gap:15px;
-    }
-
-    .price-area{
-        text-align:left;
-    }
-}
-
+.mt-flight-page{background:#f4f8fc;min-height:760px;padding:46px 0 90px}
+.mt-flight-wrap{width:min(1180px,calc(100% - 32px));margin:auto}
+.mt-flight-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:20px}
+.mt-flight-head h1{margin:0;font:800 38px Manrope,Inter,sans-serif;color:#08294f}
+.mt-flight-head p{margin:7px 0 0;color:#6d8094}
+.mt-engine-badge{background:#e2f4ff;color:#0877bd;border-radius:30px;padding:8px 12px;font-size:10px;font-weight:900;letter-spacing:.6px}
+.mt-search-card{background:#fff;border:1px solid #dce6ef;border-radius:18px;padding:20px;box-shadow:0 18px 45px rgba(8,47,95,.08)}
+.mt-trip-tabs{display:flex;gap:8px;margin-bottom:16px}
+.mt-trip-tab{border:1px solid #d7e1eb;background:#fff;color:#526a80;border-radius:30px;padding:9px 15px;font-size:11px;font-weight:900;cursor:pointer}
+.mt-trip-tab.active{background:#082f5f;border-color:#082f5f;color:#fff}
+.mt-search-row{display:grid;grid-template-columns:1.2fr 42px 1.2fr 1fr 1fr 1.15fr 150px;gap:9px;align-items:stretch}
+.mt-field{position:relative;border:1px solid #cedae5;border-radius:11px;padding:8px 11px;background:#fff;min-width:0}
+.mt-field label{display:block;font-size:9px;font-weight:900;letter-spacing:.55px;color:#7a8da0;margin-bottom:2px}
+.mt-field input,.mt-field select{border:0;outline:0;background:transparent;width:100%;height:27px;color:#10253d;font:800 13px Inter,sans-serif}
+.mt-swap{align-self:center;width:36px;height:36px;border:1px solid #dbe5ee;background:#fff;color:#082f5f;border-radius:50%;font-weight:900;cursor:pointer}
+.mt-search-button{border:0;border-radius:11px;background:linear-gradient(135deg,#1096e9,#0875ca);color:#fff;font-weight:900;cursor:pointer}
+.mt-search-button:hover{filter:brightness(.97)}
+.mt-traveller-trigger{cursor:pointer}
+.mt-traveller-trigger strong{display:block;font-size:13px;color:#10253d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mt-traveller-trigger small{display:block;font-size:9px;color:#8193a4;margin-top:2px}
+.mt-pax-popup{display:none;position:absolute;right:0;top:58px;width:290px;z-index:120;background:#fff;border:1px solid #dce6ef;border-radius:14px;padding:15px;box-shadow:0 18px 50px rgba(8,47,95,.2)}
+.mt-pax-popup.open{display:block}
+.mt-pax-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #edf2f6}
+.mt-pax-row:last-of-type{border-bottom:0}
+.mt-pax-row strong{font-size:12px}.mt-pax-row small{display:block;font-size:9px;color:#8496a7}
+.mt-step{display:flex;align-items:center;gap:10px}
+.mt-step button{width:28px;height:28px;border-radius:50%;border:1px solid #ccd8e3;background:#fff;color:#082f5f;font-weight:900;cursor:pointer}
+.mt-step span{min-width:16px;text-align:center;font-weight:900}
+.mt-pax-done{width:100%;margin-top:11px;border:0;border-radius:9px;background:#082f5f;color:#fff;padding:10px;font-weight:900;cursor:pointer}
+.mt-airport-list{display:none;position:absolute;left:0;right:0;top:58px;z-index:110;background:#fff;border:1px solid #dce6ef;border-radius:12px;box-shadow:0 16px 45px rgba(8,47,95,.18);overflow:hidden;max-height:310px;overflow-y:auto}
+.mt-airport-list.open{display:block}
+.mt-airport-item{padding:11px 12px;border-bottom:1px solid #edf2f6;cursor:pointer}
+.mt-airport-item:last-child{border-bottom:0}
+.mt-airport-item:hover{background:#f3f8fd}
+.mt-airport-item strong{display:block;font-size:12px;color:#0b2b51}
+.mt-airport-item small{display:block;margin-top:2px;font-size:9px;color:#7c90a3}
+.mt-note{margin-top:13px;color:#71869a;font-size:10px}
+.flatpickr-calendar{font-family:Inter,sans-serif!important;border-radius:14px!important;box-shadow:0 18px 50px rgba(8,47,95,.2)!important}
+.flatpickr-day.selected{background:#0f82d3!important;border-color:#0f82d3!important}
+@media(max-width:1100px){.mt-search-row{grid-template-columns:1fr 42px 1fr 1fr 1fr}.mt-search-button{min-height:48px}}
+@media(max-width:700px){.mt-flight-head{flex-direction:column;align-items:start}.mt-search-row{grid-template-columns:1fr}.mt-swap{display:none}.mt-search-button{height:50px}}
 </style>
 
+<section class="mt-flight-page">
+<div class="mt-flight-wrap">
 
-<main class="flight-v3-page">
-
-<div class="container flight-v3-wrap">
-
-    <div class="flight-v3-title">
-
+    <div class="mt-flight-head">
         <div>
-            <h1>Find your next flight</h1>
-            <p>Search live airline offers directly with Mustafa Travels.</p>
+            <h1>Search flights</h1>
+            <p>Live fares powered by our flight booking provider.</p>
         </div>
-
-        <span class="test-badge">V3 TEST ENGINE</span>
-
+        <span class="mt-engine-badge">MUSTAFA FLIGHT ENGINE</span>
     </div>
 
+    <form class="mt-search-card" method="get" action="flight-results.php" id="flightSearchForm">
 
-    <form method="post"
-          action="flights-v3.php"
-          class="flight-box"
-          id="flightSearchForm">
+        <input type="hidden" name="trip_type" id="tripType" value="round">
+        <input type="hidden" name="origin" id="originCode" value="BCN">
+        <input type="hidden" name="destination" id="destinationCode" value="">
+        <input type="hidden" name="adults" id="adultInput" value="1">
+        <input type="hidden" name="children" id="childInput" value="0">
+        <input type="hidden" name="infants" id="infantInput" value="0">
 
-        <div class="trip-tabs">
-
-            <button
-                type="button"
-                class="trip-tab active"
-                id="roundTripBtn">
-                Round trip
-            </button>
-
-            <button
-                type="button"
-                class="trip-tab"
-                id="oneWayBtn">
-                One way
-            </button>
-
+        <div class="mt-trip-tabs">
+            <button type="button" class="mt-trip-tab active" data-trip="round">Round trip</button>
+            <button type="button" class="mt-trip-tab" data-trip="oneway">One way</button>
         </div>
 
+        <div class="mt-search-row">
 
-        <div class="search-grid">
-
-            <div class="search-field">
-
+            <div class="mt-field">
                 <label>FROM</label>
-
-                <input
-                    type="text"
-                    name="origin"
-                    id="origin"
-                    maxlength="3"
-                    placeholder="BCN"
-                    autocomplete="off"
-                    value="<?= h($_POST['origin'] ?? 'BCN') ?>"
-                    required>
-
-                <div class="autocomplete" id="originSuggestions"></div>
-
+                <input type="text" id="originText" value="Barcelona (BCN)" placeholder="City or airport" autocomplete="off" required>
+                <div class="mt-airport-list" id="originList"></div>
             </div>
 
+            <button type="button" class="mt-swap" id="swapAirports">⇄</button>
 
-            <div class="swap">⇄</div>
-
-
-            <div class="search-field">
-
+            <div class="mt-field">
                 <label>TO</label>
-
-                <input
-                    type="text"
-                    name="destination"
-                    id="destination"
-                    maxlength="3"
-                    placeholder="LHE"
-                    autocomplete="off"
-                    value="<?= h($_POST['destination'] ?? '') ?>"
-                    required>
-
-                <div class="autocomplete" id="destinationSuggestions"></div>
-
+                <input type="text" id="destinationText" placeholder="City or airport" autocomplete="off" required>
+                <div class="mt-airport-list" id="destinationList"></div>
             </div>
 
-
-            <div class="search-field">
-
+            <div class="mt-field">
                 <label>DEPARTURE</label>
-
-                <input
-                    type="date"
-                    name="departure"
-                    min="<?= date('Y-m-d') ?>"
-                    value="<?= h($_POST['departure'] ?? '') ?>"
-                    required>
-
+                <input type="text" name="departure" id="departureDate" placeholder="Select date" autocomplete="off" required>
             </div>
 
-
-            <div class="search-field" id="returnField">
-
+            <div class="mt-field" id="returnBox">
                 <label>RETURN</label>
-
-                <input
-                    type="date"
-                    name="return_date"
-                    id="returnDate"
-                    min="<?= date('Y-m-d') ?>"
-                    value="<?= h($_POST['return_date'] ?? '') ?>">
-
+                <input type="text" name="return_date" id="returnDate" placeholder="Select date" autocomplete="off" required>
             </div>
 
-
-            <div class="search-field">
-
+            <div class="mt-field mt-traveller-trigger" id="travellerTrigger">
                 <label>TRAVELLERS & CABIN</label>
+                <strong id="travellerText">1 traveller</strong>
+                <small id="cabinText">Economy</small>
 
-                <select name="cabin">
-
-                    <option value="economy">
-                        Economy
-                    </option>
-
-                    <option value="premium_economy">
-                        Premium Economy
-                    </option>
-
-                    <option value="business">
-                        Business
-                    </option>
-
-                    <option value="first">
-                        First
-                    </option>
-
-                </select>
-
+                <div class="mt-pax-popup" id="paxPopup">
+                    <div class="mt-pax-row">
+                        <div><strong>Adults</strong><small>12+ years</small></div>
+                        <div class="mt-step"><button type="button" data-pax="adult" data-delta="-1">−</button><span id="adultCount">1</span><button type="button" data-pax="adult" data-delta="1">+</button></div>
+                    </div>
+                    <div class="mt-pax-row">
+                        <div><strong>Children</strong><small>2–11 years</small></div>
+                        <div class="mt-step"><button type="button" data-pax="child" data-delta="-1">−</button><span id="childCount">0</span><button type="button" data-pax="child" data-delta="1">+</button></div>
+                    </div>
+                    <div class="mt-pax-row">
+                        <div><strong>Infants</strong><small>Under 2</small></div>
+                        <div class="mt-step"><button type="button" data-pax="infant" data-delta="-1">−</button><span id="infantCount">0</span><button type="button" data-pax="infant" data-delta="1">+</button></div>
+                    </div>
+                    <div class="mt-pax-row">
+                        <div><strong>Cabin</strong></div>
+                        <select name="cabin" id="cabinSelect">
+                            <option value="economy">Economy</option>
+                            <option value="premium_economy">Premium Economy</option>
+                            <option value="business">Business</option>
+                            <option value="first">First</option>
+                        </select>
+                    </div>
+                    <button type="button" class="mt-pax-done" id="paxDone">Done</button>
+                </div>
             </div>
 
-
-            <button
-                type="submit"
-                class="search-btn">
-
-                Search flights
-
-            </button>
+            <button class="mt-search-button" type="submit">Search flights</button>
 
         </div>
 
-
-        <div class="passenger-panel">
-
-            <div class="passenger-field">
-
-                <label>Adults</label>
-
-                <select name="adults">
-
-                    <?php for($i=1;$i<=9;$i++): ?>
-
-                        <option
-                            value="<?= $i ?>"
-                            <?= ((int)($_POST['adults'] ?? 1) === $i) ? 'selected' : '' ?>>
-
-                            <?= $i ?> Adult<?= $i > 1 ? 's' : '' ?>
-
-                        </option>
-
-                    <?php endfor; ?>
-
-                </select>
-
-            </div>
-
-
-            <div class="passenger-field">
-
-                <label>Children</label>
-
-                <select name="children">
-
-                    <?php for($i=0;$i<=8;$i++): ?>
-
-                        <option
-                            value="<?= $i ?>"
-                            <?= ((int)($_POST['children'] ?? 0) === $i) ? 'selected' : '' ?>>
-
-                            <?= $i ?>
-
-                        </option>
-
-                    <?php endfor; ?>
-
-                </select>
-
-            </div>
-
-
-            <div class="passenger-field">
-
-                <label>Infants</label>
-
-                <select name="infants">
-
-                    <?php for($i=0;$i<=4;$i++): ?>
-
-                        <option
-                            value="<?= $i ?>"
-                            <?= ((int)($_POST['infants'] ?? 0) === $i) ? 'selected' : '' ?>>
-
-                            <?= $i ?>
-
-                        </option>
-
-                    <?php endfor; ?>
-
-                </select>
-
-            </div>
-
-
-            <div class="passenger-field">
-
-                <label>Fare preference</label>
-
-                <select name="fare_preference">
-
-                    <option value="all">
-                        Show all fares
-                    </option>
-
-                    <option value="bag">
-                        Checked baggage preferred
-                    </option>
-
-                </select>
-
-            </div>
-
-        </div>
-
+        <div class="mt-note">Start typing a city or airport, e.g. Barcelona, Lahore, Islamabad, Jeddah, Bogotá or Dubai.</div>
     </form>
 
-
-    <?php if ($error): ?>
-
-        <div class="error-box">
-            <strong>Search error:</strong>
-            <?= h($error) ?>
-        </div>
-
-    <?php endif; ?>
-
-
-    <?php if ($results): ?>
-
-        <h2 class="results-title">
-            Available flights
-        </h2>
-
-
-        <?php foreach ($results as $offer):
-
-            $slice = $offer['slices'][0] ?? [];
-            $segments = $slice['segments'] ?? [];
-
-            if (!$segments) continue;
-
-            $first = $segments[0];
-            $last  = $segments[count($segments)-1];
-
-            $carrier =
-                $first['operating_carrier']['name']
-                ?? $first['marketing_carrier']['name']
-                ?? 'Airline';
-
-            $logo =
-                $first['operating_carrier']['logo_symbol_url']
-                ?? $first['marketing_carrier']['logo_symbol_url']
-                ?? '';
-
-            $departTime =
-                isset($first['departing_at'])
-                ? date('H:i', strtotime($first['departing_at']))
-                : '';
-
-            $arrivalTime =
-                isset($last['arriving_at'])
-                ? date('H:i', strtotime($last['arriving_at']))
-                : '';
-
-            $originCode =
-                $first['origin']['iata_code']
-                ?? '';
-
-            $destinationCode =
-                $last['destination']['iata_code']
-                ?? '';
-
-            $stops = max(0, count($segments)-1);
-
-            $amount =
-                $offer['total_amount']
-                ?? '0';
-
-            $currency =
-                $offer['total_currency']
-                ?? 'EUR';
-
-            $offerId =
-                $offer['id']
-                ?? '';
-
-        ?>
-
-
-        <article class="flight-result">
-
-            <div class="result-main">
-
-                <div class="airline">
-
-                    <?php if($logo): ?>
-
-                        <img
-                            class="airline-logo"
-                            src="<?= h($logo) ?>"
-                            alt="<?= h($carrier) ?>">
-
-                    <?php endif; ?>
-
-                    <div>
-
-                        <div class="airline-name">
-                            <?= h($carrier) ?>
-                        </div>
-
-                        <div class="route-sub">
-                            <?= h($originCode) ?>
-                            →
-                            <?= h($destinationCode) ?>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div>
-
-                    <div class="route-time">
-
-                        <?= h($departTime) ?>
-                        →
-                        <?= h($arrivalTime) ?>
-
-                    </div>
-
-                    <div class="route-sub">
-
-                        <?php if($stops === 0): ?>
-
-                            Direct flight
-
-                        <?php elseif($stops === 1): ?>
-
-                            1 stop
-
-                        <?php else: ?>
-
-                            <?= $stops ?> stops
-
-                        <?php endif; ?>
-
-                    </div>
-
-                </div>
-
-
-                <div class="price-area">
-
-                    <div class="price">
-
-                        <?= h($currency) ?>
-                        <?= number_format((float)$amount,2) ?>
-
-                    </div>
-
-                    <a
-                        class="select-flight"
-                        href="flight-details.php?offer_id=<?= urlencode($offerId) ?>">
-
-                        Select
-
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <div class="offer-info">
-
-                <span>
-                    ✈ Live Duffel fare
-                </span>
-
-                <span>
-                    <?= count($segments) ?>
-                    flight segment<?= count($segments)>1 ? 's' : '' ?>
-                </span>
-
-                <span>
-                    Price shown for selected travellers
-                </span>
-
-            </div>
-
-        </article>
-
-
-        <?php endforeach; ?>
-
-    <?php endif; ?>
-
-
 </div>
+</section>
 
-</main>
-
-
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
+document.addEventListener('DOMContentLoaded', function(){
 
-/* --------------------------------------------------------
-   ONE WAY / ROUND TRIP
---------------------------------------------------------- */
+    const airports = [
+        ['BCN','Barcelona','Barcelona–El Prat Airport'],
+        ['MAD','Madrid','Adolfo Suárez Madrid–Barajas Airport'],
+        ['LHE','Lahore','Allama Iqbal International Airport'],
+        ['ISB','Islamabad','Islamabad International Airport'],
+        ['KHI','Karachi','Jinnah International Airport'],
+        ['SKT','Sialkot','Sialkot International Airport'],
+        ['JED','Jeddah','King Abdulaziz International Airport'],
+        ['MED','Madinah','Prince Mohammad bin Abdulaziz Airport'],
+        ['DXB','Dubai','Dubai International Airport'],
+        ['AUH','Abu Dhabi','Zayed International Airport'],
+        ['DOH','Doha','Hamad International Airport'],
+        ['IST','Istanbul','Istanbul Airport'],
+        ['LHR','London','Heathrow Airport'],
+        ['LGW','London','Gatwick Airport'],
+        ['CDG','Paris','Charles de Gaulle Airport'],
+        ['ORY','Paris','Orly Airport'],
+        ['FCO','Rome','Fiumicino Airport'],
+        ['MXP','Milan','Malpensa Airport'],
+        ['LIS','Lisbon','Humberto Delgado Airport'],
+        ['OPO','Porto','Francisco Sá Carneiro Airport'],
+        ['BOG','Bogotá','El Dorado International Airport'],
+        ['DAC','Dhaka','Hazrat Shahjalal International Airport'],
+        ['DEL','Delhi','Indira Gandhi International Airport'],
+        ['BOM','Mumbai','Chhatrapati Shivaji Maharaj Airport'],
+        ['CMB','Colombo','Bandaranaike International Airport'],
+        ['MNL','Manila','Ninoy Aquino International Airport'],
+        ['BKK','Bangkok','Suvarnabhumi Airport'],
+        ['KUL','Kuala Lumpur','Kuala Lumpur International Airport'],
+        ['SIN','Singapore','Changi Airport'],
+        ['JFK','New York','John F. Kennedy International Airport'],
+        ['EWR','New York','Newark Liberty International Airport'],
+        ['YYZ','Toronto','Toronto Pearson International Airport']
+    ];
 
-const roundBtn =
-    document.getElementById('roundTripBtn');
+    function setupAirport(inputId, hiddenId, listId){
+        const input = document.getElementById(inputId);
+        const hidden = document.getElementById(hiddenId);
+        const list = document.getElementById(listId);
 
-const oneBtn =
-    document.getElementById('oneWayBtn');
+        function render(){
+            const q = input.value.trim().toLowerCase();
+            list.innerHTML = '';
 
-const returnField =
-    document.getElementById('returnField');
-
-const returnDate =
-    document.getElementById('returnDate');
-
-
-roundBtn.addEventListener('click', function(){
-
-    roundBtn.classList.add('active');
-    oneBtn.classList.remove('active');
-
-    returnField.style.display = 'block';
-
-});
-
-
-oneBtn.addEventListener('click', function(){
-
-    oneBtn.classList.add('active');
-    roundBtn.classList.remove('active');
-
-    returnField.style.display = 'none';
-
-    returnDate.value = '';
-
-});
-
-
-/* --------------------------------------------------------
-   SWAP AIRPORTS
---------------------------------------------------------- */
-
-document.querySelector('.swap')
-.addEventListener('click', function(){
-
-    const from =
-        document.getElementById('origin');
-
-    const to =
-        document.getElementById('destination');
-
-    const old = from.value;
-
-    from.value = to.value;
-    to.value = old;
-
-});
-
-
-/* --------------------------------------------------------
-   BASIC AIRPORT AUTOCOMPLETE
-
-   We start with important Mustafa Travels markets.
-   Later we can replace this with full global airport API.
---------------------------------------------------------- */
-
-const airports = [
-
-    ['BCN','Barcelona','Barcelona El Prat'],
-    ['MAD','Madrid','Adolfo Suárez Madrid'],
-    ['LHE','Lahore','Allama Iqbal International'],
-    ['ISB','Islamabad','Islamabad International'],
-    ['KHI','Karachi','Jinnah International'],
-    ['SKT','Sialkot','Sialkot International'],
-
-    ['JED','Jeddah','King Abdulaziz International'],
-    ['MED','Madinah','Prince Mohammad Bin Abdulaziz'],
-
-    ['DXB','Dubai','Dubai International'],
-    ['AUH','Abu Dhabi','Zayed International'],
-    ['DOH','Doha','Hamad International'],
-
-    ['IST','Istanbul','Istanbul Airport'],
-
-    ['LHR','London','Heathrow'],
-    ['LGW','London','Gatwick'],
-
-    ['CDG','Paris','Charles de Gaulle'],
-    ['ORY','Paris','Orly'],
-
-    ['FCO','Rome','Fiumicino'],
-    ['MXP','Milan','Malpensa'],
-
-    ['LIS','Lisbon','Humberto Delgado'],
-    ['OPO','Porto','Francisco Sá Carneiro'],
-
-    ['BOG','Bogotá','El Dorado International'],
-
-    ['DAC','Dhaka','Hazrat Shahjalal International'],
-
-    ['DEL','Delhi','Indira Gandhi International'],
-    ['BOM','Mumbai','Chhatrapati Shivaji Maharaj'],
-
-    ['CMB','Colombo','Bandaranaike International'],
-
-    ['MNL','Manila','Ninoy Aquino International'],
-
-    ['BKK','Bangkok','Suvarnabhumi'],
-
-    ['KUL','Kuala Lumpur','Kuala Lumpur International'],
-
-    ['SIN','Singapore','Changi'],
-
-    ['JFK','New York','John F. Kennedy International'],
-    ['EWR','New York','Newark Liberty'],
-
-    ['YYZ','Toronto','Toronto Pearson']
-
-];
-
-
-function setupAirportAutocomplete(
-    inputId,
-    suggestionId
-){
-
-    const input =
-        document.getElementById(inputId);
-
-    const box =
-        document.getElementById(suggestionId);
-
-
-    input.addEventListener(
-        'input',
-        function(){
-
-            let query =
-                input.value
-                .trim()
-                .toLowerCase();
-
-            box.innerHTML = '';
-
-            if(query.length < 2){
-
-                box.style.display = 'none';
+            if(q.length < 2){
+                list.classList.remove('open');
                 return;
-
             }
 
-
-            let matches =
-                airports.filter(a => {
-
-                    return (
-                        a[0].toLowerCase().includes(query) ||
-                        a[1].toLowerCase().includes(query) ||
-                        a[2].toLowerCase().includes(query)
-                    );
-
-                }).slice(0,8);
-
+            const matches = airports.filter(a =>
+                a[0].toLowerCase().includes(q) ||
+                a[1].toLowerCase().includes(q) ||
+                a[2].toLowerCase().includes(q)
+            ).slice(0,10);
 
             if(!matches.length){
-
-                box.style.display = 'none';
+                list.classList.remove('open');
                 return;
-
             }
-
 
             matches.forEach(a => {
-
-                let row =
-                    document.createElement('div');
-
-                row.innerHTML =
-                    '<strong>' +
-                    a[0] +
-                    ' — ' +
-                    a[1] +
-                    '</strong>' +
-                    '<small>' +
-                    a[2] +
-                    '</small>';
-
-
-                row.addEventListener(
-                    'click',
-                    function(){
-
-                        input.value = a[0];
-
-                        box.style.display =
-                            'none';
-
-                    }
-                );
-
-
-                box.appendChild(row);
-
+                const row = document.createElement('div');
+                row.className = 'mt-airport-item';
+                row.innerHTML = '<strong>'+a[1]+' ('+a[0]+')</strong><small>'+a[2]+'</small>';
+                row.addEventListener('click', function(){
+                    input.value = a[1]+' ('+a[0]+')';
+                    hidden.value = a[0];
+                    list.classList.remove('open');
+                });
+                list.appendChild(row);
             });
 
-
-            box.style.display =
-                'block';
-
+            list.classList.add('open');
         }
-    );
 
+        input.addEventListener('input', function(){
+            hidden.value = '';
+            render();
+        });
 
-    input.addEventListener(
-        'blur',
-        function(){
+        input.addEventListener('focus', render);
 
-            setTimeout(
-                () => {
-                    box.style.display =
-                        'none';
-                },
-                200
-            );
+        document.addEventListener('click', function(e){
+            if(!input.parentElement.contains(e.target)) list.classList.remove('open');
+        });
+    }
 
+    setupAirport('originText','originCode','originList');
+    setupAirport('destinationText','destinationCode','destinationList');
+
+    document.getElementById('swapAirports').addEventListener('click', function(){
+        const ot = document.getElementById('originText');
+        const oc = document.getElementById('originCode');
+        const dt = document.getElementById('destinationText');
+        const dc = document.getElementById('destinationCode');
+
+        [ot.value,dt.value] = [dt.value,ot.value];
+        [oc.value,dc.value] = [dc.value,oc.value];
+    });
+
+    const tripType = document.getElementById('tripType');
+    const returnBox = document.getElementById('returnBox');
+    const returnDate = document.getElementById('returnDate');
+
+    function setTrip(type){
+        tripType.value = type;
+        document.querySelectorAll('.mt-trip-tab').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.trip === type);
+        });
+
+        if(type === 'oneway'){
+            returnBox.style.display = 'none';
+            returnDate.removeAttribute('required');
+            returnDate.value = '';
+        } else {
+            returnBox.style.display = '';
+            returnDate.setAttribute('required','required');
         }
-    );
+    }
 
-}
+    document.querySelectorAll('.mt-trip-tab').forEach(btn => {
+        btn.addEventListener('click', () => setTrip(btn.dataset.trip));
+    });
 
+    const returnPicker = flatpickr('#returnDate',{
+        dateFormat:'Y-m-d',
+        altInput:true,
+        altFormat:'D, d M Y',
+        minDate:'today',
+        disableMobile:true
+    });
 
-setupAirportAutocomplete(
-    'origin',
-    'originSuggestions'
-);
-
-setupAirportAutocomplete(
-    'destination',
-    'destinationSuggestions'
-);
-
-
-/* uppercase airport codes */
-
-document
-.querySelectorAll('#origin,#destination')
-.forEach(function(el){
-
-    el.addEventListener(
-        'input',
-        function(){
-
-            if(this.value.length <= 3){
-                this.value =
-                    this.value.toUpperCase();
-            }
-
+    flatpickr('#departureDate',{
+        dateFormat:'Y-m-d',
+        altInput:true,
+        altFormat:'D, d M Y',
+        minDate:'today',
+        disableMobile:true,
+        onChange:function(d,dateStr){
+            if(dateStr) returnPicker.set('minDate',dateStr);
         }
-    );
+    });
 
+    const trigger = document.getElementById('travellerTrigger');
+    const popup = document.getElementById('paxPopup');
+
+    trigger.addEventListener('click', function(e){
+        if(!e.target.closest('.mt-step') && !e.target.closest('select') && e.target.id !== 'paxDone'){
+            popup.classList.add('open');
+        }
+    });
+
+    document.getElementById('paxDone').addEventListener('click', function(e){
+        e.stopPropagation();
+        popup.classList.remove('open');
+    });
+
+    document.addEventListener('click', function(e){
+        if(!trigger.contains(e.target)) popup.classList.remove('open');
+    });
+
+    const state = {adult:1,child:0,infant:0};
+
+    function syncPax(){
+        state.adult = Math.max(1,Math.min(9,state.adult));
+        state.child = Math.max(0,Math.min(8,state.child));
+        state.infant = Math.max(0,Math.min(state.adult,state.infant));
+
+        document.getElementById('adultInput').value = state.adult;
+        document.getElementById('childInput').value = state.child;
+        document.getElementById('infantInput').value = state.infant;
+
+        document.getElementById('adultCount').textContent = state.adult;
+        document.getElementById('childCount').textContent = state.child;
+        document.getElementById('infantCount').textContent = state.infant;
+
+        const total = state.adult + state.child + state.infant;
+        document.getElementById('travellerText').textContent = total + (total===1?' traveller':' travellers');
+    }
+
+    document.querySelectorAll('[data-pax][data-delta]').forEach(btn => {
+        btn.addEventListener('click', function(e){
+            e.stopPropagation();
+            state[btn.dataset.pax] += parseInt(btn.dataset.delta,10);
+            syncPax();
+        });
+    });
+
+    document.getElementById('cabinSelect').addEventListener('change', function(){
+        document.getElementById('cabinText').textContent =
+            this.options[this.selectedIndex].text;
+    });
+
+    document.getElementById('flightSearchForm').addEventListener('submit', function(e){
+        if(!document.getElementById('originCode').value || !document.getElementById('destinationCode').value){
+            e.preventDefault();
+            alert('Please select both airports from the suggestions.');
+        }
+    });
+
+    setTrip('round');
+    syncPax();
 });
-
 </script>
-
 
 <?php site_footer(); ?>
