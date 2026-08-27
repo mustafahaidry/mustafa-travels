@@ -176,7 +176,50 @@ function sb_select(
 /* =========================================================
    INSERT
    ========================================================= */
+function sb_insert(string $table, array $row): bool
+{
+    $r = sb_request(
+        $table,
+        'POST',
+        $row,
+        [
+            'Prefer: return=representation'
+        ]
+    );
 
+    if (!$r['ok']) {
+
+        $message =
+            'SUPABASE INSERT FAILED'
+            . ' | TABLE: ' . $table
+            . ' | HTTP: ' . $r['code']
+            . ' | RESPONSE: ' . (string)$r['raw']
+            . ' | CURL: ' . (string)$r['error'];
+
+        error_log($message);
+
+        echo '<div style="
+            background:#ffe8e8;
+            color:#8b0000;
+            border:2px solid #cc0000;
+            padding:20px;
+            margin:20px;
+            font-family:monospace;
+            white-space:pre-wrap;
+            word-break:break-word;
+        ">';
+
+        echo htmlspecialchars(
+            $message,
+            ENT_QUOTES,
+            'UTF-8'
+        );
+
+        echo '</div>';
+    }
+
+    return $r['ok'];
+}
 
 /* =========================================================
    UPDATE
