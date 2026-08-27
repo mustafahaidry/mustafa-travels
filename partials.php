@@ -22,7 +22,15 @@ function site_header(string $title='Home'): void { ?>
   document.head.appendChild(script);
 })();
 </script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-H7TQLKHP25"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'G-H7TQLKHP25');
+</script>
 </head>
 <body>
 <div class="topbar">
