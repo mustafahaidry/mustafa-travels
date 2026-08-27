@@ -53,27 +53,44 @@ function admin_only(): void
    SUPABASE KEY
    ========================================================= */
 
-function sb_active_key(): string
+function sb_insert(string $table, array $row): bool
 {
-    /*
-     * Public website:
-     * uses publishable key.
-     *
-     * Logged-in Admin:
-     * uses SUPABASE_SECRET_KEY stored securely
-     * inside Render Environment Variables.
-     */
+    $r = sb_request(
+        $table,
+        'POST',
+        $row,
+        [
+            'Prefer: return=representation'
+        ]
+    );
 
-    if (!empty($_SESSION['admin'])) {
+    if (!$r['ok']) {
 
-        $secret = getenv('SUPABASE_SECRET_KEY') ?: '';
+        $message =
+            'SUPABASE INSERT FAILED'
+            . ' | TABLE: ' . $table
+            . ' | HTTP: ' . $r['code']
+            . ' | RESPONSE: ' . (string)$r['raw']
+            . ' | CURL: ' . (string)$r['error'];
 
-        if ($secret !== '') {
-            return $secret;
-        }
+        error_log($message);
+
+        // TEMPORARY DEBUG - show exact Supabase error
+        echo '<div style="
+            background:#ffe8e8;
+            color:#8b0000;
+            border:2px solid #cc0000;
+            padding:20px;
+            margin:20px;
+            font-family:monospace;
+            white-space:pre-wrap;
+            word-break:break-word;
+        ">';
+        echo htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
+        echo '</div>';
     }
 
-    return SUPABASE_PUBLISHABLE_KEY;
+    return $r['ok'];
 }
 
 
