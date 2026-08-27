@@ -1,336 +1,185 @@
-<?php
-require_once __DIR__ . '/partials.php';
-
-$packs = sb_select(
-    'umrah_packages',
-    'select=*&active=eq.true&order=featured.desc,id.desc'
-);
-
-site_header('Umrah & Hajj');
-?>
-
-<section class="page-hero umrah-hero">
-    <div class="container">
-        <span class="eyebrow">UMRAH & HAJJ</span>
-        <h1>A spiritual journey, professionally arranged.</h1>
-        <p>Packages tailored around your dates, budget and hotel preferences.</p>
-    </div>
-</section>
-
-
-<section class="section">
-    <div class="container">
-
-        <div class="section-head centered">
-            <div>
-                <span class="eyebrow dark">PACKAGE SERVICES</span>
-                <h2>Build your Umrah package</h2>
-            </div>
-        </div>
-
-        <div class="service-grid">
-
-            <div class="service-card">
-                <div class="service-icon">✈</div>
-                <h3>Flights</h3>
-                <p>Flexible airline and routing options.</p>
-            </div>
-
-            <div class="service-card">
-                <div class="service-icon">▦</div>
-                <h3>Makkah & Madinah Hotels</h3>
-                <p>Economy to premium options based on distance and budget.</p>
-            </div>
-
-            <div class="service-card">
-                <div class="service-icon">✓</div>
-                <h3>Visa Support</h3>
-                <p>Umrah visa assistance according to applicable requirements.</p>
-            </div>
-
-            <div class="service-card">
-                <div class="service-icon">🚐</div>
-                <h3>Transport</h3>
-                <p>Jeddah–Makkah–Madinah and airport transfer options.</p>
-            </div>
-
-        </div>
-
-        <div class="center-actions">
-            <a class="btn btn-primary btn-lg"
-               href="contact.php?service=Umrah">
-                Request Umrah Quote
-            </a>
-        </div>
-
-    </div>
-</section>
-
-
-<?php if (!empty($packs)): ?>
-
-<section class="section section-soft">
-
-    <div class="container">
-
-        <div class="section-head">
-            <div>
-                <span class="eyebrow dark">LIVE PACKAGES</span>
-                <h2>Current Umrah Packages</h2>
-            </div>
-        </div>
-
-
-        <div class="offers-grid">
-
-            <?php foreach ($packs as $p): ?>
-
-                <article class="offer-card">
-
-
-                    <div class="offer-media">
-
-                        <?php if (!empty($p['image_url'])): ?>
-
-                            <img
-                                src="<?= h($p['image_url']) ?>"
-                                alt="<?= h($p['title'] ?? 'Umrah Package') ?>"
-                                style="
-                                    width:100%;
-                                    height:100%;
-                                    object-fit:cover;
-                                    display:block;
-                                "
-                            >
-
-                        <?php endif; ?>
-
-
-                        <span class="offer-badge">
-                            <?= h(
-                                !empty($p['duration'])
-                                    ? $p['duration']
-                                    : 'Umrah Package'
-                            ) ?>
-                        </span>
-
-                    </div>
-
-
-                    <div class="offer-body">
-
-                        <?php if (!empty($p['airline'])): ?>
-                            <small><?= h($p['airline']) ?></small>
-                        <?php endif; ?>
-
-
-                        <h3>
-                            <?= h($p['title'] ?? 'Umrah Package') ?>
-                        </h3>
-
-
-                        <div style="
-                            margin:12px 0;
-                            line-height:1.7;
-                            font-size:14px;
-                        ">
-
-                            <div>
-                                <strong>🕋 Makkah:</strong>
-                                <?= h($p['makkah_hotel'] ?? '') ?>
-                            </div>
-
-                            <div>
-
-                                <?php if (!empty($p['makkah_nights'])): ?>
-                                    <?= h((string)$p['makkah_nights']) ?>
-                                    Nights
-                                <?php endif; ?>
-
-                                <?php if (!empty($p['makkah_distance'])): ?>
-                                    · <?= h($p['makkah_distance']) ?>
-                                <?php endif; ?>
-
-                            </div>
-
-
-                            <div style="margin-top:8px;">
-                                <strong>🕌 Madinah:</strong>
-                                <?= h($p['madinah_hotel'] ?? '') ?>
-                            </div>
-
-                            <div>
-
-                                <?php if (!empty($p['madinah_nights'])): ?>
-                                    <?= h((string)$p['madinah_nights']) ?>
-                                    Nights
-                                <?php endif; ?>
-
-                                <?php if (!empty($p['madinah_distance'])): ?>
-                                    · <?= h($p['madinah_distance']) ?>
-                                <?php endif; ?>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="offer-meta">
-
-                            <span>
-
-                                <?= h($p['travel_date'] ?? '') ?>
-
-                                <?php if (!empty($p['return_date'])): ?>
-                                    → <?= h($p['return_date']) ?>
-                                <?php endif; ?>
-
-                            </span>
-
-                            <span>
-                                <?= h($p['baggage'] ?? '') ?>
-                            </span>
-
-                        </div>
-
-
-                        <?php if (!empty($p['description'])): ?>
-
-                            <p>
-                                <?= nl2br(h($p['description'])) ?>
-                            </p>
-
-                        <?php endif; ?>
-
-
-                        <?php if (!empty($p['included'])): ?>
-
-                            <div style="
-                                margin-top:12px;
-                                background:#eef9f2;
-                                padding:10px 12px;
-                                border-radius:8px;
-                                font-size:13px;
-                            ">
-
-                                <strong>✓ Included</strong>
-                                <br>
-
-                                <?= nl2br(h($p['included'])) ?>
-
-                            </div>
-
-                        <?php endif; ?>
-
-
-                        <?php if (!empty($p['not_included'])): ?>
-
-                            <div style="
-                                margin-top:10px;
-                                background:#fff1f1;
-                                padding:10px 12px;
-                                border-radius:8px;
-                                font-size:13px;
-                            ">
-
-                                <strong>✕ Not Included</strong>
-                                <br>
-
-                                <?= nl2br(h($p['not_included'])) ?>
-
-                            </div>
-
-                        <?php endif; ?>
-
-
-                        <div style="
-                            margin-top:15px;
-                            line-height:1.8;
-                        ">
-
-                            <?php if ((float)($p['quad_price'] ?? 0) > 0): ?>
-
-                                <div>
-                                    <strong>Quad:</strong>
-                                    <?= h($p['currency'] ?? 'EUR') ?>
-                                    <?= number_format(
-                                        (float)$p['quad_price'],
-                                        0
-                                    ) ?>
-                                </div>
-
-                            <?php endif; ?>
-
-
-                            <?php if ((float)($p['triple_price'] ?? 0) > 0): ?>
-
-                                <div>
-                                    <strong>Triple:</strong>
-                                    <?= h($p['currency'] ?? 'EUR') ?>
-                                    <?= number_format(
-                                        (float)$p['triple_price'],
-                                        0
-                                    ) ?>
-                                </div>
-
-                            <?php endif; ?>
-
-
-                            <?php if ((float)($p['double_price'] ?? 0) > 0): ?>
-
-                                <div>
-                                    <strong>Double:</strong>
-                                    <?= h($p['currency'] ?? 'EUR') ?>
-                                    <?= number_format(
-                                        (float)$p['double_price'],
-                                        0
-                                    ) ?>
-                                </div>
-
-                            <?php endif; ?>
-
-
-                            <?php if ((float)($p['single_price'] ?? 0) > 0): ?>
-
-                                <div>
-                                    <strong>Single:</strong>
-                                    <?= h($p['currency'] ?? 'EUR') ?>
-                                    <?= number_format(
-                                        (float)$p['single_price'],
-                                        0
-                                    ) ?>
-                                </div>
-
-                            <?php endif; ?>
-
-                        </div>
-
-
-                        <a
-                            class="btn btn-dark"
-                            style="margin-top:15px;"
-                            href="https://wa.me/<?= WHATSAPP ?>?text=<?= urlencode(
-                                'Please send details for Umrah package: ' .
-                                ($p['title'] ?? 'Umrah Package')
-                            ) ?>"
-                            target="_blank"
-                        >
-                            Ask on WhatsApp
-                        </a>
-
-                    </div>
-
-                </article>
-
-            <?php endforeach; ?>
-
-        </div>
-
-    </div>
-
-</section>
-
-<?php endif; ?>
-
-
-<?php site_footer(); ?>
+.umrah-packages-section {
+    background: #f8fafc;
+}
+
+.umrah-package-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+}
+
+.umrah-package-card {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #e7edf3;
+    box-shadow: 0 15px 45px rgba(15, 55, 90, .09);
+    transition: .25s ease;
+}
+
+.umrah-package-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 55px rgba(15, 55, 90, .15);
+}
+
+.umrah-package-image {
+    height: 330px;
+    position: relative;
+    background: linear-gradient(135deg,#0d538b,#15a1d5);
+}
+
+.umrah-package-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.umrah-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    font-size: 75px;
+}
+
+.package-featured {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: #087ca8;
+    color: #fff;
+    padding: 6px 11px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.umrah-package-content {
+    padding: 22px;
+}
+
+.package-top-info {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+    border-bottom: 1px dashed #d8e1e8;
+}
+
+.package-rating {
+    color: #ffb000;
+    letter-spacing: 1px;
+}
+
+.package-duration {
+    color: #73889a;
+    font-size: 13px;
+}
+
+.package-location {
+    color: #8b9aaa;
+    font-size: 13px;
+    margin-bottom: 7px;
+}
+
+.umrah-package-card h3 {
+    font-size: 21px;
+    margin: 0 0 10px;
+    color: #102b45;
+}
+
+.package-airline {
+    color: #1485c0;
+    font-weight: 700;
+    margin-bottom: 17px;
+}
+
+.package-hotel-info {
+    display: grid;
+    gap: 12px;
+    margin: 15px 0;
+    padding: 14px;
+    border-radius: 12px;
+    background: #f6f9fc;
+}
+
+.package-hotel-info strong,
+.package-hotel-info span,
+.package-hotel-info small {
+    display: block;
+}
+
+.package-hotel-info span {
+    font-size: 14px;
+    margin-top: 3px;
+}
+
+.package-hotel-info small {
+    color: #718597;
+    margin-top: 3px;
+}
+
+.package-baggage {
+    font-size: 13px;
+    color: #64798a;
+    margin: 14px 0;
+}
+
+.package-price {
+    margin-top: 18px;
+}
+
+.package-price small {
+    color: #8495a3;
+    display: block;
+}
+
+.package-price strong {
+    display: block;
+    font-size: 27px;
+    color: #f47b28;
+    margin: 2px 0;
+}
+
+.package-price span {
+    color: #8a9aa7;
+    font-size: 11px;
+}
+
+.package-more-btn {
+    display: block;
+    text-align: center;
+    margin-top: 18px;
+    background: #f47b28;
+    color: #fff;
+    text-decoration: none;
+    padding: 13px 18px;
+    border-radius: 30px;
+    font-weight: 800;
+}
+
+.package-more-btn:hover {
+    background: #df681a;
+}
+
+@media (max-width: 950px) {
+
+    .umrah-package-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 620px) {
+
+    .umrah-package-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .umrah-package-image {
+        height: 300px;
+    }
+
+}
