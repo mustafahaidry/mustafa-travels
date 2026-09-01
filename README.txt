@@ -1,14 +1,30 @@
-PHASE 1 - Supplier-independent flight search shell
+Mustafa Travels Flight Engine Upgrade
 
-Upload:
-flights.php
-api/airports.php
-api/data/airports.json
-api/flight-provider.php
-api/providers/FlightProviderInterface.php
-api/providers/DuffelProvider.php
-api/providers/PKFareProvider.php
-api/providers/TravelfusionProvider.php
+Upload/replace these files on the website:
+1) /flights-v3.php
+2) /flight-results.php
+3) /api/airports.php
 
-Current provider defaults to Duffel.
-When PKFARE or Travelfusion credentials arrive, we only replace/fill their adapter files.
+IMPORTANT:
+- Keep your existing /api/duffel.php file and DUFFEL_API_KEY environment variable.
+- Do not place the Duffel API key in browser-side JavaScript.
+- The new /api/airports.php searches Duffel Places server-side, so worldwide airport suggestions are available.
+- Back up the current files before replacing them.
+
+After upload, test:
+https://www.mustafatravels.org/flights-v3.php
+
+Try airport searches:
+Ahmedabad / AMD
+Amritsar / ATQ
+Jaipur / JAI
+Lucknow / LKO
+Kochi / COK
+Hyderabad / HYD
+Bengaluru / BLR
+Chennai / MAA
+Kolkata / CCU
+Srinagar / SXR
+Goa / GOI
+
+Then run a BCN -> AMD flight search.
