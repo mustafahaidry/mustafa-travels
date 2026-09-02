@@ -720,7 +720,7 @@ button,input,select{font:inherit}
       </article>
 
       <article class="destination-card">
-        <div class="destination-photo" style="background-image:url('/assets/images/madinah.jpg')"></div>
+        <div class="destination-photo" style="background-image:url('/assets/madinah.jpg')"></div>
         <div class="destination-body">
           <div class="destination-title-row"><div class="destination-title">Madinah</div><div class="destination-rating">★ 4.8</div></div>
           <div class="destination-loc">⌖ Madinah, Saudi Arabia</div>
