@@ -18,492 +18,160 @@ site_header('Umrah & Hajj');
 ?>
 
 
+
 <style>
-
-/* =========================================================
-   UMRAH PAGE
-   ========================================================= */
-
-.umrah-market-section {
-    background: #f7f9fc;
-    padding: 70px 0;
+:root{
+  --u-navy:#062b4d; --u-navy2:#0a4168; --u-teal:#0d7692;
+  --u-gold:#d9a62e; --u-gold2:#f3c85a; --u-ink:#0b2946;
+  --u-muted:#687f93; --u-line:#dce6ee; --u-cream:#fffaf0;
 }
-
-.umrah-market-heading {
-    margin-bottom: 32px;
+.umrah-premium-hero{
+  position:relative; overflow:hidden; min-height:520px; display:flex; align-items:center;
+  color:#fff; background:
+  radial-gradient(circle at 84% 26%,rgba(243,200,90,.18),transparent 25%),
+  linear-gradient(110deg,#032744 0%,#06426b 58%,#0b7b91 100%);
 }
-
-.umrah-market-heading h2 {
-    margin: 5px 0 8px;
-    font-size: 38px;
-    color: #0c2947;
+.umrah-premium-hero:before{
+  content:""; position:absolute; inset:0; opacity:.18;
+  background-image:linear-gradient(45deg,transparent 46%,rgba(255,255,255,.35) 47%,transparent 48%),
+                   linear-gradient(-45deg,transparent 46%,rgba(255,255,255,.22) 47%,transparent 48%);
+  background-size:54px 54px;
 }
-
-.umrah-market-heading p {
-    color: #718397;
-    max-width: 650px;
+.umrah-premium-hero:after{
+  content:""; position:absolute; width:470px; height:470px; border:1px solid rgba(243,200,90,.25);
+  border-radius:50%; right:8%; top:20px; box-shadow:0 0 0 46px rgba(255,255,255,.025),0 0 0 92px rgba(255,255,255,.018);
 }
-
-
-/* =========================================================
-   PACKAGE GRID
-   ========================================================= */
-
-.umrah-market-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 28px;
-}
-
-
-/* =========================================================
-   PACKAGE CARD
-   ========================================================= */
-
-.umrah-market-card {
-    background: #ffffff;
-    border-radius: 20px;
-    overflow: hidden;
-    border: 1px solid #e4ebf2;
-    box-shadow: 0 15px 40px rgba(13, 47, 78, 0.08);
-    transition: all .25s ease;
-}
-
-.umrah-market-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 22px 50px rgba(13, 47, 78, 0.14);
-}
-
-
-/* =========================================================
-   IMAGE
-   ========================================================= */
-
-.umrah-card-image {
-    width: 100%;
-    height: 320px;
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(
-        135deg,
-        #07568b,
-        #17a8d4
-    );
-}
-
-.umrah-card-image img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-}
-
-.umrah-image-placeholder {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    place-items: center;
-    font-size: 85px;
-}
-
-
-/* =========================================================
-   BADGES
-   ========================================================= */
-
-.umrah-featured {
-    position: absolute;
-    top: 14px;
-    left: 14px;
-    background: #0682ad;
-    color: #fff;
-    padding: 6px 11px;
-    border-radius: 5px;
-    font-size: 12px;
-    font-weight: 800;
-    z-index: 2;
-}
-
-.umrah-duration-badge {
-    position: absolute;
-    right: 14px;
-    bottom: 14px;
-    background: #f5b400;
-    color: #152d45;
-    padding: 7px 11px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 800;
-}
-
-
-/* =========================================================
-   CONTENT
-   ========================================================= */
-
-.umrah-card-body {
-    padding: 21px;
-}
-
-.umrah-card-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    border-bottom: 1px dashed #dbe3ea;
-    padding-bottom: 12px;
-    margin-bottom: 14px;
-}
-
-.umrah-stars {
-    color: #f6b500;
-    letter-spacing: 1px;
-    font-size: 14px;
-}
-
-.umrah-days {
-    color: #77899b;
-    font-size: 12px;
-    white-space: nowrap;
-}
-
-.umrah-location {
-    color: #8a9aab;
-    font-size: 12px;
-    margin-bottom: 6px;
-}
-
-.umrah-card-body h3 {
-    margin: 0 0 8px;
-    font-size: 22px;
-    line-height: 1.25;
-    color: #112c48;
-}
-
-.umrah-airline {
-    color: #1286bd;
-    font-weight: 800;
-    font-size: 14px;
-    margin-bottom: 14px;
-}
-
-
-/* =========================================================
-   DATES
-   ========================================================= */
-
-.umrah-dates {
-    background: #f5f8fb;
-    border-radius: 10px;
-    padding: 10px 12px;
-    color: #526a80;
-    font-size: 12px;
-    margin-bottom: 13px;
-}
-
-
-/* =========================================================
-   HOTELS
-   ========================================================= */
-
-.umrah-hotels {
-    display: grid;
-    gap: 10px;
-    margin: 14px 0;
-}
-
-.umrah-hotel {
-    background: #f6f9fc;
-    border: 1px solid #e7edf3;
-    border-radius: 12px;
-    padding: 12px;
-}
-
-.umrah-hotel-title {
-    color: #0c3358;
-    font-weight: 800;
-    font-size: 13px;
-    margin-bottom: 4px;
-}
-
-.umrah-hotel-name {
-    color: #263f56;
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.umrah-hotel-detail {
-    color: #718599;
-    font-size: 11px;
-    margin-top: 4px;
-}
-
-
-/* =========================================================
-   BAGGAGE
-   ========================================================= */
-
-.umrah-baggage {
-    color: #657b8f;
-    font-size: 12px;
-    margin: 12px 0;
-}
-
-
-/* =========================================================
-   DESCRIPTION
-   ========================================================= */
-
-.umrah-description {
-    color: #697e90;
-    font-size: 12px;
-    line-height: 1.6;
-    margin: 10px 0;
-}
-
-
-/* =========================================================
-   INCLUDED / NOT INCLUDED
-   ========================================================= */
-
-.umrah-included {
-    background: #edf9f2;
-    color: #256641;
-    padding: 10px 12px;
-    border-radius: 9px;
-    font-size: 11px;
-    line-height: 1.6;
-    margin-top: 10px;
-}
-
-.umrah-excluded {
-    background: #fff1f1;
-    color: #8f3a3a;
-    padding: 10px 12px;
-    border-radius: 9px;
-    font-size: 11px;
-    line-height: 1.6;
-    margin-top: 8px;
-}
-
-
-/* =========================================================
-   PRICE
-   ========================================================= */
-
-.umrah-price-area {
-    margin-top: 17px;
-    border-top: 1px solid #edf1f4;
-    padding-top: 15px;
-}
-
-.umrah-from {
-    color: #8b9aa8;
-    font-size: 11px;
-}
-
-.umrah-price {
-    font-size: 28px;
-    font-weight: 900;
-    color: #f47a29;
-    margin-top: 2px;
-}
-
-.umrah-per-person {
-    color: #8998a6;
-    font-size: 10px;
-}
-
-
-/* =========================================================
-   ROOM PRICES
-   ========================================================= */
-
-.umrah-room-prices {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 7px;
-    margin-top: 12px;
-}
-
-.umrah-room-price {
-    background: #f6f9fc;
-    padding: 7px 9px;
-    border-radius: 7px;
-    font-size: 11px;
-    color: #536a7d;
-}
-
-.umrah-room-price strong {
-    color: #173650;
-}
-
-
-/* =========================================================
-   BUTTON
-   ========================================================= */
-
-.umrah-more-btn {
-    display: block;
-    text-align: center;
-    background: #f47a29;
-    color: #ffffff !important;
-    text-decoration: none;
-    padding: 13px 18px;
-    border-radius: 30px;
-    font-weight: 800;
-    font-size: 13px;
-    margin-top: 17px;
-    transition: .2s ease;
-}
-
-.umrah-more-btn:hover {
-    background: #db661c;
-}
-
-
-/* =========================================================
-   EMPTY STATE
-   ========================================================= */
-
-.umrah-empty {
-    background: #ffffff;
-    padding: 35px;
-    border-radius: 14px;
-    text-align: center;
-    color: #718397;
-}
-
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
-
-@media (max-width: 1000px) {
-
-    .umrah-market-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-}
-
-@media (max-width: 650px) {
-
-    .umrah-market-section {
-        padding: 45px 0;
-    }
-
-    .umrah-market-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .umrah-card-image {
-        height: 300px;
-    }
-
-    .umrah-market-heading h2 {
-        font-size: 30px;
-    }
-
-}
-
-
-
-/* =========================================================
-   MUSTAFA TRAVELS — PREMIUM UMRAH / HAJJ V1
-   Isolated additions; existing package/database logic preserved
-   ========================================================= */
-.umrah-hero{position:relative;overflow:hidden;background:linear-gradient(115deg,#041d35 0%,#073d62 55%,#0c6f87 100%);padding:92px 0 112px;color:#fff}
-.umrah-hero:before{content:"";position:absolute;inset:0;opacity:.18;background-image:linear-gradient(30deg,transparent 48%,rgba(255,205,88,.25) 49%,rgba(255,205,88,.25) 51%,transparent 52%),linear-gradient(150deg,transparent 48%,rgba(255,255,255,.12) 49%,rgba(255,255,255,.12) 51%,transparent 52%);background-size:72px 42px}
-.umrah-hero .container{position:relative;z-index:2}
-.umrah-hero .eyebrow{display:inline-block;color:#f8c64d;font-weight:900;letter-spacing:.18em;font-size:12px;margin-bottom:16px}
-.umrah-hero h1{max-width:820px;margin:0;font-size:clamp(42px,5.4vw,72px);line-height:1.02;letter-spacing:-.04em;color:#fff}
-.umrah-hero p{max-width:700px;margin:22px 0 0;color:#d9e8f2;font-size:18px;line-height:1.7}
-.umrah-hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
-.umrah-hero-btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 22px;border-radius:10px;font-weight:900;text-decoration:none!important}
-.umrah-hero-btn.gold{background:#f5bd35;color:#092743!important}.umrah-hero-btn.ghost{border:1px solid rgba(255,255,255,.45);color:#fff!important;background:rgba(255,255,255,.08)}
-.umrah-trust-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}.umrah-trust-pill{padding:9px 13px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(0,0,0,.12);font-size:12px;font-weight:800;color:#eaf5fb}
-
-.umrah-intro{background:#fff;padding:76px 0}.umrah-intro-head{text-align:center;max-width:760px;margin:0 auto 34px}.umrah-intro-head .kicker,.umrah-market-heading .kicker{font-size:11px;letter-spacing:.2em;font-weight:900;color:#b88718;text-transform:uppercase}.umrah-intro-head h2{font-size:clamp(30px,4vw,46px);color:#082b4b;margin:8px 0 10px}.umrah-intro-head p{color:#6a7f91;line-height:1.7}
-.umrah-premium-services{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.umrah-premium-service{position:relative;padding:24px 20px;border:1px solid #e2eaf0;border-radius:18px;background:linear-gradient(180deg,#fff,#f9fbfd);box-shadow:0 12px 30px rgba(6,42,73,.06)}.umrah-premium-service.gold{border-color:#efd58c;background:linear-gradient(180deg,#fffdf7,#fff7df)}.umrah-premium-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:13px;background:#e9f5fb;color:#087ca8;font-size:20px;margin-bottom:16px}.umrah-premium-service.gold .umrah-premium-icon{background:#ffedb4;color:#8a6300}.umrah-premium-service h3{margin:0 0 8px;color:#0b2c49;font-size:17px}.umrah-premium-service p{margin:0;color:#6e8294;font-size:13px;line-height:1.6}
-
-.umrah-market-section{background:linear-gradient(180deg,#f5f8fb 0%,#eef4f8 100%);padding:82px 0}.umrah-market-heading{text-align:center;max-width:760px;margin:0 auto 38px}.umrah-market-heading h2{font-size:clamp(32px,4vw,46px);letter-spacing:-.025em}.umrah-market-heading p{margin:0 auto;line-height:1.7}
-.umrah-market-card{border-radius:22px;border:1px solid #dce7ee;box-shadow:0 18px 45px rgba(8,44,75,.09)}.umrah-card-image:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(3,25,45,.62));pointer-events:none}.umrah-featured{background:#f4bd38;color:#0b2945;border-radius:999px}.umrah-duration-badge{z-index:2}.umrah-card-body{padding:23px}.umrah-card-body h3{font-size:23px;letter-spacing:-.015em}.umrah-price{color:#0b4772}.umrah-more-btn{background:#0a4d78;border-radius:10px}.umrah-more-btn:hover{background:#073a5c}.umrah-included{border-left:3px solid #43a66d}.umrah-excluded{border-left:3px solid #cf6666}
-
-.umrah-hajj-band{background:#062a49;color:#fff;padding:74px 0;position:relative;overflow:hidden}.umrah-hajj-band:after{content:"";position:absolute;width:420px;height:420px;border:1px solid rgba(245,189,53,.18);border-radius:50%;right:-120px;top:-180px;box-shadow:0 0 0 55px rgba(245,189,53,.035),0 0 0 110px rgba(245,189,53,.025)}.umrah-hajj-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:42px;align-items:center}.umrah-hajj-band .kicker{color:#f5bd35;font-size:11px;letter-spacing:.2em;font-weight:900}.umrah-hajj-band h2{font-size:clamp(32px,4vw,48px);margin:8px 0 14px;color:#fff}.umrah-hajj-band p{color:#d3e2ec;line-height:1.75;max-width:690px}.umrah-hajj-points{display:grid;grid-template-columns:1fr 1fr;gap:12px}.umrah-hajj-point{padding:15px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.06);border-radius:14px;font-size:13px;font-weight:800}.umrah-hajj-card{background:#fff;color:#0b2b48;border-radius:20px;padding:26px;box-shadow:0 20px 55px rgba(0,0,0,.2)}.umrah-hajj-card strong{display:block;font-size:21px;margin-bottom:9px}.umrah-hajj-card p{color:#6b8091;margin:0 0 18px}.umrah-hajj-card a{display:inline-flex;background:#f5bd35;color:#092743!important;text-decoration:none;padding:12px 17px;border-radius:9px;font-weight:900}
-
-@media(max-width:900px){.umrah-premium-services{grid-template-columns:repeat(2,1fr)}.umrah-hajj-grid{grid-template-columns:1fr}.umrah-hero{padding:70px 0 86px}}
-@media(max-width:600px){.umrah-premium-services{grid-template-columns:1fr}.umrah-hero{padding:58px 0 70px}.umrah-hero p{font-size:16px}.umrah-hajj-points{grid-template-columns:1fr}}
-
+.umrah-premium-hero .container{position:relative;z-index:2}
+.umrah-hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:70px;align-items:center}
+.umrah-kicker{display:inline-flex;align-items:center;gap:10px;color:var(--u-gold2);font-size:12px;font-weight:900;letter-spacing:2px;text-transform:uppercase}
+.umrah-kicker:before{content:"";width:32px;height:1px;background:var(--u-gold2)}
+.umrah-premium-hero h1{font-size:58px;line-height:1.02;max-width:720px;margin:18px 0 18px;letter-spacing:-1.8px}
+.umrah-premium-hero p{font-size:18px;line-height:1.7;max-width:650px;color:#dcebf5}
+.umrah-hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.u-btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 20px;border-radius:9px;font-weight:850;text-decoration:none}
+.u-btn-gold{background:linear-gradient(135deg,var(--u-gold2),#e5ad29);color:#082b47}
+.u-btn-ghost{border:1px solid rgba(255,255,255,.4);color:#fff;background:rgba(255,255,255,.06)}
+.umrah-trust-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.umrah-trust-row span{border:1px solid rgba(255,255,255,.22);background:rgba(2,30,53,.32);padding:8px 12px;border-radius:999px;font-size:11px;font-weight:750}
+.umrah-hero-art{position:relative;min-height:330px;display:grid;place-items:center}
+.umrah-kaaba{width:220px;height:220px;background:linear-gradient(145deg,#121212,#030303);border-radius:8px;position:relative;box-shadow:0 35px 80px rgba(0,0,0,.35);transform:rotate(-2deg)}
+.umrah-kaaba:before{content:"";position:absolute;left:0;right:0;top:48px;height:30px;background:linear-gradient(90deg,#a77a16,#f0cc62,#a77a16);box-shadow:0 2px 0 rgba(255,255,255,.18)}
+.umrah-kaaba:after{content:"";position:absolute;width:52px;height:95px;right:30px;bottom:0;border:2px solid #b98c29;background:#111}
+.umrah-orbit{position:absolute;width:360px;height:360px;border:1px solid rgba(243,200,90,.28);border-radius:50%}
+.umrah-orbit:after{content:"MAKKAH  •  MADINAH  •  BARCELONA";position:absolute;left:50%;bottom:15px;transform:translateX(-50%);white-space:nowrap;color:#f2d47f;font-size:10px;font-weight:900;letter-spacing:2px}
+.umrah-intro{padding:78px 0 70px;background:#fff}
+.umrah-section-head{text-align:center;max-width:820px;margin:0 auto 38px}
+.umrah-section-head .eyebrow{color:#b78312}
+.umrah-section-head h2{font-size:42px;line-height:1.08;color:var(--u-ink);margin:10px 0 12px}
+.umrah-section-head p{color:var(--u-muted);font-size:16px;line-height:1.7}
+.umrah-service-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.umrah-service-card{position:relative;background:#fff;border:1px solid var(--u-line);border-radius:18px;padding:24px;min-height:180px;box-shadow:0 14px 35px rgba(13,47,78,.06);overflow:hidden}
+.umrah-service-card:nth-child(2),.umrah-service-card:nth-child(3){background:linear-gradient(145deg,#fffdf8,#fff7df);border-color:#edd38c}
+.umrah-service-card:after{content:"";position:absolute;width:88px;height:88px;border-radius:50%;right:-28px;top:-28px;background:#edf7ff}
+.umrah-service-card:nth-child(2):after,.umrah-service-card:nth-child(3):after{background:#ffe9a8}
+.umrah-service-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:#eaf6ff;color:#087bb3;font-size:19px;margin-bottom:18px}
+.umrah-service-card:nth-child(2) .umrah-service-icon,.umrah-service-card:nth-child(3) .umrah-service-icon{background:#ffe9a8;color:#8d6200}
+.umrah-service-card h3{margin:0 0 8px;color:var(--u-ink);font-size:17px}
+.umrah-service-card p{margin:0;color:var(--u-muted);font-size:13px;line-height:1.65}
+.umrah-quote-band{margin-top:28px;border-radius:18px;padding:22px 26px;background:linear-gradient(105deg,#052f53,#0b6689);color:#fff;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.umrah-quote-band strong{font-size:18px}.umrah-quote-band span{display:block;color:#cfe5ef;font-size:13px;margin-top:3px}
+.umrah-market-section{background:linear-gradient(180deg,#f4f8fb,#edf4f8);padding:82px 0}
+.umrah-market-heading{text-align:center;max-width:760px;margin:0 auto 38px}
+.umrah-market-heading h2{margin:7px 0 10px;font-size:42px;line-height:1.08;color:var(--u-ink)}
+.umrah-market-heading p{color:var(--u-muted);margin:0 auto;line-height:1.7}
+.umrah-market-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:start}
+.umrah-market-card{background:#fff;border-radius:22px;overflow:hidden;border:1px solid #dce7ef;box-shadow:0 18px 48px rgba(10,45,75,.09);transition:.25s ease}
+.umrah-market-card:hover{transform:translateY(-6px);box-shadow:0 28px 60px rgba(10,45,75,.15)}
+.umrah-card-image{width:100%;height:250px;position:relative;overflow:hidden;background:linear-gradient(135deg,#073c63,#0d91ad)}
+.umrah-card-image:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(3,30,50,.72))}
+.umrah-card-image img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .4s ease}
+.umrah-market-card:hover .umrah-card-image img{transform:scale(1.035)}
+.umrah-image-placeholder{width:100%;height:100%;display:grid;place-items:center;font-size:78px;background:radial-gradient(circle at 50% 30%,#1587a4,#063653 72%)}
+.umrah-featured{position:absolute;z-index:3;top:14px;left:14px;background:var(--u-gold2);color:#17324b;padding:7px 11px;border-radius:999px;font-size:11px;font-weight:900}
+.umrah-duration-badge{position:absolute;z-index:3;right:14px;bottom:14px;background:rgba(255,255,255,.94);color:#173650;padding:7px 11px;border-radius:999px;font-size:11px;font-weight:850}
+.umrah-card-body{padding:22px}
+.umrah-card-top{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid #edf1f4;padding-bottom:12px;margin-bottom:14px}
+.umrah-stars{color:#e4ad26;letter-spacing:1px;font-size:12px}.umrah-days{color:#75889a;font-size:11px}
+.umrah-location{color:#7b8d9d;font-size:11px;margin-bottom:7px;text-transform:uppercase;letter-spacing:.4px}
+.umrah-card-body h3{margin:0 0 8px;font-size:22px;line-height:1.25;color:var(--u-ink)}
+.umrah-airline{color:#087eb7;font-weight:850;font-size:13px;margin-bottom:13px}
+.umrah-dates{background:#f4f8fb;border:1px solid #e5edf3;border-radius:10px;padding:10px 12px;color:#526a80;font-size:12px;margin-bottom:13px}
+.umrah-hotels{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:13px 0}
+.umrah-hotel{background:#fbfcfd;border:1px solid #e4ebf1;border-radius:12px;padding:11px}
+.umrah-hotel-title{color:#9a6b05;font-weight:850;font-size:11px;margin-bottom:5px}
+.umrah-hotel-name{color:#263f56;font-size:12px;font-weight:800}.umrah-hotel-detail{color:#718599;font-size:10px;margin-top:4px}
+.umrah-baggage,.umrah-description{color:#657b8f;font-size:11px;line-height:1.55;margin:11px 0}
+.umrah-included,.umrah-excluded{padding:9px 11px;border-radius:9px;font-size:10px;line-height:1.55;margin-top:8px}
+.umrah-included{background:#edf9f2;color:#256641}.umrah-excluded{background:#fff2f2;color:#8f3a3a}
+.umrah-room-prices{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}
+.umrah-room-price{background:#f5f8fa;border:1px solid #e8eef2;padding:7px 9px;border-radius:8px;font-size:10px;color:#536a7d}.umrah-room-price strong{color:#173650}
+.umrah-price-area{margin-top:16px;border-top:1px solid #edf1f4;padding-top:14px}
+.umrah-from{color:#8b9aa8;font-size:10px;text-transform:uppercase;letter-spacing:.8px}.umrah-price{font-size:30px;font-weight:950;color:var(--u-ink);margin-top:2px}.umrah-per-person{color:#8998a6;font-size:10px}
+.umrah-more-btn{display:block;text-align:center;background:linear-gradient(135deg,#0a3b63,#075986);color:#fff!important;text-decoration:none;padding:13px 18px;border-radius:10px;font-weight:850;font-size:12px;margin-top:16px}.umrah-more-btn:hover{background:#052f53}
+.umrah-empty{background:#fff;padding:40px;border-radius:18px;text-align:center;color:#718397;border:1px solid var(--u-line)}
+@media(max-width:1000px){.umrah-hero-grid{grid-template-columns:1fr}.umrah-hero-art{display:none}.umrah-service-grid{grid-template-columns:repeat(2,1fr)}.umrah-market-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.umrah-premium-hero{min-height:500px}.umrah-premium-hero h1{font-size:42px}.umrah-intro,.umrah-market-section{padding:55px 0}.umrah-section-head h2,.umrah-market-heading h2{font-size:32px}.umrah-service-grid,.umrah-market-grid{grid-template-columns:1fr}.umrah-quote-band{align-items:flex-start;flex-direction:column}.umrah-card-image{height:270px}.umrah-hotels{grid-template-columns:1fr}}
 </style>
 
 
-<!-- ======================================================
-     HERO
-======================================================= -->
 
-<section class="page-hero umrah-hero">
+
+<!-- PREMIUM UMRAH HERO -->
+<section class="umrah-premium-hero">
   <div class="container">
-    <span class="eyebrow">UMRAH &amp; HAJJ • FROM BARCELONA</span>
-    <h1>Your sacred journey, arranged with care.</h1>
-    <p>Thoughtfully planned Umrah journeys with flights, Makkah &amp; Madinah hotels, visa guidance and transport options — supported personally from Barcelona.</p>
-    <div class="umrah-hero-actions">
-      <a class="umrah-hero-btn gold" href="#current-umrah-packages">View Umrah Packages →</a>
-      <a class="umrah-hero-btn ghost" href="contact.php?service=Umrah">Request a Custom Quote</a>
-    </div>
-    <div class="umrah-trust-row">
-      <span class="umrah-trust-pill">Barcelona-based support</span>
-      <span class="umrah-trust-pill">Makkah &amp; Madinah stays</span>
-      <span class="umrah-trust-pill">Visa &amp; transport guidance</span>
-      <span class="umrah-trust-pill">Personal assistance</span>
+    <div class="umrah-hero-grid">
+      <div>
+        <div class="umrah-kicker">Umrah & Hajj · From Barcelona</div>
+        <h1>Your sacred journey,<br>arranged with care.</h1>
+        <p>Thoughtfully planned Umrah journeys with flights, Makkah & Madinah hotels, visa guidance and transport options — with personal support from Barcelona.</p>
+        <div class="umrah-hero-actions">
+          <a class="u-btn u-btn-gold" href="#umrah-packages">View Umrah Packages →</a>
+          <a class="u-btn u-btn-ghost" href="contact.php?service=Umrah">Request a Custom Quote</a>
+        </div>
+        <div class="umrah-trust-row">
+          <span>Barcelona-based support</span>
+          <span>Makkah & Madinah stays</span>
+          <span>Visa & transport guidance</span>
+          <span>Personal assistance</span>
+        </div>
+      </div>
+      <div class="umrah-hero-art" aria-hidden="true">
+        <div class="umrah-orbit"></div>
+        <div class="umrah-kaaba"></div>
+      </div>
     </div>
   </div>
 </section>
 
-
-<!-- ======================================================
-     PREMIUM JOURNEY SERVICES
-======================================================= -->
+<!-- PREMIUM JOURNEY SERVICES -->
 <section class="umrah-intro">
   <div class="container">
-    <div class="umrah-intro-head">
-      <span class="kicker">YOUR JOURNEY, OUR RESPONSIBILITY</span>
+    <div class="umrah-section-head">
+      <span class="eyebrow dark">YOUR JOURNEY, OUR RESPONSIBILITY</span>
       <h2>Everything needed for a smoother Umrah journey.</h2>
       <p>Choose a complete package or let us build one around your preferred dates, budget, hotel distance and travel requirements.</p>
     </div>
-    <div class="umrah-premium-services">
-      <div class="umrah-premium-service"><div class="umrah-premium-icon">✈</div><h3>Flights from Barcelona</h3><p>Airline and routing options selected around your dates and baggage needs.</p></div>
-      <div class="umrah-premium-service gold"><div class="umrah-premium-icon">🕋</div><h3>Makkah Hotels</h3><p>Walking-distance and shuttle options, from economy stays to premium properties.</p></div>
-      <div class="umrah-premium-service gold"><div class="umrah-premium-icon">☾</div><h3>Madinah Hotels</h3><p>Carefully selected stays with clear distance and accommodation information.</p></div>
-      <div class="umrah-premium-service"><div class="umrah-premium-icon">✓</div><h3>Visa &amp; Transport</h3><p>Visa guidance plus airport and intercity transport options where applicable.</p></div>
+    <div class="umrah-service-grid">
+      <div class="umrah-service-card"><div class="umrah-service-icon">✈</div><h3>Flights from Barcelona</h3><p>Airline and routing options selected around your dates and baggage needs.</p></div>
+      <div class="umrah-service-card"><div class="umrah-service-icon">🕋</div><h3>Makkah Hotels</h3><p>Walking-distance and shuttle options, from economy stays to premium properties.</p></div>
+      <div class="umrah-service-card"><div class="umrah-service-icon">☾</div><h3>Madinah Hotels</h3><p>Carefully selected stays with clear distance and accommodation information.</p></div>
+      <div class="umrah-service-card"><div class="umrah-service-icon">✓</div><h3>Visa & Transport</h3><p>Visa guidance plus airport and intercity transport options where applicable.</p></div>
+    </div>
+    <div class="umrah-quote-band">
+      <div><strong>Need a package built around your dates?</strong><span>Tell us your passengers, travel dates and preferred hotel distance.</span></div>
+      <a class="u-btn u-btn-gold" href="contact.php?service=Umrah">Build My Umrah Quote →</a>
     </div>
   </div>
 </section>
 
-<!-- ======================================================
-     CURRENT PACKAGES
-======================================================= -->
-
-<section class="umrah-market-section" id="current-umrah-packages">
-
-    <div class="container">
-
-
-        <div class="umrah-market-heading">
-
-            <span class="kicker">LIVE UMRAH PACKAGES</span>
-
-            <h2>
-                Featured Umrah Packages from Barcelona
-            </h2>
-
-            <p>
-                Compare our latest Umrah packages from
-                Barcelona including flights, hotels,
-                baggage and accommodation details.
-            </p>
-
-        </div>
+<!-- CURRENT PACKAGES -->
+<section class="umrah-market-section" id="umrah-packages">
+  <div class="container">
+    <div class="umrah-market-heading">
+      <span class="eyebrow dark">LIVE UMRAH PACKAGES</span>
+      <h2>Featured Umrah Packages from Barcelona</h2>
+      <p>Compare current journeys including flights, Makkah and Madinah hotels, baggage, room options and package inclusions.</p>
+    </div>
 
 
         <?php if (!empty($packs)): ?>
@@ -1163,28 +831,6 @@ site_header('Umrah & Hajj');
 
     </div>
 
-</section>
-
-
-<section class="umrah-hajj-band">
-  <div class="container umrah-hajj-grid">
-    <div>
-      <span class="kicker">HAJJ JOURNEY PLANNING</span>
-      <h2>Planning for Hajj 2027?</h2>
-      <p>Register your interest with Mustafa Travels for guidance as official arrangements, availability and applicable requirements become available.</p>
-      <div class="umrah-hajj-points">
-        <div class="umrah-hajj-point">✓ Barcelona-based assistance</div>
-        <div class="umrah-hajj-point">✓ Journey planning support</div>
-        <div class="umrah-hajj-point">✓ Documentation guidance</div>
-        <div class="umrah-hajj-point">✓ Personal communication</div>
-      </div>
-    </div>
-    <div class="umrah-hajj-card">
-      <strong>Register your Hajj interest</strong>
-      <p>Tell us your travel requirements and we will keep your enquiry ready for the next planning stage.</p>
-      <a href="contact.php?service=Hajj">Hajj 2027 Information →</a>
-    </div>
-  </div>
 </section>
 
 
