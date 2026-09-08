@@ -1,22 +1,39 @@
 <?php
 require_once __DIR__.'/config.php';
+
 $error=''; $notice='';
+
 if(isset($_GET['logout'])){session_destroy();header('Location: admin.php');exit;}
+
 if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['login'])){
- if(($_POST['username']??'')===ADMIN_USER && ($_POST['password']??'')===ADMIN_PASS){$_SESSION['admin']=true;header('Location: admin.php');exit;}
+ if(($_POST['username']??'')===ADMIN_USER && ($_POST['password']??'')===ADMIN_PASS){
+   $_SESSION['admin']=true;header('Location: admin.php');exit;
+ }
  $error='Incorrect username or password.';
 }
+
 if(empty($_SESSION['admin'])): ?>
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="assets/css/style.css"><title>Admin Login</title></head><body class="admin-login">
-<form class="login-card" method="post"><div class="brand-mark large">✈</div><h2>Mustafa Travels Admin</h2><?php if($error):?><div class="error"><?=h($error)?></div><?php endif;?><input name="username" placeholder="Username" required><input type="password" name="password" placeholder="Password" required><button class="btn btn-primary" name="login">Login</button><small>Supabase connected</small></form></body></html>
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="assets/css/style.css"><title>Admin Login</title></head>
+<body class="admin-login">
+<form class="login-card" method="post">
+  <div class="brand-mark large">✈</div><h2>Mustafa Travels Admin</h2>
+  <?php if($error):?><div class="error"><?=h($error)?></div><?php endif;?>
+  <input name="username" placeholder="Username" required>
+  <input type="password" name="password" placeholder="Password" required>
+  <button class="btn btn-primary" name="login">Login</button><small>Supabase connected</small>
+</form></body></html>
 <?php exit; endif;
 
 $tab=$_GET['tab']??'offers';
+
 if(isset($_GET['delete_offer'])){sb_delete('offers','id=eq.'.(int)$_GET['delete_offer']);header('Location: admin.php');exit;}
 if(isset($_GET['delete_umrah'])){sb_delete('umrah_packages','id=eq.'.(int)$_GET['delete_umrah']);header('Location: admin.php?tab=umrah');exit;}
 if(isset($_GET['delete_hotel'])){sb_delete('hotel_offers','id=eq.'.(int)$_GET['delete_hotel']);header('Location: admin.php?tab=hotels');exit;}
 if(isset($_GET['delete_cert'])){sb_delete('certificates','id=eq.'.(int)$_GET['delete_cert']);header('Location: admin.php?tab=certs');exit;}
 
+/* ---------- OFFERS ---------- */
 if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['save_offer'])){
  $notice=sb_insert('offers',[
   'title'=>$_POST['title'],'subtitle'=>$_POST['subtitle'],'offer_type'=>$_POST['offer_type'],'origin'=>$_POST['origin'],
@@ -25,17 +42,57 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['save_offer'])){
   'featured'=>!empty($_POST['featured']),'active'=>true
  ])?'Offer published successfully.':'Offer could not be published.';
 }
-if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['save_umrah'])){
- $notice=sb_insert('umrah_packages',[
-  'title'=>$_POST['title'],'package_code'=>$_POST['package_code'],'departure_city'=>$_POST['departure_city'],
-  'travel_date'=>$_POST['travel_date'],'return_date'=>$_POST['return_date'],'duration'=>$_POST['duration'],'makkah_hotel'=>$_POST['makkah_hotel'],
-  'makkah_nights'=>(int)$_POST['makkah_nights'],'makkah_distance'=>$_POST['makkah_distance'],'madinah_hotel'=>$_POST['madinah_hotel'],
-  'madinah_nights'=>(int)$_POST['madinah_nights'],'madinah_distance'=>$_POST['madinah_distance'],'airline'=>$_POST['airline'],'baggage'=>$_POST['baggage'],
-  'quad_price'=>(float)($_POST['quad_price']?:0),'triple_price'=>(float)($_POST['triple_price']?:0),'double_price'=>(float)($_POST['double_price']?:0),
-  'single_price'=>(float)($_POST['single_price']?:0),'currency'=>$_POST['currency'],'description'=>$_POST['description'],'included'=>$_POST['included'],
-  'not_included'=>$_POST['not_included'],'image_url'=>upload_image('umrah_image'),'featured'=>!empty($_POST['featured']),'active'=>true
- ])?'Umrah package published.':'Umrah package could not be published.';
+
+/* ---------- UMRAH: CREATE + EDIT ---------- */
+if($_SERVER['REQUEST_METHOD']==='POST' && (isset($_POST['save_umrah']) || isset($_POST['update_umrah']))){
+ $newImage=upload_image('umrah_image');
+ $existingImage=trim((string)($_POST['existing_image_url']??''));
+
+ $row=[
+  'title'=>$_POST['title'],
+  'package_code'=>$_POST['package_code'],
+  'departure_city'=>$_POST['departure_city'],
+  'travel_date'=>$_POST['travel_date'],
+  'return_date'=>$_POST['return_date'],
+  'duration'=>$_POST['duration'],
+  'makkah_hotel'=>$_POST['makkah_hotel'],
+  'makkah_nights'=>(int)($_POST['makkah_nights']??0),
+  'makkah_distance'=>$_POST['makkah_distance'],
+  'madinah_hotel'=>$_POST['madinah_hotel'],
+  'madinah_nights'=>(int)($_POST['madinah_nights']??0),
+  'madinah_distance'=>$_POST['madinah_distance'],
+  'airline'=>$_POST['airline'],
+  'baggage'=>$_POST['baggage'],
+  'quint_price'=>(float)($_POST['quint_price']?:0),
+  'quad_price'=>(float)($_POST['quad_price']?:0),
+  'triple_price'=>(float)($_POST['triple_price']?:0),
+  'double_price'=>(float)($_POST['double_price']?:0),
+  'single_price'=>(float)($_POST['single_price']?:0),
+  'currency'=>$_POST['currency'],
+  'description'=>$_POST['description'],
+  'included'=>$_POST['included'],
+  'not_included'=>$_POST['not_included'],
+  'image_url'=>$newImage ?: $existingImage,
+  'featured'=>!empty($_POST['featured']),
+  'active'=>true
+ ];
+
+ if(isset($_POST['update_umrah'])){
+   $id=(int)($_POST['umrah_id']??0);
+   $notice=($id && sb_update('umrah_packages','id=eq.'.$id,$row))
+     ? 'Umrah package updated successfully.'
+     : 'Umrah package could not be updated.';
+   if(str_starts_with($notice,'Umrah package updated')){
+     header('Location: admin.php?tab=umrah&updated=1'); exit;
+   }
+ } else {
+   $notice=sb_insert('umrah_packages',$row)
+     ? 'Umrah package published.'
+     : 'Umrah package could not be published.';
+ }
 }
+
+/* ---------- HOTELS ---------- */
 if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['save_hotel'])){
  $notice=sb_insert('hotel_offers',[
   'hotel_name'=>$_POST['hotel_name'],'city'=>$_POST['city'],'country'=>$_POST['country'],'category'=>$_POST['category'],
@@ -44,12 +101,16 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['save_hotel'])){
   'description'=>$_POST['description'],'image_url'=>upload_image('hotel_image'),'featured'=>!empty($_POST['featured']),'active'=>true
  ])?'Hotel offer published.':'Hotel offer could not be published.';
 }
+
+/* ---------- CERTIFICATES ---------- */
 if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['save_cert'])){
  $notice=sb_insert('certificates',[
   'title'=>$_POST['title'],'issuer'=>$_POST['issuer'],'description'=>$_POST['description'],'image_url'=>upload_image('cert_image'),
   'sort_order'=>(int)$_POST['sort_order'],'active'=>true
  ])?'Certificate saved.':'Certificate could not be saved.';
 }
+
+/* ---------- SETTINGS ---------- */
 if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['save_settings'])){
  $existing=sb_select('site_settings','select=id&limit=1');
  $row=['company_name'=>$_POST['company_name'],'owner_name'=>$_POST['owner_name'],'phone_1'=>$_POST['phone_1'],'phone_2'=>$_POST['phone_2'],
@@ -59,40 +120,150 @@ if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['save_settings'])){
  $notice=( $existing ? sb_update('site_settings','id=eq.'.(int)$existing[0]['id'],$row) : sb_insert('site_settings',$row) )?'Website settings updated.':'Settings could not be updated.';
 }
 
+/* ---------- LOAD DATA ---------- */
 $offers=sb_select('offers','select=*&order=id.desc');
 $umrah=sb_select('umrah_packages','select=*&order=id.desc');
 $hotels=sb_select('hotel_offers','select=*&order=id.desc');
 $certs=sb_select('certificates','select=*&order=sort_order.asc,id.desc');
 $inq=sb_select('inquiries','select=*&order=id.desc&limit=100');
 $settings=sb_select('site_settings','select=*&limit=1'); $s=$settings[0]??[];
+
+$editingUmrah=null;
+if($tab==='umrah' && !empty($_GET['edit_umrah'])){
+  $editId=(int)$_GET['edit_umrah'];
+  foreach($umrah as $u){ if((int)($u['id']??0)===$editId){$editingUmrah=$u;break;} }
+}
+if(isset($_GET['updated'])) $notice='Umrah package updated successfully.';
+
+function av($row,$key,$fallback=''){ return h((string)($row[$key]??$fallback)); }
+function selcur($row,$cur){ return (($row['currency']??'EUR')===$cur)?'selected':''; }
 ?>
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="assets/css/style.css"><title>Mustafa Admin</title></head><body class="admin-body">
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="assets/css/style.css"><title>Mustafa Admin</title>
+<style>
+.edit-btn{display:inline-flex;padding:7px 11px;border-radius:7px;background:#0d7fe8;color:#fff!important;text-decoration:none;font-size:12px;font-weight:800;margin-right:6px}
+.cancel-edit{display:inline-flex;margin-left:8px;color:#61788c;text-decoration:none;font-size:13px;font-weight:700}
+.editing-note{padding:10px 12px;border-radius:9px;background:#fff5cf;color:#6f5306;margin-bottom:12px;font-size:13px;font-weight:700}
+.price-5{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.admin-row-actions{display:flex;align-items:center;gap:5px}
+@media(max-width:900px){.price-5{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head><body class="admin-body">
 <div class="admin-shell"><aside><h2>Mustafa Admin</h2>
-<a class="<?=$tab==='offers'?'active':''?>" href="admin.php">Daily Offers</a><a class="<?=$tab==='umrah'?'active':''?>" href="?tab=umrah">Umrah Packages</a>
-<a class="<?=$tab==='hotels'?'active':''?>" href="?tab=hotels">Hotel Offers</a><a class="<?=$tab==='certs'?'active':''?>" href="?tab=certs">Certificates</a>
-<a class="<?=$tab==='inq'?'active':''?>" href="?tab=inq">Inquiries</a><a class="<?=$tab==='settings'?'active':''?>" href="?tab=settings">Website Settings</a>
+<a class="<?=$tab==='offers'?'active':''?>" href="admin.php">Daily Offers</a>
+<a class="<?=$tab==='umrah'?'active':''?>" href="?tab=umrah">Umrah Packages</a>
+<a class="<?=$tab==='hotels'?'active':''?>" href="?tab=hotels">Hotel Offers</a>
+<a class="<?=$tab==='certs'?'active':''?>" href="?tab=certs">Certificates</a>
+<a class="<?=$tab==='inq'?'active':''?>" href="?tab=inq">Inquiries</a>
+<a class="<?=$tab==='settings'?'active':''?>" href="?tab=settings">Website Settings</a>
 <a href="index.php" target="_blank">View Website</a><a href="?logout=1">Logout</a></aside><main>
+
 <?php if($notice):?><div class="success"><?=h($notice)?></div><?php endif;?>
 
 <?php if($tab==='offers'): ?>
-<h1>Daily Offers</h1><div class="admin-grid"><form class="admin-card" method="post" enctype="multipart/form-data"><h3>Publish New Offer</h3>
+<h1>Daily Offers</h1><div class="admin-grid">
+<form class="admin-card" method="post" enctype="multipart/form-data"><h3>Publish New Offer</h3>
 <select name="offer_type"><option>Flight</option><option>Hotel</option><option>Umrah</option><option>Visa</option><option>Other</option></select>
-<input name="title" placeholder="Barcelona → Islamabad" required><input name="subtitle" placeholder="Limited dates / special fare"><div class="form-2"><input name="origin" placeholder="BCN"><input name="destination" placeholder="ISB"></div>
+<input name="title" placeholder="Barcelona → Islamabad" required><input name="subtitle" placeholder="Limited dates / special fare">
+<div class="form-2"><input name="origin" placeholder="BCN"><input name="destination" placeholder="ISB"></div>
 <input name="airline" placeholder="Airline"><div class="form-2"><input name="price" type="number" step="0.01" placeholder="640"><select name="currency"><option>EUR</option><option>GBP</option><option>USD</option><option>SAR</option></select></div>
 <input name="travel_dates" placeholder="30 Sep – 27 Oct"><input name="baggage" placeholder="40kg + 7kg"><input name="badge" placeholder="Today Only / Best Seller"><input type="file" name="image" accept="image/*">
 <label class="check"><input type="checkbox" name="featured" checked> Show on homepage</label><button class="btn btn-primary" name="save_offer">Publish Offer</button></form>
 <div class="admin-card"><h3>Published Offers</h3><?php foreach($offers as $o):?><div class="admin-row"><div><b><?=h($o['title'])?></b><small><?=h($o['airline'])?> · <?=h($o['currency'])?> <?=h((string)$o['price'])?></small></div><a class="delete" href="?delete_offer=<?=$o['id']?>" onclick="return confirm('Delete?')">Delete</a></div><?php endforeach;?></div></div>
 
 <?php elseif($tab==='umrah'): ?>
-<h1>Umrah Packages</h1><div class="admin-grid"><form class="admin-card" method="post" enctype="multipart/form-data"><h3>Add Umrah Package</h3>
-<input name="title" placeholder="Economy Umrah Package" required><div class="form-2"><input name="package_code" placeholder="MTU-001"><input name="departure_city" placeholder="Barcelona"></div>
-<div class="form-2"><input name="travel_date" placeholder="Departure date"><input name="return_date" placeholder="Return date"></div><input name="duration" placeholder="10 Days / 8 Nights">
-<input name="airline" placeholder="Airline"><input name="baggage" placeholder="1x23kg + 7kg"><input name="makkah_hotel" placeholder="Makkah hotel"><div class="form-2"><input name="makkah_nights" type="number" placeholder="Makkah nights"><input name="makkah_distance" placeholder="750m / Shuttle"></div>
-<input name="madinah_hotel" placeholder="Madinah hotel"><div class="form-2"><input name="madinah_nights" type="number" placeholder="Madinah nights"><input name="madinah_distance" placeholder="700m"></div>
-<div class="form-2"><input name="quad_price" type="number" step="0.01" placeholder="Quad price"><input name="triple_price" type="number" step="0.01" placeholder="Triple price"></div><div class="form-2"><input name="double_price" type="number" step="0.01" placeholder="Double price"><input name="single_price" type="number" step="0.01" placeholder="Single price"></div>
-<select name="currency"><option>EUR</option><option>GBP</option><option>USD</option></select><textarea name="description" placeholder="Package description"></textarea><textarea name="included" placeholder="Included - one item per line"></textarea><textarea name="not_included" placeholder="Not included - one item per line"></textarea>
-<input type="file" name="umrah_image" accept="image/*"><label class="check"><input type="checkbox" name="featured"> Featured package</label><button class="btn btn-primary" name="save_umrah">Publish Umrah Package</button></form>
-<div class="admin-card"><h3>Current Packages</h3><?php foreach($umrah as $u):?><div class="admin-row"><div><b><?=h($u['title'])?></b><small><?=h($u['travel_date'])?> · Quad <?=h((string)$u['quad_price'])?></small></div><a class="delete" href="?tab=umrah&delete_umrah=<?=$u['id']?>">Delete</a></div><?php endforeach;?></div></div>
+<h1>Umrah Packages</h1>
+<div class="admin-grid">
+<form class="admin-card" method="post" enctype="multipart/form-data">
+  <h3><?=$editingUmrah?'Edit Umrah Package':'Add Umrah Package'?></h3>
+  <?php if($editingUmrah):?>
+    <div class="editing-note">Editing: <?=h($editingUmrah['title']??'Umrah Package')?> — save changes below.</div>
+    <input type="hidden" name="umrah_id" value="<?=av($editingUmrah,'id')?>">
+    <input type="hidden" name="existing_image_url" value="<?=av($editingUmrah,'image_url')?>">
+  <?php endif;?>
+
+  <input name="title" value="<?=av($editingUmrah??[],'title')?>" placeholder="Economy Umrah Package" required>
+  <div class="form-2">
+    <input name="package_code" value="<?=av($editingUmrah??[],'package_code')?>" placeholder="MTU-001">
+    <input name="departure_city" value="<?=av($editingUmrah??[],'departure_city','Barcelona')?>" placeholder="Barcelona">
+  </div>
+
+  <div class="form-2">
+    <input name="travel_date" value="<?=av($editingUmrah??[],'travel_date')?>" placeholder="Departure date">
+    <input name="return_date" value="<?=av($editingUmrah??[],'return_date')?>" placeholder="Return date">
+  </div>
+
+  <input name="duration" value="<?=av($editingUmrah??[],'duration')?>" placeholder="10 Days / 8 Nights">
+  <input name="airline" value="<?=av($editingUmrah??[],'airline')?>" placeholder="Airline">
+  <input name="baggage" value="<?=av($editingUmrah??[],'baggage')?>" placeholder="1x23kg + 7kg">
+
+  <input name="makkah_hotel" value="<?=av($editingUmrah??[],'makkah_hotel')?>" placeholder="Makkah hotel">
+  <div class="form-2">
+    <input name="makkah_nights" value="<?=av($editingUmrah??[],'makkah_nights')?>" type="number" placeholder="Makkah nights">
+    <input name="makkah_distance" value="<?=av($editingUmrah??[],'makkah_distance')?>" placeholder="750m / Shuttle">
+  </div>
+
+  <input name="madinah_hotel" value="<?=av($editingUmrah??[],'madinah_hotel')?>" placeholder="Madinah hotel">
+  <div class="form-2">
+    <input name="madinah_nights" value="<?=av($editingUmrah??[],'madinah_nights')?>" type="number" placeholder="Madinah nights">
+    <input name="madinah_distance" value="<?=av($editingUmrah??[],'madinah_distance')?>" placeholder="700m">
+  </div>
+
+  <h4 style="margin:15px 0 8px">Room / Sharing Prices</h4>
+  <div class="price-5">
+    <input name="quint_price" value="<?=av($editingUmrah??[],'quint_price')?>" type="number" step="0.01" placeholder="Quint / 5 sharing">
+    <input name="quad_price" value="<?=av($editingUmrah??[],'quad_price')?>" type="number" step="0.01" placeholder="Quad / 4 sharing">
+    <input name="triple_price" value="<?=av($editingUmrah??[],'triple_price')?>" type="number" step="0.01" placeholder="Triple / 3 sharing">
+    <input name="double_price" value="<?=av($editingUmrah??[],'double_price')?>" type="number" step="0.01" placeholder="Double / 2 sharing">
+    <input name="single_price" value="<?=av($editingUmrah??[],'single_price')?>" type="number" step="0.01" placeholder="Single">
+  </div>
+
+  <select name="currency">
+    <option <?=selcur($editingUmrah??[],'EUR')?>>EUR</option>
+    <option <?=selcur($editingUmrah??[],'GBP')?>>GBP</option>
+    <option <?=selcur($editingUmrah??[],'USD')?>>USD</option>
+  </select>
+
+  <textarea name="description" placeholder="Package description"><?=av($editingUmrah??[],'description')?></textarea>
+  <textarea name="included" placeholder="Included - one item per line"><?=av($editingUmrah??[],'included')?></textarea>
+  <textarea name="not_included" placeholder="Not included - one item per line"><?=av($editingUmrah??[],'not_included')?></textarea>
+
+  <?php if($editingUmrah && !empty($editingUmrah['image_url'])):?>
+    <small style="display:block;margin:7px 0;color:#64788b">Current image will stay unless you upload a new one.</small>
+  <?php endif;?>
+  <input type="file" name="umrah_image" accept="image/*">
+
+  <label class="check"><input type="checkbox" name="featured" <?=!empty($editingUmrah['featured'])?'checked':''?>> Featured package</label>
+
+  <?php if($editingUmrah):?>
+    <button class="btn btn-primary" name="update_umrah">Save Changes</button>
+    <a class="cancel-edit" href="?tab=umrah">Cancel edit</a>
+  <?php else:?>
+    <button class="btn btn-primary" name="save_umrah">Publish Umrah Package</button>
+  <?php endif;?>
+</form>
+
+<div class="admin-card">
+  <h3>Current Packages</h3>
+  <?php foreach($umrah as $u):?>
+    <div class="admin-row">
+      <div>
+        <b><?=h($u['title'])?></b>
+        <small>
+          <?=h($u['travel_date'])?>
+          <?php if((float)($u['quint_price']??0)>0):?> · Quint <?=h((string)$u['quint_price'])?><?php endif;?>
+          <?php if((float)($u['quad_price']??0)>0):?> · Quad <?=h((string)$u['quad_price'])?><?php endif;?>
+        </small>
+      </div>
+      <div class="admin-row-actions">
+        <a class="edit-btn" href="?tab=umrah&edit_umrah=<?=$u['id']?>">Edit</a>
+        <a class="delete" href="?tab=umrah&delete_umrah=<?=$u['id']?>" onclick="return confirm('Delete this Umrah package?')">Delete</a>
+      </div>
+    </div>
+  <?php endforeach;?>
+</div>
+</div>
 
 <?php elseif($tab==='hotels'): ?>
 <h1>Hotel Offers</h1><div class="admin-grid"><form class="admin-card" method="post" enctype="multipart/form-data"><h3>Add Hotel Deal</h3>
