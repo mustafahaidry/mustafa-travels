@@ -33,14 +33,41 @@ if(isset($_GET['delete_umrah'])){sb_delete('umrah_packages','id=eq.'.(int)$_GET[
 if(isset($_GET['delete_hotel'])){sb_delete('hotel_offers','id=eq.'.(int)$_GET['delete_hotel']);header('Location: admin.php?tab=hotels');exit;}
 if(isset($_GET['delete_cert'])){sb_delete('certificates','id=eq.'.(int)$_GET['delete_cert']);header('Location: admin.php?tab=certs');exit;}
 
-/* ---------- OFFERS ---------- */
-if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['save_offer'])){
- $notice=sb_insert('offers',[
-  'title'=>$_POST['title'],'subtitle'=>$_POST['subtitle'],'offer_type'=>$_POST['offer_type'],'origin'=>$_POST['origin'],
-  'destination'=>$_POST['destination'],'airline'=>$_POST['airline'],'price'=>(float)$_POST['price'],'currency'=>$_POST['currency'],
-  'travel_dates'=>$_POST['travel_dates'],'baggage'=>$_POST['baggage'],'badge'=>$_POST['badge'],'image_url'=>upload_image('image'),
-  'featured'=>!empty($_POST['featured']),'active'=>true
- ])?'Offer published successfully.':'Offer could not be published.';
+/* ---------- OFFERS: CREATE + EDIT ---------- */
+if($_SERVER['REQUEST_METHOD']==='POST' && (isset($_POST['save_offer']) || isset($_POST['update_offer']))){
+ $newImage=upload_image('image');
+ $existingImage=trim((string)($_POST['existing_offer_image_url']??''));
+
+ $row=[
+  'title'=>$_POST['title'],
+  'subtitle'=>$_POST['subtitle'],
+  'offer_type'=>$_POST['offer_type'],
+  'origin'=>$_POST['origin'],
+  'destination'=>$_POST['destination'],
+  'airline'=>$_POST['airline'],
+  'price'=>(float)($_POST['price']??0),
+  'currency'=>$_POST['currency'],
+  'travel_dates'=>$_POST['travel_dates'],
+  'baggage'=>$_POST['baggage'],
+  'badge'=>$_POST['badge'],
+  'image_url'=>$newImage ?: $existingImage,
+  'featured'=>!empty($_POST['featured']),
+  'active'=>true
+ ];
+
+ if(isset($_POST['update_offer'])){
+   $id=(int)($_POST['offer_id']??0);
+   $notice=($id && sb_update('offers','id=eq.'.$id,$row))
+     ? 'Offer updated successfully.'
+     : 'Offer could not be updated.';
+   if(str_starts_with($notice,'Offer updated')){
+     header('Location: admin.php?updated_offer=1'); exit;
+   }
+ } else {
+   $notice=sb_insert('offers',$row)
+     ? 'Offer published successfully.'
+     : 'Offer could not be published.';
+ }
 }
 
 /* ---------- UMRAH: CREATE + EDIT ---------- */
@@ -128,6 +155,13 @@ $certs=sb_select('certificates','select=*&order=sort_order.asc,id.desc');
 $inq=sb_select('inquiries','select=*&order=id.desc&limit=100');
 $settings=sb_select('site_settings','select=*&limit=1'); $s=$settings[0]??[];
 
+$editingOffer=null;
+if($tab==='offers' && !empty($_GET['edit_offer'])){
+  $editOfferId=(int)$_GET['edit_offer'];
+  foreach($offers as $o){ if((int)($o['id']??0)===$editOfferId){$editingOffer=$o;break;} }
+}
+if(isset($_GET['updated_offer'])) $notice='Offer updated successfully.';
+
 $editingUmrah=null;
 if($tab==='umrah' && !empty($_GET['edit_umrah'])){
   $editId=(int)$_GET['edit_umrah'];
@@ -162,15 +196,82 @@ function selcur($row,$cur){ return (($row['currency']??'EUR')===$cur)?'selected'
 <?php if($notice):?><div class="success"><?=h($notice)?></div><?php endif;?>
 
 <?php if($tab==='offers'): ?>
-<h1>Daily Offers</h1><div class="admin-grid">
-<form class="admin-card" method="post" enctype="multipart/form-data"><h3>Publish New Offer</h3>
-<select name="offer_type"><option>Flight</option><option>Hotel</option><option>Umrah</option><option>Visa</option><option>Other</option></select>
-<input name="title" placeholder="Barcelona → Islamabad" required><input name="subtitle" placeholder="Limited dates / special fare">
-<div class="form-2"><input name="origin" placeholder="BCN"><input name="destination" placeholder="ISB"></div>
-<input name="airline" placeholder="Airline"><div class="form-2"><input name="price" type="number" step="0.01" placeholder="640"><select name="currency"><option>EUR</option><option>GBP</option><option>USD</option><option>SAR</option></select></div>
-<input name="travel_dates" placeholder="30 Sep – 27 Oct"><input name="baggage" placeholder="40kg + 7kg"><input name="badge" placeholder="Today Only / Best Seller"><input type="file" name="image" accept="image/*">
-<label class="check"><input type="checkbox" name="featured" checked> Show on homepage</label><button class="btn btn-primary" name="save_offer">Publish Offer</button></form>
-<div class="admin-card"><h3>Published Offers</h3><?php foreach($offers as $o):?><div class="admin-row"><div><b><?=h($o['title'])?></b><small><?=h($o['airline'])?> · <?=h($o['currency'])?> <?=h((string)$o['price'])?></small></div><a class="delete" href="?delete_offer=<?=$o['id']?>" onclick="return confirm('Delete?')">Delete</a></div><?php endforeach;?></div></div>
+<h1>Daily Offers</h1>
+<div class="admin-grid">
+
+<form class="admin-card" method="post" enctype="multipart/form-data">
+  <h3><?=$editingOffer?'Edit Offer':'Publish New Offer'?></h3>
+
+  <?php if($editingOffer):?>
+    <div class="editing-note">Editing: <?=h($editingOffer['title']??'Offer')?> — change only what you need and save.</div>
+    <input type="hidden" name="offer_id" value="<?=av($editingOffer,'id')?>">
+    <input type="hidden" name="existing_offer_image_url" value="<?=av($editingOffer,'image_url')?>">
+  <?php endif;?>
+
+  <select name="offer_type">
+    <?php foreach(['Flight','Hotel','Umrah','Visa','Other'] as $type):?>
+      <option <?= (($editingOffer['offer_type']??'Flight')===$type)?'selected':'' ?>><?=h($type)?></option>
+    <?php endforeach;?>
+  </select>
+
+  <input name="title" value="<?=av($editingOffer??[],'title')?>" placeholder="Barcelona → Islamabad" required>
+  <input name="subtitle" value="<?=av($editingOffer??[],'subtitle')?>" placeholder="Limited dates / special fare">
+
+  <div class="form-2">
+    <input name="origin" value="<?=av($editingOffer??[],'origin')?>" placeholder="BCN">
+    <input name="destination" value="<?=av($editingOffer??[],'destination')?>" placeholder="ISB">
+  </div>
+
+  <input name="airline" value="<?=av($editingOffer??[],'airline')?>" placeholder="Airline">
+
+  <div class="form-2">
+    <input name="price" value="<?=av($editingOffer??[],'price')?>" type="number" step="0.01" placeholder="640">
+    <select name="currency">
+      <?php foreach(['EUR','GBP','USD','SAR'] as $cur):?>
+        <option <?= (($editingOffer['currency']??'EUR')===$cur)?'selected':'' ?>><?=h($cur)?></option>
+      <?php endforeach;?>
+    </select>
+  </div>
+
+  <input name="travel_dates" value="<?=av($editingOffer??[],'travel_dates')?>" placeholder="30 Sep – 27 Oct">
+  <input name="baggage" value="<?=av($editingOffer??[],'baggage')?>" placeholder="40kg + 7kg">
+  <input name="badge" value="<?=av($editingOffer??[],'badge')?>" placeholder="Today Only / Best Seller">
+
+  <?php if($editingOffer && !empty($editingOffer['image_url'])):?>
+    <small style="display:block;margin:7px 0;color:#64788b">Current offer image will stay unless you upload a new one.</small>
+  <?php endif;?>
+  <input type="file" name="image" accept="image/*">
+
+  <label class="check">
+    <input type="checkbox" name="featured" <?= $editingOffer ? (!empty($editingOffer['featured'])?'checked':'') : 'checked' ?>>
+    Show on homepage
+  </label>
+
+  <?php if($editingOffer):?>
+    <button class="btn btn-primary" name="update_offer">Save Changes</button>
+    <a class="cancel-edit" href="admin.php">Cancel edit</a>
+  <?php else:?>
+    <button class="btn btn-primary" name="save_offer">Publish Offer</button>
+  <?php endif;?>
+</form>
+
+<div class="admin-card">
+  <h3>Published Offers</h3>
+  <?php foreach($offers as $o):?>
+    <div class="admin-row">
+      <div>
+        <b><?=h($o['title'])?></b>
+        <small><?=h($o['airline'])?> · <?=h($o['currency'])?> <?=h((string)$o['price'])?></small>
+      </div>
+      <div class="admin-row-actions">
+        <a class="edit-btn" href="?edit_offer=<?=$o['id']?>">Edit</a>
+        <a class="delete" href="?delete_offer=<?=$o['id']?>" onclick="return confirm('Delete this offer?')">Delete</a>
+      </div>
+    </div>
+  <?php endforeach;?>
+</div>
+
+</div>
 
 <?php elseif($tab==='umrah'): ?>
 <h1>Umrah Packages</h1>
