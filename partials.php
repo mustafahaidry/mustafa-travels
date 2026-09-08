@@ -61,6 +61,12 @@ body{margin:0}
  .mt-brand-copy strong{font-size:20px}.mt-brand-copy small{font-size:8px}.mt-brand-box{width:43px;height:43px}
  .mt-header-inner{width:min(100% - 22px,1260px)}
 }
+
+.mt-footer-brand{display:flex!important;min-width:0!important;margin-bottom:14px}
+.mt-footer-brand .mt-brand-copy strong{color:#fff!important}
+.mt-footer-brand .mt-brand-copy small{color:#f0d900!important}
+.mt-footer-brand .mt-brand-box{box-shadow:none}
+
 </style>
 
 <!-- Travelpayouts White Label -->
@@ -119,10 +125,13 @@ function site_footer(): void { ?>
 <footer>
   <div class="container footer-grid">
     <div>
-      <div class="brand brand-footer">
-        <div class="brand-mark">✈</div>
-        <div><strong>MUSTAFA</strong><small>TRAVELS & TOURS</small></div>
-      </div>
+      <a class="mt-brand mt-footer-brand" href="index.php" aria-label="Mustafa Travels Home">
+        <div class="mt-brand-box">M</div>
+        <div class="mt-brand-copy">
+          <strong>Mustafa</strong>
+          <small>TRAVELS & TOURS</small>
+        </div>
+      </a>
       <p>Professional travel support from Barcelona for flights, hotels, Umrah, Hajj, visas and complete travel arrangements.</p>
     </div>
     <div>
