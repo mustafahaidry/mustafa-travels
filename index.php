@@ -52,7 +52,7 @@ site_header('Home');
         ['Barcelona → Pakistan','From €680','Emirates','Selected Dates']
       ] as $x): ?>
         <article class="offer-card placeholder-offer">
-          <div class="offer-media"><span class="offer-badge">Special Fare</span></div>
+          <div class="offer-media placeholder-photo"><span class="offer-badge">Special Fare</span></div>
           <div class="offer-body">
             <small><?=h($x[2])?></small>
             <h3><?=h($x[0])?></h3>
@@ -76,6 +76,16 @@ site_header('Home');
         </div>
       </article>
     <?php endforeach; endif; ?>
+    </div>
+  </div>
+</section>
+
+<section class="section section-soft religious-section">
+  <div class="container">
+    <div class="section-head centered"><div><span class="eyebrow dark">SPIRITUAL JOURNEYS</span><h2>Umrah & Hajj with personal support</h2><p>Carefully planned journeys from Barcelona.</p></div></div>
+    <div class="journey-grid">
+      <a class="journey-card umrah-card" href="umrah.php"><div class="journey-overlay"></div><div class="journey-copy"><span>UMRAH</span><h3>Umrah Packages from Barcelona</h3><p>Flights, Makkah & Madinah hotels, visa guidance and transport options.</p><b>Explore Umrah →</b></div></a>
+      <a class="journey-card hajj-card" href="umrah.php#hajj"><div class="journey-overlay"></div><div class="journey-copy"><span>HAJJ</span><h3>Hajj Journey Planning</h3><p>Register your interest and receive guidance as official arrangements become available.</p><b>Hajj Information →</b></div></a>
     </div>
   </div>
 </section>

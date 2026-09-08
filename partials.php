@@ -6,7 +6,7 @@ function site_header(string $title='Home'): void { ?>
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?= h($title) ?> | Mustafa Travels & Tours</title>
-<meta name="description" content="Mustafa Travels & Tours Barcelona — flights, hotels, Umrah, Hajj, visa support and 24/7 emergency travel assistance.">
+<meta name="description" content="Mustafa Travels & Tours — Barcelona travel agency for flights, hotels, Umrah packages, Hajj travel guidance, visa assistance and 24/7 support.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
