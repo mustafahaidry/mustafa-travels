@@ -407,6 +407,34 @@ site_header('Umrah & Hajj');
 
 }
 
+
+
+/* =========================================================
+   MUSTAFA TRAVELS — PREMIUM UMRAH / HAJJ V1
+   Isolated additions; existing package/database logic preserved
+   ========================================================= */
+.umrah-hero{position:relative;overflow:hidden;background:linear-gradient(115deg,#041d35 0%,#073d62 55%,#0c6f87 100%);padding:92px 0 112px;color:#fff}
+.umrah-hero:before{content:"";position:absolute;inset:0;opacity:.18;background-image:linear-gradient(30deg,transparent 48%,rgba(255,205,88,.25) 49%,rgba(255,205,88,.25) 51%,transparent 52%),linear-gradient(150deg,transparent 48%,rgba(255,255,255,.12) 49%,rgba(255,255,255,.12) 51%,transparent 52%);background-size:72px 42px}
+.umrah-hero .container{position:relative;z-index:2}
+.umrah-hero .eyebrow{display:inline-block;color:#f8c64d;font-weight:900;letter-spacing:.18em;font-size:12px;margin-bottom:16px}
+.umrah-hero h1{max-width:820px;margin:0;font-size:clamp(42px,5.4vw,72px);line-height:1.02;letter-spacing:-.04em;color:#fff}
+.umrah-hero p{max-width:700px;margin:22px 0 0;color:#d9e8f2;font-size:18px;line-height:1.7}
+.umrah-hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.umrah-hero-btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 22px;border-radius:10px;font-weight:900;text-decoration:none!important}
+.umrah-hero-btn.gold{background:#f5bd35;color:#092743!important}.umrah-hero-btn.ghost{border:1px solid rgba(255,255,255,.45);color:#fff!important;background:rgba(255,255,255,.08)}
+.umrah-trust-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}.umrah-trust-pill{padding:9px 13px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(0,0,0,.12);font-size:12px;font-weight:800;color:#eaf5fb}
+
+.umrah-intro{background:#fff;padding:76px 0}.umrah-intro-head{text-align:center;max-width:760px;margin:0 auto 34px}.umrah-intro-head .kicker,.umrah-market-heading .kicker{font-size:11px;letter-spacing:.2em;font-weight:900;color:#b88718;text-transform:uppercase}.umrah-intro-head h2{font-size:clamp(30px,4vw,46px);color:#082b4b;margin:8px 0 10px}.umrah-intro-head p{color:#6a7f91;line-height:1.7}
+.umrah-premium-services{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.umrah-premium-service{position:relative;padding:24px 20px;border:1px solid #e2eaf0;border-radius:18px;background:linear-gradient(180deg,#fff,#f9fbfd);box-shadow:0 12px 30px rgba(6,42,73,.06)}.umrah-premium-service.gold{border-color:#efd58c;background:linear-gradient(180deg,#fffdf7,#fff7df)}.umrah-premium-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:13px;background:#e9f5fb;color:#087ca8;font-size:20px;margin-bottom:16px}.umrah-premium-service.gold .umrah-premium-icon{background:#ffedb4;color:#8a6300}.umrah-premium-service h3{margin:0 0 8px;color:#0b2c49;font-size:17px}.umrah-premium-service p{margin:0;color:#6e8294;font-size:13px;line-height:1.6}
+
+.umrah-market-section{background:linear-gradient(180deg,#f5f8fb 0%,#eef4f8 100%);padding:82px 0}.umrah-market-heading{text-align:center;max-width:760px;margin:0 auto 38px}.umrah-market-heading h2{font-size:clamp(32px,4vw,46px);letter-spacing:-.025em}.umrah-market-heading p{margin:0 auto;line-height:1.7}
+.umrah-market-card{border-radius:22px;border:1px solid #dce7ee;box-shadow:0 18px 45px rgba(8,44,75,.09)}.umrah-card-image:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(3,25,45,.62));pointer-events:none}.umrah-featured{background:#f4bd38;color:#0b2945;border-radius:999px}.umrah-duration-badge{z-index:2}.umrah-card-body{padding:23px}.umrah-card-body h3{font-size:23px;letter-spacing:-.015em}.umrah-price{color:#0b4772}.umrah-more-btn{background:#0a4d78;border-radius:10px}.umrah-more-btn:hover{background:#073a5c}.umrah-included{border-left:3px solid #43a66d}.umrah-excluded{border-left:3px solid #cf6666}
+
+.umrah-hajj-band{background:#062a49;color:#fff;padding:74px 0;position:relative;overflow:hidden}.umrah-hajj-band:after{content:"";position:absolute;width:420px;height:420px;border:1px solid rgba(245,189,53,.18);border-radius:50%;right:-120px;top:-180px;box-shadow:0 0 0 55px rgba(245,189,53,.035),0 0 0 110px rgba(245,189,53,.025)}.umrah-hajj-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:42px;align-items:center}.umrah-hajj-band .kicker{color:#f5bd35;font-size:11px;letter-spacing:.2em;font-weight:900}.umrah-hajj-band h2{font-size:clamp(32px,4vw,48px);margin:8px 0 14px;color:#fff}.umrah-hajj-band p{color:#d3e2ec;line-height:1.75;max-width:690px}.umrah-hajj-points{display:grid;grid-template-columns:1fr 1fr;gap:12px}.umrah-hajj-point{padding:15px;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.06);border-radius:14px;font-size:13px;font-weight:800}.umrah-hajj-card{background:#fff;color:#0b2b48;border-radius:20px;padding:26px;box-shadow:0 20px 55px rgba(0,0,0,.2)}.umrah-hajj-card strong{display:block;font-size:21px;margin-bottom:9px}.umrah-hajj-card p{color:#6b8091;margin:0 0 18px}.umrah-hajj-card a{display:inline-flex;background:#f5bd35;color:#092743!important;text-decoration:none;padding:12px 17px;border-radius:9px;font-weight:900}
+
+@media(max-width:900px){.umrah-premium-services{grid-template-columns:repeat(2,1fr)}.umrah-hajj-grid{grid-template-columns:1fr}.umrah-hero{padding:70px 0 86px}}
+@media(max-width:600px){.umrah-premium-services{grid-template-columns:1fr}.umrah-hero{padding:58px 0 70px}.umrah-hero p{font-size:16px}.umrah-hajj-points{grid-template-columns:1fr}}
+
 </style>
 
 
@@ -415,160 +443,58 @@ site_header('Umrah & Hajj');
 ======================================================= -->
 
 <section class="page-hero umrah-hero">
-
-    <div class="container">
-
-        <span class="eyebrow">
-            UMRAH & HAJJ
-        </span>
-
-        <h1>
-            A spiritual journey, professionally arranged.
-        </h1>
-
-        <p>
-            Packages tailored around your dates,
-            budget and hotel preferences.
-        </p>
-
+  <div class="container">
+    <span class="eyebrow">UMRAH &amp; HAJJ • FROM BARCELONA</span>
+    <h1>Your sacred journey, arranged with care.</h1>
+    <p>Thoughtfully planned Umrah journeys with flights, Makkah &amp; Madinah hotels, visa guidance and transport options — supported personally from Barcelona.</p>
+    <div class="umrah-hero-actions">
+      <a class="umrah-hero-btn gold" href="#current-umrah-packages">View Umrah Packages →</a>
+      <a class="umrah-hero-btn ghost" href="contact.php?service=Umrah">Request a Custom Quote</a>
     </div>
-
+    <div class="umrah-trust-row">
+      <span class="umrah-trust-pill">Barcelona-based support</span>
+      <span class="umrah-trust-pill">Makkah &amp; Madinah stays</span>
+      <span class="umrah-trust-pill">Visa &amp; transport guidance</span>
+      <span class="umrah-trust-pill">Personal assistance</span>
+    </div>
+  </div>
 </section>
 
 
 <!-- ======================================================
-     SERVICES
+     PREMIUM JOURNEY SERVICES
 ======================================================= -->
-
-<section class="section">
-
-    <div class="container">
-
-        <div class="section-head centered">
-
-            <div>
-
-                <span class="eyebrow dark">
-                    PACKAGE SERVICES
-                </span>
-
-                <h2>
-                    Build your Umrah package
-                </h2>
-
-            </div>
-
-        </div>
-
-
-        <div class="service-grid">
-
-            <div class="service-card">
-
-                <div class="service-icon">
-                    ✈
-                </div>
-
-                <h3>
-                    Flights
-                </h3>
-
-                <p>
-                    Flexible airline and routing options.
-                </p>
-
-            </div>
-
-
-            <div class="service-card">
-
-                <div class="service-icon">
-                    ▦
-                </div>
-
-                <h3>
-                    Makkah & Madinah Hotels
-                </h3>
-
-                <p>
-                    Economy to premium options based on
-                    distance and budget.
-                </p>
-
-            </div>
-
-
-            <div class="service-card">
-
-                <div class="service-icon">
-                    ✓
-                </div>
-
-                <h3>
-                    Visa Support
-                </h3>
-
-                <p>
-                    Umrah visa assistance according to
-                    applicable requirements.
-                </p>
-
-            </div>
-
-
-            <div class="service-card">
-
-                <div class="service-icon">
-                    🚐
-                </div>
-
-                <h3>
-                    Transport
-                </h3>
-
-                <p>
-                    Jeddah–Makkah–Madinah and airport
-                    transfer options.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="center-actions">
-
-            <a
-                class="btn btn-primary btn-lg"
-                href="contact.php?service=Umrah"
-            >
-                Request Umrah Quote
-            </a>
-
-        </div>
-
+<section class="umrah-intro">
+  <div class="container">
+    <div class="umrah-intro-head">
+      <span class="kicker">YOUR JOURNEY, OUR RESPONSIBILITY</span>
+      <h2>Everything needed for a smoother Umrah journey.</h2>
+      <p>Choose a complete package or let us build one around your preferred dates, budget, hotel distance and travel requirements.</p>
     </div>
-
+    <div class="umrah-premium-services">
+      <div class="umrah-premium-service"><div class="umrah-premium-icon">✈</div><h3>Flights from Barcelona</h3><p>Airline and routing options selected around your dates and baggage needs.</p></div>
+      <div class="umrah-premium-service gold"><div class="umrah-premium-icon">🕋</div><h3>Makkah Hotels</h3><p>Walking-distance and shuttle options, from economy stays to premium properties.</p></div>
+      <div class="umrah-premium-service gold"><div class="umrah-premium-icon">☾</div><h3>Madinah Hotels</h3><p>Carefully selected stays with clear distance and accommodation information.</p></div>
+      <div class="umrah-premium-service"><div class="umrah-premium-icon">✓</div><h3>Visa &amp; Transport</h3><p>Visa guidance plus airport and intercity transport options where applicable.</p></div>
+    </div>
+  </div>
 </section>
-
 
 <!-- ======================================================
      CURRENT PACKAGES
 ======================================================= -->
 
-<section class="umrah-market-section">
+<section class="umrah-market-section" id="current-umrah-packages">
 
     <div class="container">
 
 
         <div class="umrah-market-heading">
 
-            <span class="eyebrow dark">
-                LIVE PACKAGES
-            </span>
+            <span class="kicker">LIVE UMRAH PACKAGES</span>
 
             <h2>
-                Current Umrah Packages
+                Featured Umrah Packages from Barcelona
             </h2>
 
             <p>
@@ -1237,6 +1163,28 @@ site_header('Umrah & Hajj');
 
     </div>
 
+</section>
+
+
+<section class="umrah-hajj-band">
+  <div class="container umrah-hajj-grid">
+    <div>
+      <span class="kicker">HAJJ JOURNEY PLANNING</span>
+      <h2>Planning for Hajj 2027?</h2>
+      <p>Register your interest with Mustafa Travels for guidance as official arrangements, availability and applicable requirements become available.</p>
+      <div class="umrah-hajj-points">
+        <div class="umrah-hajj-point">✓ Barcelona-based assistance</div>
+        <div class="umrah-hajj-point">✓ Journey planning support</div>
+        <div class="umrah-hajj-point">✓ Documentation guidance</div>
+        <div class="umrah-hajj-point">✓ Personal communication</div>
+      </div>
+    </div>
+    <div class="umrah-hajj-card">
+      <strong>Register your Hajj interest</strong>
+      <p>Tell us your travel requirements and we will keep your enquiry ready for the next planning stage.</p>
+      <a href="contact.php?service=Hajj">Hajj 2027 Information →</a>
+    </div>
+  </div>
 </section>
 
 
