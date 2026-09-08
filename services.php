@@ -1,184 +1,439 @@
 <?php require_once __DIR__.'/partials.php'; site_header('Services'); ?>
 
 <style>
-/* MUSTAFA SERVICES V2.1 SAFE */
-#mt-services{--navy:#06284a;--navy2:#0b4f83;--blue:#0b79d0;--gold:#f7b928;--ink:#08233f;--muted:#61768c;--line:#dce7f1;--soft:#f4f9fd}
-#mt-services *{box-sizing:border-box}
-#mt-services .sv-container{width:min(1180px,calc(100% - 40px));margin:0 auto}
+/* ============================
+   MUSTAFA TRAVELS SERVICES V3
+   ISOLATED / CONFLICT-SAFE
+   ============================ */
 
-/* Guaranteed visible hero - no external image dependency */
-#mt-services .sv-hero{
-  min-height:360px!important;
+/* Stop the existing sticky/fixed header from covering this page */
+body .site-header{
+  position:relative!important;
+  top:auto!important;
+  left:auto!important;
+  right:auto!important;
+  z-index:50!important;
+}
+
+#mtx-services{
+  --mtx-navy:#052c55;
+  --mtx-navy2:#0b4f83;
+  --mtx-blue:#1188e8;
+  --mtx-gold:#f4bd3c;
+  --mtx-ink:#10253d;
+  --mtx-muted:#667b90;
+  --mtx-line:#d6e3ee;
+  --mtx-soft:#f3f8fc;
+  --mtx-white:#fff;
+  font-family:Inter,Arial,sans-serif!important;
+  background:#fff!important;
+  color:var(--mtx-ink)!important;
+  display:block!important;
+  width:100%!important;
+  overflow:hidden!important;
+}
+
+#mtx-services *{box-sizing:border-box!important}
+#mtx-services a{text-decoration:none!important}
+#mtx-services .mtx-container{
+  width:min(1180px,calc(100% - 40px))!important;
+  margin:0 auto!important;
+}
+
+/* HERO */
+#mtx-services .mtx-hero{
+  position:relative!important;
   display:flex!important;
   align-items:center!important;
-  position:relative!important;
-  overflow:hidden!important;
-  background:
-    radial-gradient(circle at 82% 26%,rgba(247,185,40,.22),transparent 22%),
-    linear-gradient(120deg,#041f3a 0%,#073b68 52%,#0d6aa1 100%)!important;
+  min-height:410px!important;
+  width:100%!important;
   color:#fff!important;
+  background:
+    radial-gradient(circle at 82% 30%,rgba(244,189,60,.24),transparent 22%),
+    linear-gradient(118deg,#031f3c 0%,#083a68 50%,#1180be 100%)!important;
+  isolation:isolate!important;
 }
-#mt-services .sv-hero:before{
-  content:"";position:absolute;inset:0;opacity:.18;
+#mtx-services .mtx-hero:after{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:-1!important;
+  opacity:.14!important;
   background-image:
-    linear-gradient(30deg,rgba(255,255,255,.22) 12%,transparent 12.5%,transparent 87%,rgba(255,255,255,.22) 87.5%),
-    linear-gradient(150deg,rgba(255,255,255,.16) 12%,transparent 12.5%,transparent 87%,rgba(255,255,255,.16) 87.5%);
-  background-size:70px 120px;
+    linear-gradient(30deg,rgba(255,255,255,.28) 12%,transparent 12.5%,transparent 87%,rgba(255,255,255,.28) 87.5%),
+    linear-gradient(150deg,rgba(255,255,255,.18) 12%,transparent 12.5%,transparent 87%,rgba(255,255,255,.18) 87.5%)!important;
+  background-size:80px 135px!important;
 }
-#mt-services .sv-hero-inner{position:relative;z-index:2;padding:68px 0!important;max-width:780px}
-#mt-services .sv-kicker{display:inline-block;color:#ffc43d;font-size:12px;font-weight:900;letter-spacing:2.2px;margin-bottom:14px}
-#mt-services .sv-hero h1{color:#fff!important;font:900 clamp(40px,5vw,62px)/1.02 Manrope,Inter,sans-serif!important;margin:0 0 18px!important;letter-spacing:-1.6px!important;max-width:760px}
-#mt-services .sv-hero p{color:#d7e7f4!important;font-size:18px!important;line-height:1.7!important;max-width:680px!important;margin:0 0 26px!important}
-#mt-services .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-#mt-services .sv-btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 19px;border-radius:10px;text-decoration:none;font-weight:850;font-size:14px}
-#mt-services .sv-btn.gold{background:var(--gold);color:#08233f}
-#mt-services .sv-btn.ghost{border:1px solid rgba(255,255,255,.42);color:#fff;background:rgba(255,255,255,.08)}
-
-/* Main section */
-#mt-services .sv-main{background:linear-gradient(180deg,#f7fbff 0%,#fff 68%);padding:72px 0 66px}
-#mt-services .section-head{text-align:center!important;max-width:760px!important;margin:0 auto 38px!important;display:block!important}
-#mt-services .section-head .sv-kicker{color:var(--blue)!important;margin:0 0 10px!important;display:block!important}
-#mt-services .section-head h2{display:block!important;font:900 clamp(31px,4vw,44px)/1.08 Manrope,Inter,sans-serif!important;color:var(--ink)!important;margin:0 0 12px!important;letter-spacing:-.8px}
-#mt-services .section-head p{display:block!important;color:var(--muted)!important;font-size:16px!important;line-height:1.65!important;margin:0 auto!important;max-width:680px!important}
-
-#mt-services .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-#mt-services .service-card{
-  position:relative;min-height:292px;padding:28px;border:1px solid var(--line);
-  border-radius:20px;background:#fff;box-shadow:0 12px 34px rgba(10,48,83,.07);
-  overflow:hidden;transition:.25s ease
+#mtx-services .mtx-hero-copy{
+  width:100%!important;
+  max-width:780px!important;
+  padding:72px 0!important;
+  display:block!important;
 }
-#mt-services .service-card:hover{transform:translateY(-5px);box-shadow:0 18px 42px rgba(10,48,83,.13);border-color:#c5daeb}
-#mt-services .service-card:before{content:"";position:absolute;right:-44px;top:-54px;width:150px;height:150px;border-radius:50%;background:#edf7ff}
-#mt-services .service-card.umrah{background:linear-gradient(145deg,#fff 0%,#fffaf0 100%);border-color:#ead99c}
-#mt-services .service-card.umrah:before{background:#ffeab0}
-#mt-services .icon{position:relative;width:54px;height:54px;border-radius:15px;background:#eaf5ff;color:var(--blue);display:grid;place-items:center;font-size:25px;margin-bottom:24px}
-#mt-services .umrah .icon{background:#fff1c8;color:#9a6a00}
-#mt-services .service-card h3{position:relative;color:var(--ink);font:850 21px Manrope,Inter,sans-serif;margin:0 0 10px}
-#mt-services .service-card p{position:relative;color:var(--muted);font-size:14.5px;line-height:1.65;margin:0 0 46px}
-#mt-services .card-link{position:absolute;left:28px;bottom:25px;color:#0876c9;text-decoration:none;font-weight:850;font-size:14px}
+#mtx-services .mtx-kicker{
+  display:block!important;
+  width:auto!important;
+  color:var(--mtx-gold)!important;
+  font-size:12px!important;
+  font-weight:900!important;
+  letter-spacing:2.2px!important;
+  line-height:1.2!important;
+  margin:0 0 14px!important;
+}
+#mtx-services .mtx-hero h1{
+  display:block!important;
+  max-width:760px!important;
+  color:#fff!important;
+  font-family:Manrope,Inter,Arial,sans-serif!important;
+  font-size:clamp(42px,5vw,64px)!important;
+  font-weight:900!important;
+  line-height:1.02!important;
+  letter-spacing:-1.6px!important;
+  margin:0 0 18px!important;
+  padding:0!important;
+}
+#mtx-services .mtx-hero p{
+  display:block!important;
+  max-width:680px!important;
+  color:#dceaf6!important;
+  font-size:18px!important;
+  line-height:1.7!important;
+  margin:0 0 28px!important;
+  padding:0!important;
+}
+#mtx-services .mtx-actions{
+  display:flex!important;
+  gap:12px!important;
+  flex-wrap:wrap!important;
+}
+#mtx-services .mtx-btn{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:46px!important;
+  padding:12px 18px!important;
+  border-radius:11px!important;
+  font-size:14px!important;
+  font-weight:900!important;
+  line-height:1!important;
+}
+#mtx-services .mtx-btn.primary{
+  background:var(--mtx-gold)!important;
+  color:#2c2400!important;
+  border:1px solid var(--mtx-gold)!important;
+}
+#mtx-services .mtx-btn.secondary{
+  background:rgba(255,255,255,.09)!important;
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.35)!important;
+}
 
-/* Trust */
-#mt-services .trust-wrap{padding:0 0 70px;background:#fff}
-#mt-services .trust{display:grid;grid-template-columns:repeat(4,1fr);background:linear-gradient(110deg,#073662,#0c5c94);border-radius:20px;padding:27px 20px;box-shadow:0 16px 38px rgba(5,43,77,.14)}
-#mt-services .trust-item{text-align:center;color:#fff;padding:6px 18px;border-right:1px solid rgba(255,255,255,.18)}
-#mt-services .trust-item:last-child{border-right:0}
-#mt-services .trust-item strong{display:block;font:900 25px Manrope;color:#fff;margin-bottom:4px}
-#mt-services .trust-item span{font-size:12px;color:#cfe5f7}
+/* MAIN */
+#mtx-services .mtx-main{
+  display:block!important;
+  width:100%!important;
+  padding:78px 0 68px!important;
+  background:linear-gradient(180deg,#f6faff 0%,#ffffff 70%)!important;
+}
+#mtx-services .mtx-heading{
+  display:block!important;
+  width:100%!important;
+  max-width:760px!important;
+  margin:0 auto 40px!important;
+  padding:0!important;
+  text-align:center!important;
+}
+#mtx-services .mtx-heading .mtx-kicker{
+  color:var(--mtx-blue)!important;
+  margin-bottom:10px!important;
+}
+#mtx-services .mtx-heading h2{
+  display:block!important;
+  color:var(--mtx-ink)!important;
+  font-family:Manrope,Inter,Arial,sans-serif!important;
+  font-size:clamp(32px,4vw,44px)!important;
+  font-weight:900!important;
+  line-height:1.08!important;
+  letter-spacing:-.8px!important;
+  margin:0 0 12px!important;
+  padding:0!important;
+  text-align:center!important;
+}
+#mtx-services .mtx-heading p{
+  display:block!important;
+  color:var(--mtx-muted)!important;
+  font-size:16px!important;
+  line-height:1.65!important;
+  margin:0 auto!important;
+  padding:0!important;
+  max-width:680px!important;
+  text-align:center!important;
+}
+
+/* CARDS */
+#mtx-services .mtx-grid{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:22px!important;
+  width:100%!important;
+}
+#mtx-services .mtx-card{
+  position:relative!important;
+  display:block!important;
+  min-height:310px!important;
+  padding:28px 28px 66px!important;
+  background:linear-gradient(180deg,#ffffff 0%,#f8fbfe 100%)!important;
+  border:1px solid #cfddea!important;
+  border-radius:22px!important;
+  box-shadow:0 12px 30px rgba(5,44,85,.10)!important;
+  overflow:hidden!important;
+}
+#mtx-services .mtx-card:before{
+  content:""!important;
+  position:absolute!important;
+  right:-42px!important;
+  top:-48px!important;
+  width:145px!important;
+  height:145px!important;
+  border-radius:50%!important;
+  background:#e8f5ff!important;
+}
+#mtx-services .mtx-card.umrah{
+  background:linear-gradient(180deg,#fffdfa 0%,#fff6df 100%)!important;
+  border-color:#e8d28b!important;
+}
+#mtx-services .mtx-card.umrah:before{background:#ffe9a4!important}
+
+#mtx-services .mtx-icon{
+  position:relative!important;
+  display:grid!important;
+  place-items:center!important;
+  width:56px!important;
+  height:56px!important;
+  border-radius:16px!important;
+  background:#e7f4ff!important;
+  color:var(--mtx-blue)!important;
+  font-size:26px!important;
+  margin:0 0 24px!important;
+}
+#mtx-services .mtx-card.umrah .mtx-icon{
+  background:#ffefbc!important;
+  color:#8a6200!important;
+}
+#mtx-services .mtx-card h3{
+  position:relative!important;
+  display:block!important;
+  color:var(--mtx-ink)!important;
+  font-family:Manrope,Inter,Arial,sans-serif!important;
+  font-size:21px!important;
+  font-weight:900!important;
+  line-height:1.2!important;
+  margin:0 0 10px!important;
+  padding:0!important;
+}
+#mtx-services .mtx-card p{
+  position:relative!important;
+  display:block!important;
+  color:#5f7489!important;
+  font-size:14.5px!important;
+  line-height:1.68!important;
+  margin:0!important;
+  padding:0!important;
+}
+#mtx-services .mtx-link{
+  position:absolute!important;
+  left:28px!important;
+  bottom:26px!important;
+  color:#087aca!important;
+  font-size:14px!important;
+  font-weight:900!important;
+}
+
+/* TRUST */
+#mtx-services .mtx-trust-section{
+  display:block!important;
+  padding:0 0 72px!important;
+  background:#fff!important;
+}
+#mtx-services .mtx-trust{
+  display:grid!important;
+  grid-template-columns:repeat(4,1fr)!important;
+  gap:0!important;
+  width:100%!important;
+  padding:26px 20px!important;
+  background:linear-gradient(110deg,#073662,#0d5b94)!important;
+  border-radius:20px!important;
+  box-shadow:0 15px 36px rgba(5,43,77,.15)!important;
+}
+#mtx-services .mtx-trust div{
+  text-align:center!important;
+  padding:7px 18px!important;
+  border-right:1px solid rgba(255,255,255,.2)!important;
+}
+#mtx-services .mtx-trust div:last-child{border-right:0!important}
+#mtx-services .mtx-trust strong{
+  display:block!important;
+  color:#fff!important;
+  font-family:Manrope,Inter,Arial,sans-serif!important;
+  font-size:26px!important;
+  font-weight:900!important;
+  margin:0 0 4px!important;
+}
+#mtx-services .mtx-trust span{
+  color:#d5e7f5!important;
+  font-size:12px!important;
+}
 
 /* CTA */
-#mt-services .cta{background:#062f57;padding:44px 0}
-#mt-services .cta-inner{display:flex;align-items:center;justify-content:space-between;gap:30px}
-#mt-services .cta h2{color:#fff!important;margin:0 0 7px!important;font:850 28px Manrope}
-#mt-services .cta p{color:#cfe0ef!important;margin:0!important}
-#mt-services .cta .sv-btn{background:var(--gold);color:#08233f;white-space:nowrap}
+#mtx-services .mtx-cta{
+  display:block!important;
+  width:100%!important;
+  padding:46px 0!important;
+  background:#052c55!important;
+}
+#mtx-services .mtx-cta-inner{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:28px!important;
+}
+#mtx-services .mtx-cta h2{
+  display:block!important;
+  color:#fff!important;
+  font-family:Manrope,Inter,Arial,sans-serif!important;
+  font-size:28px!important;
+  font-weight:900!important;
+  margin:0 0 7px!important;
+}
+#mtx-services .mtx-cta p{
+  color:#d4e4f2!important;
+  font-size:15px!important;
+  margin:0!important;
+}
+#mtx-services .mtx-cta .mtx-btn{
+  background:var(--mtx-gold)!important;
+  color:#2c2400!important;
+  border:1px solid var(--mtx-gold)!important;
+  white-space:nowrap!important;
+}
 
+/* MOBILE */
 @media(max-width:900px){
-  #mt-services .cards{grid-template-columns:repeat(2,1fr)}
-  #mt-services .trust{grid-template-columns:repeat(2,1fr);row-gap:20px}
-  #mt-services .trust-item:nth-child(2){border-right:0}
+  #mtx-services .mtx-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  #mtx-services .mtx-trust{grid-template-columns:repeat(2,1fr)!important;row-gap:20px!important}
+  #mtx-services .mtx-trust div:nth-child(2){border-right:0!important}
 }
 @media(max-width:620px){
-  #mt-services .sv-container{width:min(100% - 28px,1180px)}
-  #mt-services .sv-hero{min-height:430px!important}
-  #mt-services .sv-hero-inner{padding:56px 0!important}
-  #mt-services .sv-hero h1{font-size:42px!important}
-  #mt-services .cards{grid-template-columns:1fr}
-  #mt-services .service-card{min-height:265px}
-  #mt-services .trust{grid-template-columns:1fr}
-  #mt-services .trust-item{border-right:0;border-bottom:1px solid rgba(255,255,255,.16);padding:12px}
-  #mt-services .trust-item:last-child{border-bottom:0}
-  #mt-services .cta-inner{display:block}
-  #mt-services .cta .sv-btn{margin-top:22px}
+  #mtx-services .mtx-container{width:min(100% - 28px,1180px)!important}
+  #mtx-services .mtx-hero{min-height:470px!important}
+  #mtx-services .mtx-hero-copy{padding:58px 0!important}
+  #mtx-services .mtx-hero h1{font-size:42px!important}
+  #mtx-services .mtx-hero p{font-size:16px!important}
+  #mtx-services .mtx-grid{grid-template-columns:1fr!important}
+  #mtx-services .mtx-card{min-height:285px!important}
+  #mtx-services .mtx-trust{grid-template-columns:1fr!important}
+  #mtx-services .mtx-trust div{
+    border-right:0!important;
+    border-bottom:1px solid rgba(255,255,255,.16)!important;
+    padding:13px!important;
+  }
+  #mtx-services .mtx-trust div:last-child{border-bottom:0!important}
+  #mtx-services .mtx-cta-inner{display:block!important}
+  #mtx-services .mtx-cta .mtx-btn{margin-top:22px!important}
 }
 </style>
 
-<main id="mt-services">
-  <section class="sv-hero">
-    <div class="sv-container sv-hero-inner">
-      <span class="sv-kicker">MUSTAFA TRAVELS • BARCELONA</span>
-      <h1>Everything you need for a smoother journey.</h1>
-      <p>Flights, hotels, Umrah &amp; Hajj arrangements, visa assistance and transport — with personal support before, during and after your trip.</p>
-      <div class="hero-actions">
-        <a class="sv-btn gold" href="contact.php">Request a Quote →</a>
-        <a class="sv-btn ghost" href="offers.php">View Latest Offers</a>
+<main id="mtx-services">
+
+  <section class="mtx-hero">
+    <div class="mtx-container">
+      <div class="mtx-hero-copy">
+        <span class="mtx-kicker">MUSTAFA TRAVELS • BARCELONA</span>
+        <h1>Everything you need for a smoother journey.</h1>
+        <p>Flights, hotels, Umrah &amp; Hajj arrangements, visa assistance and transport — with personal support before, during and after your trip.</p>
+        <div class="mtx-actions">
+          <a class="mtx-btn primary" href="contact.php">Request a Quote →</a>
+          <a class="mtx-btn secondary" href="offers.php">View Latest Offers</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="sv-main">
-    <div class="sv-container">
-      <div class="section-head">
-        <span class="sv-kicker">WHAT WE DO</span>
+  <section class="mtx-main">
+    <div class="mtx-container">
+      <div class="mtx-heading">
+        <span class="mtx-kicker">WHAT WE DO</span>
         <h2>Complete travel support, in one place.</h2>
         <p>From your first search to your return journey, our services are designed to make travel planning clearer and easier.</p>
       </div>
 
-      <div class="cards">
-        <article class="service-card">
-          <div class="icon">✈</div>
+      <div class="mtx-grid">
+        <article class="mtx-card">
+          <div class="mtx-icon">✈</div>
           <h3>Airline Tickets</h3>
           <p>International and multi-city flight reservations, family bookings, baggage guidance, schedule support and emergency ticket assistance.</p>
-          <a class="card-link" href="contact.php">Get a flight quote →</a>
+          <a class="mtx-link" href="contact.php">Get a flight quote →</a>
         </article>
 
-        <article class="service-card">
-          <div class="icon">▦</div>
+        <article class="mtx-card">
+          <div class="mtx-icon">▦</div>
           <h3>Hotel Booking</h3>
           <p>Worldwide hotel reservations, including Makkah and Madinah stays, from practical economy options to premium properties.</p>
-          <a class="card-link" href="hotels.php">Explore hotels →</a>
+          <a class="mtx-link" href="hotels.php">Explore hotels →</a>
         </article>
 
-        <article class="service-card umrah">
-          <div class="icon">☾</div>
+        <article class="mtx-card umrah">
+          <div class="mtx-icon">☾</div>
           <h3>Umrah &amp; Hajj</h3>
           <p>Customized religious travel arrangements including flights, visa guidance, hotels, transfers and selected journey services.</p>
-          <a class="card-link" href="umrah.php">Explore Umrah &amp; Hajj →</a>
+          <a class="mtx-link" href="umrah.php">Explore Umrah &amp; Hajj →</a>
         </article>
 
-        <article class="service-card" id="visa">
-          <div class="icon">✓</div>
+        <article class="mtx-card" id="visa">
+          <div class="mtx-icon">✓</div>
           <h3>Visa Assistance</h3>
           <p>Travel visa application support, documentation guidance and appointment preparation for eligible destinations and travellers.</p>
-          <a class="card-link" href="contact.php">Ask about a visa →</a>
+          <a class="mtx-link" href="contact.php">Ask about a visa →</a>
         </article>
 
-        <article class="service-card">
-          <div class="icon">🚐</div>
+        <article class="mtx-card">
+          <div class="mtx-icon">🚐</div>
           <h3>Transport</h3>
           <p>Airport transfers and private or shared transport for selected destinations, including transport options for Umrah journeys.</p>
-          <a class="card-link" href="contact.php">Request transport →</a>
+          <a class="mtx-link" href="contact.php">Request transport →</a>
         </article>
 
-        <article class="service-card">
-          <div class="icon">☎</div>
+        <article class="mtx-card">
+          <div class="mtx-icon">☎</div>
           <h3>24/7 Emergency Support</h3>
           <p>Urgent airline ticketing, itinerary support and travel assistance when you need help outside normal office hours.</p>
-          <a class="card-link" href="contact.php">Contact us →</a>
+          <a class="mtx-link" href="contact.php">Contact us →</a>
         </article>
       </div>
     </div>
   </section>
 
-  <section class="trust-wrap">
-    <div class="sv-container">
-      <div class="trust">
-        <div class="trust-item"><strong>8+</strong><span>Years Travel Experience</span></div>
-        <div class="trust-item"><strong>10,000+</strong><span>Clients Served</span></div>
-        <div class="trust-item"><strong>50+</strong><span>Destinations</span></div>
-        <div class="trust-item"><strong>24/7</strong><span>Travel Support</span></div>
+  <section class="mtx-trust-section">
+    <div class="mtx-container">
+      <div class="mtx-trust">
+        <div><strong>8+</strong><span>Years Travel Experience</span></div>
+        <div><strong>10,000+</strong><span>Clients Served</span></div>
+        <div><strong>50+</strong><span>Destinations</span></div>
+        <div><strong>24/7</strong><span>Travel Support</span></div>
       </div>
     </div>
   </section>
 
-  <section class="cta">
-    <div class="sv-container cta-inner">
+  <section class="mtx-cta">
+    <div class="mtx-container mtx-cta-inner">
       <div>
         <h2>Ready to plan your next journey?</h2>
         <p>Tell us where you want to travel and we’ll help you with the right options.</p>
       </div>
-      <a class="sv-btn" href="contact.php">Get Personal Assistance →</a>
+      <a class="mtx-btn" href="contact.php">Get Personal Assistance →</a>
     </div>
   </section>
+
 </main>
 
 <?php site_footer(); ?>
