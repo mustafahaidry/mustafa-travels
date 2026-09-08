@@ -1,14 +1,14 @@
-MUSTAFA TRAVELS - PRO LIGHT FLIGHT ENGINE
+MUSTAFA TRAVELS V3 RESPONSIVE HOMEPAGE
 
-Upload/replace these TWO files in the GitHub repository root:
-1. flights-v3.php
-2. flight-results.php
+Upload/replace:
+1) index.php -> website public_html/index.php
+2) assets/css/style.css -> public_html/assets/css/style.css
+3) assets/images/ghulam-mustafa-original.png -> public_html/assets/images/ghulam-mustafa-original.png
 
-Keep your existing:
-- api/airports.php
-- api/duffel.php
-- flight-fare.php
-- flight-passengers.php
-- partials.php
-
-This package intentionally does NOT fake baggage weights. It displays baggage only from Duffel data and keeps the existing booking flow.
+IMPORTANT:
+- Keep your existing config.php, database, admin.php and other pages.
+- Keep your existing assets/js/main.js.
+- partials.php is included only as a reference/compatible copy. If your live partials.php already has the Travelpayouts script, you do NOT need to replace it.
+- This V3 preserves dynamic featured offers from Supabase and the Travelpayouts search mount IDs.
+- The owner image is the photo supplied by you in this conversation.
+- Back up current files before replacing anything.
