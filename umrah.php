@@ -61,6 +61,7 @@ site_header('Umrah & Hajj');
 .umrah-photo-caption strong{display:block;font-size:17px}
 .umrah-photo-caption span{display:block;margin-top:4px;color:#f2d47f;font-size:10px;font-weight:900;letter-spacing:1.6px;text-transform:uppercase}
 .umrah-photo-badge{background:rgba(4,38,65,.78);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.22);padding:9px 12px;border-radius:999px;font-size:10px;font-weight:800;white-space:nowrap}
+.umrah-talbiyah{margin-top:18px;padding:12px 16px;border-left:3px solid var(--u-gold2);background:rgba(3,35,59,.24);border-radius:0 12px 12px 0;max-width:650px}.umrah-talbiyah-ar{font-family:Tahoma,Arial,sans-serif;font-size:18px;line-height:1.9;direction:rtl;text-align:left;color:#fff}.umrah-talbiyah-en{display:block;color:#f2d47f;font-size:10px;font-weight:800;letter-spacing:.5px;margin-top:3px}
 .umrah-intro{padding:78px 0 70px;background:#fff}
 .umrah-section-head{text-align:center;max-width:820px;margin:0 auto 38px}
 .umrah-section-head .eyebrow{color:#b78312}
@@ -81,7 +82,7 @@ site_header('Umrah & Hajj');
 .umrah-market-heading{text-align:center;max-width:760px;margin:0 auto 38px}
 .umrah-market-heading h2{margin:7px 0 10px;font-size:42px;line-height:1.08;color:var(--u-ink)}
 .umrah-market-heading p{color:var(--u-muted);margin:0 auto;line-height:1.7}
-.umrah-market-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:start}
+.umrah-market-slider{position:relative}.umrah-market-grid{display:flex;gap:22px;align-items:stretch;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:8px 4px 22px;scrollbar-width:none}.umrah-market-grid::-webkit-scrollbar{display:none}.umrah-market-card{flex:0 0 calc((100% - 44px)/3);scroll-snap-align:start}.umrah-slider-nav{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:14px}.umrah-slider-btn{width:42px;height:42px;border-radius:50%;border:1px solid #cddce7;background:#fff;color:#0a4168;font-size:22px;cursor:pointer;box-shadow:0 8px 22px rgba(10,45,75,.08)}.umrah-slider-btn:hover{background:#0a4168;color:#fff}.umrah-slider-note{font-size:11px;color:#8294a4;margin:0 8px}.umrah-market-card.single-card{flex-basis:min(760px,100%);margin-inline:auto}
 .umrah-market-card{background:#fff;border-radius:22px;overflow:hidden;border:1px solid #dce7ef;box-shadow:0 18px 48px rgba(10,45,75,.09);transition:.25s ease}
 .umrah-market-card:hover{transform:translateY(-6px);box-shadow:0 28px 60px rgba(10,45,75,.15)}
 .umrah-card-image{width:100%;height:250px;position:relative;overflow:hidden;background:linear-gradient(135deg,#073c63,#0d91ad)}
@@ -111,8 +112,8 @@ site_header('Umrah & Hajj');
 .umrah-from{color:#8b9aa8;font-size:10px;text-transform:uppercase;letter-spacing:.8px}.umrah-price{font-size:30px;font-weight:950;color:var(--u-ink);margin-top:2px}.umrah-per-person{color:#8998a6;font-size:10px}
 .umrah-more-btn{display:block;text-align:center;background:linear-gradient(135deg,#0a3b63,#075986);color:#fff!important;text-decoration:none;padding:13px 18px;border-radius:10px;font-weight:850;font-size:12px;margin-top:16px}.umrah-more-btn:hover{background:#052f53}
 .umrah-empty{background:#fff;padding:40px;border-radius:18px;text-align:center;color:#718397;border:1px solid var(--u-line)}
-@media(max-width:1000px){.umrah-hero-grid{grid-template-columns:1fr}.umrah-hero-art{display:none}.umrah-service-grid{grid-template-columns:repeat(2,1fr)}.umrah-market-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:650px){.umrah-premium-hero{min-height:500px}.umrah-premium-hero h1{font-size:42px}.umrah-intro,.umrah-market-section{padding:55px 0}.umrah-section-head h2,.umrah-market-heading h2{font-size:32px}.umrah-service-grid,.umrah-market-grid{grid-template-columns:1fr}.umrah-quote-band{align-items:flex-start;flex-direction:column}.umrah-card-image{height:270px}.umrah-hotels{grid-template-columns:1fr}}
+@media(max-width:1000px){.umrah-hero-grid{grid-template-columns:1fr}.umrah-hero-art{display:none}.umrah-service-grid{grid-template-columns:repeat(2,1fr)}.umrah-market-card{flex-basis:calc((100% - 22px)/2)}}
+@media(max-width:650px){.umrah-premium-hero{min-height:500px}.umrah-premium-hero h1{font-size:42px}.umrah-intro,.umrah-market-section{padding:55px 0}.umrah-section-head h2,.umrah-market-heading h2{font-size:32px}.umrah-service-grid{grid-template-columns:1fr}.umrah-market-card{flex-basis:88%}.umrah-quote-band{align-items:flex-start;flex-direction:column}.umrah-card-image{height:240px}.umrah-hotels{grid-template-columns:1fr}.umrah-talbiyah-ar{font-size:16px}}
 </style>
 
 
@@ -126,6 +127,7 @@ site_header('Umrah & Hajj');
         <div class="umrah-kicker">Umrah & Hajj · From Barcelona</div>
         <h1>Your sacred journey,<br>arranged with care.</h1>
         <p>Thoughtfully planned Umrah journeys with flights, Makkah & Madinah hotels, visa guidance and transport options — with personal support from Barcelona.</p>
+        <div class="umrah-talbiyah"><div class="umrah-talbiyah-ar" lang="ar" dir="rtl">لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ، لَبَّيْكَ لَا شَرِيكَ لَكَ لَبَّيْكَ، إِنَّ الْحَمْدَ وَالنِّعْمَةَ لَكَ وَالْمُلْكَ، لَا شَرِيكَ لَكَ</div><span class="umrah-talbiyah-en">Labbayka Allahumma Labbayk · The Talbiyah</span></div>
         <div class="umrah-hero-actions">
           <a class="u-btn u-btn-gold" href="#umrah-packages">View Umrah Packages →</a>
           <a class="u-btn u-btn-ghost" href="contact.php?service=Umrah">Request a Custom Quote</a>
@@ -184,7 +186,8 @@ site_header('Umrah & Hajj');
         <?php if (!empty($packs)): ?>
 
 
-        <div class="umrah-market-grid">
+        <div class="umrah-market-slider">
+        <div class="umrah-market-grid" id="umrahPackageSlider">
 
 
             <?php foreach ($packs as $p): ?>
@@ -249,7 +252,7 @@ site_header('Umrah & Hajj');
             ?>
 
 
-            <article class="umrah-market-card">
+            <article class="umrah-market-card<?= count($packs) === 1 ? ' single-card' : '' ?>">
 
 
                 <!-- IMAGE -->
@@ -810,9 +813,15 @@ site_header('Umrah & Hajj');
 
             <?php endforeach; ?>
 
-
         </div>
-
+        <?php if (count($packs) > 1): ?>
+        <div class="umrah-slider-nav" aria-label="Umrah package carousel controls">
+          <button class="umrah-slider-btn" type="button" onclick="slideUmrah(-1)" aria-label="Previous packages">‹</button>
+          <span class="umrah-slider-note">Swipe or use arrows to browse live packages</span>
+          <button class="umrah-slider-btn" type="button" onclick="slideUmrah(1)" aria-label="Next packages">›</button>
+        </div>
+        <?php endif; ?>
+        </div>
 
         <?php else: ?>
 
@@ -838,6 +847,16 @@ site_header('Umrah & Hajj');
 
 </section>
 
+
+<script>
+function slideUmrah(direction){
+  const slider=document.getElementById('umrahPackageSlider');
+  if(!slider) return;
+  const card=slider.querySelector('.umrah-market-card');
+  const amount=card ? card.getBoundingClientRect().width + 22 : slider.clientWidth*.85;
+  slider.scrollBy({left:direction*amount,behavior:'smooth'});
+}
+</script>
 
 <?php
 
