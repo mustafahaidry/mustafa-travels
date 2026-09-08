@@ -53,12 +53,14 @@ site_header('Umrah & Hajj');
 .u-btn-ghost{border:1px solid rgba(255,255,255,.4);color:#fff;background:rgba(255,255,255,.06)}
 .umrah-trust-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
 .umrah-trust-row span{border:1px solid rgba(255,255,255,.22);background:rgba(2,30,53,.32);padding:8px 12px;border-radius:999px;font-size:11px;font-weight:750}
-.umrah-hero-art{position:relative;min-height:330px;display:grid;place-items:center}
-.umrah-kaaba{width:220px;height:220px;background:linear-gradient(145deg,#121212,#030303);border-radius:8px;position:relative;box-shadow:0 35px 80px rgba(0,0,0,.35);transform:rotate(-2deg)}
-.umrah-kaaba:before{content:"";position:absolute;left:0;right:0;top:48px;height:30px;background:linear-gradient(90deg,#a77a16,#f0cc62,#a77a16);box-shadow:0 2px 0 rgba(255,255,255,.18)}
-.umrah-kaaba:after{content:"";position:absolute;width:52px;height:95px;right:30px;bottom:0;border:2px solid #b98c29;background:#111}
-.umrah-orbit{position:absolute;width:360px;height:360px;border:1px solid rgba(243,200,90,.28);border-radius:50%}
-.umrah-orbit:after{content:"MAKKAH  •  MADINAH  •  BARCELONA";position:absolute;left:50%;bottom:15px;transform:translateX(-50%);white-space:nowrap;color:#f2d47f;font-size:10px;font-weight:900;letter-spacing:2px}
+.umrah-hero-art{position:relative;min-height:350px;display:flex;align-items:center;justify-content:center}
+.umrah-photo-frame{position:relative;width:100%;max-width:520px;height:340px;border-radius:26px;overflow:hidden;border:1px solid rgba(243,200,90,.38);box-shadow:0 32px 80px rgba(0,20,40,.38)}
+.umrah-photo-frame img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+.umrah-photo-frame:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,30,52,.02) 35%,rgba(3,30,52,.72) 100%)}
+.umrah-photo-caption{position:absolute;z-index:2;left:22px;right:22px;bottom:20px;display:flex;justify-content:space-between;align-items:end;gap:14px;color:#fff}
+.umrah-photo-caption strong{display:block;font-size:17px}
+.umrah-photo-caption span{display:block;margin-top:4px;color:#f2d47f;font-size:10px;font-weight:900;letter-spacing:1.6px;text-transform:uppercase}
+.umrah-photo-badge{background:rgba(4,38,65,.78);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.22);padding:9px 12px;border-radius:999px;font-size:10px;font-weight:800;white-space:nowrap}
 .umrah-intro{padding:78px 0 70px;background:#fff}
 .umrah-section-head{text-align:center;max-width:820px;margin:0 auto 38px}
 .umrah-section-head .eyebrow{color:#b78312}
@@ -86,7 +88,7 @@ site_header('Umrah & Hajj');
 .umrah-card-image:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(3,30,50,.72))}
 .umrah-card-image img{width:100%;height:100%;display:block;object-fit:cover;transition:transform .4s ease}
 .umrah-market-card:hover .umrah-card-image img{transform:scale(1.035)}
-.umrah-image-placeholder{width:100%;height:100%;display:grid;place-items:center;font-size:78px;background:radial-gradient(circle at 50% 30%,#1587a4,#063653 72%)}
+.umrah-image-placeholder{width:100%;height:100%;position:relative;background-size:cover;background-position:center;background-image:linear-gradient(180deg,rgba(4,40,67,.02),rgba(4,40,67,.18)),url("https://images.unsplash.com/photo-1720549973451-018d3623b55a?auto=format&fit=crop&fm=jpg&q=82&w=1600")}.umrah-image-placeholder:after{content:"Makkah · Umrah Journey";position:absolute;left:16px;bottom:16px;z-index:2;color:#fff;font-size:12px;font-weight:850;text-shadow:0 2px 12px rgba(0,0,0,.45)}
 .umrah-featured{position:absolute;z-index:3;top:14px;left:14px;background:var(--u-gold2);color:#17324b;padding:7px 11px;border-radius:999px;font-size:11px;font-weight:900}
 .umrah-duration-badge{position:absolute;z-index:3;right:14px;bottom:14px;background:rgba(255,255,255,.94);color:#173650;padding:7px 11px;border-radius:999px;font-size:11px;font-weight:850}
 .umrah-card-body{padding:22px}
@@ -136,8 +138,13 @@ site_header('Umrah & Hajj');
         </div>
       </div>
       <div class="umrah-hero-art" aria-hidden="true">
-        <div class="umrah-orbit"></div>
-        <div class="umrah-kaaba"></div>
+        <div class="umrah-photo-frame">
+          <img src="https://images.unsplash.com/photo-1720549973451-018d3623b55a?auto=format&fit=crop&fm=jpg&q=82&w=1600" alt="Masjid al-Haram and the Kaaba in Makkah">
+          <div class="umrah-photo-caption">
+            <div><strong>Makkah Al-Mukarramah</strong><span>Umrah journeys from Barcelona</span></div>
+            <div class="umrah-photo-badge">Personal Support</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -265,9 +272,7 @@ site_header('Umrah & Hajj');
                     <?php else: ?>
 
 
-                    <div class="umrah-image-placeholder">
-                        🕋
-                    </div>
+                    <div class="umrah-image-placeholder" role="img" aria-label="Masjid al-Haram in Makkah"></div>
 
 
                     <?php endif; ?>
