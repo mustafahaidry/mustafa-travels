@@ -6,6 +6,7 @@ function mt_active(string $target): string {
     if ($target === 'index.php' && ($current === '' || $current === 'index.php')) return ' active';
     if ($target === 'hotels.php' && $current === 'hotels.php') return ' active';
     if ($target === 'umrah.php' && $current === 'umrah.php') return ' active';
+    if ($target === 'hajj.php' && $current === 'hajj.php') return ' active';
     if ($target === 'visa.php' && $current === 'visa.php') return ' active';
     if ($target === 'offers.php' && $current === 'offers.php') return ' active';
     if ($target === 'contact.php' && $current === 'contact.php') return ' active';
@@ -107,7 +108,7 @@ gtag('config','G-H7TQLKHP25');
       <a href="index.php#flight-search">Flights</a>
       <a class="<?= trim(mt_active('hotels.php')) ?>" href="hotels.php">Hotels</a>
       <a class="<?= trim(mt_active('umrah.php')) ?>" href="umrah.php">Umrah</a>
-      <a href="umrah.php#hajj">Hajj</a>
+      <a class="<?= trim(mt_active('hajj.php')) ?>" href="hajj.php">Hajj</a>
       <a class="<?= trim(mt_active('visa.php')) ?>" href="visa.php">Visa</a>
       <a class="<?= trim(mt_active('offers.php')) ?>" href="offers.php">Offers</a>
       <a class="<?= trim(mt_active('contact.php')) ?>" href="contact.php">Contact</a>
