@@ -277,8 +277,24 @@ site_header('Review Booking');
                     </div>
                 </div>
                 <div class="rv-payment-note">
-                    Payment collection and final Duffel order creation are not activated yet. This section is now part of the booking flow so we can connect the secure payment/hold action without changing the customer layout again.
+                    Card details are handled securely by Stripe. After Stripe confirms payment, Mustafa Travels first sends a <strong>Payment Received – Booking Processing</strong> PDF, then creates the airline order through Duffel. A second confirmation email with the PNR is sent only after the airline booking succeeds.
                 </div>
+
+                <div id="stripe-start" style="margin-top:14px">
+                    <button type="button" class="rv-save" id="start-card-payment" style="width:100%;margin-top:0">Continue to secure card payment</button>
+                    <div id="stripe-start-error" class="rv-error" style="display:none;margin-top:10px"></div>
+                </div>
+
+                <form id="stripe-payment-form" style="display:none;margin-top:14px">
+                    <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px">
+                        <strong style="color:#10253d">Secure card payment</strong>
+                        <span id="stripe-payment-amount" style="font-weight:900;color:#082f5f"></span>
+                    </div>
+                    <div id="payment-element" style="border:1px solid #dce6ef;border-radius:12px;padding:12px;background:#fff"></div>
+                    <div id="stripe-payment-message" class="rv-error" style="display:none;margin-top:10px"></div>
+                    <button type="submit" class="rv-save" id="stripe-pay-button" style="width:100%">Pay securely</button>
+                    <small style="display:block;color:#73899d;margin-top:9px;line-height:1.45">3D Secure may be requested by your bank. Do not close the page until payment verification is complete.</small>
+                </form>
             </div>
         </div>
 
@@ -333,6 +349,7 @@ site_header('Review Booking');
 </div>
 </section>
 
+<script src="https://js.stripe.com/v3/"></script>
 <script>
 (function(){
     const base = <?=json_encode($baseTotal)?>;
@@ -347,7 +364,81 @@ site_header('Review Booking');
         if(extraEl) extraEl.textContent = money(extra);
         if(grandEl) grandEl.textContent = money(base + extra);
     }
-    selects.forEach(s => s.addEventListener('change', recalc));
+    let extrasDirty = false;
+    selects.forEach(s => s.addEventListener('change', function(){
+        extrasDirty = true;
+        recalc();
+    }));
+
+    const startBtn = document.getElementById('start-card-payment');
+    const startError = document.getElementById('stripe-start-error');
+    const payForm = document.getElementById('stripe-payment-form');
+    const payBtn = document.getElementById('stripe-pay-button');
+    const payMessage = document.getElementById('stripe-payment-message');
+    const payAmount = document.getElementById('stripe-payment-amount');
+    let stripe = null;
+    let elements = null;
+    let bookingRef = '';
+
+    function showError(el, message){
+        if(!el) return;
+        el.textContent = message;
+        el.style.display = 'block';
+    }
+    function clearError(el){ if(el){ el.textContent=''; el.style.display='none'; } }
+
+    if(startBtn){
+        startBtn.addEventListener('click', async function(){
+            clearError(startError);
+            if(extrasDirty){
+                showError(startError, 'You changed baggage. Please click “Save baggage selection” before starting payment so the charged amount matches your booking.');
+                return;
+            }
+            startBtn.disabled = true;
+            startBtn.textContent = 'Refreshing fare…';
+            try{
+                const r = await fetch('api/create-payment-intent.php', {
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({offer_id: <?=json_encode($offerId)?>})
+                });
+                const data = await r.json();
+                if(!r.ok || !data.ok) throw new Error(data.error || 'Unable to start payment.');
+                bookingRef = data.booking_ref;
+                stripe = Stripe(data.publishable_key);
+                elements = stripe.elements({clientSecret:data.client_secret});
+                const paymentElement = elements.create('payment', {layout:'tabs'});
+                paymentElement.mount('#payment-element');
+                payAmount.textContent = data.currency + ' ' + data.amount;
+                payForm.style.display = 'block';
+                startBtn.style.display = 'none';
+            }catch(e){
+                showError(startError, e.message || 'Unable to start secure payment.');
+                startBtn.disabled = false;
+                startBtn.textContent = 'Continue to secure card payment';
+            }
+        });
+    }
+
+    if(payForm){
+        payForm.addEventListener('submit', async function(e){
+            e.preventDefault();
+            clearError(payMessage);
+            if(!stripe || !elements || !bookingRef) return;
+            payBtn.disabled = true;
+            payBtn.textContent = 'Processing payment…';
+            const returnUrl = window.location.origin + '/payment-return.php?booking_ref=' + encodeURIComponent(bookingRef);
+            const result = await stripe.confirmPayment({
+                elements,
+                confirmParams:{return_url:returnUrl}
+            });
+            if(result.error){
+                showError(payMessage, result.error.message || 'Payment could not be completed.');
+                payBtn.disabled = false;
+                payBtn.textContent = 'Pay securely';
+            }
+        });
+    }
     recalc();
 })();
 </script>
