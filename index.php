@@ -16,11 +16,11 @@ body{background:#fff}.v4-wrap{overflow:hidden}.v4-container{width:min(1180px,cal
 .v4-section{padding:72px 0}.v4-section.soft{background:linear-gradient(180deg,#f7fafc,#eef5fa)}.v4-head{text-align:center;margin-bottom:30px}.v4-head .v4-kicker{color:var(--v4-blue);margin-bottom:8px}.v4-head h2{font:800 34px Manrope;margin:0 0 8px;color:var(--v4-ink)}.v4-head p{margin:0;color:var(--v4-muted)}
 .v4-services{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.v4-service{background:#fff;border:1px solid var(--v4-line);border-radius:18px;padding:24px;box-shadow:0 8px 24px rgba(7,47,95,.05);transition:.2s}.v4-service:hover{transform:translateY(-4px);box-shadow:var(--v4-shadow)}.v4-icon{width:48px;height:48px;border-radius:14px;background:#eaf5ff;display:grid;place-items:center;color:var(--v4-blue);font-size:23px}.v4-service h3{font:800 18px Manrope;margin:15px 0 6px}.v4-service p{margin:0 0 10px;color:var(--v4-muted);line-height:1.6;font-size:13px}.v4-service span{color:var(--v4-blue);font-size:12px;font-weight:800}
 .v4-about{display:grid;grid-template-columns:320px 1fr 250px;gap:28px;align-items:stretch}.v4-owner{border-radius:22px;overflow:hidden;min-height:360px;background:#ddd}.v4-owner img{width:100%;height:100%;object-fit:cover;display:block}.v4-about-copy{padding:10px 0}.v4-about-copy h2{font:800 34px Manrope;margin:0 0 12px}.v4-about-copy p{color:var(--v4-muted);line-height:1.8}.v4-about-copy .btn{margin-top:8px;background:var(--v4-gold);color:#3a2a00}.v4-trustbox{background:#fff;border:1px solid var(--v4-line);border-radius:18px;padding:24px;display:grid;gap:16px;box-shadow:0 10px 28px rgba(7,47,95,.06)}.v4-trustbox div{display:flex;gap:11px;align-items:flex-start;font-size:13px;font-weight:700;color:#203b56}.v4-trustbox b{color:var(--v4-gold);font-size:18px}
-.v4-deals{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.v4-deal{border:1px solid var(--v4-line);border-radius:18px;overflow:hidden;background:#fff;box-shadow:0 10px 30px rgba(7,47,95,.07)}.v4-deal-media{height:170px;background:linear-gradient(135deg,#0a568f,#17a1dc);background-size:cover;background-position:center;position:relative}.v4-deal-badge{position:absolute;left:12px;top:12px;background:var(--v4-gold);color:#352600;border-radius:999px;padding:7px 10px;font-size:10px;font-weight:900}.v4-deal-body{padding:20px}.v4-deal-body small{font-weight:800;color:var(--v4-blue)}.v4-deal-body h3{font:800 19px Manrope;margin:7px 0}.v4-deal-body p{font-size:12px;color:var(--v4-muted)}.v4-price{font:800 26px Manrope;color:var(--v4-navy);margin:10px 0}.v4-deal-body .btn{background:var(--v4-navy);color:#fff}
+.v4-offers-shell{position:relative}.v4-offers-shell:before{content:'';position:absolute;left:-80px;top:-40px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(244,189,60,.15),transparent 68%);pointer-events:none}.v4-offers-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:28px}.v4-offers-top .v4-head{text-align:left;margin:0}.v4-offers-top .v4-head h2{font-size:38px}.v4-offers-top .v4-head p{max-width:560px}.v4-view-all{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border:1px solid #cfddea;border-radius:10px;color:var(--v4-navy);font-size:12px;font-weight:900;background:#fff}.v4-deals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.v4-deal{position:relative;border:1px solid #dbe5ee;border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 14px 38px rgba(7,47,95,.09);transition:transform .22s ease,box-shadow .22s ease}.v4-deal:hover{transform:translateY(-6px);box-shadow:0 22px 52px rgba(7,47,95,.15)}.v4-deal-media{height:220px;background:linear-gradient(135deg,#0a568f,#17a1dc);background-size:cover;background-position:center;position:relative}.v4-deal-media:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,24,52,.06) 35%,rgba(2,24,52,.78) 100%)}.v4-fallback-isb{background-image:url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1100&q=84')}.v4-fallback-lhe{background-image:url('https://images.unsplash.com/photo-1529074963764-98f45c47344b?auto=format&fit=crop&w=1100&q=84')}.v4-fallback-world{background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1100&q=84')}.v4-deal-badge{position:absolute;left:14px;top:14px;z-index:2;background:var(--v4-gold);color:#352600;border-radius:999px;padding:8px 12px;font-size:10px;font-weight:900;box-shadow:0 6px 16px rgba(0,0,0,.12)}.v4-deal-route{position:absolute;left:16px;right:16px;bottom:16px;z-index:2;color:#fff}.v4-deal-route small{display:block;color:#d9e7f5;font-size:10px;font-weight:800;letter-spacing:1.2px;margin-bottom:5px}.v4-deal-route strong{display:block;font:800 20px/1.15 Manrope}.v4-deal-body{padding:19px 20px 20px}.v4-deal-airline{font-size:11px;font-weight:900;color:var(--v4-blue);letter-spacing:.5px;text-transform:uppercase}.v4-deal-body h3{font:800 20px/1.25 Manrope;margin:8px 0 11px;color:var(--v4-ink)}.v4-deal-chips{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 17px}.v4-deal-chip{padding:6px 9px;border-radius:999px;background:#f1f6fa;border:1px solid #e0e8ef;color:#4e647a;font-size:10px;font-weight:800}.v4-deal-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-top:15px;border-top:1px solid #edf1f5}.v4-price-wrap small{display:block;font-size:9px;color:#7a8ca0;font-weight:800;letter-spacing:1px}.v4-price{font:800 29px/1 Manrope;color:var(--v4-navy);margin:4px 0 0}.v4-deal-cta{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 15px;border-radius:10px;background:var(--v4-navy);color:#fff!important;font-size:11px;font-weight:900;white-space:nowrap}.v4-deal-cta:hover{background:var(--v4-blue)}.v4-offer-note{margin-top:18px;text-align:center;color:#7890a6;font-size:10px}
 .v4-strip{background:linear-gradient(120deg,#07315d,#0b4e84);color:#fff;border-radius:20px;padding:23px 26px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.v4-strip div{text-align:center;border-right:1px solid rgba(255,255,255,.2)}.v4-strip div:last-child{border-right:0}.v4-strip strong{display:block;font:800 26px Manrope;color:#fff}.v4-strip span{font-size:11px;color:#d4e2ef}
 .v4-cta{background:#052c55;color:#fff;padding:34px 0}.v4-cta-in{display:flex;justify-content:space-between;align-items:center;gap:20px}.v4-cta h3{font:800 24px Manrope;margin:0 0 5px}.v4-cta p{margin:0;color:#d9e7f5}.v4-cta .btn{background:var(--v4-gold);color:#3a2a00}
-@media(max-width:1000px){.v4-badge{display:none}.v4-services{grid-template-columns:1fr 1fr}.v4-about{grid-template-columns:280px 1fr}.v4-trustbox{grid-column:1/-1;grid-template-columns:1fr 1fr}.v4-deals{grid-template-columns:1fr 1fr}.v4-strip{grid-template-columns:1fr 1fr}.v4-strip div:nth-child(2){border-right:0}}
-@media(max-width:700px){.v4-container{width:min(100% - 24px,1180px)}.v4-hero{min-height:620px;background-position:58% center}.v4-hero-inner{padding:58px 0 165px}.v4-hero h1{font-size:46px}.v4-hero p{font-size:16px}.v4-search-wrap{margin-top:-110px}.v4-search{padding:0 13px 15px;border-radius:18px}.v4-tabs a{padding:13px 12px;font-size:12px}.v4-banner-grid,.v4-services,.v4-about,.v4-deals,.v4-strip{grid-template-columns:1fr}.v4-banner{min-height:190px}.v4-about{gap:20px}.v4-owner{min-height:340px}.v4-trustbox{grid-template-columns:1fr}.v4-strip div{border-right:0;border-bottom:1px solid rgba(255,255,255,.16);padding-bottom:10px}.v4-strip div:last-child{border-bottom:0}.v4-cta-in{flex-direction:column;align-items:flex-start}.v4-section{padding:55px 0}}
+@media(max-width:1000px){.v4-badge{display:none}.v4-offers-top{align-items:flex-start}.v4-deals{grid-template-columns:1fr 1fr}.v4-services{grid-template-columns:1fr 1fr}.v4-about{grid-template-columns:280px 1fr}.v4-trustbox{grid-column:1/-1;grid-template-columns:1fr 1fr}.v4-deals{grid-template-columns:1fr 1fr}.v4-strip{grid-template-columns:1fr 1fr}.v4-strip div:nth-child(2){border-right:0}}
+@media(max-width:700px){.v4-offers-top{flex-direction:column;align-items:flex-start;margin-bottom:22px}.v4-offers-top .v4-head h2{font-size:32px}.v4-view-all{width:100%;justify-content:center}.v4-deal-media{height:215px}.v4-deal-bottom{align-items:center}.v4-container{width:min(100% - 24px,1180px)}.v4-hero{min-height:620px;background-position:58% center}.v4-hero-inner{padding:58px 0 165px}.v4-hero h1{font-size:46px}.v4-hero p{font-size:16px}.v4-search-wrap{margin-top:-110px}.v4-search{padding:0 13px 15px;border-radius:18px}.v4-tabs a{padding:13px 12px;font-size:12px}.v4-banner-grid,.v4-services,.v4-about,.v4-deals,.v4-strip{grid-template-columns:1fr}.v4-banner{min-height:190px}.v4-about{gap:20px}.v4-owner{min-height:340px}.v4-trustbox{grid-template-columns:1fr}.v4-strip div{border-right:0;border-bottom:1px solid rgba(255,255,255,.16);padding-bottom:10px}.v4-strip div:last-child{border-bottom:0}.v4-cta-in{flex-direction:column;align-items:flex-start}.v4-section{padding:55px 0}}
 </style>
 
 <div class="v4-wrap">
@@ -77,21 +77,50 @@ body{background:#fff}.v4-wrap{overflow:hidden}.v4-container{width:min(1180px,cal
 </section>
 
 <section class="v4-section soft">
-  <div class="v4-container">
-    <div class="v4-head"><div class="v4-kicker">LATEST DEALS</div><h2>Special Offers</h2><p>Selected offers from Barcelona.</p></div>
+  <div class="v4-container v4-offers-shell">
+    <div class="v4-offers-top">
+      <div class="v4-head"><div class="v4-kicker">LATEST DEALS</div><h2>Special Offers from Barcelona</h2><p>Handpicked fares and travel deals. Ask us for live availability before booking.</p></div>
+      <a class="v4-view-all" href="offers.php">View All Offers <span>→</span></a>
+    </div>
     <div class="v4-deals">
     <?php if(!$featured): ?>
       <?php foreach([
-        ['Barcelona → Islamabad','From €640','Special Fare','40kg + 7kg'],
-        ['Barcelona → Lahore','From €655','Special Fare','Selected Dates'],
-        ['Barcelona → Worldwide','From €680','Limited Offer','Ask for best dates']
+        ['Barcelona → Islamabad','From €640','Special Fare','40kg + 7kg','Selected Dates','v4-fallback-isb'],
+        ['Barcelona → Lahore','From €655','Special Fare','23kg + 7kg','Selected Dates','v4-fallback-lhe'],
+        ['Barcelona → Worldwide','From €680','Limited Offer','Ask for baggage','Best Dates','v4-fallback-world']
       ] as $x): ?>
-      <article class="v4-deal"><div class="v4-deal-media"><span class="v4-deal-badge"><?=h($x[2])?></span></div><div class="v4-deal-body"><small>FROM BARCELONA</small><h3><?=h($x[0])?></h3><p><?=h($x[3])?></p><div class="v4-price"><?=h($x[1])?></div><a class="btn" href="contact.php">Get Quote</a></div></article>
+      <article class="v4-deal">
+        <div class="v4-deal-media <?=h($x[5])?>">
+          <span class="v4-deal-badge"><?=h($x[2])?></span>
+          <div class="v4-deal-route"><small>DEPARTING FROM BARCELONA</small><strong><?=h($x[0])?></strong></div>
+        </div>
+        <div class="v4-deal-body">
+          <div class="v4-deal-airline">Mustafa Travels Special</div>
+          <h3><?=h($x[0])?></h3>
+          <div class="v4-deal-chips"><span class="v4-deal-chip"><?=h($x[3])?></span><span class="v4-deal-chip"><?=h($x[4])?></span></div>
+          <div class="v4-deal-bottom"><div class="v4-price-wrap"><small>STARTING FROM</small><div class="v4-price"><?=h($x[1])?></div></div><a class="v4-deal-cta" href="contact.php">Check Availability →</a></div>
+        </div>
+      </article>
       <?php endforeach; ?>
     <?php else: foreach($featured as $o): ?>
-      <article class="v4-deal"><div class="v4-deal-media" <?php if(!empty($o['image_url'])): ?>style="background-image:url('<?=h($o['image_url'])?>')"<?php endif; ?>><span class="v4-deal-badge"><?=h($o['badge'] ?: 'Special Offer')?></span></div><div class="v4-deal-body"><small><?=h($o['airline'] ?: 'MUSTAFA TRAVELS')?></small><h3><?=h($o['title'])?></h3><p><?=h($o['travel_dates'])?><?php if(!empty($o['baggage'])): ?> · <?=h($o['baggage'])?><?php endif; ?></p><div class="v4-price"><?=h($o['currency'])?> <?=number_format((float)$o['price'],0)?></div><a class="btn" href="https://wa.me/<?=WHATSAPP?>?text=<?=urlencode('I am interested in: '.$o['title'])?>" target="_blank">Book / Ask Now</a></div></article>
+      <article class="v4-deal">
+        <div class="v4-deal-media" <?php if(!empty($o['image_url'])): ?>style="background-image:url('<?=h($o['image_url'])?>')"<?php endif; ?>>
+          <span class="v4-deal-badge"><?=h($o['badge'] ?: 'Special Offer')?></span>
+          <div class="v4-deal-route"><small><?=h($o['airline'] ?: 'MUSTAFA TRAVELS')?></small><strong><?=h($o['title'])?></strong></div>
+        </div>
+        <div class="v4-deal-body">
+          <div class="v4-deal-airline"><?=h($o['airline'] ?: 'Mustafa Travels Special')?></div>
+          <h3><?=h($o['title'])?></h3>
+          <div class="v4-deal-chips">
+            <?php if(!empty($o['travel_dates'])): ?><span class="v4-deal-chip"><?=h($o['travel_dates'])?></span><?php endif; ?>
+            <?php if(!empty($o['baggage'])): ?><span class="v4-deal-chip"><?=h($o['baggage'])?></span><?php endif; ?>
+          </div>
+          <div class="v4-deal-bottom"><div class="v4-price-wrap"><small>STARTING FROM</small><div class="v4-price"><?=h($o['currency'])?> <?=number_format((float)$o['price'],0)?></div></div><a class="v4-deal-cta" href="https://wa.me/<?=WHATSAPP?>?text=<?=urlencode('I am interested in: '.$o['title'])?>" target="_blank">Check Availability →</a></div>
+        </div>
+      </article>
     <?php endforeach; endif; ?>
     </div>
+    <div class="v4-offer-note">Prices and availability are subject to change until final confirmation.</div>
   </div>
 </section>
 
