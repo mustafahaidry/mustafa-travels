@@ -1,104 +1,106 @@
 <?php require_once __DIR__.'/partials.php'; site_header('Services'); ?>
 
 <style>
-.services-v2{--navy:#06284a;--blue:#0b79d0;--gold:#f7b928;--ink:#08233f;--muted:#61768c;--line:#dce7f1;--soft:#f4f9fd}
-.services-v2 *{box-sizing:border-box}
-.services-v2 .sv-container{width:min(1180px,calc(100% - 40px));margin:auto}
+/* MUSTAFA SERVICES V2.1 SAFE */
+#mt-services{--navy:#06284a;--navy2:#0b4f83;--blue:#0b79d0;--gold:#f7b928;--ink:#08233f;--muted:#61768c;--line:#dce7f1;--soft:#f4f9fd}
+#mt-services *{box-sizing:border-box}
+#mt-services .sv-container{width:min(1180px,calc(100% - 40px));margin:0 auto}
 
-/* HERO */
-.services-v2 .sv-hero{
-  position:relative;min-height:390px;display:flex;align-items:center;overflow:hidden;
+/* Guaranteed visible hero - no external image dependency */
+#mt-services .sv-hero{
+  min-height:360px!important;
+  display:flex!important;
+  align-items:center!important;
+  position:relative!important;
+  overflow:hidden!important;
   background:
-    linear-gradient(90deg,rgba(3,29,55,.96) 0%,rgba(4,44,78,.88) 45%,rgba(4,55,94,.58) 100%),
-    url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=2000&q=86') center/cover no-repeat;
+    radial-gradient(circle at 82% 26%,rgba(247,185,40,.22),transparent 22%),
+    linear-gradient(120deg,#041f3a 0%,#073b68 52%,#0d6aa1 100%)!important;
+  color:#fff!important;
 }
-.services-v2 .sv-hero:after{
-  content:"";position:absolute;inset:0;
-  background:radial-gradient(circle at 80% 28%,rgba(247,185,40,.18),transparent 30%);
+#mt-services .sv-hero:before{
+  content:"";position:absolute;inset:0;opacity:.18;
+  background-image:
+    linear-gradient(30deg,rgba(255,255,255,.22) 12%,transparent 12.5%,transparent 87%,rgba(255,255,255,.22) 87.5%),
+    linear-gradient(150deg,rgba(255,255,255,.16) 12%,transparent 12.5%,transparent 87%,rgba(255,255,255,.16) 87.5%);
+  background-size:70px 120px;
 }
-.services-v2 .sv-hero-inner{position:relative;z-index:2;max-width:760px;padding:72px 0}
-.services-v2 .eyebrow{display:inline-block;color:#ffc43d;font-size:12px;font-weight:900;letter-spacing:2.2px;margin-bottom:15px}
-.services-v2 h1{color:#fff;font-size:clamp(38px,5vw,62px);line-height:1.02;margin:0 0 18px;font-weight:900;letter-spacing:-1.5px}
-.services-v2 .hero-copy{color:#d8e7f4;font-size:18px;line-height:1.7;max-width:650px;margin:0 0 28px}
-.services-v2 .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-.services-v2 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 19px;border-radius:10px;text-decoration:none;font-weight:800;font-size:14px}
-.services-v2 .btn-gold{background:var(--gold);color:#08233f}
-.services-v2 .btn-ghost{border:1px solid rgba(255,255,255,.38);color:#fff;background:rgba(255,255,255,.08);backdrop-filter:blur(5px)}
+#mt-services .sv-hero-inner{position:relative;z-index:2;padding:68px 0!important;max-width:780px}
+#mt-services .sv-kicker{display:inline-block;color:#ffc43d;font-size:12px;font-weight:900;letter-spacing:2.2px;margin-bottom:14px}
+#mt-services .sv-hero h1{color:#fff!important;font:900 clamp(40px,5vw,62px)/1.02 Manrope,Inter,sans-serif!important;margin:0 0 18px!important;letter-spacing:-1.6px!important;max-width:760px}
+#mt-services .sv-hero p{color:#d7e7f4!important;font-size:18px!important;line-height:1.7!important;max-width:680px!important;margin:0 0 26px!important}
+#mt-services .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+#mt-services .sv-btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 19px;border-radius:10px;text-decoration:none;font-weight:850;font-size:14px}
+#mt-services .sv-btn.gold{background:var(--gold);color:#08233f}
+#mt-services .sv-btn.ghost{border:1px solid rgba(255,255,255,.42);color:#fff;background:rgba(255,255,255,.08)}
 
-/* SERVICES */
-.services-v2 .sv-main{background:linear-gradient(180deg,#f7fbff 0,#fff 65%);padding:76px 0 68px}
-.services-v2 .section-head{text-align:center;max-width:760px;margin:0 auto 38px}
-.services-v2 .section-head .eyebrow{color:var(--blue);margin-bottom:10px}
-.services-v2 .section-head h2{font-size:clamp(30px,4vw,44px);line-height:1.1;color:var(--ink);margin:0 0 12px;font-weight:900}
-.services-v2 .section-head p{color:var(--muted);font-size:16px;line-height:1.65;margin:0}
+/* Main section */
+#mt-services .sv-main{background:linear-gradient(180deg,#f7fbff 0%,#fff 68%);padding:72px 0 66px}
+#mt-services .section-head{text-align:center!important;max-width:760px!important;margin:0 auto 38px!important;display:block!important}
+#mt-services .section-head .sv-kicker{color:var(--blue)!important;margin:0 0 10px!important;display:block!important}
+#mt-services .section-head h2{display:block!important;font:900 clamp(31px,4vw,44px)/1.08 Manrope,Inter,sans-serif!important;color:var(--ink)!important;margin:0 0 12px!important;letter-spacing:-.8px}
+#mt-services .section-head p{display:block!important;color:var(--muted)!important;font-size:16px!important;line-height:1.65!important;margin:0 auto!important;max-width:680px!important}
 
-.services-v2 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.services-v2 .service-card{
-  position:relative;min-height:295px;padding:28px;border:1px solid var(--line);border-radius:20px;
-  background:#fff;box-shadow:0 12px 34px rgba(10,48,83,.07);overflow:hidden;transition:.25s ease
+#mt-services .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+#mt-services .service-card{
+  position:relative;min-height:292px;padding:28px;border:1px solid var(--line);
+  border-radius:20px;background:#fff;box-shadow:0 12px 34px rgba(10,48,83,.07);
+  overflow:hidden;transition:.25s ease
 }
-.services-v2 .service-card:hover{transform:translateY(-5px);box-shadow:0 18px 42px rgba(10,48,83,.13);border-color:#c5daeb}
-.services-v2 .service-card:before{
-  content:"";position:absolute;right:-45px;top:-55px;width:150px;height:150px;border-radius:50%;background:#edf7ff
-}
-.services-v2 .service-card.umrah{background:linear-gradient(145deg,#fff 0%,#fffaf0 100%);border-color:#eedda5}
-.services-v2 .service-card.umrah:before{background:#fff0be}
-.services-v2 .icon{
-  position:relative;width:54px;height:54px;border-radius:15px;background:#eaf5ff;color:var(--blue);
-  display:grid;place-items:center;font-size:25px;margin-bottom:25px
-}
-.services-v2 .umrah .icon{background:#fff1c8;color:#9a6a00}
-.services-v2 .service-card h3{position:relative;color:var(--ink);font-size:21px;margin:0 0 10px;font-weight:850}
-.services-v2 .service-card p{position:relative;color:var(--muted);font-size:14.5px;line-height:1.65;margin:0 0 44px}
-.services-v2 .card-link{position:absolute;left:28px;bottom:25px;color:#0876c9;text-decoration:none;font-weight:850;font-size:14px}
+#mt-services .service-card:hover{transform:translateY(-5px);box-shadow:0 18px 42px rgba(10,48,83,.13);border-color:#c5daeb}
+#mt-services .service-card:before{content:"";position:absolute;right:-44px;top:-54px;width:150px;height:150px;border-radius:50%;background:#edf7ff}
+#mt-services .service-card.umrah{background:linear-gradient(145deg,#fff 0%,#fffaf0 100%);border-color:#ead99c}
+#mt-services .service-card.umrah:before{background:#ffeab0}
+#mt-services .icon{position:relative;width:54px;height:54px;border-radius:15px;background:#eaf5ff;color:var(--blue);display:grid;place-items:center;font-size:25px;margin-bottom:24px}
+#mt-services .umrah .icon{background:#fff1c8;color:#9a6a00}
+#mt-services .service-card h3{position:relative;color:var(--ink);font:850 21px Manrope,Inter,sans-serif;margin:0 0 10px}
+#mt-services .service-card p{position:relative;color:var(--muted);font-size:14.5px;line-height:1.65;margin:0 0 46px}
+#mt-services .card-link{position:absolute;left:28px;bottom:25px;color:#0876c9;text-decoration:none;font-weight:850;font-size:14px}
 
-/* TRUST STRIP */
-.services-v2 .trust-wrap{padding:0 0 72px;background:#fff}
-.services-v2 .trust{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  background:linear-gradient(110deg,#073662,#0c5c94);border-radius:20px;padding:27px 20px;
-  box-shadow:0 16px 38px rgba(5,43,77,.14)
-}
-.services-v2 .trust-item{text-align:center;color:#fff;padding:6px 18px;border-right:1px solid rgba(255,255,255,.18)}
-.services-v2 .trust-item:last-child{border-right:0}
-.services-v2 .trust-item strong{display:block;font-size:24px;margin-bottom:4px}
-.services-v2 .trust-item span{font-size:12px;color:#cfe5f7}
+/* Trust */
+#mt-services .trust-wrap{padding:0 0 70px;background:#fff}
+#mt-services .trust{display:grid;grid-template-columns:repeat(4,1fr);background:linear-gradient(110deg,#073662,#0c5c94);border-radius:20px;padding:27px 20px;box-shadow:0 16px 38px rgba(5,43,77,.14)}
+#mt-services .trust-item{text-align:center;color:#fff;padding:6px 18px;border-right:1px solid rgba(255,255,255,.18)}
+#mt-services .trust-item:last-child{border-right:0}
+#mt-services .trust-item strong{display:block;font:900 25px Manrope;color:#fff;margin-bottom:4px}
+#mt-services .trust-item span{font-size:12px;color:#cfe5f7}
 
 /* CTA */
-.services-v2 .cta{background:#062f57;padding:45px 0}
-.services-v2 .cta-inner{display:flex;align-items:center;justify-content:space-between;gap:30px}
-.services-v2 .cta h2{color:#fff;margin:0 0 7px;font-size:28px}
-.services-v2 .cta p{color:#cfe0ef;margin:0}
-.services-v2 .cta .btn{background:var(--gold);color:#08233f;white-space:nowrap}
+#mt-services .cta{background:#062f57;padding:44px 0}
+#mt-services .cta-inner{display:flex;align-items:center;justify-content:space-between;gap:30px}
+#mt-services .cta h2{color:#fff!important;margin:0 0 7px!important;font:850 28px Manrope}
+#mt-services .cta p{color:#cfe0ef!important;margin:0!important}
+#mt-services .cta .sv-btn{background:var(--gold);color:#08233f;white-space:nowrap}
 
 @media(max-width:900px){
-  .services-v2 .cards{grid-template-columns:repeat(2,1fr)}
-  .services-v2 .trust{grid-template-columns:repeat(2,1fr);row-gap:20px}
-  .services-v2 .trust-item:nth-child(2){border-right:0}
+  #mt-services .cards{grid-template-columns:repeat(2,1fr)}
+  #mt-services .trust{grid-template-columns:repeat(2,1fr);row-gap:20px}
+  #mt-services .trust-item:nth-child(2){border-right:0}
 }
 @media(max-width:620px){
-  .services-v2 .sv-container{width:min(100% - 28px,1180px)}
-  .services-v2 .sv-hero{min-height:440px}
-  .services-v2 .sv-hero-inner{padding:58px 0}
-  .services-v2 .cards{grid-template-columns:1fr}
-  .services-v2 .service-card{min-height:265px}
-  .services-v2 .trust{grid-template-columns:1fr}
-  .services-v2 .trust-item{border-right:0;border-bottom:1px solid rgba(255,255,255,.16);padding:12px}
-  .services-v2 .trust-item:last-child{border-bottom:0}
-  .services-v2 .cta-inner{display:block}
-  .services-v2 .cta .btn{margin-top:22px}
+  #mt-services .sv-container{width:min(100% - 28px,1180px)}
+  #mt-services .sv-hero{min-height:430px!important}
+  #mt-services .sv-hero-inner{padding:56px 0!important}
+  #mt-services .sv-hero h1{font-size:42px!important}
+  #mt-services .cards{grid-template-columns:1fr}
+  #mt-services .service-card{min-height:265px}
+  #mt-services .trust{grid-template-columns:1fr}
+  #mt-services .trust-item{border-right:0;border-bottom:1px solid rgba(255,255,255,.16);padding:12px}
+  #mt-services .trust-item:last-child{border-bottom:0}
+  #mt-services .cta-inner{display:block}
+  #mt-services .cta .sv-btn{margin-top:22px}
 }
 </style>
 
-<main class="services-v2">
+<main id="mt-services">
   <section class="sv-hero">
     <div class="sv-container sv-hero-inner">
-      <span class="eyebrow">MUSTAFA TRAVELS • BARCELONA</span>
-      <h1>Travel services built around your journey.</h1>
-      <p class="hero-copy">Flights, hotels, Umrah &amp; Hajj arrangements, visa assistance and transport — with personal support before, during and after your trip.</p>
+      <span class="sv-kicker">MUSTAFA TRAVELS • BARCELONA</span>
+      <h1>Everything you need for a smoother journey.</h1>
+      <p>Flights, hotels, Umrah &amp; Hajj arrangements, visa assistance and transport — with personal support before, during and after your trip.</p>
       <div class="hero-actions">
-        <a class="btn btn-gold" href="contact.php">Request a Quote →</a>
-        <a class="btn btn-ghost" href="offers.php">View Latest Offers</a>
+        <a class="sv-btn gold" href="contact.php">Request a Quote →</a>
+        <a class="sv-btn ghost" href="offers.php">View Latest Offers</a>
       </div>
     </div>
   </section>
@@ -106,7 +108,7 @@
   <section class="sv-main">
     <div class="sv-container">
       <div class="section-head">
-        <span class="eyebrow">WHAT WE DO</span>
+        <span class="sv-kicker">WHAT WE DO</span>
         <h2>Complete travel support, in one place.</h2>
         <p>From your first search to your return journey, our services are designed to make travel planning clearer and easier.</p>
       </div>
@@ -174,7 +176,7 @@
         <h2>Ready to plan your next journey?</h2>
         <p>Tell us where you want to travel and we’ll help you with the right options.</p>
       </div>
-      <a class="btn" href="contact.php">Get Personal Assistance →</a>
+      <a class="sv-btn" href="contact.php">Get Personal Assistance →</a>
     </div>
   </section>
 </main>
