@@ -15,7 +15,7 @@ function mt_duffel_key(): string
     return getenv('DUFFEL_API_KEY') ?: '';
 }
 
-function mt_duffel_request(string $endpoint, string $method = 'GET', ?array $payload = null): array
+function mt_duffel_request(string $endpoint, string $method = 'GET', ?array $payload = null, array $extraHeaders = []): array
 {
     $key = mt_duffel_key();
 
@@ -30,13 +30,13 @@ function mt_duffel_request(string $endpoint, string $method = 'GET', ?array $pay
 
     $ch = curl_init('https://api.duffel.com' . $endpoint);
 
-    $headers = [
+    $headers = array_merge([
         'Authorization: Bearer ' . $key,
         'Accept: application/json',
         'Accept-Encoding: gzip',
         'Content-Type: application/json',
         'Duffel-Version: v2'
-    ];
+    ], $extraHeaders);
 
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
