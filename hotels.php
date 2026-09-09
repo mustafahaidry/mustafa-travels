@@ -572,6 +572,32 @@ button,input,select{font:inherit}
   .multi-footer-grid{grid-template-columns:1fr}
 }
 </style>
+
+<style>
+/* Clean hotel search layout: distance filters belong on results page */
+.hotel-search-form .search-grid,
+.hotel-search-form .single-search-grid,
+.hotel-search-form .hotel-search-grid {
+    grid-template-columns: minmax(240px,1.6fr) minmax(170px,1fr) minmax(170px,1fr) minmax(190px,1fr);
+}
+.hotel-search-form .search-actions,
+.hotel-search-form .guest-search-row {
+    display:grid;
+    grid-template-columns:minmax(260px,1fr) auto;
+    gap:12px;
+    align-items:end;
+}
+@media (max-width: 900px){
+    .hotel-search-form .search-grid,
+    .hotel-search-form .single-search-grid,
+    .hotel-search-form .hotel-search-grid,
+    .hotel-search-form .search-actions,
+    .hotel-search-form .guest-search-row{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+
 </head>
 <body>
 
@@ -684,17 +710,7 @@ button,input,select{font:inherit}
 
           <div class="search-secondary">
             <div class="field">
-              <label for="distance_km" id="singleDistanceLabel">DISTANCE FROM SELECTED DESTINATION</label>
-              <select class="control" id="distance_km" name="distance_km">
-                <option value="">Any distance</option>
-                <option value="0.3">Within 300 m</option>
-                <option value="0.5">Within 500 m</option>
-                <option value="0.75">Within 750 m</option>
-                <option value="1">Within 1 km</option>
-                <option value="2">Within 2 km</option>
-                <option value="5">Within 5 km</option>
-              </select>
-              <div class="distance-note" id="singleDistanceNote">Optional filter from your selected destination.</div>
+                                  
             </div>
 
             <div class="field guest-picker" id="singleGuestPicker">
@@ -941,9 +957,6 @@ const cities = [
 
 function distanceLabelFor(name){
   const n=(name||'').toLowerCase();
-  if(n.includes('makkah') || n.includes('mecca')) return 'Distance from Masjid al-Haram';
-  if(n.includes('madinah') || n.includes('medina')) return 'Distance from Masjid an-Nabawi';
-  return 'Distance from selected destination';
 }
 
 function updateSingleDistanceLabel(){
@@ -952,8 +965,6 @@ function updateSingleDistanceLabel(){
   const note=document.getElementById('singleDistanceNote');
   if(el) el.textContent=label.toUpperCase();
   if(note){
-    if(label.includes('Masjid al-Haram')) note.textContent='Filter hotels by distance from Masjid al-Haram.';
-    else if(label.includes('Masjid an-Nabawi')) note.textContent='Filter hotels by distance from Masjid an-Nabawi.';
     else note.textContent='Optional filter from your selected destination.';
   }
 }
@@ -1097,18 +1108,7 @@ function addStayRow(city='',code='',country='SA'){
       <label>CHECK-OUT</label>
       <input class="control" type="date" name="stays[${stayIndex}][checkout]" required>
     </div>
-    <div class="field stay-distance-field">
-      <label class="stay-distance-label">${distanceLabelFor(city).toUpperCase()}</label>
-      <select class="control" name="stays[${stayIndex}][distance_km]">
-        <option value="">Any distance</option>
-        <option value="0.3">Within 300 m</option>
-        <option value="0.5">Within 500 m</option>
-        <option value="0.75">Within 750 m</option>
-        <option value="1">Within 1 km</option>
-        <option value="2">Within 2 km</option>
-        <option value="5">Within 5 km</option>
-      </select>
-    </div>
+    
     <button type="button" class="remove-stay">Remove</button>
   `;
   const cityInput=row.querySelector(`input[name="stays[${stayIndex}][destination]"]`);
