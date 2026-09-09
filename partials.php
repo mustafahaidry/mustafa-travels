@@ -116,7 +116,7 @@ gtag('config','G-H7TQLKHP25');
 
     <div class="mt-header-tools">
       <a class="mt-phone" href="tel:+34632234216"><span class="mt-phone-icon">☎</span><?= PHONE1 ?></a>
-      <a class="mt-booking" href="contact.php?service=Booking"><span class="mt-book-icon">♟</span>My Booking</a>
+      <a class="mt-booking" href="my-booking.php"><span class="mt-book-icon">♟</span>My Booking</a>
     </div>
   </div>
 </header>

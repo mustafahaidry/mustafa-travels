@@ -190,6 +190,7 @@ function selcur($row,$cur){ return (($row['currency']??'EUR')===$cur)?'selected'
 <a class="<?=$tab==='hotels'?'active':''?>" href="?tab=hotels">Hotel Offers</a>
 <a class="<?=$tab==='certs'?'active':''?>" href="?tab=certs">Certificates</a>
 <a class="<?=$tab==='inq'?'active':''?>" href="?tab=inq">Inquiries</a>
+<a href="admin-bookings.php">Flight Bookings</a>
 <a class="<?=$tab==='settings'?'active':''?>" href="?tab=settings">Website Settings</a>
 <a href="index.php" target="_blank">View Website</a><a href="?logout=1">Logout</a></aside><main>
 
