@@ -144,6 +144,7 @@ foreach (($offer['available_services'] ?? []) as $service) {
 }
 $includedBags = rv_included_baggage($offer);
 $selectedServices = $checkout['selected_services'] ?? [];
+$hasSelectedServices = !empty(array_filter($selectedServices, fn($q)=>(int)$q > 0));
 
 $extraTotal = 0.0;
 foreach ($availableBags as $service) {
@@ -166,8 +167,8 @@ site_header('Review Booking');
 .rv-summary{background:#fff;border:1px solid #dce6ef;border-radius:16px;padding:18px;align-self:start;position:sticky;top:90px}.rv-summary h3{margin:0 0 12px}.rv-slice{padding:10px 0;border-top:1px solid #edf2f6}.rv-slice:first-of-type{border-top:0}.rv-route{display:flex;justify-content:space-between;gap:10px}.rv-route small{display:block;color:#8194a6;font-size:9px}
 .rv-fare-line{display:flex;justify-content:space-between;gap:12px;color:#667d90;font-size:11px;padding:5px 0}.rv-price{display:flex;justify-content:space-between;align-items:end;border-top:1px solid #edf2f6;padding-top:14px;margin-top:8px}.rv-price strong{font:900 24px Manrope,Inter,sans-serif;color:#082f5f}
 .rv-hold{background:#eef0ff;color:#4052b5;padding:10px;border-radius:9px;font-size:10px;margin-top:12px}.rv-actions{display:grid;gap:9px;margin-top:14px}.rv-btn{display:block;text-align:center;text-decoration:none;border-radius:10px;padding:12px;font-size:11px;font-weight:900}.rv-primary{background:#082f5f;color:#fff!important}.rv-secondary{border:1px solid #d5e0e9;color:#536b80!important}.rv-pdf{border:1px solid #c8d8e5;color:#082f5f!important;background:#f8fbfd}
-.rv-payment-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.rv-pay-option{border:1px solid #dce6ef;border-radius:12px;padding:14px;background:#fbfdff}.rv-pay-option.active{border-color:#9ec1e8;background:#f2f8ff}.rv-pay-option strong{display:block;color:#10253d;margin-bottom:5px}.rv-pay-option small{display:block;color:#73899d;line-height:1.45}.rv-pay-status{display:inline-block;margin-top:9px;padding:5px 8px;border-radius:999px;background:#eaf8f2;color:#14724f;font-size:9px;font-weight:900}.rv-pay-status.wait{background:#fff4df;color:#8b6418}.rv-payment-note{margin-top:12px;background:#fff8e8;border:1px solid #f0dfb0;color:#72571a;border-radius:10px;padding:10px 12px;font-size:10px;line-height:1.5}.rv-error{background:#fff0f2;border:1px solid #ffd0d7;color:#b52d43;padding:16px;border-radius:11px}
-@media(max-width:800px){.rv-grid{grid-template-columns:1fr}.rv-summary{position:static}.rv-head{display:block}.rv-preview{margin-top:12px}.rv-extra{grid-template-columns:1fr}.rv-extra-price{white-space:normal}}
+.rv-payment-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.rv-pay-option{border:1px solid #dce6ef;border-radius:12px;padding:14px;background:#fbfdff}.rv-pay-option.active{border-color:#9ec1e8;background:#f2f8ff}.rv-pay-option strong{display:block;color:#10253d;margin-bottom:5px}.rv-pay-option small{display:block;color:#73899d;line-height:1.45}.rv-pay-status{display:inline-block;margin-top:9px;padding:5px 8px;border-radius:999px;background:#eaf8f2;color:#14724f;font-size:9px;font-weight:900}.rv-pay-status.wait{background:#fff4df;color:#8b6418}.rv-payment-note{margin-top:12px;background:#fff8e8;border:1px solid #f0dfb0;color:#72571a;border-radius:10px;padding:10px 12px;font-size:10px;line-height:1.5}.rv-choice-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.rv-hold-btn,.rv-pay-btn{width:100%;border:0;border-radius:10px;padding:13px 14px;font-weight:900;cursor:pointer}.rv-hold-btn{background:#eef6ff;color:#083a72;border:1px solid #aac9e9}.rv-hold-btn:hover{background:#e1efff}.rv-hold-btn:disabled{opacity:.55;cursor:not-allowed}.rv-pay-btn{background:#0f6bcb;color:#fff}.rv-real-hold-note{display:block;color:#8a5c16;font-size:9px;line-height:1.4;margin-top:7px}.rv-error{background:#fff0f2;border:1px solid #ffd0d7;color:#b52d43;padding:16px;border-radius:11px}
+@media(max-width:800px){.rv-grid{grid-template-columns:1fr}.rv-summary{position:static}.rv-head{display:block}.rv-preview{margin-top:12px}.rv-extra{grid-template-columns:1fr}.rv-extra-price{white-space:normal}.rv-payment-grid,.rv-choice-actions{grid-template-columns:1fr}}
 </style>
 
 <section class="rv-page">
@@ -259,30 +260,40 @@ site_header('Review Booking');
             </form>
 
             <div class="rv-card" id="payment-section">
-                <h2>Payment & Hold</h2>
+                <h2>Choose how you want to book</h2>
                 <div class="rv-payment-grid">
                     <div class="rv-pay-option <?=$holdEligible?'active':''?>">
                         <strong>Hold Booking</strong>
-                        <small>Available only when the airline allows delayed payment for this refreshed fare.</small>
+                        <small>Reserve the airline booking now and pay later before the airline deadline.</small>
                         <?php if($holdEligible): ?>
                             <span class="rv-pay-status">AVAILABLE</span>
-                            <?php if($holdDeadline): ?><small style="margin-top:7px">Pay-by: <?=h((string)$holdDeadline)?></small><?php endif; ?>
+                            <?php if($holdDeadline): ?><small style="margin-top:7px">Pay before: <?=h((string)$holdDeadline)?></small><?php endif; ?>
+                            <?php if($hasSelectedServices): ?><small class="rv-real-hold-note">Paid extras cannot be included in a hold order. Remove extra baggage first.</small><?php endif; ?>
                         <?php else: ?>
                             <span class="rv-pay-status wait">NOT AVAILABLE ON THIS FARE</span>
                         <?php endif; ?>
                     </div>
                     <div class="rv-pay-option <?=!$holdEligible?'active':''?>">
                         <strong>Pay Now</strong>
-                        <small>Use secure payment before creating the final Duffel airline order when instant payment is required.</small>
-                        <span class="rv-pay-status <?=!$holdEligible?'':'wait'?>"><?=!$holdEligible?'REQUIRED / READY FOR NEXT STEP':'OPTIONAL AFTER SELECTION'?></span>
+                        <small>Pay securely by card. After payment is confirmed, the airline order is created and the PNR is emailed to you.</small>
+                        <span class="rv-pay-status <?=!$holdEligible?'':'wait'?>"><?=!$holdEligible?'REQUIRED':'AVAILABLE'?></span>
                     </div>
                 </div>
+
+                <div class="rv-choice-actions">
+                    <form method="post" action="hold-booking.php" id="hold-booking-form" style="margin:0">
+                        <input type="hidden" name="offer_id" value="<?=h($offerId)?>">
+                        <button type="submit" class="rv-hold-btn" id="hold-booking-btn" <?=(!$holdEligible || $hasSelectedServices)?'disabled':''?>>Hold this flight</button>
+                        <?php if($holdEligible && !$hasSelectedServices): ?><small class="rv-real-hold-note">No card payment is taken now. Clicking this creates a real airline hold.</small><?php endif; ?>
+                    </form>
+                    <button type="button" class="rv-pay-btn" id="start-card-payment">Pay now securely</button>
+                </div>
+
                 <div class="rv-payment-note">
-                    Card details are handled securely by Stripe. After Stripe confirms payment, Mustafa Travels first sends a <strong>Payment Received – Booking Processing</strong> PDF, then creates the airline order through Duffel. A second confirmation email with the PNR is sent only after the airline booking succeeds.
+                    <strong>Hold:</strong> the airline reserves the booking until the pay-by deadline, subject to its rules. <strong>Pay Now:</strong> Stripe handles the card securely; after payment, Mustafa Travels creates the Duffel airline order and sends the PNR confirmation.
                 </div>
 
                 <div id="stripe-start" style="margin-top:14px">
-                    <button type="button" class="rv-save" id="start-card-payment" style="width:100%;margin-top:0">Continue to secure card payment</button>
                     <div id="stripe-start-error" class="rv-error" style="display:none;margin-top:10px"></div>
                 </div>
 
@@ -371,6 +382,24 @@ site_header('Review Booking');
         recalc();
     }));
 
+    const holdForm = document.getElementById('hold-booking-form');
+    const holdBtn = document.getElementById('hold-booking-btn');
+    if(holdForm && holdBtn){
+        holdForm.addEventListener('submit', function(e){
+            if(extrasDirty){
+                e.preventDefault();
+                alert('You changed baggage. Please save the baggage selection first. Hold orders cannot include paid extras.');
+                return;
+            }
+            if(!window.confirm('Create a real airline hold now? No card payment will be taken, but the airline will reserve the booking until its payment deadline.')){
+                e.preventDefault();
+                return;
+            }
+            holdBtn.disabled = true;
+            holdBtn.textContent = 'Creating hold…';
+        });
+    }
+
     const startBtn = document.getElementById('start-card-payment');
     const startError = document.getElementById('stripe-start-error');
     const payForm = document.getElementById('stripe-payment-form');
@@ -396,7 +425,7 @@ site_header('Review Booking');
                 return;
             }
             startBtn.disabled = true;
-            startBtn.textContent = 'Refreshing fare…';
+            startBtn.textContent = 'Preparing secure payment…';
             try{
                 const r = await fetch('api/create-payment-intent.php', {
                     method:'POST',
@@ -416,7 +445,7 @@ site_header('Review Booking');
             }catch(e){
                 showError(startError, e.message || 'Unable to start secure payment.');
                 startBtn.disabled = false;
-                startBtn.textContent = 'Continue to secure card payment';
+                startBtn.textContent = 'Pay now securely';
             }
         });
     }
