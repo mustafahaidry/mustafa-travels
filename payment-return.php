@@ -22,17 +22,43 @@ if ($piId === '' || $ref === '') {
             $stripe = new StripeClient(getenv('STRIPE_SECRET_KEY') ?: '');
             $pi = $stripe->paymentIntents->retrieve($piId, []);
             $expectedMinor = (int)round((float)$booking['amount'] * 100);
-            if ($pi->status !== 'succeeded') {
-                $error = 'Payment has not completed yet. Current status: '.$pi->status;
-            } elseif ((int)$pi->amount_received !== $expectedMinor || strtolower((string)$pi->currency) !== strtolower((string)$booking['currency'])) {
-                $error = 'Payment amount could not be verified. Please contact Mustafa Travels.';
-                mt_booking_update($ref, ['status'=>'payment_mismatch','error_message'=>$error]);
-            } else {
-                $result = mt_process_paid_booking($booking);
-                $booking = mt_booking_find_by_ref($ref) ?: $booking;
-                if (!$result['ok'] && ($booking['status'] ?? '') !== 'confirmed') {
-                    $error = (string)($result['error'] ?? 'Payment received, but airline booking requires manual review.');
+            $currencyMatches = strtolower((string)$pi->currency) === strtolower((string)$booking['currency']);
+
+            if ((string)$pi->status === 'requires_capture') {
+                $amountMatches = (int)($pi->amount_capturable ?? $pi->amount ?? 0) === $expectedMinor;
+                if (!$amountMatches || !$currencyMatches) {
+                    $error = 'Card authorisation amount could not be verified. Please contact Mustafa Travels.';
+                    mt_booking_update($ref, ['status'=>'payment_mismatch','error_message'=>$error]);
+                } else {
+                    // Safe live flow: create Duffel order first, capture the card only after airline confirmation.
+                    $result = mt_process_authorized_booking($booking, $piId);
+                    $booking = mt_booking_find_by_ref($ref) ?: $booking;
+                    if (!$result['ok'] && ($booking['status'] ?? '') !== 'confirmed') {
+                        $error = (string)($result['error'] ?? 'Card authorised, but airline booking requires manual review.');
+                    }
                 }
+            } elseif ((string)$pi->status === 'succeeded') {
+                if ((int)$pi->amount_received !== $expectedMinor || !$currencyMatches) {
+                    $error = 'Payment amount could not be verified. Please contact Mustafa Travels.';
+                    mt_booking_update($ref, ['status'=>'payment_mismatch','error_message'=>$error]);
+                } else {
+                    $fresh = mt_booking_find_by_ref($ref) ?: $booking;
+                    if (!empty($fresh['duffel_order_id'])) {
+                        $result = mt_finalize_captured_booking($fresh);
+                    } else {
+                        // Backward compatibility for older auto-capture PaymentIntents.
+                        $result = mt_process_paid_booking($fresh);
+                    }
+                    $booking = mt_booking_find_by_ref($ref) ?: $booking;
+                    if (!$result['ok'] && ($booking['status'] ?? '') !== 'confirmed') {
+                        $error = (string)($result['error'] ?? 'Payment received, but airline booking requires manual review.');
+                    }
+                }
+            } elseif ((string)$pi->status === 'canceled') {
+                $booking = mt_booking_find_by_ref($ref) ?: $booking;
+                $error = 'The airline booking could not be completed and the card authorisation was released. No completed card charge should remain.';
+            } else {
+                $error = 'Payment authorisation is still processing. Current status: '.(string)$pi->status;
             }
         } catch (Throwable $e) {
             error_log('PAYMENT RETURN ERROR: '.$e->getMessage());
@@ -53,9 +79,13 @@ site_header('Booking Status');
 <div class="pr-ref"><b>Mustafa Travels reference:</b> <?=h((string)$booking['booking_ref'])?></div>
 <div>Airline PNR</div><div class="pr-pnr"><?=h((string)($booking['pnr'] ?? ''))?></div>
 <p>We have sent the final confirmation email with PDF attachment to <b><?=h((string)$booking['customer_email'])?></b>.</p>
-<?php elseif($booking && in_array(($booking['status'] ?? ''), ['payment_received','booking_processing','booking_failed','payment_mismatch'], true)): ?>
-<h1>Payment received</h1><div class="pr-ref"><b>Reference:</b> <?=h((string)$booking['booking_ref'])?></div>
-<div class="pr-warn">Your payment has been recorded, but the airline booking has not been confirmed automatically yet. Mustafa Travels will review it before any final confirmation is sent.</div>
+<?php elseif($booking && ($booking['status'] ?? '') === 'booking_failed_authorization_released'): ?>
+<h1>Booking not completed</h1><div class="pr-ref"><b>Reference:</b> <?=h((string)$booking['booking_ref'])?></div>
+<div class="pr-warn">The airline offer could not be booked. Your card authorisation was released instead of being captured, so a completed card charge should not remain.</div>
+<?php if($error): ?><p><?=h($error)?></p><?php endif; ?>
+<?php elseif($booking && in_array(($booking['status'] ?? ''), ['payment_authorized','airline_booked_capture_pending','capture_failed','payment_received','booking_processing','booking_failed','payment_mismatch'], true)): ?>
+<h1>Booking processing</h1><div class="pr-ref"><b>Reference:</b> <?=h((string)$booking['booking_ref'])?></div>
+<div class="pr-warn">Your card/booking is being verified. Do not submit another payment. Mustafa Travels will only send the final confirmation after the airline order and payment capture are both complete.</div>
 <?php if($error): ?><p><?=h($error)?></p><?php endif; ?>
 <?php else: ?>
 <h1>Payment status</h1><div class="pr-warn"><?=h($error ?: 'Unable to verify this payment at the moment.')?></div>

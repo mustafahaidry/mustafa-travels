@@ -349,7 +349,6 @@ site_header('Review Booking');
 
             <div class="rv-actions">
                 <a class="rv-btn rv-pdf" href="flight-booking-preview.php?offer_id=<?=urlencode($offerId)?>">PDF Booking Preview</a>
-                <a class="rv-btn rv-primary" href="#payment-section">Continue to payment / hold</a>
                 <a class="rv-btn rv-secondary" href="flight-passengers.php?offer_id=<?=urlencode($offerId)?>">Edit passengers</a>
             </div>
         </aside>
