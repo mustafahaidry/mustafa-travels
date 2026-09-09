@@ -29,6 +29,7 @@ function mt_duffel_request(string $endpoint, string $method = 'GET', ?array $pay
     }
 
     $ch = curl_init('https://api.duffel.com' . $endpoint);
+    $responseHeaders = [];
 
     $headers = array_merge([
         'Authorization: Bearer ' . $key,
@@ -44,7 +45,15 @@ function mt_duffel_request(string $endpoint, string $method = 'GET', ?array $pay
         CURLOPT_HTTPHEADER => $headers,
         CURLOPT_ENCODING => '',
         CURLOPT_CONNECTTIMEOUT => 15,
-        CURLOPT_TIMEOUT => 55
+        CURLOPT_TIMEOUT => 55,
+        CURLOPT_HEADERFUNCTION => static function($curl, string $header) use (&$responseHeaders): int {
+            $len = strlen($header);
+            $parts = explode(':', $header, 2);
+            if (count($parts) === 2) {
+                $responseHeaders[strtolower(trim($parts[0]))] = trim($parts[1]);
+            }
+            return $len;
+        }
     ]);
 
     if ($payload !== null) {
@@ -61,7 +70,9 @@ function mt_duffel_request(string $endpoint, string $method = 'GET', ?array $pay
             'ok' => false,
             'status' => $status,
             'data' => [],
-            'error' => $curlError ?: 'Unable to connect to Duffel.'
+            'error' => $curlError ?: 'Unable to connect to Duffel.',
+            'request_id' => $responseHeaders['request-id'] ?? $responseHeaders['duffel-request-id'] ?? null,
+            'raw' => ''
         ];
     }
 
@@ -79,7 +90,9 @@ function mt_duffel_request(string $endpoint, string $method = 'GET', ?array $pay
             'ok' => false,
             'status' => $status,
             'data' => $json,
-            'error' => $message
+            'error' => $message,
+            'request_id' => $json['request_id'] ?? $responseHeaders['request-id'] ?? $responseHeaders['duffel-request-id'] ?? null,
+            'raw' => (string)$raw
         ];
     }
 
@@ -87,7 +100,9 @@ function mt_duffel_request(string $endpoint, string $method = 'GET', ?array $pay
         'ok' => true,
         'status' => $status,
         'data' => $json,
-        'error' => ''
+        'error' => '',
+        'request_id' => $json['request_id'] ?? $responseHeaders['request-id'] ?? $responseHeaders['duffel-request-id'] ?? null,
+        'raw' => (string)$raw
     ];
 }
 

@@ -34,6 +34,11 @@ if ($secret === '' || $publishable === '') {
 }
 
 $checkout = $_SESSION['flight_checkout'][$offerId];
+if ((string)($checkout['offer_id'] ?? '') !== $offerId) {
+    http_response_code(409);
+    echo json_encode(['ok'=>false,'error'=>'Flight offer changed in this session. Please return to search and select the flight again.']);
+    exit;
+}
 $reprice = mt_reprice_checkout($offerId, $checkout);
 if (!$reprice['ok']) {
     http_response_code(409);
@@ -55,6 +60,9 @@ $duffelCost = (float)$reprice['amount'];
 $amount = mt_flight_sell_price($duffelCost);
 $markupAmount = mt_flight_markup_amount($duffelCost);
 $checkout['pricing'] = [
+    'offer_id'=>$offerId,
+    'validated_at'=>gmdate('c'),
+    'offer_expires_at'=>(string)($reprice['offer']['expires_at'] ?? ''),
     'duffel_cost'=>number_format($duffelCost, 2, '.', ''),
     'markup_percent'=>mt_flight_markup_percent(),
     'markup_amount'=>number_format($markupAmount, 2, '.', ''),
@@ -87,12 +95,14 @@ try {
     $pi = $stripe->paymentIntents->create([
         'amount'=>$minor,
         'currency'=>$currency,
-        'automatic_payment_methods'=>['enabled'=>true],
+        'capture_method'=>'manual',
+        'payment_method_types'=>['card'],
         'description'=>'Mustafa Travels flight booking '.$ref,
         'metadata'=>[
             'booking_ref'=>$ref,
             'offer_id'=>$offerId,
-            'site'=>'mustafatravels.org'
+            'site'=>'mustafatravels.org',
+            'capture_flow'=>'authorize_then_book_then_capture'
         ]
     ]);
 
