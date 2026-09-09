@@ -254,7 +254,7 @@ button,input,select{font:inherit}
 }
 .search-grid{
   display:grid;
-  grid-template-columns:1.55fr 1.15fr 1.15fr 1fr 1fr auto;
+  grid-template-columns:1.55fr 1fr 1fr 1.05fr 1.15fr 1.25fr auto;
   gap:12px;
   align-items:end;
   padding-top:14px;
@@ -293,6 +293,29 @@ button,input,select{font:inherit}
   cursor:pointer;
   box-shadow:0 10px 22px rgba(11,99,246,.24);
 }
+
+.guest-picker{position:relative}
+.guest-trigger{
+  width:100%;height:52px;border:1px solid #cfd9e8;border-radius:9px;background:#fff;color:#173259;
+  padding:0 13px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;text-align:left
+}
+.guest-trigger:focus{border-color:#83adff;box-shadow:0 0 0 4px rgba(11,99,246,.08);outline:none}
+.guest-panel{
+  position:absolute;top:60px;right:0;width:320px;max-width:calc(100vw - 28px);background:#fff;border:1px solid #dce4ef;
+  border-radius:12px;box-shadow:0 18px 42px rgba(17,42,78,.18);z-index:120;padding:14px;display:none
+}
+.guest-panel.show{display:block}
+.guest-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid #edf1f5}
+.guest-row:last-of-type{border-bottom:0}
+.guest-label strong{display:block;font-size:13px;color:#173259}.guest-label small{display:block;color:#7a8798;font-size:11px;margin-top:2px}
+.stepper{display:flex;align-items:center;gap:10px}
+.step-btn{width:32px;height:32px;border:1px solid #cfd9e8;border-radius:8px;background:#fff;color:#0b4fae;font-size:18px;font-weight:900;cursor:pointer}
+.step-value{min-width:24px;text-align:center;font-weight:900;color:#173259}
+.child-ages{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.child-age-wrap label{display:block;font-size:9px;font-weight:900;color:#68758a;margin:0 0 4px 2px;letter-spacing:.04em}
+.child-age-wrap select{height:40px}
+.guest-done{margin-top:12px;width:100%;height:40px;border:0;border-radius:8px;background:#0b63f6;color:#fff;font-weight:900;cursor:pointer}
+.distance-note{font-size:10px;color:#7a8798;margin-top:5px;line-height:1.3}
 .popular{
   display:flex;
   gap:8px;
@@ -341,7 +364,7 @@ button,input,select{font:inherit}
 .multicity.show{display:block}
 .stay-row{
   display:grid;
-  grid-template-columns:1.4fr 1fr 1fr auto;
+  grid-template-columns:1.35fr .9fr .9fr 1fr auto;
   gap:10px;
   align-items:end;
   margin-bottom:10px;
@@ -517,6 +540,7 @@ button,input,select{font:inherit}
   .destinations,.deals{grid-template-columns:repeat(2,1fr)}
   .stay-row{grid-template-columns:1fr 1fr}
   .stay-row .remove-stay{width:100%}
+  .guest-panel{left:0;right:auto}
 }
 @media(max-width:620px){
   .wrap{padding:0 14px}
@@ -642,15 +666,33 @@ button,input,select{font:inherit}
             </div>
 
             <div class="field">
-              <label for="adults">GUESTS & ROOMS</label>
-              <select class="control" id="adults" name="adults">
-                <option value="1">1 Adult · 1 Room</option>
-                <option value="2" selected>2 Adults · 1 Room</option>
-                <option value="3">3 Adults · 1 Room</option>
-                <option value="4">4 Adults · 1 Room</option>
+              <label for="distance_km" id="singleDistanceLabel">DISTANCE FROM SELECTED DESTINATION</label>
+              <select class="control" id="distance_km" name="distance_km">
+                <option value="">Any distance</option>
+                <option value="0.3">Within 300 m</option>
+                <option value="0.5">Within 500 m</option>
+                <option value="0.75">Within 750 m</option>
+                <option value="1">Within 1 km</option>
+                <option value="2">Within 2 km</option>
+                <option value="5">Within 5 km</option>
               </select>
-              <input type="hidden" name="rooms" value="1">
+              <div class="distance-note" id="singleDistanceNote">Optional filter from your selected destination.</div>
+            </div>
+
+            <div class="field guest-picker" id="singleGuestPicker">
+              <label>GUESTS & ROOMS</label>
+              <button type="button" class="guest-trigger" aria-expanded="false"><span class="guest-summary">2 Adults · 0 Children · 1 Room</span><span>⌄</span></button>
+              <div class="guest-panel">
+                <div class="guest-row"><div class="guest-label"><strong>Adults</strong><small>Age 18+</small></div><div class="stepper"><button type="button" class="step-btn" data-action="minus" data-target="adults">−</button><span class="step-value" data-value="adults">2</span><button type="button" class="step-btn" data-action="plus" data-target="adults">+</button></div></div>
+                <div class="guest-row"><div class="guest-label"><strong>Children</strong><small>Age required for hotel pricing</small></div><div class="stepper"><button type="button" class="step-btn" data-action="minus" data-target="children">−</button><span class="step-value" data-value="children">0</span><button type="button" class="step-btn" data-action="plus" data-target="children">+</button></div></div>
+                <div class="guest-row"><div class="guest-label"><strong>Rooms</strong><small>Number of rooms</small></div><div class="stepper"><button type="button" class="step-btn" data-action="minus" data-target="rooms">−</button><span class="step-value" data-value="rooms">1</span><button type="button" class="step-btn" data-action="plus" data-target="rooms">+</button></div></div>
+                <div class="child-ages"></div>
+                <button type="button" class="guest-done">Done</button>
+              </div>
+              <input type="hidden" name="adults" value="2">
               <input type="hidden" name="children" value="0">
+              <input type="hidden" name="rooms" value="1">
+              <div class="child-age-inputs"></div>
             </div>
 
             <button class="search-btn" type="submit">Search Hotels</button>
@@ -673,7 +715,7 @@ button,input,select{font:inherit}
           <div id="stayRows"></div>
           <button type="button" class="add-stay" id="addStay">+ Add another stay</button>
 
-          <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;margin-top:14px">
+          <div style="display:grid;grid-template-columns:1fr 1.25fr auto;gap:12px;align-items:end;margin-top:14px">
             <div class="field">
               <label>GUEST NATIONALITY</label>
               <select class="control" name="multi_nationality">
@@ -684,13 +726,20 @@ button,input,select{font:inherit}
                 <option value="SA">Saudi Arabia</option>
               </select>
             </div>
-            <div class="field">
+            <div class="field guest-picker" id="multiGuestPicker">
               <label>GUESTS & ROOMS</label>
-              <select class="control" name="multi_adults">
-                <option value="2" selected>2 Adults · 1 Room</option>
-                <option value="3">3 Adults · 1 Room</option>
-                <option value="4">4 Adults · 1 Room</option>
-              </select>
+              <button type="button" class="guest-trigger" aria-expanded="false"><span class="guest-summary">2 Adults · 0 Children · 1 Room</span><span>⌄</span></button>
+              <div class="guest-panel">
+                <div class="guest-row"><div class="guest-label"><strong>Adults</strong><small>Age 18+</small></div><div class="stepper"><button type="button" class="step-btn" data-action="minus" data-target="adults">−</button><span class="step-value" data-value="adults">2</span><button type="button" class="step-btn" data-action="plus" data-target="adults">+</button></div></div>
+                <div class="guest-row"><div class="guest-label"><strong>Children</strong><small>Age required for hotel pricing</small></div><div class="stepper"><button type="button" class="step-btn" data-action="minus" data-target="children">−</button><span class="step-value" data-value="children">0</span><button type="button" class="step-btn" data-action="plus" data-target="children">+</button></div></div>
+                <div class="guest-row"><div class="guest-label"><strong>Rooms</strong><small>Number of rooms</small></div><div class="stepper"><button type="button" class="step-btn" data-action="minus" data-target="rooms">−</button><span class="step-value" data-value="rooms">1</span><button type="button" class="step-btn" data-action="plus" data-target="rooms">+</button></div></div>
+                <div class="child-ages"></div>
+                <button type="button" class="guest-done">Done</button>
+              </div>
+              <input type="hidden" name="multi_adults" value="2">
+              <input type="hidden" name="multi_children" value="0">
+              <input type="hidden" name="multi_rooms" value="1">
+              <div class="child-age-inputs"></div>
             </div>
             <button class="search-btn" type="submit">Search Trip</button>
           </div>
@@ -872,14 +921,35 @@ const cities = [
   {name:'Agra',code:'',country:'IN',sub:'India'}
 ];
 
+function distanceLabelFor(name){
+  const n=(name||'').toLowerCase();
+  if(n.includes('makkah') || n.includes('mecca')) return 'Distance from Masjid al-Haram';
+  if(n.includes('madinah') || n.includes('medina')) return 'Distance from Masjid an-Nabawi';
+  return 'Distance from selected destination';
+}
+
+function updateSingleDistanceLabel(){
+  const label=distanceLabelFor(destination.value);
+  const el=document.getElementById('singleDistanceLabel');
+  const note=document.getElementById('singleDistanceNote');
+  if(el) el.textContent=label.toUpperCase();
+  if(note){
+    if(label.includes('Masjid al-Haram')) note.textContent='Filter hotels by distance from Masjid al-Haram.';
+    else if(label.includes('Masjid an-Nabawi')) note.textContent='Filter hotels by distance from Masjid an-Nabawi.';
+    else note.textContent='Optional filter from your selected destination.';
+  }
+}
+
 function setDestination(name,code,country){
   destination.value=name||'';
   cityCode.value=code||'';
   countryCode.value=country||'';
   suggestions.classList.remove('show');
+  updateSingleDistanceLabel();
 }
 
 destination.addEventListener('input',()=>{
+  updateSingleDistanceLabel();
   const q=destination.value.trim().toLowerCase();
   cityCode.value='';countryCode.value='';
   if(!q){suggestions.classList.remove('show');return}
@@ -914,6 +984,57 @@ checkin.addEventListener('change',()=>{
   const next=d.toISOString().slice(0,10);
   checkout.min=next;
   if(!checkout.value || checkout.value<=checkin.value) checkout.value=next;
+});
+
+
+function initGuestPicker(rootId,prefix){
+  const root=document.getElementById(rootId);
+  if(!root)return;
+  const trigger=root.querySelector('.guest-trigger');
+  const panel=root.querySelector('.guest-panel');
+  const summary=root.querySelector('.guest-summary');
+  const ageBox=root.querySelector('.child-ages');
+  const ageInputs=root.querySelector('.child-age-inputs');
+  const vals={adults:2,children:0,rooms:1};
+  const limits={adults:[1,20],children:[0,10],rooms:[1,10]};
+  function hiddenName(key){return prefix?`${prefix}_${key}`:key}
+  function render(){
+    Object.keys(vals).forEach(key=>{
+      const valueEl=root.querySelector(`[data-value="${key}"]`);
+      const input=root.querySelector(`input[name="${hiddenName(key)}"]`);
+      if(valueEl)valueEl.textContent=vals[key];
+      if(input)input.value=vals[key];
+    });
+    summary.textContent=`${vals.adults} Adult${vals.adults===1?'':'s'} · ${vals.children} Child${vals.children===1?'':'ren'} · ${vals.rooms} Room${vals.rooms===1?'':'s'}`;
+    ageBox.innerHTML='';
+    ageInputs.innerHTML='';
+    for(let i=1;i<=vals.children;i++){
+      const wrap=document.createElement('div');
+      wrap.className='child-age-wrap';
+      wrap.innerHTML=`<label>CHILD ${i} AGE</label><select class="control child-age-select" data-child-index="${i}"><option value="">Select age</option>${Array.from({length:18},(_,a)=>`<option value="${a}">${a} year${a===1?'':'s'}</option>`).join('')}</select>`;
+      ageBox.appendChild(wrap);
+      const input=document.createElement('input');
+      input.type='hidden';input.name=prefix?`${prefix}_child_ages[]`:'child_ages[]';input.value='';input.dataset.childIndex=String(i);
+      ageInputs.appendChild(input);
+      wrap.querySelector('select').addEventListener('change',e=>{input.value=e.target.value});
+    }
+  }
+  trigger.addEventListener('click',()=>{
+    document.querySelectorAll('.guest-panel.show').forEach(x=>{if(x!==panel)x.classList.remove('show')});
+    panel.classList.toggle('show');trigger.setAttribute('aria-expanded',panel.classList.contains('show')?'true':'false');
+  });
+  root.querySelectorAll('.step-btn').forEach(btn=>btn.addEventListener('click',()=>{
+    const key=btn.dataset.target;const [min,max]=limits[key];
+    vals[key]=Math.max(min,Math.min(max,vals[key]+(btn.dataset.action==='plus'?1:-1)));
+    render();
+  }));
+  root.querySelector('.guest-done').addEventListener('click',()=>{panel.classList.remove('show');trigger.setAttribute('aria-expanded','false')});
+  render();
+}
+initGuestPicker('singleGuestPicker','');
+initGuestPicker('multiGuestPicker','multi');
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.guest-picker')) document.querySelectorAll('.guest-panel.show').forEach(x=>x.classList.remove('show'));
 });
 
 document.querySelectorAll('.mode-tab').forEach(tab=>{
@@ -958,14 +1079,34 @@ function addStayRow(city='',code='',country='SA'){
       <label>CHECK-OUT</label>
       <input class="control" type="date" name="stays[${stayIndex}][checkout]" required>
     </div>
+    <div class="field stay-distance-field">
+      <label class="stay-distance-label">${distanceLabelFor(city).toUpperCase()}</label>
+      <select class="control" name="stays[${stayIndex}][distance_km]">
+        <option value="">Any distance</option>
+        <option value="0.3">Within 300 m</option>
+        <option value="0.5">Within 500 m</option>
+        <option value="0.75">Within 750 m</option>
+        <option value="1">Within 1 km</option>
+        <option value="2">Within 2 km</option>
+        <option value="5">Within 5 km</option>
+      </select>
+    </div>
     <button type="button" class="remove-stay">Remove</button>
   `;
+  const cityInput=row.querySelector(`input[name="stays[${stayIndex}][destination]"]`);
+  const distanceLabel=row.querySelector('.stay-distance-label');
+  cityInput.addEventListener('input',()=>{distanceLabel.textContent=distanceLabelFor(cityInput.value).toUpperCase()});
   row.querySelector('.remove-stay').addEventListener('click',()=>row.remove());
   stayRows.appendChild(row);
 }
 document.getElementById('addStay').addEventListener('click',()=>addStayRow());
 
 document.getElementById('hotelSearchForm').addEventListener('submit',e=>{
+  const activePicker=singleMode.style.display!=='none'?document.getElementById('singleGuestPicker'):document.getElementById('multiGuestPicker');
+  const ageSelects=activePicker?activePicker.querySelectorAll('.child-age-select'):[];
+  for(const sel of ageSelects){
+    if(sel.value===''){e.preventDefault();sel.focus();alert('Please select the age of every child for accurate hotel pricing.');return}
+  }
   if(singleMode.style.display!=='none'){
     if(!destination.value.trim()){e.preventDefault();destination.focus();return}
     if(checkout.value<=checkin.value){
@@ -974,6 +1115,7 @@ document.getElementById('hotelSearchForm').addEventListener('submit',e=>{
     }
   }
 });
+updateSingleDistanceLabel();
 </script>
 </body>
 </html>
