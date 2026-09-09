@@ -17,6 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $input = json_decode((string)file_get_contents('php://input'), true);
 $offerId = trim((string)($input['offer_id'] ?? ''));
+$acceptedAmount = isset($input['accepted_amount']) ? round((float)$input['accepted_amount'], 2) : null;
+$acceptedCurrency = strtoupper(trim((string)($input['accepted_currency'] ?? '')));
 if ($offerId === '' || empty($_SESSION['flight_checkout'][$offerId])) {
     http_response_code(400);
     echo json_encode(['ok'=>false,'error'=>'Booking session expired. Please re-enter passenger details.']);
@@ -60,6 +62,24 @@ $checkout['pricing'] = [
     'currency'=>strtoupper((string)$reprice['currency'])
 ];
 $currency = strtolower((string)$reprice['currency']);
+$currentCurrency = strtoupper((string)$reprice['currency']);
+
+// Safety: never start Stripe until the customer has explicitly accepted
+// the exact latest selling price returned by a fresh Duffel offer refresh.
+if ($acceptedAmount === null || $acceptedCurrency === '' || $acceptedCurrency !== $currentCurrency || abs($acceptedAmount - $amount) > 0.009) {
+    http_response_code(409);
+    echo json_encode([
+        'ok'=>false,
+        'code'=>'PRICE_CHANGED',
+        'price_changed'=>true,
+        'accepted_amount'=>$acceptedAmount,
+        'new_amount'=>number_format($amount, 2, '.', ''),
+        'currency'=>$currentCurrency,
+        'message'=>'The airline fare has changed. Please review and accept the latest price before payment.'
+    ]);
+    exit;
+}
+
 $minor = (int)round($amount * 100);
 
 try {
