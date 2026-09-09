@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../api/duffel.php';
+require_once __DIR__ . '/pricing.php';
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Dompdf\Dompdf;
@@ -216,8 +217,10 @@ function mt_create_duffel_order(array $booking): array
     $reprice = mt_reprice_checkout($offerId, $checkout);
     if (!$reprice['ok']) return $reprice;
 
+    // Customer pays Mustafa Travels selling price; Duffel receives only its refreshed cost.
     $paid = (float)$booking['amount'];
-    if (abs($paid - (float)$reprice['amount']) > 0.009 || strtoupper((string)$booking['currency']) !== $reprice['currency']) {
+    $expectedSelling = mt_flight_sell_price((float)$reprice['amount']);
+    if (abs($paid - $expectedSelling) > 0.009 || strtoupper((string)$booking['currency']) !== $reprice['currency']) {
         return ['ok'=>false,'error'=>'Fare changed after payment. Manual review/refund required.'];
     }
 
