@@ -110,13 +110,13 @@ function mt_duffel_search(array $criteria): array
     $passengers = [];
 
     for ($i = 0; $i < (int)$criteria['adults']; $i++) {
-        $passengers[] = ['age' => 30];
+        $passengers[] = ['type' => 'adult'];
     }
     for ($i = 0; $i < (int)$criteria['children']; $i++) {
-        $passengers[] = ['age' => 8];
+        $passengers[] = ['type' => 'child'];
     }
     for ($i = 0; $i < (int)$criteria['infants']; $i++) {
-        $passengers[] = ['age' => 1];
+        $passengers[] = ['type' => 'infant_without_seat'];
     }
 
     return mt_duffel_request(
