@@ -60,6 +60,83 @@ function mt_booking_find_by_pi(string $pi): ?array
     return $r['ok'] && !empty($r['data'][0]) ? $r['data'][0] : null;
 }
 
+function mt_booking_find_for_customer(string $ref, string $email): ?array
+{
+    $q = 'flight_bookings?booking_ref=eq.' . rawurlencode($ref) . '&customer_email=ilike.' . rawurlencode($email) . '&select=*&limit=1';
+    $r = mt_booking_sb_request($q);
+    return $r['ok'] && !empty($r['data'][0]) ? $r['data'][0] : null;
+}
+
+function mt_booking_list(int $limit = 100): array
+{
+    $limit = max(1, min(250, $limit));
+    $r = mt_booking_sb_request('flight_bookings?select=*&order=created_at.desc&limit='.$limit);
+    return $r['ok'] && is_array($r['data']) ? $r['data'] : [];
+}
+
+function mt_booking_order(array $booking): array
+{
+    $id = trim((string)($booking['duffel_order_id'] ?? ''));
+    if ($id === '') return [];
+    $r = mt_duffel_request('/air/orders/' . rawurlencode($id), 'GET');
+    return $r['ok'] ? (array)($r['data']['data'] ?? []) : [];
+}
+
+function mt_booking_checkout(array $booking): array
+{
+    $v = $booking['checkout_json'] ?? [];
+    if (is_array($v)) return $v;
+    $d = json_decode((string)$v, true);
+    return is_array($d) ? $d : [];
+}
+
+function mt_booking_itinerary(array $order): array
+{
+    $rows = [];
+    foreach (($order['slices'] ?? []) as $slice) {
+        foreach (($slice['segments'] ?? []) as $seg) {
+            $dep = $seg['departing_at'] ?? '';
+            $arr = $seg['arriving_at'] ?? '';
+            $carrier = $seg['marketing_carrier']['name'] ?? $seg['operating_carrier']['name'] ?? '';
+            $code = $seg['marketing_carrier']['iata_code'] ?? $seg['operating_carrier']['iata_code'] ?? '';
+            $num = $seg['marketing_carrier_flight_number'] ?? $seg['operating_carrier_flight_number'] ?? '';
+            $rows[] = [
+                'airline'=>(string)$carrier,
+                'flight'=>trim((string)$code.' '.(string)$num),
+                'origin'=>(string)($seg['origin']['iata_code'] ?? ''),
+                'origin_name'=>(string)($seg['origin']['name'] ?? ''),
+                'destination'=>(string)($seg['destination']['iata_code'] ?? ''),
+                'destination_name'=>(string)($seg['destination']['name'] ?? ''),
+                'departing_at'=>(string)$dep,
+                'arriving_at'=>(string)$arr,
+            ];
+        }
+    }
+    return $rows;
+}
+
+function mt_booking_baggage(array $order): array
+{
+    $out = [];
+    foreach (($order['slices'] ?? []) as $slice) foreach (($slice['segments'] ?? []) as $seg) foreach (($seg['passengers'] ?? []) as $sp) {
+        foreach (($sp['baggages'] ?? []) as $b) {
+            $type = (string)($b['type'] ?? 'baggage');
+            $qty = (int)($b['quantity'] ?? 0);
+            $text = ucfirst(str_replace('_',' ', $type)) . ($qty ? ': '.$qty.' piece'.($qty===1?'':'s') : '');
+            if (!empty($b['weight'])) $text .= ' × '.$b['weight'].' '.strtoupper((string)($b['weight_unit'] ?? 'kg'));
+            $out[] = $text;
+        }
+    }
+    foreach (($order['services'] ?? []) as $svc) {
+        if (($svc['type'] ?? '') !== 'baggage') continue;
+        $text = 'Extra checked baggage';
+        if (!empty($svc['quantity'])) $text .= ': '.$svc['quantity'].' piece'.((int)$svc['quantity']===1?'':'s');
+        if (!empty($svc['metadata']['maximum_weight_kg'])) $text .= ' × '.$svc['metadata']['maximum_weight_kg'].' KG';
+        $out[] = $text;
+    }
+    return array_values(array_unique(array_filter($out)));
+}
+
 function mt_booking_update(string $ref, array $row): bool
 {
     $row['updated_at'] = gmdate('c');
@@ -171,34 +248,44 @@ function mt_create_duffel_order(array $booking): array
 
 function mt_pdf_bytes(array $booking, string $kind, ?array $order = null): string
 {
-    $checkout = is_array($booking['checkout_json'] ?? null) ? $booking['checkout_json'] : json_decode((string)($booking['checkout_json'] ?? '{}'), true);
-    $checkout = is_array($checkout) ? $checkout : [];
+    $checkout = mt_booking_checkout($booking);
+    $order = is_array($order) && $order ? $order : mt_booking_order($booking);
     $passengers = $checkout['passengers'] ?? [];
-    $title = $kind === 'confirmed' ? 'Booking Confirmed' : 'Payment Received – Booking Processing';
-    $pnr = $order['booking_reference'] ?? ($booking['pnr'] ?? '');
-    $rows = '';
+    $confirmed = $kind === 'confirmed';
+    $title = $confirmed ? 'Booking Confirmed' : 'Payment Received - Booking Processing';
+    $pnr = (string)($order['booking_reference'] ?? $booking['pnr'] ?? '');
+    $e = fn($v)=>htmlspecialchars((string)$v, ENT_QUOTES, 'UTF-8');
+
+    $paxRows='';
     foreach ($passengers as $p) {
-        $name = htmlspecialchars(trim(($p['given_name'] ?? '').' '.($p['family_name'] ?? '')), ENT_QUOTES, 'UTF-8');
-        $rows .= '<tr><td style="padding:7px;border-bottom:1px solid #e5e7eb">'.$name.'</td><td style="padding:7px;border-bottom:1px solid #e5e7eb">'.htmlspecialchars((string)($p['type'] ?? 'Passenger')).'</td></tr>';
+        $name=trim(($p['title']??'').' '.($p['given_name']??'').' '.($p['family_name']??''));
+        $dob=(string)($p['born_on']??'');
+        $doc=(string)($p['passport_number']??'');
+        $paxRows.='<tr><td>'.$e($name).'</td><td>'.$e(ucfirst((string)($p['type']??'passenger'))).'</td><td>'.$e($dob).'</td><td>'.$e($doc).'</td></tr>';
     }
-    $statusText = $kind === 'confirmed'
-        ? 'Your airline booking has been confirmed. Please check all details carefully.'
-        : 'We have received your payment. Your airline booking is now being processed. This document is not an airline ticket or final PNR confirmation.';
-    $html = '<html><body style="font-family:DejaVu Sans,Arial;color:#12263b;padding:24px">'
-        .'<div style="background:#062b55;color:white;padding:20px"><h1 style="margin:0;font-size:22px">Mustafa Travels & Tours</h1><div style="margin-top:6px">'.$title.'</div></div>'
-        .'<div style="padding:18px;border:1px solid #dbe4ec"><p>'.$statusText.'</p>'
-        .'<table width="100%" cellspacing="0" cellpadding="0" style="margin-top:15px">'
-        .'<tr><td><b>Reference</b></td><td>'.htmlspecialchars((string)$booking['booking_ref']).'</td></tr>'
-        .'<tr><td><b>Amount</b></td><td>'.htmlspecialchars(strtoupper((string)$booking['currency'])).' '.number_format((float)$booking['amount'],2).'</td></tr>'
-        .($pnr ? '<tr><td><b>PNR</b></td><td style="font-size:18px;font-weight:bold">'.htmlspecialchars((string)$pnr).'</td></tr>' : '')
-        .'</table><h3 style="margin-top:22px">Passengers</h3><table width="100%" cellspacing="0">'.$rows.'</table>'
-        .'<p style="margin-top:25px;font-size:11px;color:#64748b">'.htmlspecialchars(ADDRESS).' · '.htmlspecialchars(EMAIL).' · '.htmlspecialchars(PHONE1).'</p>'
-        .'</div></body></html>';
-    $dompdf = new Dompdf(['isRemoteEnabled'=>false]);
-    $dompdf->loadHtml($html);
-    $dompdf->setPaper('A4');
-    $dompdf->render();
-    return $dompdf->output();
+    if ($paxRows==='') $paxRows='<tr><td colspan="4">Passenger details unavailable</td></tr>';
+
+    $itinRows='';
+    foreach (mt_booking_itinerary($order) as $seg) {
+        $dep=$seg['departing_at'] ? date('d M Y H:i', strtotime($seg['departing_at'])) : '';
+        $arr=$seg['arriving_at'] ? date('d M Y H:i', strtotime($seg['arriving_at'])) : '';
+        $itinRows.='<tr><td><b>'.$e($seg['airline']).'</b><br>'.$e($seg['flight']).'</td><td><b>'.$e($seg['origin']).'</b><br>'.$e($seg['origin_name']).'</td><td>'.$e($dep).'</td><td><b>'.$e($seg['destination']).'</b><br>'.$e($seg['destination_name']).'</td><td>'.$e($arr).'</td></tr>';
+    }
+    if ($itinRows==='') $itinRows='<tr><td colspan="5">Full airline itinerary becomes available after confirmation.</td></tr>';
+
+    $bags=mt_booking_baggage($order);
+    $bagHtml=$bags ? '<ul><li>'.implode('</li><li>',array_map($e,$bags)).'</li></ul>' : '<p>Please check the airline fare conditions for baggage allowance.</p>';
+    $statusText=$confirmed ? 'Your airline booking has been confirmed. Please check names, dates, baggage and flight details carefully.' : 'We have received your payment. Your airline booking is now being processed. This document is not an airline ticket or final PNR confirmation.';
+
+    $html='<!doctype html><html><head><meta charset="utf-8"><style>body{font-family:DejaVu Sans,Arial;color:#12263b;font-size:11px} .head{background:#062b55;color:#fff;padding:18px}.head h1{margin:0;font-size:22px}.box{border:1px solid #dbe4ec;padding:16px}.meta{width:100%;margin:10px 0 16px}.meta td{padding:4px}.pnr{font-size:20px;font-weight:bold;color:#087a45}h3{color:#062b55;margin:18px 0 7px}table.grid{width:100%;border-collapse:collapse}table.grid th{background:#eef5fb;text-align:left;padding:7px;font-size:9px}table.grid td{padding:7px;border-bottom:1px solid #e5e7eb;vertical-align:top}.foot{margin-top:22px;color:#64748b;font-size:9px}</style></head><body>'
+      .'<div class="head"><h1>Mustafa Travels & Tours</h1><div>'.$e($title).'</div></div><div class="box"><p>'.$e($statusText).'</p>'
+      .'<table class="meta"><tr><td><b>Mustafa Travels Ref.</b></td><td>'.$e($booking['booking_ref']??'').'</td><td><b>Status</b></td><td>'.$e(ucwords(str_replace('_',' ',(string)($booking['status']??'')))).'</td></tr>'
+      .'<tr><td><b>Amount</b></td><td>'.$e(strtoupper((string)($booking['currency']??'EUR'))).' '.number_format((float)($booking['amount']??0),2).'</td><td><b>Airline PNR</b></td><td class="pnr">'.$e($pnr ?: 'Pending').'</td></tr></table>'
+      .'<h3>Flight itinerary</h3><table class="grid"><tr><th>Airline / Flight</th><th>From</th><th>Departure</th><th>To</th><th>Arrival</th></tr>'.$itinRows.'</table>'
+      .'<h3>Passengers</h3><table class="grid"><tr><th>Name</th><th>Type</th><th>Date of birth</th><th>Passport</th></tr>'.$paxRows.'</table>'
+      .'<h3>Baggage allowance & extras</h3>'.$bagHtml
+      .'<div class="foot">'.$e(ADDRESS).' · '.$e(EMAIL).' · '.$e(PHONE1).'<br>Please verify all travel documents and airline schedule before departure.</div></div></body></html>';
+    $dompdf=new Dompdf(['isRemoteEnabled'=>false]); $dompdf->loadHtml($html,'UTF-8'); $dompdf->setPaper('A4'); $dompdf->render(); return $dompdf->output();
 }
 
 function mt_send_mail_with_pdf(string $to, string $subject, string $html, string $filename, string $pdfBytes): array
@@ -242,7 +329,7 @@ function mt_send_payment_receipt(array $booking): bool
     $pdf = mt_pdf_bytes($booking, 'receipt');
     $ref = (string)$booking['booking_ref'];
     $html = '<p>Dear customer,</p><p>We have received your payment for booking reference <b>'.htmlspecialchars($ref).'</b>.</p><p>Your airline booking is now being processed. The attached PDF is a payment/booking request receipt and is <b>not</b> the final airline ticket.</p><p>Regards,<br>Mustafa Travels & Tours</p>';
-    $r = mt_send_mail_with_pdf((string)$booking['customer_email'], 'Payment received – '.$ref, $html, $ref.'-payment-received.pdf', $pdf);
+    $r = mt_send_mail_with_pdf((string)$booking['customer_email'], 'Payment received - '.$ref, $html, $ref.'-payment-received.pdf', $pdf);
     if ($r['ok']) mt_booking_update($ref, ['receipt_email_sent_at'=>gmdate('c')]);
     return $r['ok'];
 }
@@ -254,7 +341,7 @@ function mt_send_confirmation(array $booking, array $order): bool
     $pnr = (string)($order['booking_reference'] ?? $booking['pnr'] ?? '');
     $pdf = mt_pdf_bytes($booking, 'confirmed', $order);
     $html = '<p>Dear customer,</p><p>Your airline booking has been confirmed.</p><p><b>Booking reference:</b> '.htmlspecialchars($ref).'<br><b>PNR:</b> '.htmlspecialchars($pnr).'</p><p>Your confirmation PDF is attached.</p><p>Regards,<br>Mustafa Travels & Tours</p>';
-    $r = mt_send_mail_with_pdf((string)$booking['customer_email'], 'Booking confirmed – PNR '.$pnr, $html, $ref.'-booking-confirmed.pdf', $pdf);
+    $r = mt_send_mail_with_pdf((string)$booking['customer_email'], 'Booking confirmed - PNR '.$pnr, $html, $ref.'-booking-confirmed.pdf', $pdf);
     if ($r['ok']) mt_booking_update($ref, ['confirmation_email_sent_at'=>gmdate('c')]);
     return $r['ok'];
 }
