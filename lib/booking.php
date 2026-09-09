@@ -9,6 +9,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Dompdf\Dompdf;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as MailException;
+use Stripe\StripeClient;
 
 function mt_server_supabase_key(): string
 {
@@ -153,7 +154,7 @@ function mt_booking_ref(): string
 function mt_reprice_checkout(string $offerId, array $checkout): array
 {
     $api = mt_duffel_get_offer($offerId, true);
-    if (!$api['ok']) return ['ok'=>false,'error'=>$api['error'] ?: 'Unable to refresh fare.'];
+    if (!$api['ok']) return ['ok'=>false,'error'=>$api['error'] ?: 'Unable to refresh fare.','api'=>$api];
     $offer = $api['data']['data'] ?? [];
     $base = (float)($offer['total_amount'] ?? 0);
     $currency = strtoupper((string)($offer['total_currency'] ?? 'EUR'));
@@ -347,6 +348,150 @@ function mt_send_confirmation(array $booking, array $order): bool
     $r = mt_send_mail_with_pdf((string)$booking['customer_email'], 'Booking confirmed - PNR '.$pnr, $html, $ref.'-booking-confirmed.pdf', $pdf);
     if ($r['ok']) mt_booking_update($ref, ['confirmation_email_sent_at'=>gmdate('c')]);
     return $r['ok'];
+}
+
+function mt_booking_debug(string $stage, array $context = []): void
+{
+    $safe = [];
+    foreach ($context as $k => $v) {
+        if (in_array((string)$k, ['secret','client_secret','card','cvc'], true)) continue;
+        if (is_scalar($v) || $v === null) $safe[$k] = $v;
+        else $safe[$k] = $v;
+    }
+    error_log('FLIGHT BOOKING | '.$stage.' | '.json_encode($safe, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE));
+}
+
+function mt_finalize_captured_booking(array $booking): array
+{
+    $ref = (string)($booking['booking_ref'] ?? '');
+    $fresh = $ref !== '' ? (mt_booking_find_by_ref($ref) ?: $booking) : $booking;
+    if (empty($fresh['duffel_order_id'])) {
+        return ['ok'=>false,'error'=>'Airline order is missing after card capture.'];
+    }
+
+    $order = mt_booking_order($fresh);
+    if (!$order) {
+        mt_booking_update($ref, [
+            'status'=>'confirmed',
+            'error_message'=>null
+        ]);
+        $fresh = mt_booking_find_by_ref($ref) ?: $fresh;
+        mt_send_payment_receipt($fresh);
+        return ['ok'=>true,'booking'=>$fresh,'order'=>[]];
+    }
+
+    $pnr = (string)($order['booking_reference'] ?? $fresh['pnr'] ?? '');
+    mt_booking_update($ref, [
+        'status'=>'confirmed',
+        'pnr'=>$pnr,
+        'error_message'=>null
+    ]);
+    $fresh = mt_booking_find_by_ref($ref) ?: $fresh;
+    mt_send_payment_receipt($fresh);
+    mt_send_confirmation($fresh, $order);
+    mt_booking_debug('CONFIRMED', ['ref'=>$ref,'pi'=>$fresh['payment_intent_id'] ?? '','order_id'=>$fresh['duffel_order_id'] ?? '','pnr'=>$pnr]);
+    return ['ok'=>true,'booking'=>mt_booking_find_by_ref($ref) ?: $fresh,'order'=>$order];
+}
+
+/**
+ * New live-safety flow:
+ * 1) Stripe authorises the card only (manual capture).
+ * 2) We refresh the exact current Duffel offer and create the airline order using Duffel Balance.
+ * 3) Only after Duffel returns an order/PNR do we capture the customer's card.
+ * 4) If Duffel rejects the offer, the Stripe authorisation is cancelled/released instead of charging the customer.
+ */
+function mt_process_authorized_booking(array $booking, string $piId): array
+{
+    $ref = (string)($booking['booking_ref'] ?? '');
+    $fresh = $ref !== '' ? (mt_booking_find_by_ref($ref) ?: $booking) : $booking;
+    mt_booking_debug('AUTHORISED_START', [
+        'ref'=>$ref,
+        'pi'=>$piId,
+        'offer_id'=>$fresh['offer_id'] ?? '',
+        'status'=>$fresh['status'] ?? ''
+    ]);
+
+    $stripeSecret = getenv('STRIPE_SECRET_KEY') ?: '';
+    if ($stripeSecret === '') return ['ok'=>false,'error'=>'Stripe secret key missing.'];
+    $stripe = new StripeClient($stripeSecret);
+
+    // Idempotent retry: if Duffel order was already created, do not create another one.
+    if (empty($fresh['duffel_order_id'])) {
+        mt_booking_update($ref, ['status'=>'payment_authorized','error_message'=>null]);
+        $fresh = mt_booking_find_by_ref($ref) ?: $fresh;
+
+        $result = mt_create_duffel_order($fresh);
+        if (!$result['ok']) {
+            $api = $result['api'] ?? [];
+            mt_booking_debug('DUFFEL_ORDER_FAILED_BEFORE_CAPTURE', [
+                'ref'=>$ref,
+                'pi'=>$piId,
+                'offer_id'=>$fresh['offer_id'] ?? '',
+                'error'=>$result['error'] ?? '',
+                'http'=>$api['status'] ?? null,
+                'request_id'=>$api['request_id'] ?? null,
+                'raw'=>$api['raw'] ?? null
+            ]);
+            try {
+                $pi = $stripe->paymentIntents->retrieve($piId, []);
+                if ((string)$pi->status === 'requires_capture') {
+                    $stripe->paymentIntents->cancel($piId, []);
+                }
+            } catch (Throwable $cancelError) {
+                mt_booking_debug('STRIPE_AUTH_RELEASE_FAILED', ['ref'=>$ref,'pi'=>$piId,'error'=>$cancelError->getMessage()]);
+            }
+            mt_booking_update($ref, [
+                'status'=>'booking_failed_authorization_released',
+                'error_message'=>(string)($result['error'] ?? 'Airline offer could not be booked. Card authorisation was released.')
+            ]);
+            return ['ok'=>false,'error'=>$result['error'] ?? 'Airline booking failed before card capture.'];
+        }
+
+        mt_booking_update($ref, [
+            'status'=>'airline_booked_capture_pending',
+            'duffel_order_id'=>$result['order_id'],
+            'pnr'=>$result['pnr'],
+            'error_message'=>null
+        ]);
+        $fresh = mt_booking_find_by_ref($ref) ?: array_merge($fresh, [
+            'duffel_order_id'=>$result['order_id'],
+            'pnr'=>$result['pnr']
+        ]);
+        mt_booking_debug('DUFFEL_ORDER_CREATED_BEFORE_CAPTURE', [
+            'ref'=>$ref,'pi'=>$piId,'offer_id'=>$fresh['offer_id'] ?? '',
+            'order_id'=>$result['order_id'],'pnr'=>$result['pnr']
+        ]);
+    }
+
+    try {
+        $pi = $stripe->paymentIntents->retrieve($piId, []);
+        if ((string)$pi->status === 'requires_capture') {
+            $pi = $stripe->paymentIntents->capture($piId, []);
+        }
+        if ((string)$pi->status !== 'succeeded') {
+            mt_booking_update($ref, [
+                'status'=>'capture_failed',
+                'error_message'=>'Airline booking was created but card capture did not complete. Manual review required.'
+            ]);
+            mt_booking_debug('STRIPE_CAPTURE_NOT_SUCCEEDED', ['ref'=>$ref,'pi'=>$piId,'status'=>(string)$pi->status]);
+            return ['ok'=>false,'error'=>'Airline booking created, but card capture requires manual review.'];
+        }
+    } catch (Throwable $e) {
+        // A concurrent webhook/return request may already have captured it. Re-check before declaring failure.
+        try {
+            $pi = $stripe->paymentIntents->retrieve($piId, []);
+            if ((string)$pi->status !== 'succeeded') throw $e;
+        } catch (Throwable $finalError) {
+            mt_booking_update($ref, [
+                'status'=>'capture_failed',
+                'error_message'=>'Airline booking was created but Stripe capture failed: '.$finalError->getMessage()
+            ]);
+            mt_booking_debug('STRIPE_CAPTURE_FAILED', ['ref'=>$ref,'pi'=>$piId,'error'=>$finalError->getMessage()]);
+            return ['ok'=>false,'error'=>'Airline booking created, but card capture failed. Manual review required.'];
+        }
+    }
+
+    return mt_finalize_captured_booking(mt_booking_find_by_ref($ref) ?: $fresh);
 }
 
 function mt_process_paid_booking(array $booking): array
