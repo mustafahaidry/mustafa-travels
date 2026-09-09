@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/partials.php';
 require_once __DIR__ . '/api/duffel.php';
+require_once __DIR__ . '/lib/pricing.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
@@ -321,7 +322,7 @@ site_header('Passenger Details');
 
                 <div class="fp-price">
                     <span>Total fare</span>
-                    <strong><?=h((string)($offer['total_currency'] ?? 'EUR'))?> <?=number_format((float)($offer['total_amount'] ?? 0),2)?></strong>
+                    <strong><?=h((string)($offer['total_currency'] ?? 'EUR'))?> <?=number_format(mt_flight_sell_price((float)($offer['total_amount'] ?? 0)),2)?></strong>
                 </div>
 
                 <?php if($passengers): ?>

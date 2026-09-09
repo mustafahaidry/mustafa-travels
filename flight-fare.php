@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/partials.php';
 require_once __DIR__ . '/api/duffel.php';
+require_once __DIR__ . '/lib/pricing.php';
 
 $offerId = trim($_GET['offer_id'] ?? '');
 $error = '';
@@ -40,7 +41,7 @@ site_header('Fare Options');
 
         <div class="ff-price">
             <?=h((string)($offer['total_currency'] ?? 'EUR'))?>
-            <?=number_format((float)($offer['total_amount'] ?? 0),2)?>
+            <?=number_format(mt_flight_sell_price((float)($offer['total_amount'] ?? 0)),2)?>
         </div>
 
         <?php
@@ -53,7 +54,7 @@ site_header('Fare Options');
                 <div class="ff-service">
                     <strong><?=h(ucwords(str_replace('_',' ',(string)($service['type'] ?? 'Service'))))?></strong>
                     <?php if(isset($service['total_amount'])): ?>
-                        — <?=h((string)($service['total_currency'] ?? ''))?> <?=h((string)$service['total_amount'])?>
+                        — <?=h((string)($service['total_currency'] ?? ''))?> <?=h(number_format(mt_flight_sell_price((float)$service['total_amount']),2))?>
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>

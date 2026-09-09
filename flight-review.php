@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/partials.php';
 require_once __DIR__ . '/api/duffel.php';
+require_once __DIR__ . '/lib/pricing.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
@@ -147,9 +148,9 @@ $selectedServices = $checkout['selected_services'] ?? [];
 $extraTotal = 0.0;
 foreach ($availableBags as $service) {
     $qty = (int)($selectedServices[$service['id'] ?? ''] ?? 0);
-    $extraTotal += $qty * (float)($service['total_amount'] ?? 0);
+    $extraTotal += $qty * mt_flight_sell_price((float)($service['total_amount'] ?? 0));
 }
-$baseTotal = (float)($offer['total_amount'] ?? 0);
+$baseTotal = mt_flight_sell_price((float)($offer['total_amount'] ?? 0));
 $grandTotal = $baseTotal + $extraTotal;
 
 site_header('Review Booking');
@@ -242,8 +243,8 @@ site_header('Review Booking');
                                     <strong>Extra checked bag</strong>
                                     <small><?=h(rv_passenger_names($offer, $service['passenger_ids'] ?? []))?> · <?=h(rv_segment_label($offer, $service['segment_ids'] ?? []))?></small>
                                 </div>
-                                <div class="rv-extra-price"><?=rv_money($service['total_amount'] ?? 0, $service['total_currency'] ?? $offer['total_currency'] ?? 'EUR')?> / bag</div>
-                                <select name="extra_bags[<?=h($sid)?>]" class="extra-bag-select" data-price="<?=h((string)($service['total_amount'] ?? '0'))?>">
+                                <div class="rv-extra-price"><?=rv_money(mt_flight_sell_price((float)($service['total_amount'] ?? 0)), $service['total_currency'] ?? $offer['total_currency'] ?? 'EUR')?> / bag</div>
+                                <select name="extra_bags[<?=h($sid)?>]" class="extra-bag-select" data-price="<?=h((string)mt_flight_sell_price((float)($service['total_amount'] ?? 0)))?>">
                                     <?php for($q=0;$q<=$maxQty;$q++): ?>
                                         <option value="<?=$q?>" <?=$q===$selectedQty?'selected':''?>><?=$q===0?'No extra bag':$q.' bag'.($q>1?'s':'')?></option>
                                     <?php endfor; ?>

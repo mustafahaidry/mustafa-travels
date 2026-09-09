@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/partials.php';
 require_once __DIR__ . '/api/duffel.php';
+require_once __DIR__ . '/lib/pricing.php';
 function fr_h(string $v):string{return htmlspecialchars($v,ENT_QUOTES,'UTF-8');}
 function fr_valid_date(string $d):bool{$x=DateTime::createFromFormat('Y-m-d',$d);return $x&&$x->format('Y-m-d')===$d;}
 function fr_time(?string $d):string{$t=$d?strtotime($d):false;return $t?date('H:i',$t):'';}
@@ -26,7 +27,7 @@ elseif($criteria['trip_type']==='round'&&(!fr_valid_date($criteria['return_date'
 elseif($criteria['infants']>$criteria['adults'])$error='Infants cannot exceed adults.';
 elseif(!in_array($criteria['cabin'],$allowed,true))$error='Invalid cabin class.';
 else{$api=mt_duffel_search($criteria);if(!$api['ok']){$error=$api['error'];error_log('FLIGHT RESULTS DUFFEL | HTTP '.$api['status'].' | '.json_encode($api['data']));}else{$offers=$api['data']['data']['offers']??[];if(!is_array($offers))$offers=[];$offers=array_slice($offers,0,50);}}
-$airlines=[];$minPrice=null;$maxPrice=0;foreach($offers as$o){$airlines[]=fr_airline($o);$p=(float)($o['total_amount']??0);if($p>0){$minPrice=$minPrice===null?$p:min($minPrice,$p);$maxPrice=max($maxPrice,$p);}}$airlines=array_values(array_unique($airlines));sort($airlines);
+$airlines=[];$minPrice=null;$maxPrice=0;foreach($offers as$o){$airlines[]=fr_airline($o);$p=mt_flight_sell_price((float)($o['total_amount']??0));if($p>0){$minPrice=$minPrice===null?$p:min($minPrice,$p);$maxPrice=max($maxPrice,$p);}}$airlines=array_values(array_unique($airlines));sort($airlines);
 site_header('Flight Results');
 ?>
 <style>
@@ -63,7 +64,7 @@ site_header('Flight Results');
 </aside>
 <main><div class="fr-mainhead"><div><h1>Best flights from <?=fr_h($criteria['origin'])?> to <?=fr_h($criteria['destination'])?></h1><p><b id="visibleCount"><?=count($offers)?></b> live offers found</p></div><div class="fr-sorts"><button class="fr-sort active" data-sort="best">Best</button><button class="fr-sort" data-sort="price">Cheapest</button><button class="fr-sort" data-sort="duration">Fastest</button></div></div>
 <div id="cards"><?php if(!$offers):?><div class="fr-empty">No offers returned. Try another route or date.</div><?php endif;?>
-<?php $idx=0;foreach($offers as$o):$idx++;$airline=fr_airline($o);$logo=fr_logo($o);$oper=fr_operating($o);$amount=(float)($o['total_amount']??0);$currency=(string)($o['total_currency']??'EUR');$dur=fr_offer_duration($o);$stops=fr_max_stops($o);$bags=fr_checked_bags($o);$cabinbags=fr_cabin_bags($o);$hold=fr_hold($o);$oid=(string)($o['id']??'');$best=$amount+$dur*.10+$stops*35;?>
+<?php $idx=0;foreach($offers as$o):$idx++;$airline=fr_airline($o);$logo=fr_logo($o);$oper=fr_operating($o);$amount=mt_flight_sell_price((float)($o['total_amount']??0));$currency=(string)($o['total_currency']??'EUR');$dur=fr_offer_duration($o);$stops=fr_max_stops($o);$bags=fr_checked_bags($o);$cabinbags=fr_cabin_bags($o);$hold=fr_hold($o);$oid=(string)($o['id']??'');$best=$amount+$dur*.10+$stops*35;?>
 <article class="fr-card <?=$idx===1?'best-card':''?>" data-price="<?=$amount?>" data-duration="<?=$dur?>" data-stops="<?=$stops?>" data-airline="<?=fr_h(strtolower($airline))?>" data-bag="<?=$bags>0?'1':'0'?>" data-hold="<?=$hold?'1':'0'?>" data-search="<?=fr_h(strtolower($airline.' '.implode(' ',$oper)))?>" data-best="<?=$best?>">
 <span class="fr-best">Best</span><div class="fr-cardmain"><div><div class="fr-brand"><?php if($logo):?><img class="fr-logo" src="<?=fr_h($logo)?>" alt=""><?php else:?><div class="fr-logo-fallback"><?=fr_h(substr($airline,0,2))?></div><?php endif;?><div><div class="fr-airline"><?=fr_h($airline)?></div><?php if($oper):?><div class="fr-oper">Operated by <?=fr_h(implode(', ',$oper))?></div><?php endif;?></div></div><div class="fr-badges"><?php if($bags):?><span class="fr-badge bag">✓ <?=$bags?> checked bag<?=($bags>1?'s':'')?></span><?php else:?><span class="fr-badge">Checked bag not shown</span><?php endif;?><?php if($hold):?><span class="fr-badge hold">Hold available</span><?php endif;?></div></div>
 <div><?php foreach(($o['slices']??[])as$s):$g=$s['segments']??[];$first=$g[0]??[];$last=$g?$g[count($g)-1]:[];$from=$first['origin']['iata_code']??'';$to=$last['destination']['iata_code']??'';$dep=$first['departing_at']??'';$arr=$last['arriving_at']??'';$ss=max(0,count($g)-1);$sa=fr_stops($s);?><div class="fr-slice"><div class="fr-route"><div class="fr-point"><strong><?=fr_h(fr_time($dep))?></strong><span><?=fr_h($from)?></span><small><?=fr_h(fr_day($dep))?></small></div><div><div class="fr-line"></div><div class="fr-meta"><?=fr_h(fr_duration($s['duration']??null))?> · <?=$ss===0?'Direct':($ss===1?'1 stop':$ss.' stops')?><?php if($sa):?> · <span class="fr-stop"><?=fr_h(implode(', ',$sa))?></span><?php endif;?></div></div><div class="fr-point end"><strong><?=fr_h(fr_time($arr))?></strong><span><?=fr_h($to)?></span><small><?=fr_h(fr_day($arr))?></small></div></div></div><?php endforeach;?></div>

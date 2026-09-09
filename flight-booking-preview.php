@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/partials.php';
 require_once __DIR__ . '/api/duffel.php';
+require_once __DIR__ . '/lib/pricing.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 
@@ -148,10 +149,10 @@ foreach (($offer['available_services'] ?? []) as $s) {
     if ($qty < 1) continue;
     $s['_qty'] = $qty;
     $services[] = $s;
-    $extraTotal += $qty * (float)($s['total_amount'] ?? 0);
+    $extraTotal += $qty * mt_flight_sell_price((float)($s['total_amount'] ?? 0));
 }
 
-$baseTotal  = (float)($offer['total_amount'] ?? 0);
+$baseTotal  = mt_flight_sell_price((float)($offer['total_amount'] ?? 0));
 $grandTotal = $baseTotal + $extraTotal;
 $currency   = (string)($offer['total_currency'] ?? 'EUR');
 $ownerName  = (string)($offer['owner']['name'] ?? 'Airline');
@@ -575,7 +576,7 @@ body{
                                 <strong><?=$s['_qty']?> × Extra checked bag</strong>
                                 <small><?=h(bp_names($offer,$s['passenger_ids']??[]))?> · <?=h(bp_route($offer,$s['segment_ids']??[]))?></small>
                             </div>
-                            <strong><?=bp_money(((float)($s['total_amount']??0))*$s['_qty'],$s['total_currency']??$currency)?></strong>
+                            <strong><?=bp_money(mt_flight_sell_price((float)($s['total_amount']??0))*$s['_qty'],$s['total_currency']??$currency)?></strong>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
