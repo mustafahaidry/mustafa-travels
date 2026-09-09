@@ -252,13 +252,21 @@ button,input,select{font:inherit}
   background:#dff3ff;
   color:#0878bc;
 }
-.search-grid{
+.search-primary,
+.search-secondary{
   display:grid;
-  grid-template-columns:1.55fr 1fr 1fr 1.05fr 1.15fr 1.25fr auto;
   gap:12px;
   align-items:end;
+}
+.search-primary{
+  grid-template-columns:1.7fr 1fr 1fr 1.05fr;
   padding-top:14px;
 }
+.search-secondary{
+  grid-template-columns:1.35fr 1.15fr auto;
+  margin-top:12px;
+}
+.search-secondary .search-btn{min-width:190px}
 .field{position:relative}
 .field label{
   display:block;
@@ -374,6 +382,10 @@ button,input,select{font:inherit}
 }
 .add-stay{
   margin-top:4px;border:1px solid #b8c9e3;background:#f8fbff;color:#0b4fae;border-radius:8px;padding:9px 13px;font-weight:800;cursor:pointer
+}
+
+.multi-footer-grid{
+  display:grid;grid-template-columns:1fr 1.25fr auto;gap:12px;align-items:end;margin-top:14px
 }
 
 /* section headers */
@@ -529,7 +541,8 @@ button,input,select{font:inherit}
 /* responsive */
 @media(max-width:1100px){
   .menu{gap:16px}
-  .search-grid{grid-template-columns:repeat(3,1fr)}
+  .search-primary{grid-template-columns:repeat(2,1fr)}
+  .search-secondary{grid-template-columns:1fr 1fr}
   .search-btn{width:100%}
   .destinations,.deals{grid-template-columns:repeat(3,1fr)}
 }
@@ -539,6 +552,7 @@ button,input,select{font:inherit}
   .hero-benefits{gap:16px}
   .destinations,.deals{grid-template-columns:repeat(2,1fr)}
   .stay-row{grid-template-columns:1fr 1fr}
+  .multi-footer-grid{grid-template-columns:1fr 1fr}
   .stay-row .remove-stay{width:100%}
   .guest-panel{left:0;right:auto}
 }
@@ -549,11 +563,13 @@ button,input,select{font:inherit}
   .brandtext{font-size:18px}
   .hero h1{font-size:39px}
   .hero-benefits{display:none}
-  .search-grid{grid-template-columns:1fr}
+  .search-primary,.search-secondary{grid-template-columns:1fr}
+  .search-secondary .search-btn{min-width:0}
   .mode-tabs{gap:12px;overflow-x:auto}
   .destinations,.deals{grid-template-columns:1fr}
   .deal-card{grid-template-columns:120px 1fr}
   .stay-row{grid-template-columns:1fr}
+  .multi-footer-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -632,7 +648,7 @@ button,input,select{font:inherit}
 
       <form action="/hotel-results.php" method="get" id="hotelSearchForm">
         <div id="singleMode">
-          <div class="search-grid">
+          <div class="search-primary">
             <div class="field">
               <label for="destination">DESTINATION</label>
               <input class="control" id="destination" name="destination" placeholder="City, hotel name or landmark" autocomplete="off" required>
@@ -664,7 +680,9 @@ button,input,select{font:inherit}
                 <option value="US">United States</option>
               </select>
             </div>
+          </div>
 
+          <div class="search-secondary">
             <div class="field">
               <label for="distance_km" id="singleDistanceLabel">DISTANCE FROM SELECTED DESTINATION</label>
               <select class="control" id="distance_km" name="distance_km">
@@ -715,7 +733,7 @@ button,input,select{font:inherit}
           <div id="stayRows"></div>
           <button type="button" class="add-stay" id="addStay">+ Add another stay</button>
 
-          <div style="display:grid;grid-template-columns:1fr 1.25fr auto;gap:12px;align-items:end;margin-top:14px">
+          <div class="multi-footer-grid">
             <div class="field">
               <label>GUEST NATIONALITY</label>
               <select class="control" name="multi_nationality">
