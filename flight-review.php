@@ -366,6 +366,7 @@ site_header('Review Booking');
 (function(){
     const base = <?=json_encode($baseTotal)?>;
     const currency = <?=json_encode((string)($offer['total_currency'] ?? 'EUR'))?>;
+    let acceptedPaymentAmount = Number(<?=json_encode(number_format($grandTotal, 2, '.', ''))?>);
     const selects = document.querySelectorAll('.extra-bag-select');
     const extraEl = document.getElementById('extra-total');
     const grandEl = document.getElementById('grand-total');
@@ -427,13 +428,54 @@ site_header('Review Booking');
             startBtn.disabled = true;
             startBtn.textContent = 'Preparing secure payment…';
             try{
-                const r = await fetch('api/create-payment-intent.php', {
+                let r = await fetch('api/create-payment-intent.php', {
                     method:'POST',
                     headers:{'Content-Type':'application/json'},
-                    body: JSON.stringify({offer_id: <?=json_encode($offerId)?>})
+                    body: JSON.stringify({
+                        offer_id: <?=json_encode($offerId)?>,
+                        accepted_amount: acceptedPaymentAmount,
+                        accepted_currency: currency
+                    })
                 });
-                const data = await r.json();
-                if(!r.ok || !data.ok) throw new Error(data.error || 'Unable to start payment.');
+                let data = await r.json();
+
+                if(r.status === 409 && data && data.price_changed){
+                    const oldPrice = acceptedPaymentAmount.toFixed(2);
+                    const newPrice = Number(data.new_amount).toFixed(2);
+                    const accepted = window.confirm(
+                        'Flight price has changed.\n\n' +
+                        'Previous price: ' + currency + ' ' + oldPrice + '\n' +
+                        'New price: ' + currency + ' ' + newPrice + '\n\n' +
+                        'Press OK to accept the updated fare and continue to secure payment.'
+                    );
+                    if(!accepted){
+                        startBtn.disabled = false;
+                        startBtn.textContent = 'Pay now securely';
+                        showError(startError, 'Payment was not started. Please review the updated fare before continuing.');
+                        return;
+                    }
+                    acceptedPaymentAmount = Number(data.new_amount);
+                    if(grandEl) grandEl.textContent = money(acceptedPaymentAmount);
+
+                    // Re-check once more after acceptance. Stripe is created only if
+                    // Duffel still returns exactly the amount the customer accepted.
+                    r = await fetch('api/create-payment-intent.php', {
+                        method:'POST',
+                        headers:{'Content-Type':'application/json'},
+                        body: JSON.stringify({
+                            offer_id: <?=json_encode($offerId)?>,
+                            accepted_amount: acceptedPaymentAmount,
+                            accepted_currency: currency
+                        })
+                    });
+                    data = await r.json();
+                }
+                if(!r.ok || !data.ok){
+                    if(data && data.price_changed){
+                        throw new Error('The fare changed again before payment. Please click Pay now securely again to review the latest price.');
+                    }
+                    throw new Error((data && (data.error || data.message)) || 'Unable to start payment.');
+                }
                 bookingRef = data.booking_ref;
                 stripe = Stripe(data.publishable_key);
                 elements = stripe.elements({clientSecret:data.client_secret});
