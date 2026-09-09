@@ -49,7 +49,16 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 $ref = mt_booking_ref();
-$amount = (float)$reprice['amount'];
+$duffelCost = (float)$reprice['amount'];
+$amount = mt_flight_sell_price($duffelCost);
+$markupAmount = mt_flight_markup_amount($duffelCost);
+$checkout['pricing'] = [
+    'duffel_cost'=>number_format($duffelCost, 2, '.', ''),
+    'markup_percent'=>mt_flight_markup_percent(),
+    'markup_amount'=>number_format($markupAmount, 2, '.', ''),
+    'selling_amount'=>number_format($amount, 2, '.', ''),
+    'currency'=>strtoupper((string)$reprice['currency'])
+];
 $currency = strtolower((string)$reprice['currency']);
 $minor = (int)round($amount * 100);
 
