@@ -19,7 +19,7 @@ final class DuffelProvider implements FlightProviderInterface {
     public function search(array $c): array {
         $s=[['origin'=>$c['origin'],'destination'=>$c['destination'],'departure_date'=>$c['departure']]];
         if(($c['trip_type']??'round')==='round'&&!empty($c['return_date']))$s[]=['origin'=>$c['destination'],'destination'=>$c['origin'],'departure_date'=>$c['return_date']];
-        $p=[]; for($i=0;$i<(int)$c['adults'];$i++)$p[]=['age'=>30]; for($i=0;$i<(int)$c['children'];$i++)$p[]=['age'=>8]; for($i=0;$i<(int)$c['infants'];$i++)$p[]=['age'=>1];
+        $p=[]; for($i=0;$i<(int)$c['adults'];$i++)$p[]=['type'=>'adult']; for($i=0;$i<(int)$c['children'];$i++)$p[]=['type'=>'child']; for($i=0;$i<(int)$c['infants'];$i++)$p[]=['type'=>'infant_without_seat'];
         $api=$this->request('/air/offer_requests?return_offers=true&supplier_timeout=20000','POST',['data'=>['slices'=>$s,'passengers'=>$p,'cabin_class'=>$c['cabin']]]);
         if(!$api['ok'])return $api; return ['ok'=>true,'error'=>'','status'=>$api['status'],'offers'=>$api['data']['data']['offers']??[]];
     }
